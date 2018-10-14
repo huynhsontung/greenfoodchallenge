@@ -40,6 +40,25 @@ public class Dashboard extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
+        PlanDatabase db = setupAppDatabase();
+        Plan retrievedPlan = db.PlanDao().loadCurrentPlan();
+
+
+
+    }
+
+    private PlanDatabase setupAppDatabase() {
+        PlanDatabase db = PlanDatabaseSingleton.getSingleInstanceDatabase(getApplicationContext());
+        Plan plan1 = new Plan();
+        plan1.beef = 1;
+        plan1.pork = 2;
+        plan1.chicken = 3;
+        plan1.fish = 4;
+        plan1.eggs = 5;
+        db.PlanDao().addPlan(plan1);
+        return db;
     }
 
     @Override
