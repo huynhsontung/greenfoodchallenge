@@ -12,13 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-    String str;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,36 +42,20 @@ public class Dashboard extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                PlanDatabase db = setupAppDatabase();
-                Plan retrievedPlan = db.PlanDao().loadCurrentPlan();
-                str = String.valueOf(retrievedPlan.key)
-                        + String.valueOf(retrievedPlan.beef)
-                        + String.valueOf(retrievedPlan.pork)
-                        + String.valueOf(retrievedPlan.vegetables);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        TextView hello = findViewById(R.id.hello);
-                        hello.setText(str);
-                    }
-                });
-            }
-        }).start();
+        PlanDatabase db = setupAppDatabase();
+        Plan retrievedPlan = db.PlanDao().loadCurrentPlan();
 
 
 
     }
 
     private PlanDatabase setupAppDatabase() {
-        PlanDatabase db = PlanDatabase.getDatabase(getApplicationContext());
+        PlanDatabase db = PlanDatabaseSingleton.getSingleInstanceDatabase(getApplicationContext());
         Plan plan1 = new Plan();
-        plan1.beef = 2;
-        plan1.pork = 3;
-        plan1.chicken = 4;
-        plan1.fish = 5;
+        plan1.beef = 1;
+        plan1.pork = 2;
+        plan1.chicken = 3;
+        plan1.fish = 4;
         plan1.eggs = 5;
         db.PlanDao().addPlan(plan1);
         return db;
