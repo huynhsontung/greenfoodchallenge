@@ -1,0 +1,10 @@
+To get access to the database create an Database object like so:
+
+//  PlanDatabase db = PlanDatabase.getDatabase(getApplicationContext());
+
+Note database access require Context so don't try to access database from non-Android classes.
+Query the database by calling PlanDao. For example:
+
+//  db.PlanDao().addPlan(justCreatedPlan);
+
+Check PlanDao interface for more queries.
