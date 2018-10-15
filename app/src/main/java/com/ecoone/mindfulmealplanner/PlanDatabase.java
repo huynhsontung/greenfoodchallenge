@@ -18,7 +18,7 @@ public abstract class PlanDatabase extends RoomDatabase {
         if (INSTANCE ==  null){
             synchronized (PlanDatabase.class){
                 if (INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context,PlanDatabase.class,"PlanDatabase").build();
+                    INSTANCE = Room.databaseBuilder(context,PlanDatabase.class,"PlansDatabase").allowMainThreadQueries().build();
                 }
             }
         }
