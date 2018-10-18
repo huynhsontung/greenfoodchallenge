@@ -3,13 +3,13 @@ package com.ecoone.mindfulmealplanner;
 public class Calculator {
 
     // CO2e per kilo of food consumed.
-    private double co2Beef = 27;
-    private double co2Pork = 12.1;
-    private double co2Chicken = 6.9;
-    private double co2Fish = 6.1;
-    private double co2Eggs = 4.8;
-    private double co2Beans = 2;
-    private double co2Veggies = 2;
+    private final double co2Beef = 27;
+    private final double co2Pork = 12.1;
+    private final double co2Chicken = 6.9;
+    private final double co2Fish = 6.1;
+    private final double co2Eggs = 4.8;
+    private final double co2Beans = 2;
+    private final double co2Veggies = 2;
 
     // Parameters: Plan, so that co2e can be calculated.
     // Post: Calculates and returns co2e.
@@ -28,20 +28,43 @@ public class Calculator {
         myCO2e += myCurrentPlan.beans * dailyServingTest * co2Beans;
         myCO2e += myCurrentPlan.vegetables * dailyServingTest * co2Veggies;
 
-        // This current answer will give you grams. Convert to metric tonnes.
+        // This current answer will give you grams. Converting to metric tonnes.
         co2ePerYear = myCO2e * 365;
         co2ePerYear = co2ePerYear / 1000000;
 
         return co2ePerYear;
     }
 
-    double comparePlan(double previousCO2e, Plan newPlan){
+    // Parameters: CO2e of previous plan, the new plan to be compared.
+    // Post: Calculates CO2e of the new plan, then finds the difference.
+    //       Note that this difference might be negative. In this case, the new plan produces MORE
+    //       CO2e than the old.
+    float comparePlan(float previousCO2e, Plan newPlan){
 
-        double getNewCO2e = calculateCO2e(newPlan);
-        double differenceCO2e = previousCO2e - getNewCO2e;
+        float getNewCO2e = calculateCO2e(newPlan);
+        float differenceCO2e = previousCO2e - getNewCO2e;
 
         // Note: difference might be negative if new plan is worse than old plan.
         return differenceCO2e;
+    }
+
+    // Parameters: The daily serving of the user, their gender in string.
+    // Post: Calculates the scaling factor, used to come up with the plan suggestion.
+    float getScalingFactor(int currentDailyServing, String gender){
+
+        final int recommendedServingMen = 350;
+        final int recommendedServingWomen = 250;
+
+        float scalingFactor = 0;
+
+        if(gender == "male"){
+            scalingFactor = currentDailyServing / recommendedServingMen;
+        }
+        else if(gender == "female"){
+            scalingFactor = currentDailyServing / recommendedServingWomen;
+        }
+
+        return scalingFactor;
     }
 
 }
