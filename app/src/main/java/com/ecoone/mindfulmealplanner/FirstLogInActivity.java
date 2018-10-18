@@ -14,12 +14,18 @@ import com.github.mikephil.charting.data.LineDataSet;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 
 public class FirstLogInActivity extends AppCompatActivity {
     private LineChart chart;
+    private String[] foodName;
+    private int foodLen;
     private LinearLayout[] foodSeekBarView;
+    private TextView[] mfoodSeekBarTextView;
+    private SeekBar[] mfoodSeekBarAction;
+    private TextView[] mfoodSeekBarValueView;
 
     private static final String TAG = "mActivity";
 
@@ -41,28 +47,59 @@ public class FirstLogInActivity extends AppCompatActivity {
         chart.setData(lineData);
         chart.invalidate();
 
-        setSeekBarView();
+        initializeSeekBarView();
+        setSeekBarValueView();
     }
 
-    private void setSeekBarView() {
-        String[] foodName = findStringArrayRes("food_name");
-        foodSeekBarView = new LinearLayout[foodName.length];
+    private void initializeSeekBarView() {
+        foodName = findStringArrayRes("food_name");
+        foodLen = foodName.length;
+        foodSeekBarView = new LinearLayout[foodLen];
+        mfoodSeekBarTextView = new TextView[foodLen];
+        mfoodSeekBarAction = new SeekBar[foodLen];
+        mfoodSeekBarValueView = new TextView[foodLen];
+
         foodSeekBarView[0] = findViewById(R.id.seekbar_component_1);
-        Log.i(TAG, foodName[0]);
         foodSeekBarView[1] = findViewById(R.id.seekbar_component_2);
         foodSeekBarView[2] = findViewById(R.id.seekbar_component_3);
         foodSeekBarView[3] = findViewById(R.id.seekbar_component_4);
         foodSeekBarView[4] = findViewById(R.id.seekbar_component_5);
         foodSeekBarView[5] = findViewById(R.id.seekbar_component_6);
         foodSeekBarView[6] = findViewById(R.id.seekbar_component_7);
-        for (int i = 0; i < foodName.length; i++) {
-            TextView mfoodSeekBarTextView = foodSeekBarView[i].findViewById(R.id.seekbar_text);
-            SeekBar mfoodSeekBarAction = foodSeekBarView[i].findViewById(R.id.seekbar_action);
-            TextView mfoodSeekBarValueView = foodSeekBarView[i].findViewById(R.id.seekbar_value);
-            mfoodSeekBarTextView.setText(foodName[i]);
-            mfoodSeekBarAction.setProgress(randInt(0, mfoodSeekBarAction.getMax()));
-            mfoodSeekBarValueView.setText(String.valueOf(mfoodSeekBarAction.getProgress()));
+
+        for (int i = 0; i < foodLen; i++) {
+            mfoodSeekBarTextView[i] = foodSeekBarView[i].findViewById(R.id.seekbar_text);
+            mfoodSeekBarAction[i] = foodSeekBarView[i].findViewById(R.id.seekbar_action);
+            mfoodSeekBarValueView[i] = foodSeekBarView[i].findViewById(R.id.seekbar_value);
+            mfoodSeekBarTextView[i].setText(foodName[i]);
+            mfoodSeekBarAction[i].setProgress(randInt(0, mfoodSeekBarAction[i].getMax()));
+            mfoodSeekBarValueView[i].setText(String.valueOf(mfoodSeekBarAction[i].getProgress()));
         }
+    }
+
+    private void setSeekBarValueView() {
+        for (int i = 0; i < foodLen; i++) {
+            setSeekBarListener(i);
+        }
+    }
+
+    private void setSeekBarListener(final int i) {
+        mfoodSeekBarAction[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mfoodSeekBarValueView[i].setText(String.valueOf(progress));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
     }
 
     private String[] findStringArrayRes(String resName) {
@@ -72,6 +109,7 @@ public class FirstLogInActivity extends AppCompatActivity {
     }
 
     private static int randInt(int min, int max) {
-        return ThreadLocalRandom.current().nextInt(min, max + 1);
+        Random rand = new Random();
+        return rand.nextInt(max- min + 1) + min;
     }
 }
