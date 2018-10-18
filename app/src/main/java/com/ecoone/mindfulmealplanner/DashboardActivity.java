@@ -20,7 +20,7 @@ import java.util.Random;
 
 
 
-public class Dashboard extends AppCompatActivity
+public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     @Override
