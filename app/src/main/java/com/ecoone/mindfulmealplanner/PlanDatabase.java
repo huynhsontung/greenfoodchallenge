@@ -8,7 +8,7 @@ import android.content.Context;
 // Please read https://developer.android.com/training/data-storage/room/
 // before committing any change.
 
-@Database(entities = Plan.class, version = 1)
+@Database(entities = Plan.class, version = 1, exportSchema = false)
 public abstract class PlanDatabase extends RoomDatabase {
     public abstract PlanDao PlanDao();
 
