@@ -2,27 +2,26 @@ package com.ecoone.mindfulmealplanner;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.LineData;
-import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.ThreadLocalRandom;
 
 
 public class FirstLogInActivity extends AppCompatActivity {
-    private LineChart chart;
+    private PieChart mPieChart;
     private String[] foodName;
+    private int[] foodAmount;
     private int foodLen;
-    private LinearLayout[] foodSeekBarView;
+    private LinearLayout[] mfoodSeekBarView;
     private TextView[] mfoodSeekBarTextView;
     private SeekBar[] mfoodSeekBarAction;
     private TextView[] mfoodSeekBarValueView;
@@ -34,46 +33,39 @@ public class FirstLogInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_first_log_in);
 
-        chart = findViewById(R.id.chart);
-
-        List<Entry> entries = new ArrayList<>();
-
-        entries.add(new Entry(1,1));
-        entries.add(new Entry(2,2));
-
-        LineDataSet dataSet = new LineDataSet(entries, "Label");
-
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate();
+        mPieChart = findViewById(R.id.pie_chart);
 
         initializeSeekBarView();
         setSeekBarValueView();
+        setPieChartView(foodAmount);
     }
 
     private void initializeSeekBarView() {
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
-        foodSeekBarView = new LinearLayout[foodLen];
+        foodAmount = new int[foodLen];
+        mfoodSeekBarView = new LinearLayout[foodLen];
         mfoodSeekBarTextView = new TextView[foodLen];
         mfoodSeekBarAction = new SeekBar[foodLen];
         mfoodSeekBarValueView = new TextView[foodLen];
 
-        foodSeekBarView[0] = findViewById(R.id.seekbar_component_1);
-        foodSeekBarView[1] = findViewById(R.id.seekbar_component_2);
-        foodSeekBarView[2] = findViewById(R.id.seekbar_component_3);
-        foodSeekBarView[3] = findViewById(R.id.seekbar_component_4);
-        foodSeekBarView[4] = findViewById(R.id.seekbar_component_5);
-        foodSeekBarView[5] = findViewById(R.id.seekbar_component_6);
-        foodSeekBarView[6] = findViewById(R.id.seekbar_component_7);
+        mfoodSeekBarView[0] = findViewById(R.id.seekbar_component_1);
+        mfoodSeekBarView[1] = findViewById(R.id.seekbar_component_2);
+        mfoodSeekBarView[2] = findViewById(R.id.seekbar_component_3);
+        mfoodSeekBarView[3] = findViewById(R.id.seekbar_component_4);
+        mfoodSeekBarView[4] = findViewById(R.id.seekbar_component_5);
+        mfoodSeekBarView[5] = findViewById(R.id.seekbar_component_6);
+        mfoodSeekBarView[6] = findViewById(R.id.seekbar_component_7);
 
         for (int i = 0; i < foodLen; i++) {
-            mfoodSeekBarTextView[i] = foodSeekBarView[i].findViewById(R.id.seekbar_text);
-            mfoodSeekBarAction[i] = foodSeekBarView[i].findViewById(R.id.seekbar_action);
-            mfoodSeekBarValueView[i] = foodSeekBarView[i].findViewById(R.id.seekbar_value);
+            mfoodSeekBarTextView[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_text);
+            mfoodSeekBarAction[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_action);
+            mfoodSeekBarValueView[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_value);
             mfoodSeekBarTextView[i].setText(foodName[i]);
             mfoodSeekBarAction[i].setProgress(randInt(0, mfoodSeekBarAction[i].getMax()));
-            mfoodSeekBarValueView[i].setText(String.valueOf(mfoodSeekBarAction[i].getProgress()));
+            String amountText = String.valueOf(mfoodSeekBarAction[i].getProgress());
+            mfoodSeekBarValueView[i].setText(amountText);
+            foodAmount[i] = Integer.valueOf(amountText);
         }
     }
 
@@ -87,7 +79,10 @@ public class FirstLogInActivity extends AppCompatActivity {
         mfoodSeekBarAction[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                mfoodSeekBarValueView[i].setText(String.valueOf(progress));
+                String amountText = String.valueOf(progress);
+                mfoodSeekBarValueView[i].setText(amountText);
+                foodAmount[i] = Integer.valueOf(amountText);
+                setPieChartView(foodAmount);
             }
 
             @Override
@@ -100,6 +95,18 @@ public class FirstLogInActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void setPieChartView(int[] data) {
+        List<PieEntry> entries = new ArrayList<>();
+        for (int i = 0; i < foodLen; i++) {
+            entries.add(new PieEntry(data[i], foodName[i]));
+        }
+        PieDataSet pieDataSet = new PieDataSet(entries, "Test");
+        PieData piedata = new PieData(pieDataSet);
+        mPieChart.setData(piedata);
+        mPieChart.invalidate();
+
     }
 
     private String[] findStringArrayRes(String resName) {

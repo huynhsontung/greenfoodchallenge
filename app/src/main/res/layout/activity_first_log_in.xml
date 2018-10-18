@@ -5,10 +5,10 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginBottom="10dp"/>
 
     <include
@@ -38,5 +38,11 @@
     <include
         android:id="@+id/seekbar_component_7"
         layout="@layout/seekbar_component" />
+
+    <Button
+        android:id="@+id/first_log_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/first_log_in_button"/>
 
 </LinearLayout>
