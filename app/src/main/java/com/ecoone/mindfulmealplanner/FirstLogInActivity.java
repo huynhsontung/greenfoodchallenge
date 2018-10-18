@@ -1,7 +1,10 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -25,6 +28,7 @@ public class FirstLogInActivity extends AppCompatActivity {
     private TextView[] mfoodSeekBarTextView;
     private SeekBar[] mfoodSeekBarAction;
     private TextView[] mfoodSeekBarValueView;
+    private Button mSubmit;
 
     private static final String TAG = "mActivity";
 
@@ -38,6 +42,15 @@ public class FirstLogInActivity extends AppCompatActivity {
         initializeSeekBarView();
         setSeekBarValueView();
         setPieChartView(foodAmount);
+
+        mSubmit = findViewById(R.id.first_log_in_button);
+        mSubmit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FirstLogInActivity.this, DashboardActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void initializeSeekBarView() {
