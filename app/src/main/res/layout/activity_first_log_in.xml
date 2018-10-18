@@ -7,8 +7,36 @@
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="10dp"/>
 
+    <include
+        android:id="@+id/seekbar_component_1"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_2"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_3"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_4"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_5"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_6"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_7"
+        layout="@layout/seekbar_component" />
 
 </LinearLayout>
