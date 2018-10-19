@@ -17,14 +17,14 @@ import java.util.List;
 
 @Dao
 public interface PlanDao {
-    @Query("SELECT * FROM `Plan` WHERE userID = :userID AND planName = :planName LIMIT 1")
-    public Plan getPlanFromUser(int userID, String planName);
+    @Query("SELECT * FROM `Plan` WHERE username = :username AND planName = :planName LIMIT 1")
+    public Plan getPlanFromUser(String username, String planName);
 
-    @Query("SELECT * FROM `Plan` WHERE userID = :userID")
-    public List<Plan> getAllPlansFromUser(int userID);
+    @Query("SELECT * FROM `Plan` WHERE username = :username")
+    public List<Plan> getAllPlansFromUser(String username);
 
-    @Query("SELECT count(*) FROM `Plan` WHERE userID = :userID")
-    public int getPlansCount(int userID);
+    @Query("SELECT count(*) FROM `Plan` WHERE username = :username")
+    public int getPlansCount(String username);
 
     @Insert
     public void addPlan(Plan plan);

@@ -5,6 +5,8 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
 
+import io.reactivex.annotations.NonNull;
+
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 // Database object implemented by Room.
@@ -12,17 +14,20 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 // before committing any change.
 
 @Entity(foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "id",
-        childColumns = "userID",
+        parentColumns = "username",
+        childColumns = "username",
         onDelete = CASCADE))
 public class Plan {
 
     @PrimaryKey(autoGenerate = true)
     public  int key;
 
+    // plans can have same planName but different username
+    // cannot set planName as primaryKey
+    @NonNull
     public String planName;
 
-    public int userID;
+    public String username;
 
     public float beef;
     public float pork;

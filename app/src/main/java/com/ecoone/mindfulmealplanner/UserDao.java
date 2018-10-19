@@ -11,11 +11,14 @@ import java.util.List;
 @Dao
 public interface UserDao {
 
-    @Query("SELECT name FROM User")
+    @Query("SELECT username FROM User")
     public List<String> getUserList();
 
-    @Query("SELECT currentPlan FROM User WHERE id = :userID")
-    public String getCurrentPlanName(int userID);
+    @Query("SELECT currentPlan FROM User WHERE username = :username")
+    public String getCurrentPlanName(String username);
+
+    @Query("SELECT gender FROM User WHERE username = :username")
+    public String getUserGender(String username);
 
     @Insert
     public void addUser(User user);

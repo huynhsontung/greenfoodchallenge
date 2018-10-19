@@ -3,12 +3,16 @@ package com.ecoone.mindfulmealplanner;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
 
+import io.reactivex.annotations.NonNull;
+
 @Entity
 public class User {
-    @PrimaryKey(autoGenerate = true)
-    public int id;
+    @PrimaryKey
+    @NonNull
+    public String username; // Name has to be unique
 
-    public String name;
+    @NonNull
+    public String gender;
     public long createDate;
     public long lastLoginDate;
     public String currentPlan;
