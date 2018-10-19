@@ -1,0 +1,99 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "01640b509a9a1967ab272f94e5a812a5",
+    "entities": [
+      {
+        "tableName": "Plan",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `planName` TEXT, `userID` INTEGER NOT NULL, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, FOREIGN KEY(`userID`) REFERENCES `User`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "key",
+            "columnName": "key",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "planName",
+            "columnName": "planName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "userID",
+            "columnName": "userID",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "beef",
+            "columnName": "beef",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pork",
+            "columnName": "pork",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chicken",
+            "columnName": "chicken",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fish",
+            "columnName": "fish",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eggs",
+            "columnName": "eggs",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "beans",
+            "columnName": "beans",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vegetables",
+            "columnName": "vegetables",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "key"
+          ],
+          "autoGenerate": true
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "User",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "userID"
+            ],
+            "referencedColumns": [
+              "id"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"01640b509a9a1967ab272f94e5a812a5\")"
+    ]
+  }
+}
