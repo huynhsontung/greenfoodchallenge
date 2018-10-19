@@ -12,6 +12,7 @@ public class Calculator {
     private final double co2Veggies = 2;
 
     private final int populationVancouver = 2460000;
+    private final double tCO2ePerCapita = 1.5;
 
 
     // Parameters: Plan, so that co2e can be calculated.
@@ -71,13 +72,23 @@ public class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates the grand total CO2e if everyone in Vancouver used user's plan
-    float calculateSavingsVancouver(Plan myPlan){
+    float calculateVancouver(Plan myPlan){
 
         float getCO2e = calculateCO2e(myPlan);
-
         float grandTotalCO2e = getCO2e * populationVancouver;
 
         return grandTotalCO2e;
+    }
+
+    // Parameters: User's current plan
+    // Post: Calculates how many metric tonnes Vancouver would save if everyone used plan
+    float usePlanVancouver(Plan myPlan){
+
+        float getNewTotalCO2e = calculateVancouver(myPlan);
+
+        double oldTotalVancouver = populationVancouver * tCO2ePerCapita;
+
+        return (float) (oldTotalVancouver - getNewTotalCO2e);
     }
 
 }
