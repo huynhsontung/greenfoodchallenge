@@ -11,18 +11,20 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 // Please read https://developer.android.com/training/data-storage/room/
 // before committing any change.
 
-@Entity(foreignKeys = @ForeignKey(entity = User.class,
+@Entity(primaryKeys = {"userId", "planName"},
+        foreignKeys = @ForeignKey(entity = User.class,
         parentColumns = "id",
-        childColumns = "userID",
+        childColumns = "userId",
         onDelete = CASCADE))
 public class Plan {
 
-    @PrimaryKey(autoGenerate = true)
-    public  int key;
-
+//    @PrimaryKey(autoGenerate = true)
+//    public  int key;
+//    @PrimaryKey(autoGenerate = true)
+    public int userId;
+//    @PrimaryKey(autoGenerate = true)
     public String planName;
 
-    public int userID;
 
     public float beef;
     public float pork;

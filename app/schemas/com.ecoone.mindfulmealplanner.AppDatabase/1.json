@@ -2,15 +2,15 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "01640b509a9a1967ab272f94e5a812a5",
+    "identityHash": "975b204a320d9d1b3e013487c28a143b",
     "entities": [
       {
         "tableName": "Plan",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `planName` TEXT, `userID` INTEGER NOT NULL, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, FOREIGN KEY(`userID`) REFERENCES `User`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`userId` INTEGER NOT NULL, `planName` TEXT, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, PRIMARY KEY(`userId`, `planName`), FOREIGN KEY(`userId`) REFERENCES `User`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
-            "fieldPath": "key",
-            "columnName": "key",
+            "fieldPath": "userId",
+            "columnName": "userId",
             "affinity": "INTEGER",
             "notNull": true
           },
@@ -19,12 +19,6 @@
             "columnName": "planName",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "userID",
-            "columnName": "userID",
-            "affinity": "INTEGER",
-            "notNull": true
           },
           {
             "fieldPath": "beef",
@@ -71,9 +65,10 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "key"
+            "userId",
+            "planName"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -82,7 +77,7 @@
             "onDelete": "CASCADE",
             "onUpdate": "NO ACTION",
             "columns": [
-              "userID"
+              "userId"
             ],
             "referencedColumns": [
               "id"
@@ -93,7 +88,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"01640b509a9a1967ab272f94e5a812a5\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"975b204a320d9d1b3e013487c28a143b\")"
     ]
   }
 }
