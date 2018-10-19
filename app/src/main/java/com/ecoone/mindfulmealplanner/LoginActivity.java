@@ -42,17 +42,9 @@ public class LoginActivity extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
         mDb = AppDatabase.getDatabase(getApplicationContext());
-//        mDbInterface.addUser(mDb, "arlenx", "Arlen");
-//        mDbInterface.isUserExist(mDb, "arlenx");
+//        dbInterface.addUser(mDb, "arlenx", "Arlen");
+        dbInterface.isUserExist(mDb, "arlenx");
 
-        Log.i(TAG, "````````````````````");
-        String name = mDb.userDao().getUserId("arlenx");
-        Log.i(TAG, "id: " + name);
-//        User user = new User();
-//        user.name = "arlenx";
-//        user.id = "arlenxu";
-//        mDb.userDao().addUser(user);
-//        Log.i(TAG, "-------------------------");
 //        initialization();
 
         loginFlag = isLogin();
