@@ -33,7 +33,8 @@ dependencies {
     def room_version = "1.1.1"
 
     implementation "android.arch.persistence.room:runtime:$room_version"
-    annotationProcessor "android.arch.persistence.room:compiler:$room_version" // use kapt for Kotlin
+    annotationProcessor "android.arch.persistence.room:compiler:$room_version"
+    // use kapt for Kotlin
 
     // optional - RxJava support for Room
     implementation "android.arch.persistence.room:rxjava2:$room_version"
@@ -43,4 +44,8 @@ dependencies {
 
     // Test helpers
     testImplementation "android.arch.persistence.room:testing:$room_version"
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }
