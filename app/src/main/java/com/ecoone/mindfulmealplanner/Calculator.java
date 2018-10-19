@@ -11,6 +11,9 @@ public class Calculator {
     private final double co2Beans = 2;
     private final double co2Veggies = 2;
 
+    private final int populationVancouver = 2460000;
+
+
     // Parameters: Plan, so that co2e can be calculated.
     // Post: Calculates and returns co2e.
     float calculateCO2e(Plan myCurrentPlan){
@@ -57,14 +60,24 @@ public class Calculator {
 
         float scalingFactor = 0;
 
-        if(gender == "male"){
+        if(gender.equals("male")){
             scalingFactor = currentDailyServing / recommendedServingMen;
         }
-        else if(gender == "female"){
+        else if(gender.equals("female")){
             scalingFactor = currentDailyServing / recommendedServingWomen;
         }
-
         return scalingFactor;
+    }
+
+    // Parameters: User's current plan
+    // Post: Calculates the grand total CO2e if everyone in Vancouver used user's plan
+    float calculateSavingsVancouver(Plan myPlan){
+
+        float getCO2e = calculateCO2e(myPlan);
+
+        float grandTotalCO2e = getCO2e * populationVancouver;
+
+        return grandTotalCO2e;
     }
 
 }
