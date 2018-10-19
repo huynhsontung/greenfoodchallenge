@@ -22,6 +22,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
 
+    private AppDatabase mDb;
+
     private static final String EXTRA_LOGIN_FLAG =
             "com.ecoone.mindfulmealplanner.loginactivity.login_flag";
     private static final String EXTRA_USERNAME =
@@ -39,6 +41,18 @@ public class LoginActivity extends AppCompatActivity {
         login = findViewById(R.id.login);
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        mDb = AppDatabase.getDatabase(getApplicationContext());
+//        mDbInterface.addUser(mDb, "arlenx", "Arlen");
+//        mDbInterface.isUserExist(mDb, "arlenx");
+
+        Log.i(TAG, "````````````````````");
+        String name = mDb.userDao().getUserId("arlenx");
+        Log.i(TAG, "id: " + name);
+//        User user = new User();
+//        user.name = "arlenx";
+//        user.id = "arlenxu";
+//        mDb.userDao().addUser(user);
+//        Log.i(TAG, "-------------------------");
 //        initialization();
 
         loginFlag = isLogin();

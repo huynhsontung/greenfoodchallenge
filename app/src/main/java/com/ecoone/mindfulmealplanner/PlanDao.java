@@ -17,14 +17,14 @@ import java.util.List;
 
 @Dao
 public interface PlanDao {
-    @Query("SELECT * FROM `Plan` WHERE userID = :userID AND planName = :planName LIMIT 1")
-    public Plan getPlanFromUser(int userID, String planName);
+    @Query("SELECT * FROM `Plan` WHERE userID = :userId AND planName = :planName LIMIT 1")
+    public Plan getPlanFromUser(int userId, String planName);
 
-    @Query("SELECT * FROM `Plan` WHERE userID = :userID")
-    public List<Plan> getAllPlansFromUser(int userID);
+    @Query("SELECT * FROM `Plan` WHERE userID = :userId")
+    public List<Plan> getAllPlansFromUser(int userId);
 
-    @Query("SELECT count(*) FROM `Plan` WHERE userID = :userID")
-    public int getPlansCount(int userID);
+    @Query("SELECT count(*) FROM `Plan` WHERE userID = :userId")
+    public int getPlansCount(int userId);
 
     @Insert
     public void addPlan(Plan plan);
@@ -35,8 +35,8 @@ public interface PlanDao {
     @Delete
     public int deletePlan(Plan plan);
 
-    @Query("DELETE FROM `Plan` WHERE userID = :userID")
-    public void deleteAllPlans(int userID);
+    @Query("DELETE FROM `Plan` WHERE userId = :userId")
+    public void deleteAllPlans(int userId);
 
 
 

@@ -10,21 +10,24 @@ import android.content.Context;
 
 @Database(entities = {User.class, Plan.class}, version = 1)
 public abstract class AppDatabase extends RoomDatabase {
+
+    private static AppDatabase INSTANCE;
+
     public abstract PlanDao planDao();
     public abstract UserDao userDao();
 
-    private static volatile AppDatabase INSTANCE;
 
-    static AppDatabase getDatabase(final Context applicationContext){
+    public static AppDatabase getDatabase(final Context context){
         if (INSTANCE ==  null){
-            synchronized (AppDatabase.class){
-                if (INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(applicationContext,AppDatabase.class,"PlansDatabase").allowMainThreadQueries().build();
-                }
-            }
+            INSTANCE =
+                    Room.databaseBuilder(context.getApplicationContext(),
+                            AppDatabase.class, "test")
+                    .allowMainThreadQueries().build();
         }
         return INSTANCE;
     }
+
+    public static void destroyInstance() { INSTANCE = null; }
 }
 
 

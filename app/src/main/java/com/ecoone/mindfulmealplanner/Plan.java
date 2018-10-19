@@ -19,11 +19,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         onDelete = CASCADE))
 public class Plan {
 
-//    @PrimaryKey(autoGenerate = true)
-//    public  int key;
-//    @PrimaryKey(autoGenerate = true)
     public int userId;
-//    @PrimaryKey(autoGenerate = true)
+
     @NonNull
     public String planName;
 
