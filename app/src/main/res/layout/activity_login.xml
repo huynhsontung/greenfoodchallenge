@@ -30,7 +30,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/test_view"
+        android:id="@+id/login_test_view"
         android:layout_width="wrap_content"
         android:layout_height="200dp" />
 
