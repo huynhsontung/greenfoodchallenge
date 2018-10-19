@@ -4,6 +4,7 @@ package com.ecoone.mindfulmealplanner;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.PrimaryKey;
+import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
@@ -23,6 +24,7 @@ public class Plan {
 //    @PrimaryKey(autoGenerate = true)
     public int userId;
 //    @PrimaryKey(autoGenerate = true)
+    @NonNull
     public String planName;
 
 
