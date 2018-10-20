@@ -18,10 +18,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DashboardActivity" />
         <activity android:name=".TestActivity" />
         <activity android:name=".FirstLogInActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".DashboardActivity"></activity>
     </application>
 
 </manifest>

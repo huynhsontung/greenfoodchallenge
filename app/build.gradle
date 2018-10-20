@@ -59,3 +59,7 @@ dependencies {
 dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}

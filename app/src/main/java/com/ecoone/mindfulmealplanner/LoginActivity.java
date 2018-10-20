@@ -151,7 +151,7 @@ public class LoginActivity extends AppCompatActivity {
 //    }
 
     private void startActivityAndFinish(String username) {
-        Intent intent = TestActivity.newIntent(LoginActivity.this, username);
+        Intent intent = DashboardActivity.newIntent(LoginActivity.this);
         startActivity(intent);
         LoginActivity.this.finish();
     }
