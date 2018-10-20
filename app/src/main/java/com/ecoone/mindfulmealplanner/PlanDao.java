@@ -35,8 +35,8 @@ public interface PlanDao {
     @Delete
     public int deletePlan(Plan plan);
 
-    @Query("DELETE FROM `Plan` WHERE userID = :userID")
-    public void deleteAllPlans(int userID);
+    @Query("DELETE FROM `Plan` WHERE username = :username")
+    public void deleteAllPlans(String username);
 
 
 

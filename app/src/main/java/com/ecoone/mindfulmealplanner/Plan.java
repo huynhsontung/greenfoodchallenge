@@ -19,14 +19,13 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         onDelete = CASCADE))
 public class Plan {
 
-    @PrimaryKey(autoGenerate = true)
-    public  int key;
 
-    // plans can have same planName but different username
-    // cannot set planName as primaryKey
+    @PrimaryKey
     @NonNull
     public String planName;
 
+    @PrimaryKey
+    @NonNull
     public String username;
 
     public float beef;
