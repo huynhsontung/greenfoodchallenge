@@ -8,17 +8,18 @@ import android.content.Context;
 // Please read https://developer.android.com/training/data-storage/room/
 // before committing any change.
 
-@Database(entities = Plan.class, version = 1)
-public abstract class PlanDatabase extends RoomDatabase {
-    public abstract PlanDao PlanDao();
+@Database(entities = {Plan.class, User.class}, version = 1)
+public abstract class AppDatabase extends RoomDatabase {
+    public abstract PlanDao planDao();
+    public abstract UserDao userDao();
 
-    private static volatile PlanDatabase INSTANCE;
+    private static volatile AppDatabase INSTANCE;
 
-    static PlanDatabase getDatabase(final Context context){
+    static AppDatabase getDatabase(final Context applicationContext){
         if (INSTANCE ==  null){
-            synchronized (PlanDatabase.class){
+            synchronized (AppDatabase.class){
                 if (INSTANCE == null){
-                    INSTANCE = Room.databaseBuilder(context,PlanDatabase.class,"PlansDatabase").allowMainThreadQueries().build();
+                    INSTANCE = Room.databaseBuilder(applicationContext,AppDatabase.class,"PlansDatabase").allowMainThreadQueries().build();
                 }
             }
         }
