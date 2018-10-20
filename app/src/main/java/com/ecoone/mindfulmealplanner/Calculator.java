@@ -21,19 +21,19 @@ public class Calculator {
 
         float myCO2e = 0;
         float co2ePerYear;
-        int dailyServingTest = 500; // This exists as a test until the Plan class + database
-                                    // is updated
-        // Equation to calculate co2e: %Co2e * daily serving * co2e/1000
-        myCO2e += myCurrentPlan.beef * dailyServingTest * co2Beef;
-        myCO2e += myCurrentPlan.pork * dailyServingTest * co2Pork;
-        myCO2e += myCurrentPlan.chicken * dailyServingTest * co2Chicken;
-        myCO2e += myCurrentPlan.fish * dailyServingTest * co2Fish;
-        myCO2e += myCurrentPlan.eggs * dailyServingTest * co2Eggs;
-        myCO2e += myCurrentPlan.beans * dailyServingTest * co2Beans;
-        myCO2e += myCurrentPlan.vegetables * dailyServingTest * co2Veggies;
 
-        // This current answer will give you grams. Converting to metric tonnes.
+        // Equation to calculate co2e: %Co2e * daily serving * co2e/1000
+        myCO2e += myCurrentPlan.beef * co2Beef;
+        myCO2e += myCurrentPlan.pork * co2Pork;
+        myCO2e += myCurrentPlan.chicken * co2Chicken;
+        myCO2e += myCurrentPlan.fish * co2Fish;
+        myCO2e += myCurrentPlan.eggs * co2Eggs;
+        myCO2e += myCurrentPlan.beans * co2Beans;
+        myCO2e += myCurrentPlan.vegetables * co2Veggies;
+
+        // Per year
         co2ePerYear = myCO2e * 365;
+        // This current answer will give you grams. Converting to metric tonnes.
         co2ePerYear = co2ePerYear / 1000000;
 
         return co2ePerYear;
@@ -50,6 +50,16 @@ public class Calculator {
 
         // Note: difference might be negative if new plan is worse than old plan.
         return differenceCO2e;
+    }
+
+    // Parameters: User's plan.
+    // Post: Sums up all the serving sizes of all food types. Returns total daily serving.
+    float sumServings(Plan myPlan){
+
+        float totalDailyServing = myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +
+                myPlan.eggs + myPlan.beans + myPlan.vegetables;
+
+        return totalDailyServing;
     }
 
     // Parameters: The daily serving of the user, their gender in string.
