@@ -12,6 +12,7 @@ public class Calculator {
     private final double co2Veggies = 2;
 
     private final int populationVancouver = 2460000;
+    // Metric tonnes of co2e per capita according to the pdf.
     private final double tCO2ePerCapita = 1.5;
 
 
@@ -46,20 +47,17 @@ public class Calculator {
     float comparePlan(float previousCO2e, Plan newPlan){
 
         float getNewCO2e = calculateCO2e(newPlan);
-        float differenceCO2e = previousCO2e - getNewCO2e;
 
         // Note: difference might be negative if new plan is worse than old plan.
-        return differenceCO2e;
+        return (previousCO2e - getNewCO2e);
     }
 
     // Parameters: User's plan.
     // Post: Sums up all the serving sizes of all food types. Returns total daily serving.
     float sumServings(Plan myPlan){
 
-        float totalDailyServing = myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +
-                myPlan.eggs + myPlan.beans + myPlan.vegetables;
-
-        return totalDailyServing;
+        return (myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +
+                myPlan.eggs + myPlan.beans + myPlan.vegetables);
     }
 
     // Parameters: The daily serving of the user, their gender in string.
