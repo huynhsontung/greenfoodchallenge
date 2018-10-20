@@ -1,21 +1,21 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.util.Log;
+import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.User;
 
 public class dbInterface {
 
     private static final String TAG = "testActivity";
 
-    public static void addUser(final AppDatabase db, final String id,
-                        final String name) {
+    public static void addUser(final AppDatabase db, final String username,
+                        final String gender) {
         User user = new User();
-        user.id = id;
-        user.name = name;
+        user.username = username;
+        user.gender = gender;
         db.userDao().addUser(user);
     }
 
-    public static void isUserExist(final AppDatabase db, final String id) {
-        String name = db.userDao().getUserId(id);
-        Log.i(TAG, "name: " + name);
+    public static String getUserbyUsername(final AppDatabase db, final String username) {
+        return db.userDao().getUsername(username);
     }
 }

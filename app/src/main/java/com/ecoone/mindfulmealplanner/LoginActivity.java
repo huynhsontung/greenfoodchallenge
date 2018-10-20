@@ -6,14 +6,15 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.db.AppDatabase;
+
 public class LoginActivity extends AppCompatActivity {
-    private String mUserName;
+    private String mUsername;
 
     private EditText mEditText;
     private TextView mTextView;
@@ -46,20 +47,10 @@ public class LoginActivity extends AppCompatActivity {
 //        initialization();
 
 
-//        Log.i(TAG, "Firse login sign: " + loginFlag);
-        mUserName = getUserName();
-//        Log.i(TAG, "First username: " + userName);
-
-        if (loginFlag == 1) {
-            Log.i(TAG, "Login !!!!");
-            mUserName = getUserName();
-            if (mUserName.length() != 0 ){
-                Log.i(TAG, mUserName);
-                startActivityAndFinish();
-            }
-        }
 
         setLoginAction();
+
+        checkIfLogin();
 //        setEditTextAction();
 
 
@@ -70,26 +61,43 @@ public class LoginActivity extends AppCompatActivity {
         editor.remove(EXTRA_USERNAME);
         editor.remove(EXTRA_LOGIN_FLAG);
         editor.apply();
+        mDb.planDao().deleteAll();
+        mDb.userDao().deleteALL();
+        dbInterface.addUser(mDb, "arlenx", "male");
     }
 
     private void checkIfLogin() {
         loginFlag = isLogin();
         // if no user login
-        Log.i(TAG, "No user log in. Then check if user in the db.");
         if (loginFlag == 0) {
+            Log.i(TAG, "No user log in. Wait for action to check if user in the db.");
+//            mUsername = mEditText.getText().toString();
             // check db
-            mUserName = mEditText.getText().toString();
-            dbInterface.isUserExist(mDb, mUserName);
-
+//            String name = dbInterface.getUserbyUsername(mDb, mUsername);
+            // if user exists, login
+//            Log.i(TAG, "User name:" + name);
+//            if (name != null) {
+//                Log.i(TAG, "User exist.");
+//                startActivityAndFinish(mUsername);
+//            }
+//            else {
+//                // sign up
+//                Log.i(TAG, "need to sign up");
+//            }
+        }
+        // someone already log in
+        else {
+            Log.i(TAG, "Someone already login");
+            mUsername = getUsername();
+            startActivityAndFinish(mUsername);
         }
     }
-
 
     private int isLogin() {
         return settings.getInt(EXTRA_LOGIN_FLAG, 0);
     }
 
-    private String getUserName() {
+    private String getUsername() {
         return settings.getString(EXTRA_USERNAME, "");
     }
 
@@ -97,43 +105,53 @@ public class LoginActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mUserName = mEditText.getText().toString();
-                if (mUserName.length() != 0) {
-                    Log.i(TAG, "Get username:" + mUserName);
-                    SharedPreferences.Editor editor = settings.edit();
-                    editor.putInt(EXTRA_LOGIN_FLAG, 1);
-                    editor.putString(EXTRA_USERNAME, mUserName);
-                    editor.apply();
-                }
-                startActivityAndFinish();
-            }
-        });
-    }
-
-    private void setEditTextAction() {
-        mEditText.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    mUserName = mEditText.getText().toString();
-                    if (mUserName.length() != 0) {
-                        Log.i(TAG, "Get username:" + mUserName);
+                mUsername = mEditText.getText().toString();
+                if (mUsername.length() != 0) {
+                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and check db");
+                    // check db
+                    String name = dbInterface.getUserbyUsername(mDb, mUsername);
+                    Log.i(TAG, "Get user name in db:" + name);
+                    // if user exists, login
+                    if (name != null) {
+                        Log.i(TAG, "User exist.");
                         SharedPreferences.Editor editor = settings.edit();
                         editor.putInt(EXTRA_LOGIN_FLAG, 1);
-                        editor.putString(EXTRA_USERNAME, mUserName);
+                        editor.putString(EXTRA_USERNAME, mUsername);
                         editor.apply();
+                        startActivityAndFinish(mUsername);
+                    } else {
+                        // sign up
+                        Log.i(TAG, "need to sign up");
                     }
-                    startActivityAndFinish();
-                    return true;
                 }
-                return false;
             }
         });
     }
 
-    private void startActivityAndFinish() {
-        Intent intent = TestActivity.newIntent(LoginActivity.this, mUserName);
+//    private void setEditTextAction() {
+//        mEditText.setOnKeyListener(new View.OnKeyListener() {
+//            @Override
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
+//                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
+//                    mUsername = mEditText.getText().toString();
+//                    if (mUsername.length() != 0) {
+//                        Log.i(TAG, "Get username:" + mUsername);
+//                        SharedPreferences.Editor editor = settings.edit();
+//                        editor.putInt(EXTRA_LOGIN_FLAG, 1);
+//                        editor.putString(EXTRA_USERNAME, mUsername);
+//                        editor.apply();
+//                    }
+//                    startActivityAndFinish();
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//    }
+
+    private void startActivityAndFinish(String username) {
+        Intent intent = TestActivity.newIntent(LoginActivity.this, username);
         startActivity(intent);
         LoginActivity.this.finish();
     }

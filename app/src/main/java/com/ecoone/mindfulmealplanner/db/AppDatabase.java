@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.db;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import 	android.arch.persistence.room.RoomDatabase;
@@ -21,7 +21,7 @@ public abstract class AppDatabase extends RoomDatabase {
         if (INSTANCE ==  null){
             INSTANCE =
                     Room.databaseBuilder(context.getApplicationContext(),
-                            AppDatabase.class, "test")
+                            AppDatabase.class, "test2")
                     .allowMainThreadQueries().build();
         }
         return INSTANCE;

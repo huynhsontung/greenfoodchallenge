@@ -1,9 +1,9 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.db;
 
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Index;
 import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -12,18 +12,20 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
 // Please read https://developer.android.com/training/data-storage/room/
 // before committing any change.
 
-@Entity(primaryKeys = {"userId", "planName"},
-        foreignKeys = @ForeignKey(entity = User.class,
-        parentColumns = "id",
-        childColumns = "userId",
-        onDelete = CASCADE))
+@Entity(foreignKeys = @ForeignKey(entity = User.class,
+        parentColumns = "username",
+        childColumns = "username",
+        onDelete = CASCADE),
+        primaryKeys = {"planName", "username"},
+        indices = {@Index("username")})
 public class Plan {
 
-    public int userId;
 
     @NonNull
     public String planName;
 
+    @NonNull
+    public String username;
 
     public float beef;
     public float pork;
