@@ -10,6 +10,9 @@ public class User {
     @NonNull
     public String id;
 
+    @NonNull
+    public String gender;
+
     public String name;
 //    public long createDate;
 //    public long lastLoginDate;

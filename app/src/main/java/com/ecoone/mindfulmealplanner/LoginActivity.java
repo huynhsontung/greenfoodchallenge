@@ -39,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         mTextView = findViewById(R.id.login_test_view);
         getUserName = findViewById(R.id.get_username);
         login = findViewById(R.id.login);
-        settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 
+        settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
 //        dbInterface.addUser(mDb, "arlenx", "Arlen");
         dbInterface.isUserExist(mDb, "arlenx");
