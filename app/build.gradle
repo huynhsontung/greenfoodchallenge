@@ -9,17 +9,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        // set the location file dic of the schema to avoid
-        // "Schema export directory is not provided to the annotation
-        //     processor so we cannot export the schema. You can either provide
-        //       `room.schemaLocation` annotation processor argument OR set exportSchema to false."
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
-            }
-        }
-
     }
     buildTypes {
         release {
@@ -27,7 +16,6 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
 }
 
 dependencies {
@@ -63,5 +51,5 @@ dependencies {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
 }
