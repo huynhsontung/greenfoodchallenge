@@ -1,0 +1,138 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 1,
+    "identityHash": "dfc36548d0fe8dd55d06219c5a63ec53",
+    "entities": [
+      {
+        "tableName": "Plan",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`planName` TEXT NOT NULL, `username` TEXT NOT NULL, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, PRIMARY KEY(`planName`, `username`), FOREIGN KEY(`username`) REFERENCES `User`(`username`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "fields": [
+          {
+            "fieldPath": "planName",
+            "columnName": "planName",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "beef",
+            "columnName": "beef",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "pork",
+            "columnName": "pork",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "chicken",
+            "columnName": "chicken",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "fish",
+            "columnName": "fish",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "eggs",
+            "columnName": "eggs",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "beans",
+            "columnName": "beans",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "vegetables",
+            "columnName": "vegetables",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "planName",
+            "username"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": [
+          {
+            "table": "User",
+            "onDelete": "CASCADE",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "username"
+            ],
+            "referencedColumns": [
+              "username"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "User",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `createDate` INTEGER NOT NULL, `lastLoginDate` INTEGER NOT NULL, `currentPlan` TEXT, PRIMARY KEY(`username`))",
+        "fields": [
+          {
+            "fieldPath": "username",
+            "columnName": "username",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "gender",
+            "columnName": "gender",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "createDate",
+            "columnName": "createDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "lastLoginDate",
+            "columnName": "lastLoginDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currentPlan",
+            "columnName": "currentPlan",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "username"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dfc36548d0fe8dd55d06219c5a63ec53\")"
+    ]
+  }
+}
