@@ -42,12 +42,10 @@ public class LoginActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
-//        dbInterface.addUser(mDb, "arlenx", "Arlen");
-        dbInterface.isUserExist(mDb, "arlenx");
 
 //        initialization();
 
-        loginFlag = isLogin();
+
 //        Log.i(TAG, "Firse login sign: " + loginFlag);
         mUserName = getUserName();
 //        Log.i(TAG, "First username: " + userName);
@@ -72,6 +70,18 @@ public class LoginActivity extends AppCompatActivity {
         editor.remove(EXTRA_USERNAME);
         editor.remove(EXTRA_LOGIN_FLAG);
         editor.apply();
+    }
+
+    private void checkIfLogin() {
+        loginFlag = isLogin();
+        // if no user login
+        Log.i(TAG, "No user log in. Then check if user in the db.");
+        if (loginFlag == 0) {
+            // check db
+            mUserName = mEditText.getText().toString();
+            dbInterface.isUserExist(mDb, mUserName);
+
+        }
     }
 
 
