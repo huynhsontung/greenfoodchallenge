@@ -14,8 +14,6 @@ import com.ecoone.mindfulmealplanner.R;
 
 public class DashboardFragment extends Fragment {
 
-    private Button mButton;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -28,12 +26,6 @@ public class DashboardFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mButton = view.findViewById(R.id.fragment_dashboard_button);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Click in DashboardFragment", Toast.LENGTH_LONG).show();
-            }
-        });
+        // write your code here
     }
 }

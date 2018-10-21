@@ -12,28 +12,20 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class TestFragment extends Fragment {
-
-    private Button mButton;
+public class SettingsFragment extends Fragment {
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_test, null );
+        return inflater.inflate(R.layout.fragment_settings, null );
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mButton = view.findViewById(R.id.frag2_button);
-        mButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getActivity(), "Click in Fragment 2", Toast.LENGTH_LONG).show();
-            }
-        });
+        // write your code here
     }
 }
