@@ -43,14 +43,14 @@ public class FirstLogInActivity extends AppCompatActivity {
         setSeekBarValueView();
         setPieChartView(foodAmount);
 
-        mSubmit = findViewById(R.id.first_log_in_button);
-        mSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(FirstLogInActivity.this, DashboardActivity.class);
-                startActivity(intent);
-            }
-        });
+//        mSubmit = findViewById(R.id.first_log_in_button);
+//        mSubmit.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(FirstLogInActivity.this, DashboardActivity.class);
+//                startActivity(intent);
+//            }
+//        });
     }
 
     private void initializeSeekBarView() {
