@@ -15,7 +15,10 @@ import android.widget.Toast;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.dbInterface;
+
+import java.util.Random;
 
 public class DashboardFragment extends Fragment {
 
@@ -26,6 +29,7 @@ public class DashboardFragment extends Fragment {
     private TextView genderTextView;
     private TextView dbTextView;
     private TextView currentPlan;
+    private Button testAddPlans;
 
     private AppDatabase mDb;
     private dbInterface mDbInterface;
@@ -53,13 +57,26 @@ public class DashboardFragment extends Fragment {
         genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
         currentPlan = view.findViewById(R.id.fragment_dashboard_test_currentplan);
         dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
+        testAddPlans = view.findViewById(R.id.fragment_dashboard_test_add_plan);
+
+        testAddPlans.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int[] foodAmount = new int[7];
+                for (int i = 0; i < 7; i++) {
+                    foodAmount[i] = randInt(0, 300);
+                }
+                mDbInterface.addPlan(mUsername, foodAmount);
+                showUserInfo();
+            }
+        });
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
         mGender = mDbInterface.getGenderbyUsername(mUsername);
 
         Log.i(TAG, "Name in dashboard fragment: " + mUsername);
 
-        mDbInterface.addPlan(mUsername);
+
         showUserInfo();
     }
 
@@ -68,5 +85,10 @@ public class DashboardFragment extends Fragment {
         genderTextView.setText(mGender);
         currentPlan.setText(mDbInterface.getCurrentPlanbyUsername(mUsername));
         dbTextView.setText(mDbInterface.fetchPlanDatatoString(mUsername));
+    }
+
+    private static int randInt(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt(max- min + 1) + min;
     }
 }
