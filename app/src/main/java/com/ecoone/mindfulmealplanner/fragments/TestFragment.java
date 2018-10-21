@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class Fragment2 extends Fragment {
+public class TestFragment extends Fragment {
 
     private Button mButton;
 
@@ -21,7 +21,7 @@ public class Fragment2 extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment2, null );
+        return inflater.inflate(R.layout.fragment_test, null );
     }
 
     @Override

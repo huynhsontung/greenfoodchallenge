@@ -18,7 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
-import com.ecoone.mindfulmealplanner.fragments.Fragment2;
+import com.ecoone.mindfulmealplanner.fragments.TestFragment;
 
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -106,7 +106,7 @@ public class DashboardActivity extends AppCompatActivity
 
         }
         else if (id == R.id.frag_2) {
-            fragment = new Fragment2();
+            fragment = new TestFragment();
         }
 
         if (fragment != null) {
