@@ -3,7 +3,6 @@ package com.ecoone.mindfulmealplanner;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Index;
 import android.support.annotation.NonNull;
 
 import static android.arch.persistence.room.ForeignKey.CASCADE;
@@ -33,33 +32,4 @@ public class Plan {
     public float eggs;
     public float beans;
     public float vegetables;
-
-    public float getBeef() {
-        return beef;
-    }
-
-    public float getPork(){
-        return pork;
-    }
-
-    public float getChicken() {
-        return chicken;
-    }
-
-    public float getBeans() {
-        return beans;
-    }
-
-    public float getEggs() {
-        return eggs;
-    }
-
-    public float getVegetables() {
-        return vegetables;
-    }
-
-    public float getFish() {
-        return fish;
-    }
-
 }
