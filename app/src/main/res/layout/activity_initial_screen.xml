@@ -41,6 +41,7 @@
             android:text="@string/initial_screen_gender" />
 
         <TextView
+            android:id="@+id/male_text_view"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="40dp"
@@ -49,6 +50,7 @@
             android:text="@string/initial_screen_gender_male"/>
 
         <TextView
+            android:id="@+id/female_text_view"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"

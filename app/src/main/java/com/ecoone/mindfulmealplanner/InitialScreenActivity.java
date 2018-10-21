@@ -26,12 +26,15 @@ import java.util.Random;
 public class InitialScreenActivity extends AppCompatActivity {
 
     private String mUsername;
+    private String mGender;
 
     private EditText mEditText;
+    private TextView maleTextView;
+    private TextView femaleTextView;
     private Button login;
+
     private SharedPreferences settings;
     private int loginFlag = 0;
-
     private AppDatabase mDb;
 
     private PieChart mPieChart;
@@ -54,19 +57,23 @@ public class InitialScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_screen);
 
-        mPieChart = findViewById(R.id.pie_chart);
-
         mEditText = findViewById(R.id.username_edit_text);
+        maleTextView = findViewById(R.id.male_text_view);
+        femaleTextView = findViewById(R.id.female_text_view);
         login = findViewById(R.id.login);
+
+        mPieChart = findViewById(R.id.pie_chart);
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
 
+        // Remove data from database and SharedPreferences
         initialization();
 
-        setLoginAction();
 
-        checkIfLogin();
+//        setLoginAction();
+        // check if go to the dashboard
+//        checkIfGotoDashboard();
 
         initializeSeekBarView();
         setSeekBarValueView();
@@ -86,7 +93,16 @@ public class InitialScreenActivity extends AppCompatActivity {
 //        dbInterface.addUser(mDb, "arlenx", "male");
     }
 
-    private void checkIfLogin() {
+    private void setGenderTextViewAction() {
+        maleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+    }
+
+    private void checkIfGotoDashboard() {
         loginFlag = isLogin();
         // if no user login
         if (loginFlag == 0) {
@@ -180,7 +196,7 @@ public class InitialScreenActivity extends AppCompatActivity {
             mfoodSeekBarTextView[i].setText(foodName[i]);
             mfoodSeekBarAction[i].setProgress(randInt(0, mfoodSeekBarAction[i].getMax()));
             String amountText = String.valueOf(mfoodSeekBarAction[i].getProgress());
-            mfoodSeekBarValueView[i].setText(amountText);
+            mfoodSeekBarValueView[i].setText(amountText + " g");
             foodAmount[i] = Integer.valueOf(amountText);
         }
     }
@@ -196,7 +212,7 @@ public class InitialScreenActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String amountText = String.valueOf(progress);
-                mfoodSeekBarValueView[i].setText(amountText);
+                mfoodSeekBarValueView[i].setText(amountText+ " g");
                 foodAmount[i] = Integer.valueOf(amountText);
                 setPieChartView(foodAmount);
             }
