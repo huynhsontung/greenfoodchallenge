@@ -125,6 +125,7 @@ public class Dashboard extends AppCompatActivity
     }
 
     private void setupPieChart1(){
+        //setup piechart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<gramper.length;i++){
             pieEntries.add(new PieEntry(gramper[i], foodnames[i]));
