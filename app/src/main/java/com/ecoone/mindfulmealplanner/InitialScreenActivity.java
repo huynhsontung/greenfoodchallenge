@@ -6,12 +6,14 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.github.mikephil.charting.charts.PieChart;
@@ -36,6 +38,8 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
+
+    private Toast mToast;
 
     private PieChart mPieChart;
     private String[] foodName;
@@ -70,11 +74,11 @@ public class InitialScreenActivity extends AppCompatActivity {
         // Remove data from database and SharedPreferences
         initialization();
 
+        // check if go to the dashboard
+        checkIfGotoDashboard();
 
         setGenderTextViewAction();
-//        setLoginAction();
-        // check if go to the dashboard
-//        checkIfGotoDashboard();
+        setNextButtonAction();
 
         initializeSeekBarView();
         setSeekBarValueView();
@@ -92,6 +96,31 @@ public class InitialScreenActivity extends AppCompatActivity {
         mDb.planDao().deleteAll();
         mDb.userDao().deleteALL();
 //        dbInterface.addUser(mDb, "arlenx", "male");
+    }
+
+    private void checkIfGotoDashboard() {
+        loginFlag = isLogin();
+        // if no user login
+        if (loginFlag == 0) {
+            Log.i(TAG, "No user log in. Wait for initialization.");
+        }
+        else {
+            Log.i(TAG, "Someone already login");
+            mUsername = getUsernameInSharedPreference();
+            if (mUsername == "") {
+                Log.i(TAG, "Error. Username is empty.");
+                return;
+            }
+            startActivityAndFinish(mUsername);
+        }
+    }
+
+    private int isLogin() {
+        return settings.getInt(EXTRA_LOGIN_FLAG, 0);
+    }
+
+    private String getUsernameInSharedPreference() {
+        return settings.getString(EXTRA_USERNAME, "");
     }
 
     private void setGenderTextViewAction() {
@@ -120,59 +149,39 @@ public class InitialScreenActivity extends AppCompatActivity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-            }
-        });
-    }
-
-    private void checkIfGotoDashboard() {
-        loginFlag = isLogin();
-        // if no user login
-        if (loginFlag == 0) {
-            Log.i(TAG, "No user log in. Wait for initialization.");
-        }
-        else {
-            Log.i(TAG, "Someone already login");
-            mUsername = getUsername();
-            startActivityAndFinish(mUsername);
-        }
-    }
-
-    private int isLogin() {
-        return settings.getInt(EXTRA_LOGIN_FLAG, 0);
-    }
-
-    private String getUsername() {
-        return settings.getString(EXTRA_USERNAME, "");
-    }
-
-    private void setLoginAction() {
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mUsername = mEditText.getText().toString();
-                if (mUsername.length() != 0) {
-                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and check db");
-                    // check db
-                    String name = dbInterface.getUserbyUsername(mDb, mUsername);
-                    Log.i(TAG, "Get user name in db:" + name);
-                    // if user exists, login
-                    if (name != null) {
-                        Log.i(TAG, "User exist.");
-                        SharedPreferences.Editor editor = settings.edit();
-                        editor.putInt(EXTRA_LOGIN_FLAG, 1);
-                        editor.putString(EXTRA_USERNAME, mUsername);
-                        editor.apply();
-                        startActivityAndFinish(mUsername);
-                    } else {
-                        // sign up
-                        Log.i(TAG, "need to sign up");
-                    }
+                if (isInfoEntered()) {
+                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
+                    dbInterface.addUser(mDb, mUsername, mGender);
+                    Log.i(TAG, "Add User Info into db successfully");
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt(EXTRA_LOGIN_FLAG, 1);
+                    editor.putString(EXTRA_USERNAME, mUsername);
+                    editor.apply();
+                    startActivityAndFinish(mUsername);
                 }
             }
         });
     }
 
+    private boolean isInfoEntered() {
+        mUsername = mEditText.getText().toString();
+        if (mUsername.length() == 0) {
+            showCustomToast("please enter your username!");
+            return false;
+        }
+        if (mGender == null) {
+            showCustomToast("please choose the gender!");
+            return false;
+        }
+        return true;
+    }
+
+    private void showCustomToast(String message) {
+        mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
+                0, 0);
+        mToast.show();
+    }
 
     private void initializeSeekBarView() {
         foodName = findStringArrayRes("food_name");
