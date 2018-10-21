@@ -31,7 +31,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private EditText mEditText;
     private TextView maleTextView;
     private TextView femaleTextView;
-    private Button login;
+    private Button nextButton;
 
     private SharedPreferences settings;
     private int loginFlag = 0;
@@ -57,12 +57,12 @@ public class InitialScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_screen);
 
-        mEditText = findViewById(R.id.username_edit_text);
-        maleTextView = findViewById(R.id.male_text_view);
-        femaleTextView = findViewById(R.id.female_text_view);
-        login = findViewById(R.id.login);
+        mEditText = findViewById(R.id.initial_screen_username_edit_text);
+        maleTextView = findViewById(R.id.initial_screen_male_text_view);
+        femaleTextView = findViewById(R.id.initial_screen_female_text_view);
+        nextButton = findViewById(R.id.initial_screen_next);
 
-        mPieChart = findViewById(R.id.pie_chart);
+        mPieChart = findViewById(R.id.initial_screen_pie_chart);
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
@@ -71,6 +71,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         initialization();
 
 
+        setGenderTextViewAction();
 //        setLoginAction();
         // check if go to the dashboard
 //        checkIfGotoDashboard();
@@ -95,6 +96,28 @@ public class InitialScreenActivity extends AppCompatActivity {
 
     private void setGenderTextViewAction() {
         maleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Click male");
+                maleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
+                femaleTextView.setBackgroundResource(R.drawable.border_grey);
+                mGender = "male";
+            }
+        });
+
+        femaleTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "Click female");
+                femaleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
+                maleTextView.setBackgroundResource(R.drawable.border_grey);
+                mGender = "female";
+            }
+        });
+    }
+
+    private void setNextButtonAction() {
+        nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -150,27 +173,6 @@ public class InitialScreenActivity extends AppCompatActivity {
         });
     }
 
-//    private void setEditTextAction() {
-//        mEditText.setOnKeyListener(new View.OnKeyListener() {
-//            @Override
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
-//                        (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//                    mUsername = mEditText.getText().toString();
-//                    if (mUsername.length() != 0) {
-//                        Log.i(TAG, "Get username:" + mUsername);
-//                        SharedPreferences.Editor editor = settings.edit();
-//                        editor.putInt(EXTRA_LOGIN_FLAG, 1);
-//                        editor.putString(EXTRA_USERNAME, mUsername);
-//                        editor.apply();
-//                    }
-//                    startActivityAndFinish();
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//    }
 
     private void initializeSeekBarView() {
         foodName = findStringArrayRes("food_name");
@@ -181,13 +183,13 @@ public class InitialScreenActivity extends AppCompatActivity {
         mfoodSeekBarAction = new SeekBar[foodLen];
         mfoodSeekBarValueView = new TextView[foodLen];
 
-        mfoodSeekBarView[0] = findViewById(R.id.seekbar_component_1);
-        mfoodSeekBarView[1] = findViewById(R.id.seekbar_component_2);
-        mfoodSeekBarView[2] = findViewById(R.id.seekbar_component_3);
-        mfoodSeekBarView[3] = findViewById(R.id.seekbar_component_4);
-        mfoodSeekBarView[4] = findViewById(R.id.seekbar_component_5);
-        mfoodSeekBarView[5] = findViewById(R.id.seekbar_component_6);
-        mfoodSeekBarView[6] = findViewById(R.id.seekbar_component_7);
+        mfoodSeekBarView[0] = findViewById(R.id.initial_screen_seekbar_component_1);
+        mfoodSeekBarView[1] = findViewById(R.id.initial_screen_seekbar_component_2);
+        mfoodSeekBarView[2] = findViewById(R.id.initial_screen_seekbar_component_3);
+        mfoodSeekBarView[3] = findViewById(R.id.initial_screen_seekbar_component_4);
+        mfoodSeekBarView[4] = findViewById(R.id.initial_screen_seekbar_component_5);
+        mfoodSeekBarView[5] = findViewById(R.id.initial_screen_seekbar_component_6);
+        mfoodSeekBarView[6] = findViewById(R.id.initial_screen_seekbar_component_7);
 
         for (int i = 0; i < foodLen; i++) {
             mfoodSeekBarTextView[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_text);
