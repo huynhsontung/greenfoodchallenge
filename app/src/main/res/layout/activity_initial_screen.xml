@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"/>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/initial_screen_username" />
+
+        <EditText
+            android:id="@+id/username_edit_text"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/initial_screen_username_hint"
+            android:layout_marginLeft="10dp"
+            android:maxLines="1"
+            android:inputType="text" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/initial_screen_gender" />
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:gravity="center_horizontal"
+            android:background="@drawable/border_grey"
+            android:text="@string/initial_screen_gender_male"/>
+
+        <TextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:background="@drawable/border_grey"
+            android:text="@string/initial_screen_gender_female"/>
+
+    </LinearLayout>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
+        android:layout_marginTop="10dp"
+        android:layout_width="250dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="10dp"/>
+
+    <include
+        android:id="@+id/seekbar_component_1"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_2"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_3"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_4"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_5"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_6"
+        layout="@layout/seekbar_component" />
+
+    <include
+        android:id="@+id/seekbar_component_7"
+        layout="@layout/seekbar_component" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/initial_screen_next"/>
+    </LinearLayout>
+</LinearLayout>
