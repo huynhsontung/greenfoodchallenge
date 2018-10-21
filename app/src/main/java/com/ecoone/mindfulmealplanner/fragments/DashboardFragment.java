@@ -4,26 +4,32 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
-import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.dbInterface;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class DashboardFragment extends Fragment {
 
     private String mUsername;
     private String mGender;
+    private String mCurrentPlan;
 
     private TextView nameTextView;
     private TextView genderTextView;
@@ -33,6 +39,12 @@ public class DashboardFragment extends Fragment {
 
     private AppDatabase mDb;
     private dbInterface mDbInterface;
+
+    private String[] foodName;
+    private int[] foodAmount;
+    private int foodLen;
+
+    private PieChart mPieChart;
 
     private static final String TAG = "testActivity";
 
@@ -57,6 +69,7 @@ public class DashboardFragment extends Fragment {
         genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
         currentPlan = view.findViewById(R.id.fragment_dashboard_test_currentplan);
         dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
+        dbTextView.setMovementMethod(new ScrollingMovementMethod());
         testAddPlans = view.findViewById(R.id.fragment_dashboard_test_add_plan);
 
         testAddPlans.setOnClickListener(new View.OnClickListener() {
@@ -71,11 +84,18 @@ public class DashboardFragment extends Fragment {
             }
         });
 
+        mPieChart = view.findViewById(R.id.fragment_dashboard_pie_chart);
+
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
         mGender = mDbInterface.getGenderbyUsername(mUsername);
+        mCurrentPlan = mDbInterface.getCurrentPlanNamebyUsername(mUsername);
 
         Log.i(TAG, "Name in dashboard fragment: " + mUsername);
 
+        foodName = findStringArrayRes("food_name");
+        foodLen = foodName.length;
+        foodAmount = mDbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
+        setPieChartView(foodAmount);
 
         showUserInfo();
     }
@@ -83,8 +103,26 @@ public class DashboardFragment extends Fragment {
     private void showUserInfo() {
         nameTextView.setText(mUsername);
         genderTextView.setText(mGender);
-        currentPlan.setText(mDbInterface.getCurrentPlanbyUsername(mUsername));
-        dbTextView.setText(mDbInterface.fetchPlanDatatoString(mUsername));
+        currentPlan.setText(mCurrentPlan);
+        dbTextView.setText(mDbInterface.getPlanDatatoString(mUsername));
+    }
+
+    private String[] findStringArrayRes(String resName) {
+        int resId = getResources().getIdentifier(resName,
+                "array", getActivity().getPackageName());
+        return getResources().getStringArray(resId);
+    }
+
+    private void setPieChartView(int[] data) {
+        List<PieEntry> entries = new ArrayList<>();
+        for (int i = 0; i < foodLen; i++) {
+            entries.add(new PieEntry(data[i], foodName[i]));
+        }
+        PieDataSet pieDataSet = new PieDataSet(entries, "Test");
+        PieData piedata = new PieData(pieDataSet);
+        mPieChart.setData(piedata);
+        mPieChart.invalidate();
+
     }
 
     private static int randInt(int min, int max) {

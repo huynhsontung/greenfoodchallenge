@@ -31,7 +31,7 @@ public class dbInterface {
         return mDb.userDao().getUserGender(username);
     }
 
-    public String getCurrentPlanbyUsername(final String username) {
+    public String getCurrentPlanNamebyUsername(final String username) {
         return mDb.userDao().getCurrentPlanName(username);
     }
 
@@ -50,13 +50,26 @@ public class dbInterface {
         mDb.planDao().addPlan(plan);
     }
 
-    public StringBuilder fetchPlanDatatoString(final String username) {
+    public int[] getCurrentPlanArray(final String username, final String planName) {
+        Plan plan = mDb.planDao().getPlanFromUser(username, planName);
+        int[] foddAmont = new int[7];
+        foddAmont[0] = plan.beef;
+        foddAmont[1] = plan.pork;
+        foddAmont[2] = plan.chicken;
+        foddAmont[3] = plan.fish;
+        foddAmont[4] = plan.eggs;
+        foddAmont[5] = plan.beans;
+        foddAmont[6] = plan.vegetables;
+        return foddAmont;
+    }
+
+    public StringBuilder getPlanDatatoString(final String username) {
         StringBuilder sb = new StringBuilder();
         List<Plan> allPlans = mDb.planDao().getAllPlansFromUser(username);
         for (Plan plan: allPlans) {
             sb.append(String.format(Locale.CANADA,
                     "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
-                            "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
+                            "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
                     plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                     plan.beans, plan.vegetables));
         }
