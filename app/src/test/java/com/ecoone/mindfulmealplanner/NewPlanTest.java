@@ -8,17 +8,17 @@ public class NewPlanTest {
 
     public Plan testPlan = new Plan() {
         {
-            beef = 73;
-            pork = 80;
-            chicken = 30;
-            fish = 50;
-            eggs = 50;
-            beans = 50;
-            vegetables = 125;
+            beef = 20;
+            pork = 49;
+            chicken = 49;
+            fish = 40;
+            eggs = 20;
+            beans = 20;
+            vegetables = 100;
         }
     };
 
-    public NewPlan testNewPlan = new NewPlan(testPlan, "male");
+    public NewPlan testNewPlan = new NewPlan(testPlan, "female");
 
     @Test
     public void suggestPlan() {
