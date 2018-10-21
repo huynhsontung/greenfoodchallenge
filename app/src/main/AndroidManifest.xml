@@ -16,9 +16,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".DashboardActivity" />
+        <activity android:name=".MainActivity" />
         <!--<activity-->
-            <!--android:name=".DashboardActivity"-->
+            <!--android:name=".MainActivity"-->
             <!--android:label="@string/title_activity_dashboard"-->
             <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
     </application>

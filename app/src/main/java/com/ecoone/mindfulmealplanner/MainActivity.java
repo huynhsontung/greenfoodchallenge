@@ -16,12 +16,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.SettingsFragment;
 
-public class DashboardActivity extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private String mUsername;
 
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
@@ -29,22 +32,33 @@ public class DashboardActivity extends AppCompatActivity
     private NavigationView mNavigationView;
 
 
-    public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, DashboardActivity.class);
-//        intent.putExtra(EXTRA_USERNAME, userName);
+    public static final String EXTRA_USERNAME =
+            "com.ecoone.mindfulmealplanner.mainactivity.username";
+    private static final String TAG = "testActivity";
+
+    public static Intent newIntent(Context packageContext, String username) {
+        Intent intent = new Intent(packageContext, MainActivity.class);
+        intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dashboard);
+        setContentView(R.layout.activity_main);
 
         mToolbar = findViewById(R.id.toolbar);
         mDrawer = findViewById(R.id.drawer_layout);
 
+        mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
+        Log.i(TAG, "Name in main activity: " + mUsername);
+
         setSidebarAction();
         showDashboard();
+
+
+
+
     }
 
     private void setSidebarAction() {
@@ -61,13 +75,16 @@ public class DashboardActivity extends AppCompatActivity
 
     private void showDashboard() {
         Menu menu = mNavigationView.getMenu();
-        MenuItem menuItem = menu.findItem(R.id.dashboard_fragment);
+        MenuItem menuItem = menu.findItem(R.id.fragment_dashboard);
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
         switchFragment(new DashboardFragment());
     }
 
     private void switchFragment(Fragment fragment) {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_USERNAME, mUsername);
+        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);
@@ -101,11 +118,11 @@ public class DashboardActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.dashboard_fragment) {
+        if (id == R.id.fragment_dashboard) {
             fragment = new DashboardFragment();
 
         }
-        else if (id == R.id.frag_2) {
+        else if (id == R.id.fragment_settings) {
             fragment = new SettingsFragment();
         }
 

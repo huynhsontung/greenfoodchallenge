@@ -38,6 +38,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
+    private dbInterface mDbInterface;
 
     private Toast mToast;
 
@@ -51,9 +52,9 @@ public class InitialScreenActivity extends AppCompatActivity {
     private TextView[] mfoodSeekBarValueView;
 
     private static final String EXTRA_LOGIN_FLAG =
-            "com.ecoone.mindfulmealplanner.loginactivity.login_flag";
+            "com.ecoone.mindfulmealplanner.initialscreenactivity.login_flag";
     private static final String EXTRA_USERNAME =
-            "com.ecoone.mindfulmealplanner.loginactivity.username";
+            "com.ecoone.mindfulmealplanner.initialscreenactivity.username";
     private static final String TAG = "testActivity";
 
     @Override
@@ -70,6 +71,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
+        mDbInterface = new dbInterface(mDb);
 
         // Remove data from database and SharedPreferences
         initialization();
@@ -83,8 +85,6 @@ public class InitialScreenActivity extends AppCompatActivity {
         initializeSeekBarView();
         setSeekBarValueView();
         setPieChartView(foodAmount);
-//        setEditTextAction();
-
 
     }
 
@@ -151,7 +151,8 @@ public class InitialScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isInfoEntered()) {
                     Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
-                    dbInterface.addUser(mDb, mUsername, mGender);
+                    mDbInterface.addUser(mUsername, mGender, "Plan1");
+                    mDbInterface.addPlan(mUsername, foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(EXTRA_LOGIN_FLAG, 1);
@@ -264,7 +265,8 @@ public class InitialScreenActivity extends AppCompatActivity {
     }
 
     private void startActivityAndFinish(String username) {
-        Intent intent = DashboardActivity.newIntent(InitialScreenActivity.this);
+        AppDatabase.destroyInstance();
+        Intent intent = MainActivity.newIntent(InitialScreenActivity.this, username);
         startActivity(intent);
         InitialScreenActivity.this.finish();
     }

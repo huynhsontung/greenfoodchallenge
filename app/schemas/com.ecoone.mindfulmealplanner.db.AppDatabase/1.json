@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "62c97b7a1b05d0d384976ed1fdb35b4f",
+    "identityHash": "ff00549d18310b6f2b3db28b3265ae73",
     "entities": [
       {
         "tableName": "User",
@@ -32,7 +32,7 @@
       },
       {
         "tableName": "Plan",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`planName` TEXT NOT NULL, `username` TEXT NOT NULL, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, PRIMARY KEY(`planName`, `username`), FOREIGN KEY(`username`) REFERENCES `User`(`username`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`planName` TEXT NOT NULL, `username` TEXT NOT NULL, `beef` INTEGER NOT NULL, `pork` INTEGER NOT NULL, `chicken` INTEGER NOT NULL, `fish` INTEGER NOT NULL, `eggs` INTEGER NOT NULL, `beans` INTEGER NOT NULL, `vegetables` INTEGER NOT NULL, PRIMARY KEY(`planName`, `username`), FOREIGN KEY(`username`) REFERENCES `User`(`username`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "planName",
@@ -49,43 +49,43 @@
           {
             "fieldPath": "beef",
             "columnName": "beef",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "pork",
             "columnName": "pork",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "chicken",
             "columnName": "chicken",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "fish",
             "columnName": "fish",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "eggs",
             "columnName": "eggs",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "beans",
             "columnName": "beans",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           },
           {
             "fieldPath": "vegetables",
             "columnName": "vegetables",
-            "affinity": "REAL",
+            "affinity": "INTEGER",
             "notNull": true
           }
         ],
@@ -123,7 +123,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"62c97b7a1b05d0d384976ed1fdb35b4f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ff00549d18310b6f2b3db28b3265ae73\")"
     ]
   }
 }
