@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class Dashboard extends Fragment {
+public class DashboardFragment extends Fragment {
 
     private Button mButton;
 
@@ -21,18 +21,18 @@ public class Dashboard extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.dashboard, null );
+        return inflater.inflate(R.layout.fragment_dashboard, null );
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mButton = view.findViewById(R.id.frag1_button);
+        mButton = view.findViewById(R.id.fragment_dashboard_button);
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Click in Dashboard", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), "Click in DashboardFragment", Toast.LENGTH_LONG).show();
             }
         });
     }

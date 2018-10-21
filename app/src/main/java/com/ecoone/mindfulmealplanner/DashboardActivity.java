@@ -17,7 +17,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ecoone.mindfulmealplanner.fragments.Dashboard;
+import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.Fragment2;
 
 public class DashboardActivity extends AppCompatActivity
@@ -64,7 +64,7 @@ public class DashboardActivity extends AppCompatActivity
         MenuItem menuItem = menu.findItem(R.id.dashboard_fragment);
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
-        switchFragment(new Dashboard());
+        switchFragment(new DashboardFragment());
     }
 
     private void switchFragment(Fragment fragment) {
@@ -102,7 +102,7 @@ public class DashboardActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.dashboard_fragment) {
-            fragment = new Dashboard();
+            fragment = new DashboardFragment();
 
         }
         else if (id == R.id.frag_2) {

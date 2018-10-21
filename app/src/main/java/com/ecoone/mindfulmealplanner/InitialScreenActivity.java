@@ -74,7 +74,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         // Remove data from database and SharedPreferences
         initialization();
 
-        // check if go to the dashboard
+        // check if go to the fragment_dashboard
         checkIfGotoDashboard();
 
         setGenderTextViewAction();
