@@ -3,6 +3,7 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -22,8 +23,10 @@ import com.ecoone.mindfulmealplanner.fragments.Fragment2;
 public class DashboardActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Menu mMenu;
-    private  ActionBarDrawerToggle toggle;
+    private Toolbar mToolbar;
+    private DrawerLayout mDrawer;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView mNavigationView;
 
 
     public static Intent newIntent(Context packageContext) {
@@ -36,35 +39,44 @@ public class DashboardActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        mToolbar = findViewById(R.id.toolbar);
+        mDrawer = findViewById(R.id.drawer_layout);
 
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
+        setSidebarAction();
+        showDashboard();
+    }
 
-        mMenu = navigationView.getMenu();
-        MenuItem menuItem = mMenu.findItem(R.id.frag_1);
+    private void setSidebarAction() {
+        setSupportActionBar(mToolbar);
+        mToggle = new ActionBarDrawerToggle(
+                this, mDrawer, mToolbar,
+                R.string.navigation_drawer_open,
+                R.string.navigation_drawer_close);
+        mDrawer.addDrawerListener(mToggle);
+        mToggle.syncState();
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void showDashboard() {
+        Menu menu = mNavigationView.getMenu();
+        MenuItem menuItem = menu.findItem(R.id.dashboard_fragment);
         menuItem.setChecked(true);
         setTitle(menuItem.getTitle());
+        switchFragment(new Dashboard());
+    }
 
-        Fragment fragment = new Dashboard();
+    private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-
         ft.replace(R.id.screen_area, fragment);
         ft.commit();
-
     }
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
@@ -72,27 +84,9 @@ public class DashboardActivity extends AppCompatActivity
         }
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.main, menu);
-//        return true;
-//    }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-//        int id = item.getItemId();
-//
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
-//
-//        return super.onOptionsItemSelected(item);
-        if (toggle.onOptionsItemSelected(item)) {
+        if (mToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -101,40 +95,29 @@ public class DashboardActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.i("test", "Item:" +item);
         Fragment fragment = null;
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.frag_1) {
+        if (id == R.id.dashboard_fragment) {
             fragment = new Dashboard();
 
         }
         else if (id == R.id.frag_2) {
             fragment = new Fragment2();
-
-
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
         }
 
         if (fragment != null) {
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction ft = fragmentManager.beginTransaction();
-
-            ft.replace(R.id.screen_area, fragment);
-            ft.commit();
+            switchFragment(fragment);
         }
+
         setTitle(item.getTitle());
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+
 }
