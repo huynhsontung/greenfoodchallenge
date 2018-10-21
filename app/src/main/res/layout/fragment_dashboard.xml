@@ -28,10 +28,27 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Gener:   "/>
+            android:text="Gender:   "/>
 
         <TextView
             android:id="@+id/fragment_dashboard_test_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Current Plan:   "/>
+
+        <TextView
+            android:id="@+id/fragment_dashboard_test_currentplan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

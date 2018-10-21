@@ -21,6 +21,12 @@ public class DashboardFragment extends Fragment {
 
     private String mUsername;
     private String mGender;
+
+    private TextView nameTextView;
+    private TextView genderTextView;
+    private TextView dbTextView;
+    private TextView currentPlan;
+
     private AppDatabase mDb;
     private dbInterface mDbInterface;
 
@@ -43,17 +49,24 @@ public class DashboardFragment extends Fragment {
         mDb = AppDatabase.getDatabase(getContext());
         mDbInterface = new dbInterface(mDb);
 
-        TextView nameTextView = view.findViewById(R.id.fragment_dashboard_test_name);
-        TextView genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
-        TextView dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
+        nameTextView = view.findViewById(R.id.fragment_dashboard_test_name);
+        genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
+        currentPlan = view.findViewById(R.id.fragment_dashboard_test_currentplan);
+        dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
         mGender = mDbInterface.getGenderbyUsername(mUsername);
 
         Log.i(TAG, "Name in dashboard fragment: " + mUsername);
 
+        mDbInterface.addPlan(mUsername);
+        showUserInfo();
+    }
+
+    private void showUserInfo() {
         nameTextView.setText(mUsername);
         genderTextView.setText(mGender);
+        currentPlan.setText(mDbInterface.getCurrentPlanbyUsername(mUsername));
         dbTextView.setText(mDbInterface.fetchPlanDatatoString(mUsername));
     }
 }

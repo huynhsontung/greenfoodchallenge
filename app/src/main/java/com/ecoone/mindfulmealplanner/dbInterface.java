@@ -31,6 +31,10 @@ public class dbInterface {
         return mDb.userDao().getUserGender(username);
     }
 
+    public String getCurrentPlanbyUsername(final String username) {
+        return mDb.userDao().getCurrentPlanName(username);
+    }
+
     public void addPlan(final String username,
                                final int[] foodAmount) {
         Plan plan = new Plan();
