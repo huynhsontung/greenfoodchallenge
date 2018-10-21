@@ -44,7 +44,7 @@ public class LoginActivity extends AppCompatActivity {
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
 
-//        initialization();
+        initialization();
 
 
 
