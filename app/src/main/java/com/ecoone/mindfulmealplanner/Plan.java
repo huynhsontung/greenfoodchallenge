@@ -26,13 +26,40 @@ public class Plan {
     @NonNull
     public String username;
 
-    public float beef;
-    public float pork;
-    public float chicken;
-    public float fish;
-    public float eggs;
-    public float beans;
-    public float vegetables;
+    public float beef=1;
+    public float pork=2;
+    public float chicken=3;
+    public float fish=4;
+    public float eggs=5;
+    public float beans=6;
+    public float vegetables=7;
 
+    public float getBeef() {
+        return beef;
+    }
+
+    public float getPork(){
+        return pork;
+    }
+
+    public float getChicken() {
+        return chicken;
+    }
+
+    public float getBeans() {
+        return beans;
+    }
+
+    public float getEggs() {
+        return eggs;
+    }
+
+    public float getVegetables() {
+        return vegetables;
+    }
+
+    public float getFish() {
+        return fish;
+    }
 
 }
