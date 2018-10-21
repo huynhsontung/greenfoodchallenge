@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
@@ -31,11 +32,14 @@ public class DashboardFragment extends Fragment {
     private String mGender;
     private String mCurrentPlan;
 
+    // ---------------------------------------------------------------------------------------
     private TextView nameTextView;
     private TextView genderTextView;
     private TextView dbTextView;
-    private TextView currentPlan;
     private Button testAddPlans;
+    // ---------------------------------------------------------------------------------------
+
+    private TextView currentPlanTextView;
 
     private AppDatabase mDb;
     private dbInterface mDbInterface;
@@ -65,9 +69,9 @@ public class DashboardFragment extends Fragment {
         mDb = AppDatabase.getDatabase(getContext());
         mDbInterface = new dbInterface(mDb);
 
+        // ---------------------------------------------------------------------------------------
         nameTextView = view.findViewById(R.id.fragment_dashboard_test_name);
         genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
-        currentPlan = view.findViewById(R.id.fragment_dashboard_test_currentplan);
         dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
         dbTextView.setMovementMethod(new ScrollingMovementMethod());
         testAddPlans = view.findViewById(R.id.fragment_dashboard_test_add_plan);
@@ -83,6 +87,10 @@ public class DashboardFragment extends Fragment {
                 showUserInfo();
             }
         });
+        // ---------------------------------------------------------------------------------------
+        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_view);
+
+
 
         mPieChart = view.findViewById(R.id.fragment_dashboard_pie_chart);
 
@@ -100,12 +108,14 @@ public class DashboardFragment extends Fragment {
         showUserInfo();
     }
 
+    // ---------------------------------------------------------------------------------------
     private void showUserInfo() {
         nameTextView.setText(mUsername);
         genderTextView.setText(mGender);
-        currentPlan.setText(mCurrentPlan);
+        currentPlanTextView.setText(mCurrentPlan);
         dbTextView.setText(mDbInterface.getPlanDatatoString(mUsername));
     }
+    // ---------------------------------------------------------------------------------------
 
     private String[] findStringArrayRes(String resName) {
         int resId = getResources().getIdentifier(resName,
