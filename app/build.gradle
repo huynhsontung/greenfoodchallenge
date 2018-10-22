@@ -1,5 +1,12 @@
 apply plugin: 'com.android.application'
 
+// I added this.
+android {
+    configurations.all {
+        resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+}
+// Up to here 
 android {
     compileSdkVersion 28
     defaultConfig {
