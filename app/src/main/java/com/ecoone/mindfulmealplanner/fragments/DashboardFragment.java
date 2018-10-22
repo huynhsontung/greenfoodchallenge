@@ -16,6 +16,8 @@ import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.dbInterface;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -141,10 +143,24 @@ public class DashboardFragment extends Fragment {
             pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
         }
 
-        PieDataSet dataSet = new PieDataSet(pieEntries,"Current grams");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieDataSet dataSet = new PieDataSet(pieEntries,null);
+        dataSet.setColors(new int[]{
+                        R.color.chartBlue1,
+                        R.color.chartBlue2,
+                        R.color.chartBlue3,
+                        R.color.chartBlue4,
+                        R.color.chartBlue5,
+                        R.color.chartBlue6,
+                        R.color.chartBlue7},
+                    getContext());
         PieData data = new PieData(dataSet);
         chart1.setData(data);
+        Description description = chart1.getDescription();
+        description.setText("Portion percentage");
+        Legend legend = chart1.getLegend();
+        legend.setWordWrapEnabled(true);
+        chart1.setDescription(description);
+        chart1.setUsePercentValues(true);
         chart1.animateY(1000);
         chart1.invalidate();
     }
@@ -153,14 +169,29 @@ public class DashboardFragment extends Fragment {
     private void setupPieChart2(float[] co2Percentage, String[] foodNames){
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<co2Percentage.length;i++){
-            pieEntries.add(new PieEntry(co2Percentage[i], foodNames[i]));
+            // filter out small values
+            if(co2Percentage[i] > 0.001)
+                pieEntries.add(new PieEntry(co2Percentage[i], foodNames[i]));
         }
 
-        PieDataSet dataSet = new PieDataSet(pieEntries,"Current co2e");
-        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieDataSet dataSet = new PieDataSet(pieEntries,null);
+        dataSet.setColors(new int[]{
+                        R.color.chartRed1,
+                        R.color.chartRed2,
+                        R.color.chartRed3,
+                        R.color.chartRed4,
+                        R.color.chartRed5,
+                        R.color.chartRed6,
+                        R.color.chartRed7},
+                    getContext());
         PieData data = new PieData(dataSet);
-
         chart2.setData(data);
+        Description description = chart2.getDescription();
+        description.setText("CO2e percentage");
+        Legend legend = chart2.getLegend();
+        legend.setWordWrapEnabled(true);
+        chart2.setDescription(description);
+        chart2.setUsePercentValues(true);
         chart2.animateY(1000);
         chart2.invalidate();
     }

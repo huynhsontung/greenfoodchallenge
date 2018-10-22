@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -244,11 +246,17 @@ public class InitialScreenActivity extends AppCompatActivity {
     private void setPieChartView(int[] data) {
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < foodLen; i++) {
-            entries.add(new PieEntry(data[i], foodName[i]));
+            // filter out 0 values
+            if(data[i] > 0)
+                entries.add(new PieEntry(data[i], foodName[i]));
         }
-        PieDataSet pieDataSet = new PieDataSet(entries, "Test");
+        PieDataSet pieDataSet = new PieDataSet(entries, null);
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         PieData piedata = new PieData(pieDataSet);
+        Legend legend = mPieChart.getLegend();
+        legend.setEnabled(false);
         mPieChart.setData(piedata);
+        mPieChart.setUsePercentValues(true);
         mPieChart.invalidate();
 
     }
