@@ -124,6 +124,7 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if (id == R.id.fragment_settings) {
+            //..
             Intent intent =new  Intent(this,SettingsActivity.class);
             Bundle bundle = new Bundle();
             bundle.putString("VALUE_SEND","this data sent");
