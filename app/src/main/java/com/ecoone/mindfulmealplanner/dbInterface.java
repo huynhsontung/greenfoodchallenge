@@ -7,19 +7,13 @@ import com.ecoone.mindfulmealplanner.db.User;
 import java.util.List;
 import java.util.Locale;
 
-public class dbInterface {
+public abstract class dbInterface {
 
     private static AppDatabase mDb;
 
-    private static final String TAG = "testActivity";
+    public static void setDb(AppDatabase db){mDb = db;}
 
-    public dbInterface() { }
-
-    public dbInterface(AppDatabase db) {
-        mDb = db;
-    }
-
-    public void addUser(final String username,
+    public static void addUser(final String username,
                         final String gender,
                         final String currentPlan) {
         User user = new User();
@@ -29,15 +23,15 @@ public class dbInterface {
         mDb.userDao().addUser(user);
     }
 
-    public String getGenderbyUsername(final String username) {
+    public static String getGenderByUsername(final String username) {
         return mDb.userDao().getUserGender(username);
     }
 
-    public String getCurrentPlanNamebyUsername(final String username) {
+    public static String getCurrentPlanNameByUsername(final String username) {
         return mDb.userDao().getCurrentPlanName(username);
     }
 
-    public void addPlan(final String username,
+    public static void addPlan(final String username,
                                final int[] foodAmount) {
         Plan plan = new Plan();
         plan.username = username;
@@ -52,20 +46,20 @@ public class dbInterface {
         mDb.planDao().addPlan(plan);
     }
 
-    public int[] getCurrentPlanArray(final String username, final String planName) {
+    public static int[] getCurrentPlanArray(final String username, final String planName) {
         Plan plan = mDb.planDao().getPlanFromUser(username, planName);
-        int[] foddAmont = new int[7];
-        foddAmont[0] = plan.beef;
-        foddAmont[1] = plan.pork;
-        foddAmont[2] = plan.chicken;
-        foddAmont[3] = plan.fish;
-        foddAmont[4] = plan.eggs;
-        foddAmont[5] = plan.beans;
-        foddAmont[6] = plan.vegetables;
-        return foddAmont;
+        int[] foodAmount = new int[7];
+        foodAmount[0] = plan.beef;
+        foodAmount[1] = plan.pork;
+        foodAmount[2] = plan.chicken;
+        foodAmount[3] = plan.fish;
+        foodAmount[4] = plan.eggs;
+        foodAmount[5] = plan.beans;
+        foodAmount[6] = plan.vegetables;
+        return foodAmount;
     }
 
-    public StringBuilder getPlanDatatoString(final String username) {
+    public static StringBuilder getPlanDatatoString(final String username) {
         StringBuilder sb = new StringBuilder();
         List<Plan> allPlans = mDb.planDao().getAllPlansFromUser(username);
         for (Plan plan: allPlans) {
