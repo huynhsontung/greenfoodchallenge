@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);
             Bundle bundle = new Bundle();
-            bundle.putString("VALUE_SEND","this data sent");
+            bundle.putString("VALUE_SEND","Settings");
             intent.putExtras(bundle);
             startActivity(intent);
         }
