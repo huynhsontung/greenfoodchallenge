@@ -4,14 +4,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
@@ -38,7 +35,7 @@ public class DashboardFragment extends Fragment {
     private int foodLen;
 
     private AppDatabase mDb;
-    private dbInterface mDbInterface;
+    private dbInterface dbInterface;
 
 
     private Button improveButton;
@@ -61,18 +58,16 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-
-        // mDb is static in dbInterface
-//        mDb = AppDatabase.getDatabase(getContext());
-        mDbInterface = new dbInterface();
+        mDb = AppDatabase.getDatabase(getContext());
+        dbInterface.setDb(mDb);
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
-        mGender = mDbInterface.getGenderbyUsername(mUsername);
-        mCurrentPlan = mDbInterface.getCurrentPlanNamebyUsername(mUsername);
-        foodAmount = mDbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
+        mGender = dbInterface.getGenderByUsername(mUsername);
+        mCurrentPlan = dbInterface.getCurrentPlanNameByUsername(mUsername);
+        foodAmount = dbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
 
         improveButton = view.findViewById(R.id.imp);
         chart1= view.findViewById(R.id.PieChart1);
