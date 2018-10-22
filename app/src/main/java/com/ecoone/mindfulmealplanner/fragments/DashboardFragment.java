@@ -37,9 +37,9 @@ public class DashboardFragment extends Fragment {
     private TextView genderTextView;
     private TextView dbTextView;
     private Button testAddPlans;
+    private TextView currentPlanTextView;
     // ---------------------------------------------------------------------------------------
 
-    private TextView currentPlanTextView;
 
     private AppDatabase mDb;
     private dbInterface mDbInterface;
