@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.db;
 
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
@@ -15,7 +15,7 @@ public class User {
 
     @NonNull
     public String gender;
-    public long createDate;
-    public long lastLoginDate;
+//    public long createDate;
+//    public long lastLoginDate;
     public String currentPlan;
 }
