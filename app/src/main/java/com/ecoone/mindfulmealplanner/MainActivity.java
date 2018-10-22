@@ -20,7 +20,7 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.SettingsActivity;
-import com.ecoone.mindfulmealplanner.fragments.SettingsFragment;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.i("test", "Item:" +item);
         Fragment fragment = null;
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks here..
         int id = item.getItemId();
 
         if (id == R.id.fragment_dashboard) {
