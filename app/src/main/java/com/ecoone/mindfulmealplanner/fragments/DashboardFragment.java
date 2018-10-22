@@ -1,14 +1,16 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,7 +18,6 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.dbInterface;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -37,13 +38,15 @@ public class DashboardFragment extends Fragment {
     private int[] foodAmount;
     private int foodLen;
 
-    private AppDatabase mDb;
     private dbInterface mDbInterface;
-
 
     private Button improveButton;
     private PieChart chart1;
     private PieChart chart2;
+    private TextView mEditDoneIcon;
+    private EditText editPlanName;
+    private TextView currentPlanTextView; // just for initializeEditTextView()
+
 
     private static final String TAG = "testActivity";
 
@@ -62,24 +65,62 @@ public class DashboardFragment extends Fragment {
 
         // write your code here
 
-        // mDb is static in dbInterface
-//        mDb = AppDatabase.getDatabase(getContext());
         mDbInterface = new dbInterface();
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
+        Log.i(TAG, "Name in dashboard fragment: " + mUsername);
         mGender = mDbInterface.getGenderbyUsername(mUsername);
         mCurrentPlan = mDbInterface.getCurrentPlanNamebyUsername(mUsername);
         foodAmount = mDbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
 
-        improveButton = view.findViewById(R.id.imp);
-        chart1= view.findViewById(R.id.PieChart1);
-        chart2= view.findViewById(R.id.PieChart2);
+        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
+        chart1 = view.findViewById(R.id.PieChart1);
+        chart2 = view.findViewById(R.id.PieChart2);
+        editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
+        mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
+        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for initializeEditTextView()
 
-        Log.i(TAG, "Name in dashboard fragment: " + mUsername);
 
+
+        initializeEditTextView();
+        setEditDoneIconAction();
+        pieChartsView();
+    }
+
+    private void initializeEditTextView() {
+        editPlanName.setText(mCurrentPlan);
+        editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
+        editPlanName.setTypeface(currentPlanTextView.getTypeface());
+//        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
+        editPlanName.setInputType(0);
+    }
+
+    private void setEditDoneIconAction() {
+        mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editPlanName.getInputType() == 0) {
+                    editPlanName.setInputType(1);
+                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
+                    editPlanName.setSelection(editPlanName.getText().length());
+                    editPlanName.selectAll();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                }
+                else {
+                    editPlanName.setInputType(0);
+                    mCurrentPlan = editPlanName.getText().toString();
+                    editPlanName.setText(mCurrentPlan);
+                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
+                }
+            }
+        });
+    }
+
+    private void pieChartsView() {
         int beefInGram = foodAmount[0];
         int porkInGram = foodAmount[1];
         int chickenInGram = foodAmount[2];
@@ -125,7 +166,6 @@ public class DashboardFragment extends Fragment {
         setupImproveButton();
         setupPieChart1(percentage, foodName);
         setupPieChart2(co2Percentage,foodName);
-
     }
 
     private void setupImproveButton(){
