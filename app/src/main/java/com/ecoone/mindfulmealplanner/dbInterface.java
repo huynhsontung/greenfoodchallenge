@@ -13,6 +13,8 @@ public class dbInterface {
 
     private static final String TAG = "testActivity";
 
+    public dbInterface() { }
+
     public dbInterface(AppDatabase db) {
         mDb = db;
     }

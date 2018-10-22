@@ -61,8 +61,10 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-        mDb = AppDatabase.getDatabase(getContext());
-        mDbInterface = new dbInterface(mDb);
+
+        // mDb is static in dbInterface
+//        mDb = AppDatabase.getDatabase(getContext());
+        mDbInterface = new dbInterface();
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
