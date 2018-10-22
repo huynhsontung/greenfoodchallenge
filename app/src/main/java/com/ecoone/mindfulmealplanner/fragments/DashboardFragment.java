@@ -35,7 +35,6 @@ public class DashboardFragment extends Fragment {
     private int foodLen;
 
     private AppDatabase mDb;
-    private dbInterface dbInterface;
 
 
     private Button improveButton;
@@ -142,9 +141,9 @@ public class DashboardFragment extends Fragment {
             pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
         }
 
-        PieDataSet dataset = new PieDataSet(pieEntries,"Current grams");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        PieData data = new PieData(dataset);
+        PieDataSet dataSet = new PieDataSet(pieEntries,"Current grams");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData data = new PieData(dataSet);
         chart1.setData(data);
         chart1.animateY(1000);
         chart1.invalidate();

@@ -107,7 +107,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         else {
             Log.i(TAG, "Someone already login");
             mUsername = getUsernameInSharedPreference();
-            if (mUsername == "") {
+            if (mUsername == null) {
                 Log.i(TAG, "Error. Username is empty.");
                 return;
             }
@@ -120,7 +120,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     }
 
     private String getUsernameInSharedPreference() {
-        return settings.getString(EXTRA_USERNAME, "");
+        return settings.getString(EXTRA_USERNAME, null);
     }
 
     private void setGenderTextViewAction() {
