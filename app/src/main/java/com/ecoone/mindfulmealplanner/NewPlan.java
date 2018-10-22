@@ -8,7 +8,7 @@ public class NewPlan {
     private float currentCO2e;
     // new plan will hold the refactored user plan
     // will equal the users current plan on construction
-    private Plan newPlan;
+    private Plan newPlan = new Plan();
     private float newCO2e = 0;
     // the plan that we suggest to everyone
     public Plan ourChosenRecommendedPlan;
@@ -20,7 +20,7 @@ public class NewPlan {
     public NewPlan(Plan plan, String gender) {
         usersCurrentPlan = plan;
         currentCO2e = myCalculator.calculateCO2e(usersCurrentPlan);
-        newPlan = plan;
+        copyPlan(plan);
         usersGender = gender;
         ourChosenRecommendedPlan(gender);
     }
@@ -38,18 +38,14 @@ public class NewPlan {
         scalePlan(scaleFactor);
         System.out.print("Current Plan = ");
         printPlan(usersCurrentPlan);
-        System.out.print("Our recommended plan = ");
+        System.out.print("Our recommended plan after scaling = ");
         printPlan(ourChosenRecommendedPlan);
         System.out.println("Current CO2e: " + currentCO2e + " Best CO2e Obtainable: " + bestCO2e);
 
         if(currentCO2e <= bestCO2e) {
-            System.out.println("Your plan is good already!");
+            System.out.println("Plan has serving size less than our recommended");
+            return usersCurrentPlan;
             // Users' plan is better than out recommended plan; no new plan suggested
-        }
-        else if (scaleFactor <= 1) {
-            System.out.println("You plan is good already!");
-            // User's plan is already good
-            // Can't recommend any lower; they will be under-eating
         }
         else {
             float goalCO2e = currentCO2e * (float)0.9;
@@ -60,15 +56,16 @@ public class NewPlan {
                 System.out.println("New C02e = " + newCO2e);
                 if(newCO2e <= goalCO2e) {
                     System.out.println("Newly adjusted plan with newCO2e = " + newCO2e + " was created on iteration " + i);
+                    System.out.println("Goal reach: new co2e with new plan: " + myCalculator.calculateCO2e(newPlan));
                     break;
                 }
             }
             if(newCO2e > goalCO2e) {
                 //Cannot reach goal unless serving size is decreased
+                //the best plan possible is suggested, but that best plan wont be at the goal CO2
             }
         }
         printPlan(newPlan);
-        System.out.println("Goal reach: new co2e with new plan: " + myCalculator.calculateCO2e(newPlan));
         return newPlan;
     }
 
@@ -126,13 +123,12 @@ public class NewPlan {
                 if(newPlan.beans > ourChosenRecommendedPlan.beans) {
                     gramsRemovedFromIngregient = newPlan.beans - ourChosenRecommendedPlan.beans;
                     newPlan.beans = ourChosenRecommendedPlan.beans;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngregient * 0.7));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngregient));
                 }
                 newCO2e = myCalculator.calculateCO2e(newPlan);
                 break;
             case 6:
                 if(newPlan.vegetables > ourChosenRecommendedPlan.vegetables) {
-                    gramsRemovedFromIngregient = newPlan.vegetables - ourChosenRecommendedPlan.vegetables;
                     newPlan.vegetables = ourChosenRecommendedPlan.vegetables;
                 }
                 newCO2e = myCalculator.calculateCO2e(newPlan);
@@ -193,6 +189,16 @@ public class NewPlan {
     // For testing
     public void printPlan(Plan plan) {
         System.out.println(plan.beef+ " " + plan.pork + " " + plan.chicken + " " + plan.fish + " " + plan.eggs + " " + plan.beans + " " + plan.vegetables);
+    }
+
+    public void copyPlan(Plan usersPlan) {
+        newPlan.beef = usersPlan.beef;
+        newPlan.pork = usersPlan.pork;
+        newPlan.chicken = usersPlan.chicken;
+        newPlan.fish = usersPlan.fish;
+        newPlan.eggs = usersPlan.eggs;
+        newPlan.beans = usersPlan.beans;
+        newPlan.vegetables = usersPlan.vegetables;
     }
 
 

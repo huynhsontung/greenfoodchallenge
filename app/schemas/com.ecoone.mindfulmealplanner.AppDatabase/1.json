@@ -2,29 +2,23 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "8fc7cf6ac5955d441f5e656b02d775e6",
+    "identityHash": "dfc36548d0fe8dd55d06219c5a63ec53",
     "entities": [
       {
         "tableName": "Plan",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`key` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `planName` TEXT, `username` TEXT, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, FOREIGN KEY(`username`) REFERENCES `User`(`username`) ON UPDATE NO ACTION ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`planName` TEXT NOT NULL, `username` TEXT NOT NULL, `beef` REAL NOT NULL, `pork` REAL NOT NULL, `chicken` REAL NOT NULL, `fish` REAL NOT NULL, `eggs` REAL NOT NULL, `beans` REAL NOT NULL, `vegetables` REAL NOT NULL, PRIMARY KEY(`planName`, `username`), FOREIGN KEY(`username`) REFERENCES `User`(`username`) ON UPDATE NO ACTION ON DELETE CASCADE )",
         "fields": [
-          {
-            "fieldPath": "key",
-            "columnName": "key",
-            "affinity": "INTEGER",
-            "notNull": true
-          },
           {
             "fieldPath": "planName",
             "columnName": "planName",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "username",
             "columnName": "username",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "beef",
@@ -71,9 +65,10 @@
         ],
         "primaryKey": {
           "columnNames": [
-            "key"
+            "planName",
+            "username"
           ],
-          "autoGenerate": true
+          "autoGenerate": false
         },
         "indices": [],
         "foreignKeys": [
@@ -92,19 +87,19 @@
       },
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT, `gender` TEXT, `createDate` INTEGER NOT NULL, `lastLoginDate` INTEGER NOT NULL, `currentPlan` TEXT, PRIMARY KEY(`username`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `createDate` INTEGER NOT NULL, `lastLoginDate` INTEGER NOT NULL, `currentPlan` TEXT, PRIMARY KEY(`username`))",
         "fields": [
           {
             "fieldPath": "username",
             "columnName": "username",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "gender",
             "columnName": "gender",
             "affinity": "TEXT",
-            "notNull": false
+            "notNull": true
           },
           {
             "fieldPath": "createDate",
@@ -137,7 +132,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8fc7cf6ac5955d441f5e656b02d775e6\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"dfc36548d0fe8dd55d06219c5a63ec53\")"
     ]
   }
 }
