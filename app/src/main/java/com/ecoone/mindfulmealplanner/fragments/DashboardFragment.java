@@ -140,7 +140,8 @@ public class DashboardFragment extends Fragment {
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<percentage.length;i++){
-            pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
+            if(percentage[i] > 0.001)
+                pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
         }
 
         PieDataSet dataSet = new PieDataSet(pieEntries,null);
