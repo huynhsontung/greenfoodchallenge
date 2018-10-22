@@ -1,6 +1,8 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -13,7 +15,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -24,63 +25,15 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-
-
 
 
 public class Dashboard extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    Plan curplan=new Plan();
-    float beefco2e = curplan.getBeef() * 27/1000;
-    float porkco2e = curplan.getPork()* 12/1000;
-    float chickenco2e = curplan.getChicken()*7/1000;
-    float fishco2e = curplan.getFish()*6/1000;
-    float eggsco2e = curplan.getEggs()*5/1000;
-    float beansco2e = curplan.getBeans()*2/1000;
-    float vegetablesco2e = curplan.getVegetables()*2/1000;
+    private static final String EXTRA_USERNAME =
+            "com.ecoone.mindfulmealplanner.loginactivity.username";
 
-    float sumco2e = beefco2e+porkco2e+chickenco2e+fishco2e+eggsco2e+beansco2e+vegetablesco2e;
-
-    float beefco2per = beefco2e/sumco2e;
-    float porkco2per = porkco2e/sumco2e;
-    float chickenco2per = chickenco2e/sumco2e;
-    float fishco2per = fishco2e/sumco2e;
-    float eggsco2per = eggsco2e/sumco2e;
-    float beansco2per = beansco2e/sumco2e;
-    float vegetablesco2per = vegetablesco2e/sumco2e;
-
-
-    float beefgram = curplan.getBeef();
-    float porkgram = curplan.getPork();
-    float chickengram = curplan.getChicken();
-    float fishgram = curplan.getFish();
-    float eggsgram = curplan.getEggs();
-    float beansgram = curplan.getBeans();
-    float vegetablesgram = curplan.getVegetables();
-
-    float sumgram = beefgram+porkgram+chickengram+fishgram+eggsgram+beansgram+vegetablesgram;
-
-    float beefgramper = beefgram/sumgram;
-    float porkgramper = porkgram/sumgram;
-    float chickengramper = chickengram/sumgram;
-    float fishgramper = fishgram/sumgram;
-    float eggsgramper = eggsgram/sumgram;
-    float beansgramper = beansgram/sumgram;
-    float vegetablesgramper = vegetablesgram/sumgram;
-
-
-
-    float gramper[] ={ beefgramper, porkgramper, chickengramper, fishgramper , eggsgramper, beansgramper, vegetablesgramper};
-    String foodnames[] = {"beef", "pork", "chicken", "fish", "eggs", "beans", "vegetables"};
-    float co2per[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
-
-
-
-
-
-
+   
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,16 +59,68 @@ public class Dashboard extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        setupImproButton();
-        setupPieChart1();
-        setupPieChart2();
+        
+            // setup database and sharedPreference
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        String currentUsername = sharedPref.getString(EXTRA_USERNAME, null);
+        AppDatabase db = AppDatabase.getDatabase(getApplicationContext());
+        String currentPlanName = db.userDao().getCurrentPlanName(currentUsername);
+        Plan currentPlan = db.planDao().getPlanFromUser(currentUsername,currentPlanName);
+
+
+        float beefInGram = currentPlan.beef;
+        float porkInGram = currentPlan.pork;
+        float chickenInGram = currentPlan.chicken;
+        float fishInGram = currentPlan.fish;
+        float eggsInGram = currentPlan.eggs;
+        float beansInGram = currentPlan.beans;
+        float vegetablesInGram = currentPlan.vegetables;
+        
+        float beefco2e = beefInGram * 27/1000;
+        float porkco2e = porkInGram* 12/1000;
+        float chickenco2e = chickenInGram*7/1000;
+        float fishco2e = fishInGram*6/1000;
+        float eggsco2e = eggsInGram*5/1000;
+        float beansco2e = beansInGram*2/1000;
+        float vegetablesco2e = vegetablesInGram*2/1000;
+
+        float sumco2e = beefco2e+porkco2e+chickenco2e+fishco2e+eggsco2e+beansco2e+vegetablesco2e;
+
+        float beefco2per = beefco2e/sumco2e;
+        float porkco2per = porkco2e/sumco2e;
+        float chickenco2per = chickenco2e/sumco2e;
+        float fishco2per = fishco2e/sumco2e;
+        float eggsco2per = eggsco2e/sumco2e;
+        float beansco2per = beansco2e/sumco2e;
+        float vegetablesco2per = vegetablesco2e/sumco2e;
+        
+
+        float sumInGram = beefInGram+porkInGram+chickenInGram+fishInGram+eggsInGram+beansInGram+vegetablesInGram;
+
+        float beefPercentage = beefInGram/sumInGram;
+        float porkPercentage = porkInGram/sumInGram;
+        float chickenPercentage = chickenInGram/sumInGram;
+        float fishPercentage = fishInGram/sumInGram;
+        float eggsPercentage = eggsInGram/sumInGram;
+        float beansPercentage = beansInGram/sumInGram;
+        float vegetablesPercentage = vegetablesInGram/sumInGram;
+
+
+
+        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
+        String foodNames[] = {"beef", "pork", "chicken", "fish", "eggs", "beans", "vegetables"};
+        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
+
+        setupImproveButton();
+        setupPieChart1(percentage, foodNames);
+        setupPieChart2(co2Percentage,foodNames);
     }
 
-    private void setupImproButton(){
+    private void setupImproveButton(){
         //Wire up the button to improve the plan
         //...get the button
-        Button impro = (Button) findViewById(R.id.imp);
-        impro.setOnClickListener(new View.OnClickListener() {
+        Button improveButton = findViewById(R.id.imp);
+        improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
             Toast.makeText(Dashboard.this, "Clicked 'improve'.", Toast.LENGTH_SHORT)
@@ -124,11 +129,11 @@ public class Dashboard extends AppCompatActivity
         });
     }
 
-    private void setupPieChart1(){
-        //setup piechart
+    private void setupPieChart1(float[] percentage, String[] foodNames){
+        //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
-        for (int i=0; i<gramper.length;i++){
-            pieEntries.add(new PieEntry(gramper[i], foodnames[i]));
+        for (int i=0; i<percentage.length;i++){
+            pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
         }
 
         PieDataSet dataset = new PieDataSet(pieEntries,"Current grams");
@@ -142,17 +147,17 @@ public class Dashboard extends AppCompatActivity
     }
 
 
-    private void setupPieChart2(){
+    private void setupPieChart2(float[] co2Percentage, String[] foodNames){
         List<PieEntry> pieEntries = new ArrayList<>();
-        for (int i=0; i<co2per.length;i++){
-            pieEntries.add(new PieEntry(co2per[i], foodnames[i]));
+        for (int i=0; i<co2Percentage.length;i++){
+            pieEntries.add(new PieEntry(co2Percentage[i], foodNames[i]));
         }
 
-        PieDataSet dataset = new PieDataSet(pieEntries,"Current co2e");
-        dataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        PieData data = new PieData(dataset);
+        PieDataSet dataSet = new PieDataSet(pieEntries,"Current co2e");
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        PieData data = new PieData(dataSet);
 
-        PieChart chart2=(PieChart) findViewById(R.id.PieChart2);
+        PieChart chart2= findViewById(R.id.PieChart2);
         chart2.setData(data);
         chart2.animateY(1000);
         chart2.invalidate();
@@ -161,7 +166,7 @@ public class Dashboard extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
