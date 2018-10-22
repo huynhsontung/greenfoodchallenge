@@ -1,8 +1,8 @@
 package com.ecoone.mindfulmealplanner;
 
 import org.junit.Test;
-
 import static org.junit.Assert.*;
+
 public class CalculatorTest {
 
     public Plan testPlan = new Plan() {
@@ -76,12 +76,23 @@ public class CalculatorTest {
 
         float testVancouverCalculation = myCalculator.calculateVancouver(testPlan);
 
-        testCO2e = 365 * testCO2e;
+        testCO2e = 2460000 * testCO2e;
         //assert(testVancouverCalculation == testCO2e);
         assertEquals(testVancouverCalculation, testCO2e, 1);
     }
 
     @Test
     public void testUsePlanVancouver() {
+        float avgCO2eVancouver = (float)1.5;
+        float manualCalculationVancouver = (float) (1.5 * 2460000);
+
+        Calculator myCalculator = new Calculator();
+
+        float getPlanCO2e = myCalculator.calculateVancouver(testPlan);
+
+        manualCalculationVancouver -= getPlanCO2e;
+        float getNewCO2eTest = myCalculator.usePlanVancouver(testPlan);
+
+        assertEquals(manualCalculationVancouver, getNewCO2eTest, 1);
     }
 }
