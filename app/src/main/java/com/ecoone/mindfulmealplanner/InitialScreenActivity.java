@@ -74,7 +74,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         mDbInterface = new dbInterface(mDb);
 
         // Remove data from database and SharedPreferences
-        initialization();
+//        initialization();
 
         // check if go to the fragment_dashboard
         checkIfGotoDashboard();
@@ -265,7 +265,6 @@ public class InitialScreenActivity extends AppCompatActivity {
     }
 
     private void startActivityAndFinish(String username) {
-        AppDatabase.destroyInstance();
         Intent intent = MainActivity.newIntent(InitialScreenActivity.this, username);
         startActivity(intent);
         InitialScreenActivity.this.finish();

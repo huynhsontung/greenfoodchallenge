@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public class dbInterface {
 
-    private AppDatabase mDb;
+    private static AppDatabase mDb;
 
     private static final String TAG = "testActivity";
 
