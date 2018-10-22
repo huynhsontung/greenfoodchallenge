@@ -34,6 +34,7 @@ public class Calculator {
 
         // Per year
         co2ePerYear = myCO2e * 365;
+
         // This current answer will give you grams. Converting to metric tonnes.
         co2ePerYear = co2ePerYear / 1000000;
 

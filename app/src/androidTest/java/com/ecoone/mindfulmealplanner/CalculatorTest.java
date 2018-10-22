@@ -22,6 +22,20 @@ public class CalculatorTest {
         Calculator myCalculator = new Calculator();
         float getCO2e = myCalculator.calculateCO2e(testPlan);
 
+        float getCO2eManually = 0;
+        getCO2eManually += testPlan.beef * 27;
+        getCO2eManually += testPlan.pork * 12.1;
+        getCO2eManually += testPlan.chicken * 6.9;
+        getCO2eManually += testPlan.fish * 6.1;
+        getCO2eManually += testPlan.eggs * 4.8;
+        getCO2eManually += testPlan.beans * 2;
+        getCO2eManually += testPlan.vegetables * 2;
+
+        getCO2eManually *= 365;
+        getCO2eManually /= 1000000;
+
+        assertEquals(getCO2e, getCO2eManually, 1);
+
     }
 
     @Test
@@ -30,25 +44,29 @@ public class CalculatorTest {
         float testCO2e = 2;
         float getCO2eTestPlan = myCalculator.calculateCO2e(testPlan);
         testCO2e -= getCO2eTestPlan;
-        float getComparison = myCalculator.comparePlan(testCO2e, testPlan);
-        assert(getComparison == testCO2e);
+        float getComparison = myCalculator.comparePlan(2, testPlan);
+        //assert(getComparison == testCO2e);
+        assertEquals(testCO2e, getComparison, 1); // Delta denotes max loss in precision allowed.
     }
 
     @Test
     public void testSumServings() {
         Calculator myCalculator = new Calculator();
         float getServing = myCalculator.sumServings(testPlan);
-        assert(getServing == 400);
+        //assert(getServing == 400);
+        assertEquals(getServing, 400, 0);
     }
 
     @Test
     public void testGetScalingFactor() {
         Calculator myCalculator = new Calculator();
         float testScalingFactorM = myCalculator.getScalingFactor(700, "male");
-        assert(testScalingFactorM == 2);
+        //assert(testScalingFactorM == 2);
+        assertEquals(testScalingFactorM, 2, 0.1);
 
         float testScalingFactorF = myCalculator.getScalingFactor(500, "female");
-        assert(testScalingFactorF == 2);
+        //assert(testScalingFactorF == 2);
+        assertEquals(testScalingFactorF, 2, 0.1);
     }
 
     @Test
@@ -59,7 +77,8 @@ public class CalculatorTest {
         float testVancouverCalculation = myCalculator.calculateVancouver(testPlan);
 
         testCO2e = 365 * testCO2e;
-        assert(testVancouverCalculation == testCO2e);
+        //assert(testVancouverCalculation == testCO2e);
+        assertEquals(testVancouverCalculation, testCO2e, 1);
     }
 
     @Test
