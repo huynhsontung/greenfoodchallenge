@@ -1,0 +1,19 @@
+<preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- These settings headers are only used on tablets. -->
+
+    <header
+        android:fragment="com.ecoone.mindfulmealplanner.fragments.SettingsActivity$GeneralPreferenceFragment"
+        android:icon="@drawable/ic_info_black_24dp"
+        android:title="About" />
+
+    <header
+        android:fragment="com.ecoone.mindfulmealplanner.fragments.SettingsActivity$NotificationPreferenceFragment"
+        android:title="Change Profile data" />
+
+    <header
+        android:fragment="com.ecoone.mindfulmealplanner.fragments.SettingsActivity$DataSyncPreferenceFragment"
+        android:icon="@drawable/ic_sync_black_24dp"
+        android:title="Clear All App Data" />
+
+</preference-headers>

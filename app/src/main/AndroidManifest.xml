@@ -17,10 +17,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <!--<activity-->
-            <!--android:name=".MainActivity"-->
-            <!--android:label="@string/title_activity_dashboard"-->
-            <!--android:theme="@style/AppTheme.NoActionBar"></activity>-->
+        <!-- <activity -->
+        <!-- android:name=".MainActivity" -->
+        <!-- android:label="@string/title_activity_dashboard" -->
+        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        <activity
+            android:name=".fragments.SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ecoone.mindfulmealplanner.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -19,6 +19,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
+import com.ecoone.mindfulmealplanner.fragments.SettingsActivity;
 import com.ecoone.mindfulmealplanner.fragments.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -123,7 +124,11 @@ public class MainActivity extends AppCompatActivity
 
         }
         else if (id == R.id.fragment_settings) {
-            fragment = new SettingsFragment();
+            Intent intent =new  Intent(this,SettingsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("VALUE_SEND","this data sent");
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
 
         if (fragment != null) {
