@@ -31,22 +31,12 @@ public class DashboardFragment extends Fragment {
     private String mUsername;
     private String mGender;
     private String mCurrentPlan;
-
-    // ---------------------------------------------------------------------------------------
-    private TextView nameTextView;
-    private TextView genderTextView;
-    private TextView dbTextView;
-    private Button testAddPlans;
-    private TextView currentPlanTextView;
-    // ---------------------------------------------------------------------------------------
-
-
-    private AppDatabase mDb;
-    private dbInterface mDbInterface;
-
     private String[] foodName;
     private int[] foodAmount;
     private int foodLen;
+
+    private AppDatabase mDb;
+    private dbInterface mDbInterface;
 
     private PieChart mPieChart;
 
@@ -69,28 +59,6 @@ public class DashboardFragment extends Fragment {
         mDb = AppDatabase.getDatabase(getContext());
         mDbInterface = new dbInterface(mDb);
 
-        // ---------------------------------------------------------------------------------------
-        nameTextView = view.findViewById(R.id.fragment_dashboard_test_name);
-        genderTextView = view.findViewById(R.id.fragment_dashboard_test_gender);
-        dbTextView = view.findViewById(R.id.fragment_dashboard_test_db);
-        dbTextView.setMovementMethod(new ScrollingMovementMethod());
-        testAddPlans = view.findViewById(R.id.fragment_dashboard_test_add_plan);
-
-        testAddPlans.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int[] foodAmount = new int[7];
-                for (int i = 0; i < 7; i++) {
-                    foodAmount[i] = randInt(0, 300);
-                }
-                mDbInterface.addPlan(mUsername, foodAmount);
-                showUserInfo();
-            }
-        });
-        // ---------------------------------------------------------------------------------------
-        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_view);
-
-
 
         mPieChart = view.findViewById(R.id.fragment_dashboard_pie_chart);
 
@@ -104,18 +72,8 @@ public class DashboardFragment extends Fragment {
         foodLen = foodName.length;
         foodAmount = mDbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
         setPieChartView(foodAmount);
-
-        showUserInfo();
     }
 
-    // ---------------------------------------------------------------------------------------
-    private void showUserInfo() {
-        nameTextView.setText(mUsername);
-        genderTextView.setText(mGender);
-        currentPlanTextView.setText(mCurrentPlan);
-        dbTextView.setText(mDbInterface.getPlanDatatoString(mUsername));
-    }
-    // ---------------------------------------------------------------------------------------
 
     private String[] findStringArrayRes(String resName) {
         int resId = getResources().getIdentifier(resName,
