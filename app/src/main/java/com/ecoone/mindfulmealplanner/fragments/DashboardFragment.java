@@ -87,7 +87,7 @@ public class DashboardFragment extends Fragment {
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for initializeEditTextView()
 
         initializeEditTextView();
-        setEditDoneIconAction();
+        setEditDoneIconAction(view);
         setupImproveButton();
         pieChartsView();
 
@@ -101,7 +101,7 @@ public class DashboardFragment extends Fragment {
         editPlanName.setInputType(0);
     }
 
-    private void setEditDoneIconAction() {
+    private void setEditDoneIconAction(final View view) {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,6 +118,8 @@ public class DashboardFragment extends Fragment {
                     mCurrentPlan = editPlanName.getText().toString();
                     editPlanName.setText(mCurrentPlan);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                 }
             }
         });
