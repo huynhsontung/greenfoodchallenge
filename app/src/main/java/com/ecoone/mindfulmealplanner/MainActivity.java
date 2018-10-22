@@ -16,10 +16,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
-import com.ecoone.mindfulmealplanner.fragments.SettingsFragment;
+import com.ecoone.mindfulmealplanner.fragments.HistoryFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,8 +121,8 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-        else if (id == R.id.fragment_settings) {
-            fragment = new SettingsFragment();
+        else if (id == R.id.fragment_history) {
+            fragment = new HistoryFragment();
         }
 
         if (fragment != null) {
