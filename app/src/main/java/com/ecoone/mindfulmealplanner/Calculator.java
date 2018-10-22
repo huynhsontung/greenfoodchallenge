@@ -62,7 +62,7 @@ public class Calculator {
 
     // Parameters: The daily serving of the user, their gender in string.
     // Post: Calculates the scaling factor, used to come up with the plan suggestion.
-    float getScalingFactor(int currentDailyServing, String gender){
+    float getScalingFactor(float currentDailyServing, String gender){
 
         final int recommendedServingMen = 350;
         final int recommendedServingWomen = 250;
