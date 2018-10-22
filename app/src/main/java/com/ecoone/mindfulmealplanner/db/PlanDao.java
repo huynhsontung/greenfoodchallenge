@@ -1,13 +1,13 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.db;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
 import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.arch.persistence.room.Update;
+
+import com.ecoone.mindfulmealplanner.db.Plan;
 
 import java.util.List;
 
@@ -18,26 +18,27 @@ import java.util.List;
 @Dao
 public interface PlanDao {
     @Query("SELECT * FROM `Plan` WHERE username = :username AND planName = :planName LIMIT 1")
-    public Plan getPlanFromUser(String username, String planName);
+    Plan getPlanFromUser(String username, String planName);
 
     @Query("SELECT * FROM `Plan` WHERE username = :username")
-    public List<Plan> getAllPlansFromUser(String username);
+    List<Plan> getAllPlansFromUser(String username);
 
     @Query("SELECT count(*) FROM `Plan` WHERE username = :username")
-    public int getPlansCount(String username);
+    int getPlansCount(String username);
 
     @Insert
-    public void addPlan(Plan plan);
+    void addPlan(Plan plan);
 
     @Update
-    public int updatePlan(Plan plan);
+    int updatePlan(Plan plan);
 
     @Delete
-    public int deletePlan(Plan plan);
+    int deletePlan(Plan plan);
 
     @Query("DELETE FROM `Plan` WHERE username = :username")
-    public void deleteAllPlans(String username);
+    void deleteAllPlansbyUsername(String username);
 
-
+    @Query("DELETE FROM `plan`")
+    void deleteAll();
 
 }

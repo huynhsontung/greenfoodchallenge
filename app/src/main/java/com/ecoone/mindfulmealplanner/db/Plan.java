@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.db;
 
 
 import android.arch.persistence.room.Entity;
@@ -16,7 +16,8 @@ import static android.arch.persistence.room.ForeignKey.CASCADE;
         parentColumns = "username",
         childColumns = "username",
         onDelete = CASCADE),
-        primaryKeys = {"planName", "username"})
+        primaryKeys = {"planName", "username"},
+        indices = {@Index("username")})
 public class Plan {
 
 
@@ -26,13 +27,13 @@ public class Plan {
     @NonNull
     public String username;
 
-    public float beef;
-    public float pork;
-    public float chicken;
-    public float fish;
-    public float eggs;
-    public float beans;
-    public float vegetables;
+    public int beef;
+    public int pork;
+    public int chicken;
+    public int fish;
+    public int eggs;
+    public int beans;
+    public int vegetables;
 
 
 }
