@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,8 +29,8 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -51,8 +50,10 @@ public class DashboardFragment extends Fragment {
     private PieChart chart1;
     private PieChart chart2;
     private TextView mEditDoneIcon;
-    private EditText editPlanName;
     private TextView currentPlanTextView; // just for initializeEditTextView()
+    private TextView currentCo2eTextView;
+    private EditText editPlanName;
+
 
 
     private static final String TAG = "testActivity";
@@ -88,12 +89,22 @@ public class DashboardFragment extends Fragment {
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for initializeEditTextView()
+        currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
 
         initializeEditTextView();
         setEditDoneIconAction(view);
         setupImproveButton();
         pieChartsView();
+        calculateCurrentCo2e();
 
+    }
+
+    private void calculateCurrentCo2e() {
+        float sumCo2ePerYear = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
+        currentCo2eTextView.setText(message);
+        if (sumCo2ePerYear > 1.7)
+            currentCo2eTextView.setTextColor(getResources().getColor(R.color.chartRed1));
     }
 
     private void initializeEditTextView() {
@@ -174,7 +185,7 @@ public class DashboardFragment extends Fragment {
 
 //        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
 //        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
-        float sumco2e = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+//        float sumco2e = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
         float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
         setupPieChart1(foodAmount, foodName);
         setupPieChart2(co2Amount,foodName);
