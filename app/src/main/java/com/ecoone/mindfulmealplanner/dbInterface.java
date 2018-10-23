@@ -46,9 +46,9 @@ public abstract class dbInterface {
         mDb.planDao().addPlan(plan);
     }
 
-    public static int[] getCurrentPlanArray(final String username, final String planName) {
+    public static float[] getCurrentPlanArray(final String username, final String planName) {
         Plan plan = mDb.planDao().getPlanFromUser(username, planName);
-        int[] foodAmount = new int[7];
+        float[] foodAmount = new float[7];
         foodAmount[0] = plan.beef;
         foodAmount[1] = plan.pork;
         foodAmount[2] = plan.chicken;
