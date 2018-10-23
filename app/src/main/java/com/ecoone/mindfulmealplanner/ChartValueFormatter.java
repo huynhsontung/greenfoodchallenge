@@ -16,6 +16,6 @@ public class ChartValueFormatter implements IValueFormatter {
     @Override
     public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
         if(value < 5) return "";
-            else return mFormat.format(value) + " %";
+            else return mFormat.format(value) + "%";
     }
 }
