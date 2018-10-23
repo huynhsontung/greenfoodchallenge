@@ -1,10 +1,13 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
+import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
 
+import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 
 public class SettingsActivity extends PreferenceActivity {
@@ -13,6 +16,7 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         getFragmentManager().beginTransaction().replace(android.R.id.content,new MainSettingsFragment()).commit();
+
     }
 
     public static class MainSettingsFragment extends PreferenceFragment{
@@ -22,4 +26,5 @@ public class SettingsActivity extends PreferenceActivity {
             addPreferencesFromResource(R.xml.preference);
         }
     }
+
 }

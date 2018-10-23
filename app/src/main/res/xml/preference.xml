@@ -2,16 +2,10 @@
 <PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceScreen
-        android:key="button_About_category_key"
-        android:title="About"
-        android:persistent="false">
-        <Preference
-           android:key="pref_static_field_key"
-           android:selectable="false"
-           android:persistent="false"
-           android:title="About"
-           android:summary="12 large Rhodos Roses. Each bouquet is complemented with splashes of gypsophila, fragrant eucalyptus and a palm leaf frame. Our florists have also included a box of luxury Valley Chocolates with each bouquet to make this romantic gift that much sweeter! Also included is a gorgeous cuddly teddy bear and a luxury box of Valentine's chocolates to make the day even more special!
-"/>
+        android:key="about"
+        android:title="About">
+        <intent android:action="openaboutpage"/>
+
     </PreferenceScreen>
     <PreferenceScreen
         android:key="button_clearallappdata_category_key"

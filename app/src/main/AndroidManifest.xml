@@ -29,6 +29,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
-    </application>
 
+        <activity android:name=".fragments.aboutpage">
+            <intent-filter>
+            <action android:name="openaboutpage" />
+            <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+    </application>
 </manifest>
