@@ -1,11 +1,14 @@
 package com.ecoone.mindfulmealplanner;
 
+import com.ecoone.mindfulmealplanner.db.Plan;
+
 import java.util.*;
 
 public class NewPlan {
     Calculator myCalculator = new Calculator();
     private Plan usersCurrentPlan;
     private float currentCO2e;
+    private float currentCO2eAfterAdjustment;
     // new plan will hold the refactored user plan
     // will equal the users current plan on construction
     private Plan newPlan = new Plan();
@@ -15,12 +18,18 @@ public class NewPlan {
     private float bestCO2e;
     private String usersGender;
     int numIngredients = 7;
+    int adjustmentFlag;
 
     //Constructor
     public NewPlan(Plan plan, String gender) {
+        adjustmentFlag = 0;
         usersCurrentPlan = plan;
-        currentCO2e = myCalculator.calculateCO2e(usersCurrentPlan);
         copyPlan(plan);
+        checkRelativeSize(newPlan);
+        currentCO2e = myCalculator.calculateCO2e(usersCurrentPlan);
+        currentCO2eAfterAdjustment = myCalculator.calculateCO2e(newPlan);
+       // System.out.println("relative plan");
+       // printPlan(newPlan);
         usersGender = gender;
         ourChosenRecommendedPlan(gender);
     }
@@ -30,25 +39,36 @@ public class NewPlan {
     //1. A new plan with adjusted values of ingredients
     //2. The same plan as before because the co2e of that plan is better than what we recommend
     public Plan suggestPlan() {
-        float usersDailyServing = calculateDailyServing(usersCurrentPlan);
+        float usersDailyServing = calculateDailyServing(newPlan);
         System.out.println("Daily serving amount: " + usersDailyServing);
         float scaleFactor = myCalculator.getScalingFactor(usersDailyServing, usersGender);
         System.out.println("Scale factor: " + scaleFactor);
         bestCO2e = myCalculator.calculateCO2e(ourChosenRecommendedPlan);
-        scalePlan(scaleFactor);
-        System.out.print("Current Plan = ");
+        scaleRecommendedPlan(scaleFactor);
+        System.out.print("Current Plan= ");
         printPlan(usersCurrentPlan);
+        System.out.print("Current Plan after adjustment= ");
+        printPlan(newPlan);
         System.out.print("Our recommended plan after scaling = ");
         printPlan(ourChosenRecommendedPlan);
         System.out.println("Current CO2e: " + currentCO2e + " Best CO2e Obtainable: " + bestCO2e);
-
-        if(currentCO2e <= bestCO2e) {
-            System.out.println("Plan has serving size less than our recommended");
-            return usersCurrentPlan;
-            // Users' plan is better than out recommended plan; no new plan suggested
+        if (currentCO2e <= bestCO2e) {
+            if (adjustmentFlag == 0) {
+                System.out.println("Plan has serving size less than our recommended");
+                return usersCurrentPlan;
+                // Users' plan is better than out recommended plan and relative size was fine; no new plan suggested
+            }
+            else if (adjustmentFlag == 1 && currentCO2eAfterAdjustment <= bestCO2e) {
+                System.out.println("Adjusted values of ingredients");
+                return newPlan; // Users plan was fine, but we changed relative size of the plan
+            }
+            else {
+                System.out.println("Plan has serving size less than our recommended");
+                return usersCurrentPlan; // Relative size changed but made co2 higher than before, return original plan
+            }
         }
         else {
-            float goalCO2e = currentCO2e * (float)0.9;
+            float goalCO2e = currentCO2eAfterAdjustment * (float)0.9;
             System.out.println("Goal CO2e = " + goalCO2e);
             for (int i = 0; i < numIngredients; i++) {
                 //float co2eBeforeChange = myCalculator.calculateCO2e(newPlan);
@@ -141,7 +161,7 @@ public class NewPlan {
 
     //Adjusts our recommended plan ingredient values based on the scale factor,
     //which is needed to have recommended values for different serving sizes
-    public void scalePlan(float scale) {
+    public void scaleRecommendedPlan(float scale) {
         ourChosenRecommendedPlan.beef = Math.round(ourChosenRecommendedPlan.beef*scale);
         ourChosenRecommendedPlan.pork = Math.round(ourChosenRecommendedPlan.pork*scale);
         ourChosenRecommendedPlan.chicken = Math.round(ourChosenRecommendedPlan.chicken*scale);
@@ -181,6 +201,51 @@ public class NewPlan {
         }
     }
 
+    //Adjusts the sizes of each ingredient if an ingredient is found to have
+    //more than 80% of the total daily serving
+    public void checkRelativeSize(Plan newPlan) {
+        float dailyServing = calculateDailyServing(newPlan);
+        if((newPlan.beef) / dailyServing >= 0.8) {
+            newPlan.pork = Math.round(newPlan.pork + (newPlan.beef / 5));
+            newPlan.chicken = Math.round(newPlan.chicken + (newPlan.beef / 5));
+            newPlan.fish = Math.round(newPlan.fish + (newPlan.beef / 5));
+            newPlan.eggs = Math.round(newPlan.eggs + (newPlan.beef / 5));
+            newPlan.beef = Math.round(newPlan.beef / 5);
+            adjustmentFlag = 1;
+        }
+        else if((newPlan.pork / dailyServing) >= 0.8) {
+            newPlan.chicken = Math.round(newPlan.chicken + (newPlan.pork / 4));
+            newPlan.fish = Math.round(newPlan.fish + (newPlan.pork / 4));
+            newPlan.eggs = Math.round(newPlan.eggs + (newPlan.pork / 4));
+            newPlan.pork = Math.round(newPlan.pork / 4);
+            adjustmentFlag = 1;
+        }
+        else if((newPlan.chicken / dailyServing) >= 0.8) {
+            newPlan.fish = Math.round(newPlan.fish + (newPlan.chicken / 3));
+            newPlan.eggs = Math.round(newPlan.eggs + (newPlan.chicken / 3));
+            newPlan.chicken = Math.round(newPlan.chicken / 3);
+            adjustmentFlag = 1;
+        }
+        else if((newPlan.fish / dailyServing) >= 0.8) {
+            newPlan.chicken = Math.round(newPlan.chicken + (newPlan.fish / 3));
+            newPlan.eggs = Math.round(newPlan.eggs + (newPlan.fish / 3));
+            newPlan.fish = Math.round(newPlan.fish / 3);
+            adjustmentFlag = 1;
+        }
+        else if((newPlan.eggs / dailyServing) >= 0.8) {
+            newPlan.chicken = Math.round(newPlan.chicken + (newPlan.eggs / 3));
+            newPlan.fish = Math.round(newPlan.fish + (newPlan.eggs / 3));
+            newPlan.eggs = Math.round(newPlan.eggs / 3);
+            adjustmentFlag = 1;
+        }
+        else if((newPlan.beans / dailyServing) >= 0.8) {
+            newPlan.beans = Math.round(newPlan.beans/ 3);
+            newPlan.vegetables = Math.round(newPlan.vegetables + (newPlan.beans * 2));
+            adjustmentFlag = 1;
+        }
+
+    }
+
     // Temporary until database is implemented
     public float calculateDailyServing(Plan plan) {
         return (plan.beef + plan.pork + plan.chicken + plan.fish + plan.eggs + plan.beans + plan.vegetables);
@@ -191,6 +256,7 @@ public class NewPlan {
         System.out.println(plan.beef+ " " + plan.pork + " " + plan.chicken + " " + plan.fish + " " + plan.eggs + " " + plan.beans + " " + plan.vegetables);
     }
 
+    //Copies the values from the users previous plan into newPlan
     public void copyPlan(Plan usersPlan) {
         newPlan.beef = usersPlan.beef;
         newPlan.pork = usersPlan.pork;

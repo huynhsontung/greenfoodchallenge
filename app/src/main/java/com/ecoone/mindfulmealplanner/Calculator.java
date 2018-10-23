@@ -1,5 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
+import com.ecoone.mindfulmealplanner.db.Plan;
+
 public class Calculator {
 
     // CO2e per kilo of food consumed.
