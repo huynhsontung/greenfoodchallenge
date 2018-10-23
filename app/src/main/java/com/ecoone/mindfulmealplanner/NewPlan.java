@@ -28,8 +28,6 @@ public class NewPlan {
         checkRelativeSize(newPlan);
         currentCO2e = myCalculator.calculateCO2e(usersCurrentPlan);
         currentCO2eAfterAdjustment = myCalculator.calculateCO2e(newPlan);
-       // System.out.println("relative plan");
-       // printPlan(newPlan);
         usersGender = gender;
         ourChosenRecommendedPlan(gender);
     }
@@ -40,56 +38,42 @@ public class NewPlan {
     //2. The same plan as before because the co2e of that plan is better than what we recommend
     public Plan suggestPlan() {
         float usersDailyServing = calculateDailyServing(newPlan);
-        System.out.println("Daily serving amount: " + usersDailyServing);
         float scaleFactor = myCalculator.getScalingFactor(usersDailyServing, usersGender);
-        System.out.println("Scale factor: " + scaleFactor);
         bestCO2e = myCalculator.calculateCO2e(ourChosenRecommendedPlan);
         scaleRecommendedPlan(scaleFactor);
-        System.out.print("Current Plan= ");
-        printPlan(usersCurrentPlan);
-        System.out.print("Current Plan after adjustment= ");
-        printPlan(newPlan);
-        System.out.print("Our recommended plan after scaling = ");
-        printPlan(ourChosenRecommendedPlan);
-        System.out.println("Current CO2e: " + currentCO2e + " Best CO2e Obtainable: " + bestCO2e);
         if (currentCO2e <= bestCO2e) {
             if (adjustmentFlag == 0) {
-                System.out.println("Plan has serving size less than our recommended");
                 return usersCurrentPlan;
                 // Users' plan is better than out recommended plan and relative size was fine; no new plan suggested
             }
             else if (adjustmentFlag == 1 && currentCO2eAfterAdjustment <= bestCO2e) {
-                System.out.println("Adjusted values of ingredients");
-                return newPlan; // Users plan was fine, but we changed relative size of the plan
+                return newPlan;
+                // Users plan was fine, but we changed relative size of the plan
             }
             else {
-                System.out.println("Plan has serving size less than our recommended");
-                return usersCurrentPlan; // Relative size changed but made co2 higher than before, return original plan
+                return usersCurrentPlan;
+                // Relative size changed but made co2 higher than before, return original plan
             }
         }
         else {
             float goalCO2e = currentCO2eAfterAdjustment * (float)0.9;
-            System.out.println("Goal CO2e = " + goalCO2e);
             for (int i = 0; i < numIngredients; i++) {
-                //float co2eBeforeChange = myCalculator.calculateCO2e(newPlan);
                 adjustNewPlan(i);
-                System.out.println("New C02e = " + newCO2e);
                 if(newCO2e <= goalCO2e) {
-                    System.out.println("Newly adjusted plan with newCO2e = " + newCO2e + " was created on iteration " + i);
-                    System.out.println("Goal reach: new co2e with new plan: " + myCalculator.calculateCO2e(newPlan));
                     break;
                 }
             }
             if(newCO2e > goalCO2e) {
+                return newPlan;
                 //Cannot reach goal unless serving size is decreased
                 //the best plan possible is suggested, but that best plan wont be at the goal CO2
             }
         }
-        printPlan(newPlan);
         return newPlan;
     }
 
     //Takes in an ingredient index and adjusts the value of that indexed ingredient in our newPlan
+    // i.e index 0 = beef, index 1 = pork, etc..
     //Takes the grams from ingredient reduced, split it between vegetables and beans at a 70/30 ratio
     public void adjustNewPlan(int ingredientIndex) {
         float gramsRemovedFromIngregient;
@@ -203,6 +187,7 @@ public class NewPlan {
 
     //Adjusts the sizes of each ingredient if an ingredient is found to have
     //more than 80% of the total daily serving
+    //adjustmentFlag is raised for suggestPlan to function properly
     public void checkRelativeSize(Plan newPlan) {
         float dailyServing = calculateDailyServing(newPlan);
         if((newPlan.beef) / dailyServing >= 0.8) {
@@ -266,6 +251,5 @@ public class NewPlan {
         newPlan.beans = usersPlan.beans;
         newPlan.vegetables = usersPlan.vegetables;
     }
-
 
 }
