@@ -9,7 +9,7 @@ import android.support.annotation.Nullable;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
-
+//...
 public class SettingsActivity extends PreferenceActivity {
     @Override
     protected void onCreate( Bundle savedInstanceState) {

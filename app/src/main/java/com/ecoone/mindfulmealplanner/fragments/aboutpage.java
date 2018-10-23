@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.ecoone.mindfulmealplanner.R;
-
+//...
 public class aboutpage extends AppCompatActivity {
 
     @Override
