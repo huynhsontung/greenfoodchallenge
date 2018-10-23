@@ -1,24 +1,27 @@
 package com.ecoone.mindfulmealplanner;
 
+
+import com.ecoone.mindfulmealplanner.db.Plan;
+
 public class Calculator {
 
     // CO2e per kilo of food consumed.
-    private final double co2Beef = 27;
-    private final double co2Pork = 12.1;
-    private final double co2Chicken = 6.9;
-    private final double co2Fish = 6.1;
-    private final double co2Eggs = 4.8;
-    private final double co2Beans = 2;
-    private final double co2Veggies = 2;
+    private static final float co2Beef = 27;
+    private static final float co2Pork = (float) 12.1;
+    private static final float co2Chicken = (float) 6.9;
+    private static final float co2Fish = (float) 6.1;
+    private static final float co2Eggs = (float) 4.8;
+    private static final float co2Beans = 2;
+    private static final float co2Veggies = 2;
 
-    private final int populationVancouver = 2460000;
+    private static final int populationVancouver = 2460000;
     // Metric tonnes of co2e per capita according to the pdf.
-    private final double tCO2ePerCapita = 1.5;
+    private static final float tCO2ePerCapita = (float) 1.5;
 
 
     // Parameters: Plan, so that co2e can be calculated.
     // Post: Calculates and returns co2e.
-    float calculateCO2e(Plan myCurrentPlan){
+    public static float calculateCO2e(Plan myCurrentPlan){
 
         float myCO2e = 0;
         float co2ePerYear;
@@ -40,11 +43,26 @@ public class Calculator {
         return co2ePerYear;
     }
 
+
+    // Parameters: Plan
+    // Post: A array with CO2e amount for each field
+    public static float[] calculateCO2eEachFood(Plan myCurrentPlan){
+        float[] co2Amount = new float[7];
+        co2Amount[0] = myCurrentPlan.beef * co2Beef;
+        co2Amount[1] = myCurrentPlan.pork * co2Pork;
+        co2Amount[2] = myCurrentPlan.chicken * co2Chicken;
+        co2Amount[3] = myCurrentPlan.fish * co2Fish;
+        co2Amount[4] = myCurrentPlan.eggs * co2Eggs;
+        co2Amount[5] = myCurrentPlan.beans * co2Beans;
+        co2Amount[6] = myCurrentPlan.vegetables * co2Veggies;
+        return co2Amount;
+    }
+
     // Parameters: CO2e of previous plan, the new plan to be compared.
     // Post: Calculates CO2e of the new plan, then finds the difference.
     //       Note that this difference might be negative. In this case, the new plan produces MORE
     //       CO2e than the old.
-    float comparePlan(float previousCO2e, Plan newPlan){
+    public static float comparePlan(float previousCO2e, Plan newPlan){
 
         float getNewCO2e = calculateCO2e(newPlan);
 
@@ -54,7 +72,7 @@ public class Calculator {
 
     // Parameters: User's plan.
     // Post: Sums up all the serving sizes of all food types. Returns total daily serving.
-    float sumServings(Plan myPlan){
+    public static float sumServings(Plan myPlan){
 
         return (myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +
                 myPlan.eggs + myPlan.beans + myPlan.vegetables);
@@ -62,7 +80,7 @@ public class Calculator {
 
     // Parameters: The daily serving of the user, their gender in string.
     // Post: Calculates the scaling factor, used to come up with the plan suggestion.
-    float getScalingFactor(float currentDailyServing, String gender){
+    public static float getScalingFactor(float currentDailyServing, String gender){
 
         final int recommendedServingMen = 350;
         final int recommendedServingWomen = 250;
@@ -80,7 +98,7 @@ public class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates the grand total CO2e if everyone in Vancouver used user's plan
-    float calculateVancouver(Plan myPlan){
+    public static float calculateVancouver(Plan myPlan){
 
         float getCO2e = calculateCO2e(myPlan);
         float grandTotalCO2e = getCO2e * populationVancouver;
@@ -90,11 +108,11 @@ public class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates how many metric tonnes Vancouver would save if everyone used plan
-    float usePlanVancouver(Plan myPlan){
+    public static float usePlanVancouver(Plan myPlan){
 
         float getNewTotalCO2e = calculateVancouver(myPlan);
 
-        double oldTotalVancouver = populationVancouver * tCO2ePerCapita;
+        float oldTotalVancouver = populationVancouver * tCO2ePerCapita;
 
         return (float) (oldTotalVancouver - getNewTotalCO2e);
     }

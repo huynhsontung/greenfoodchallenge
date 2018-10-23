@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import android.widget.TextView;
 
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.Calculator;
+import com.ecoone.mindfulmealplanner.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
@@ -39,7 +42,7 @@ public class DashboardFragment extends Fragment {
     private String mGender;
     private String mCurrentPlan;
     private String[] foodName;
-    private int[] foodAmount;
+    private float[] foodAmount;
     private int foodLen;
 
     private AppDatabase mDb;
@@ -127,50 +130,54 @@ public class DashboardFragment extends Fragment {
 
 
     private void pieChartsView() {
-        int beefInGram = foodAmount[0];
-        int porkInGram = foodAmount[1];
-        int chickenInGram = foodAmount[2];
-        int fishInGram = foodAmount[3];
-        int eggsInGram = foodAmount[4];
-        int beansInGram = foodAmount[5];
-        int vegetablesInGram = foodAmount[6];
 
-        float beefco2e = beefInGram * 27/1000;
-        float porkco2e = porkInGram* 12/1000;
-        float chickenco2e = chickenInGram*7/1000;
-        float fishco2e = fishInGram*6/1000;
-        float eggsco2e = eggsInGram*5/1000;
-        float beansco2e = beansInGram*2/1000;
-        float vegetablesco2e = vegetablesInGram*2/1000;
+//        int beefInGram = foodAmount[0];
+//        int porkInGram = foodAmount[1];
+//        int chickenInGram = foodAmount[2];
+//        int fishInGram = foodAmount[3];
+//        int eggsInGram = foodAmount[4];
+//        int beansInGram = foodAmount[5];
+//        int vegetablesInGram = foodAmount[6];
+//
+//
+//        float beefco2e = beefInGram * 27/1000;
+//        float porkco2e = porkInGram* 12/1000;
+//        float chickenco2e = chickenInGram*7/1000;
+//        float fishco2e = fishInGram*6/1000;
+//        float eggsco2e = eggsInGram*5/1000;
+//        float beansco2e = beansInGram*2/1000;
+//        float vegetablesco2e = vegetablesInGram*2/1000;
 
-        float sumco2e = beefco2e+porkco2e+chickenco2e+fishco2e+eggsco2e+beansco2e+vegetablesco2e;
-
-        float beefco2per = beefco2e/sumco2e;
-        float porkco2per = porkco2e/sumco2e;
-        float chickenco2per = chickenco2e/sumco2e;
-        float fishco2per = fishco2e/sumco2e;
-        float eggsco2per = eggsco2e/sumco2e;
-        float beansco2per = beansco2e/sumco2e;
-        float vegetablesco2per = vegetablesco2e/sumco2e;
+//        float sumco2e = beefco2e+porkco2e+chickenco2e+fishco2e+eggsco2e+beansco2e+vegetablesco2e;
 
 
-        float sumInGram = beefInGram+porkInGram+chickenInGram+fishInGram+eggsInGram+beansInGram+vegetablesInGram;
+//        float beefco2per = beefco2e/sumco2e;
+//        float porkco2per = porkco2e/sumco2e;
+//        float chickenco2per = chickenco2e/sumco2e;
+//        float fishco2per = fishco2e/sumco2e;
+//        float eggsco2per = eggsco2e/sumco2e;
+//        float beansco2per = beansco2e/sumco2e;
+//        float vegetablesco2per = vegetablesco2e/sumco2e;
+//
+//
+//        float sumInGram = beefInGram+porkInGram+chickenInGram+fishInGram+eggsInGram+beansInGram+vegetablesInGram;
+//
+//        float beefPercentage = beefInGram/sumInGram;
+//        float porkPercentage = porkInGram/sumInGram;
+//        float chickenPercentage = chickenInGram/sumInGram;
+//        float fishPercentage = fishInGram/sumInGram;
+//        float eggsPercentage = eggsInGram/sumInGram;
+//        float beansPercentage = beansInGram/sumInGram;
+//        float vegetablesPercentage = vegetablesInGram/sumInGram;
 
-        float beefPercentage = beefInGram/sumInGram;
-        float porkPercentage = porkInGram/sumInGram;
-        float chickenPercentage = chickenInGram/sumInGram;
-        float fishPercentage = fishInGram/sumInGram;
-        float eggsPercentage = eggsInGram/sumInGram;
-        float beansPercentage = beansInGram/sumInGram;
-        float vegetablesPercentage = vegetablesInGram/sumInGram;
 
 
-
-        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
-        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
-
-        setupPieChart1(percentage, foodName);
-        setupPieChart2(co2Percentage,foodName);
+//        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
+//        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
+        float sumco2e = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        setupPieChart1(foodAmount, foodName);
+        setupPieChart2(co2Amount,foodName);
     }
 
     private void setupImproveButton(){
@@ -203,6 +210,9 @@ public class DashboardFragment extends Fragment {
                         R.color.chartBlue6,
                         R.color.chartBlue7},
                     getContext());
+        dataSet.setValueFormatter(new ChartValueFormatter());
+        dataSet.setValueTextSize(10);
+        dataSet.setValueTextColor(Color.WHITE);
         PieData data = new PieData(dataSet);
         chart1.setData(data);
         Description description = chart1.getDescription();
@@ -211,6 +221,7 @@ public class DashboardFragment extends Fragment {
         legend.setWordWrapEnabled(true);
         chart1.setDescription(description);
         chart1.setUsePercentValues(true);
+        chart1.setDrawEntryLabels(false);
         chart1.animateY(1000);
         chart1.invalidate();
     }
@@ -234,6 +245,9 @@ public class DashboardFragment extends Fragment {
                         R.color.chartRed6,
                         R.color.chartRed7},
                     getContext());
+        dataSet.setValueFormatter(new ChartValueFormatter());
+        dataSet.setValueTextSize(10);
+        dataSet.setValueTextColor(Color.WHITE);
         PieData data = new PieData(dataSet);
         chart2.setData(data);
         Description description = chart2.getDescription();
@@ -242,6 +256,7 @@ public class DashboardFragment extends Fragment {
         legend.setWordWrapEnabled(true);
         chart2.setDescription(description);
         chart2.setUsePercentValues(true);
+        chart2.setDrawEntryLabels(false);
         chart2.animateY(1000);
         chart2.invalidate();
     }

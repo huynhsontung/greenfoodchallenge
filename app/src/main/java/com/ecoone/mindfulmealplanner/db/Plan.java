@@ -27,13 +27,13 @@ public class Plan {
     @NonNull
     public String username;
 
-    public int beef;
-    public int pork;
-    public int chicken;
-    public int fish;
-    public int eggs;
-    public int beans;
-    public int vegetables;
+    public float beef;
+    public float pork;
+    public float chicken;
+    public float fish;
+    public float eggs;
+    public float beans;
+    public float vegetables;
 
 
 }
