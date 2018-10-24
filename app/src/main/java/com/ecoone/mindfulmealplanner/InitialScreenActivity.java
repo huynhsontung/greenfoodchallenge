@@ -40,7 +40,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
-    private dbInterface dbInterface;
+    private DbInterface DbInterface;
 
     private Toast mToast;
 
@@ -73,7 +73,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
-        dbInterface.setDb(mDb);
+        DbInterface.setDb(mDb);
 
         // Remove data from database and SharedPreferences
 //        initialization();
@@ -97,7 +97,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         editor.apply();
         mDb.planDao().deleteAll();
         mDb.userDao().deleteALL();
-//        dbInterface.addUser(mDb, "arlenx", "male");
+//        DbInterface.addUser(mDb, "arlenx", "male");
     }
 
     private void checkIfGotoDashboard() {
@@ -153,8 +153,8 @@ public class InitialScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isInfoEntered()) {
                     Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
-                    dbInterface.addUser(mUsername, mGender, "Plan1");
-                    dbInterface.addPlan(mUsername, foodAmount);
+                    DbInterface.addUser(mUsername, mGender, "Plan1");
+                    DbInterface.addPlan(mUsername, foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(EXTRA_LOGIN_FLAG, 1);

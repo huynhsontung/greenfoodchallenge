@@ -16,15 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.widget.Toast;
-
 import com.ecoone.mindfulmealplanner.Calculator;
 import com.ecoone.mindfulmealplanner.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
-import com.ecoone.mindfulmealplanner.dbInterface;
+import com.ecoone.mindfulmealplanner.DbInterface;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -73,15 +71,15 @@ public class DashboardFragment extends Fragment {
 
         // write your code here
         mDb = AppDatabase.getDatabase(getContext());
-        dbInterface.setDb(mDb);
+        DbInterface.setDb(mDb);
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
-        mGender = dbInterface.getGenderByUsername(mUsername);
-        mCurrentPlan = dbInterface.getCurrentPlanNameByUsername(mUsername);
-        foodAmount = dbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
+        mGender = DbInterface.getGenderByUsername(mUsername);
+        mCurrentPlan = DbInterface.getCurrentPlanNameByUsername(mUsername);
+        foodAmount = DbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         chart1= view.findViewById(R.id.PieChart1);

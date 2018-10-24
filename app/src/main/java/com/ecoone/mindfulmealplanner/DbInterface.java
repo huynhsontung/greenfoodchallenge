@@ -7,7 +7,7 @@ import com.ecoone.mindfulmealplanner.db.User;
 import java.util.List;
 import java.util.Locale;
 
-public abstract class dbInterface {
+public abstract class DbInterface {
 
     private static AppDatabase mDb;
 
