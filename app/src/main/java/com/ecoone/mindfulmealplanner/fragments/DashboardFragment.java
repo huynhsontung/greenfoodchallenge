@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,7 +40,7 @@ public class DashboardFragment extends Fragment {
 
     private String mUsername;
     private String mGender;
-    private String mCurrentPlan;
+    private String mCurrentPlanName;
     private String[] foodName;
     private float[] foodAmount;
     private int foodLen;
@@ -55,6 +56,7 @@ public class DashboardFragment extends Fragment {
     private EditText editPlanName;
 
     private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(DashboardFragment)";
 
     @Nullable
     @Override
@@ -77,9 +79,9 @@ public class DashboardFragment extends Fragment {
         foodLen = foodName.length;
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
-        mGender = DbInterface.getGenderByUsername(mUsername);
-        mCurrentPlan = DbInterface.getCurrentPlanNameByUsername(mUsername);
-        foodAmount = DbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
+        mGender = DbInterface.getGender(mUsername);
+        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
+        foodAmount = DbInterface.getCurrentPlanArray(mUsername, mCurrentPlanName);
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         chart1= view.findViewById(R.id.PieChart1);
@@ -99,7 +101,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void calculateCurrentCo2e() {
-        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
         if (sumCo2ePerYear > 1.7)
@@ -107,7 +109,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void initializeEditTextView() {
-        editPlanName.setText(mCurrentPlan);
+        editPlanName.setText(mCurrentPlanName);
         editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
         editPlanName.setTypeface(currentPlanTextView.getTypeface());
 //        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
@@ -128,11 +130,17 @@ public class DashboardFragment extends Fragment {
                 }
                 else {
                     editPlanName.setInputType(0);
-                    mCurrentPlan = editPlanName.getText().toString();
-                    editPlanName.setText(mCurrentPlan);
+                    mCurrentPlanName = editPlanName.getText().toString();
+                    editPlanName.setText(mCurrentPlanName);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    DbInterface.changeCurrentPlanName(mUsername, mCurrentPlanName);
+                    Log.i(TAG, "-------------------------------------------------");
+                    Log.i(TAG, "Current Plan name changed" + CLASSTAG);
+                    Log.i(TAG, DbInterface.getUserDatatoString(mUsername).toString());
+                    Log.i(TAG, DbInterface.getPlanDatatoString(mUsername).toString());
+                    Log.i(TAG, "-------------------------------------------------");
                 }
             }
         });
@@ -183,8 +191,8 @@ public class DashboardFragment extends Fragment {
 
 //        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
 //        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
-//        float sumco2e = Calculator.calculateCO2ePerYear(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
-        float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+//        float sumco2e = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
+        float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
         setupPieChart1(foodAmount, foodName);
         setupPieChart2(co2Amount,foodName);
     }
@@ -195,7 +203,7 @@ public class DashboardFragment extends Fragment {
         improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ImproveActivity.class);
+                Intent intent = ImproveActivity.newIntent(getContext(), mUsername);
                 startActivity(intent);
             }
         });

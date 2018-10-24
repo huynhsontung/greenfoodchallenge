@@ -155,31 +155,25 @@ public class NewPlan {
 
     //Initializes our recommended plan with values based on gender
     public void ourChosenRecommendedPlan(String gender) {
+        ourChosenRecommendedPlan = new Plan();
         if(gender == "male") {
-            ourChosenRecommendedPlan = new Plan() {
-                {
-                    beef = 25;
-                    pork = 50;
-                    chicken = 50;
-                    fish = 50;
-                    eggs = 25;
-                    beans = 25;
-                    vegetables = 125;
-                }
-            };
+            ourChosenRecommendedPlan.beef = 25;
+            ourChosenRecommendedPlan.pork = 50;
+            ourChosenRecommendedPlan.chicken = 50;
+            ourChosenRecommendedPlan.fish = 50;
+            ourChosenRecommendedPlan.eggs = 25;
+            ourChosenRecommendedPlan.beans = 25;
+            ourChosenRecommendedPlan.vegetables = 125;
+
         }
         else if(gender == "female") {
-            ourChosenRecommendedPlan = new Plan() {
-                {
-                    beef = 15;
-                    pork = 30;
-                    chicken = 45;
-                    fish = 30;
-                    eggs = 15;
-                    beans = 15;
-                    vegetables = 100;
-                }
-            };
+            ourChosenRecommendedPlan.beef = 15;
+            ourChosenRecommendedPlan.pork = 30;
+            ourChosenRecommendedPlan.chicken = 45;
+            ourChosenRecommendedPlan.fish = 30;
+            ourChosenRecommendedPlan.eggs = 15;
+            ourChosenRecommendedPlan.beans = 15;
+            ourChosenRecommendedPlan.vegetables = 100;
         }
     }
 
@@ -229,7 +223,7 @@ public class NewPlan {
 
     }
 
-    // Temporary until database is implemented
+    // Temporary until database is implemented(DataBase was completed)
     public float calculateDailyServing(Plan plan) {
         return (plan.beef + plan.pork + plan.chicken + plan.fish + plan.eggs + plan.beans + plan.vegetables);
     }

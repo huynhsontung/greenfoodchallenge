@@ -2,35 +2,43 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.DropBoxManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
+import android.util.Log;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 
 public class ImproveActivity extends AppCompatActivity {
 
+    private String mUsername;
+    private String mGender;
+
     private TextView mCurrentPlanCo2eTextView;
-    private TextView mImporvedPlanCo3eTextView;
+    private TextView mImporvedPlanCo2eTextView;
     private LinearLayout[] mSeekBarLayout;
     private SeekBar[] mSeekBars;
     private TextView[] mSeekBarTextViews;
 
-    private Calculator mCalculator;
-
     private String[] foodName;
     private int foodLen;
-    private int[] foodAmount;
+//    private int[] foodAmount;
+
+    private AppDatabase mDb;
+
 
     private static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.improveactivity.username";
+
     private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(ImproveActivity)";
 
     public static Intent newIntent(Context packageContext, String username) {
-        Intent intent = new Intent(packageContext, MainActivity.class);
+        Intent intent = new Intent(packageContext, ImproveActivity.class);
         intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
@@ -40,23 +48,44 @@ public class ImproveActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_improve);
 
+        mDb = AppDatabase.getDatabase(getApplicationContext());
+        DbInterface.setDb(mDb);
+
+        foodName = findStringArrayRes("food_name");
+        foodLen = foodName.length;
+
         mCurrentPlanCo2eTextView = findViewById(R.id.improve_current_plan);
-        mImporvedPlanCo3eTextView = findViewById(R.id.improve_improved_plan);
+        mImporvedPlanCo2eTextView = findViewById(R.id.improve_improved_plan);
 
-        mCalculator = new Calculator();
+        mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
+        mGender = DbInterface.getGender(mUsername);
 
+        Log.i(TAG, "Username in Improve:" + mUsername + CLASSTAG);
+        Log.i(TAG, "Gender in Improve:" + mGender + CLASSTAG);
 
-
+        initializePlansCo2eTextView();
 //        initializeSeekBar();
     }
 
-    private void setPlansCoe2TextView(Plan currentPlan, Plan improvedPlan) {
+    private void initializePlansCo2eTextView() {
+        Plan currentPlan = DbInterface.getCurrentPlan(mUsername);
+        Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
+                DbInterface.getCurrentPlanDatatoString(mUsername));
+        NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
+        Plan improvedPlan = mNewPlan.suggestPlan();
+        setPlansCo2eTextView(currentPlan, improvedPlan);
 
     }
 
+    private void setPlansCo2eTextView(Plan currentPlan, Plan improvedPlan) {
+        String mCurrentPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(currentPlan));
+        String mImporvedPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(improvedPlan));
+
+        mCurrentPlanCo2eTextView.setText(String.format("%s g", mCurrentPlanCo2e));
+        mImporvedPlanCo2eTextView.setText(String.format("%s g", mImporvedPlanCo2e));
+    }
+
     private void initializeSeekBar() {
-//        foodName = findStringArrayRes("food_name");
-//        foodLen = foodName.length;
 //        foodAmount = new int[foodLen];
 //        mSeekBarLayout = new LinearLayout[foodLen];
 //        mSeekBarTextViews = new TextView[foodLen];

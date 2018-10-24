@@ -8,7 +8,7 @@ import java.util.List;
 public class Calculator {
 
     // CO2e per kilo of food consumed.
-    private static final float co2Beef = 27;
+    private static final float co2Beef = (float) 27.0;
     private static final float co2Pork = (float) 12.1;
     private static final float co2Chicken = (float) 6.9;
     private static final float co2Fish = (float) 6.1;

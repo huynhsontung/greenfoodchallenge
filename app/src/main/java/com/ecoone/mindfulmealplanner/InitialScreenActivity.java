@@ -40,7 +40,6 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
-    private DbInterface DbInterface;
 
     private Toast mToast;
 
@@ -58,6 +57,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.initialscreenactivity.username";
     private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(InitialActivity)";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,13 +104,13 @@ public class InitialScreenActivity extends AppCompatActivity {
         loginFlag = isLogin();
         // if no user login
         if (loginFlag == 0) {
-            Log.i(TAG, "No user log in. Wait for initialization.");
+            Log.i(TAG, "No user log in. Wait for initialization." + CLASSTAG);
         }
         else {
-            Log.i(TAG, "Someone already login");
+            Log.i(TAG, "Someone already login" + CLASSTAG);
             mUsername = getUsernameInSharedPreference();
             if (mUsername == null) {
-                Log.i(TAG, "Error. Username is empty.");
+                Log.i(TAG, "Error. Username is empty." + CLASSTAG);
                 return;
             }
             startActivityAndFinish(mUsername);
@@ -129,7 +129,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         maleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click male");
+                Log.i(TAG, "Click male" + CLASSTAG);
                 maleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
                 femaleTextView.setBackgroundResource(R.drawable.border_grey);
                 mGender = "male";
@@ -139,7 +139,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         femaleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click female");
+                Log.i(TAG, "Click female" + CLASSTAG);
                 femaleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
                 maleTextView.setBackgroundResource(R.drawable.border_grey);
                 mGender = "female";
@@ -152,7 +152,7 @@ public class InitialScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isInfoEntered()) {
-                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
+                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db" + CLASSTAG);
                     DbInterface.addUser(mUsername, mGender, "Plan1");
                     DbInterface.addPlan(mUsername, foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
