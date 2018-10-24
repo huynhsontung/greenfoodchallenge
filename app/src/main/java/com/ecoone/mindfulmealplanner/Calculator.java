@@ -156,4 +156,33 @@ public class Calculator {
         return (float) (oldTotalVancouver - getNewTotalCO2e);
     }
 
+    // Parameters: CO2eInTonnes
+    // Post: Calculates how many km for driving saved.
+    // Relevant information/ Sources:
+        // 1 litre of gas = 2.3 kg CO2
+        // Average Canadian vehicle = 2000L of gas per year
+        // CO2 emissions (g/km) of a 2018 Toyota Corolla: 178 (Note this is pretty decent)
+        // Source: https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/oee/pdf/transportation/tools/fuelratings/Model%20Year%202018%20Vehicle%20Tables.pdf
+    public static float calculateSavingsInKm(float CO2eInTonnes){
+
+        if(CO2eInTonnes <= 0){
+            return 0;
+        }
+
+        float convertToGrams = CO2eInTonnes * 1000000;
+        float gramsPerKmToyota = 178;
+
+
+        float savingsInKm = convertToGrams / gramsPerKmToyota;
+        return savingsInKm;
+    }
+
+    // Relevant information/sources:
+        // Average mature tree consumes 48 pounds (approx 21772 grams) of CO2 per year.
+        // Source: https://onetreeplanted.org/blogs/news/14245701-how-planting-trees-can-help-reduce-your-carbon-footprint
+    public static float calculateTreesPlanted(float CO2eInTonnes){
+
+        return 0;
+    }
+
 }
