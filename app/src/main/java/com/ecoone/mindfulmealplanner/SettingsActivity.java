@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.fragments;
+package com.ecoone.mindfulmealplanner;
 
 import android.content.Intent;
 import android.os.Bundle;

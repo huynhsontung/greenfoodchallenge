@@ -22,7 +22,7 @@
         <!-- android:label="@string/title_activity_dashboard" -->
         <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
         <activity
-            android:name=".fragments.SettingsActivity"
+            android:name=".SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
@@ -30,7 +30,7 @@
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
 
-        <activity android:name=".fragments.aboutpage">
+        <activity android:name=".AboutPageActivity">
             <intent-filter>
             <action android:name="openaboutpage" />
             <category android:name="android.intent.category.DEFAULT" />
