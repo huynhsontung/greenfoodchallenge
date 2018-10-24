@@ -3,6 +3,10 @@ package com.ecoone.mindfulmealplanner;
 import com.ecoone.mindfulmealplanner.db.Plan;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class CalculatorTest {
@@ -67,6 +71,22 @@ public class CalculatorTest {
         float getComparison = myCalculator.comparePlan(2, testPlan);
         //assert(getComparison == testCO2e);
         assertEquals(testCO2e, getComparison, 1); // Delta denotes max loss in precision allowed.
+    }
+
+    @Test
+    public void testSumCO2ePerDayPlanList(){
+        Calculator myCalculator = new Calculator();
+
+        List<Plan> testList = new ArrayList<>();
+        testList.add(testPlan);
+        testList.add(testPlan);
+
+        float getSumManually = myCalculator.calculateCO2ePerDay(testPlan);
+        getSumManually *= 2;
+
+        float getSum = myCalculator.sumCO2ePerDayPlanList(testList);
+
+        assertEquals(getSumManually, getSum, 1);
     }
 
     @Test
