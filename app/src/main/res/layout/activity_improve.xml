@@ -13,33 +13,45 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp" />
 
-    <include
-        android:id="@+id/improve_seekbar_component_1"
-        layout="@layout/seekbar_component" />
+    <TextView
+        android:id="@+id/improve_current_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Co2e For Current Plan:"/>
 
-    <include
-        android:id="@+id/improve_seekbar_component_2"
-        layout="@layout/seekbar_component" />
+    <TextView
+        android:id="@+id/improve_improved_plan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Co2e For Improved Plan:"/>
 
-    <include
-        android:id="@+id/improve_seekbar_component_3"
-        layout="@layout/seekbar_component" />
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_1"-->
+        <!--layout="@layout/seekbar_component" />-->
 
-    <include
-        android:id="@+id/improve_seekbar_component_4"
-        layout="@layout/seekbar_component" />
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_2"-->
+        <!--layout="@layout/seekbar_component" />-->
 
-    <include
-        android:id="@+id/improve_seekbar_component_5"
-        layout="@layout/seekbar_component" />
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_3"-->
+        <!--layout="@layout/seekbar_component" />-->
 
-    <include
-        android:id="@+id/improve_seekbar_component_6"
-        layout="@layout/seekbar_component" />
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_4"-->
+        <!--layout="@layout/seekbar_component" />-->
 
-    <include
-        android:id="@+id/improve_seekbar_component_7"
-        layout="@layout/seekbar_component" />
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_5"-->
+        <!--layout="@layout/seekbar_component" />-->
+
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_6"-->
+        <!--layout="@layout/seekbar_component" />-->
+
+    <!--<include-->
+        <!--android:id="@+id/improve_seekbar_component_7"-->
+        <!--layout="@layout/seekbar_component" />-->
 
     <LinearLayout
         android:layout_width="wrap_content"
