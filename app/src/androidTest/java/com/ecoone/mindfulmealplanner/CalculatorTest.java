@@ -20,7 +20,7 @@ public class CalculatorTest {
     };
 
     @Test
-    public void testCalculateCO2e() {
+    public void testCalculateCO2ePerYear() {
         Calculator myCalculator = new Calculator();
         float getCO2e = myCalculator.calculateCO2ePerYear(testPlan);
 
@@ -35,6 +35,24 @@ public class CalculatorTest {
 
         getCO2eManually *= 365;
         getCO2eManually /= 1000000;
+
+        assertEquals(getCO2e, getCO2eManually, 1);
+
+    }
+
+    @Test
+    public void testCalculateCO2ePerDay() {
+        Calculator myCalculator = new Calculator();
+        float getCO2e = myCalculator.calculateCO2ePerDay(testPlan);
+
+        float getCO2eManually = 0;
+        getCO2eManually += testPlan.beef * 27;
+        getCO2eManually += testPlan.pork * 12.1;
+        getCO2eManually += testPlan.chicken * 6.9;
+        getCO2eManually += testPlan.fish * 6.1;
+        getCO2eManually += testPlan.eggs * 4.8;
+        getCO2eManually += testPlan.beans * 2;
+        getCO2eManually += testPlan.vegetables * 2;
 
         assertEquals(getCO2e, getCO2eManually, 1);
 

@@ -2,7 +2,7 @@ package com.ecoone.mindfulmealplanner;
 
 import com.ecoone.mindfulmealplanner.db.Plan;
 
-
+import java.util.List;
 
 
 public class Calculator {
@@ -46,6 +46,8 @@ public class Calculator {
         return co2ePerYear;
     }
 
+    // Param: Current plan.
+    // Post: Calculates CO2e per day of given plan. *Note the answer is in grams*
     public static float calculateCO2ePerDay(Plan myCurrentPlan){
 
         float myCO2e = 0;
@@ -63,12 +65,23 @@ public class Calculator {
         // Per DAY
         co2ePerDay = myCO2e;
 
-        // This current answer will give you grams. Converting to metric tonnes.
-        co2ePerDay = co2ePerDay / 1000000;
-
+        // This current answer will give you GRAMS.
         return co2ePerDay;
     }
 
+    // Parameters: A list of plans
+    // Post: Sums up the CO2e per day of the plans in the list. *Note the answer is in grams*
+    public static float sumCO2ePerDayPlanList(List<Plan> myPlanList){
+
+        float sumListPerDay = 0;
+
+        for (int i = 0; i < myPlanList.size(); i++){
+            // Get from plan list, calculate its CO2e per day, add to running sum.
+            sumListPerDay += calculateCO2ePerDay(myPlanList.get(i));
+        }
+
+        return sumListPerDay;
+    }
 
     // Parameters: Plan
     // Post: A array with CO2e amount for each field
