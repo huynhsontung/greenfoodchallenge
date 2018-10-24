@@ -22,7 +22,7 @@ public class CalculatorTest {
     @Test
     public void testCalculateCO2e() {
         Calculator myCalculator = new Calculator();
-        float getCO2e = myCalculator.calculateCO2e(testPlan);
+        float getCO2e = myCalculator.calculateCO2ePerYear(testPlan);
 
         float getCO2eManually = 0;
         getCO2eManually += testPlan.beef * 27;
@@ -44,7 +44,7 @@ public class CalculatorTest {
     public void testComparePlan() {
         Calculator myCalculator = new Calculator();
         float testCO2e = 2;
-        float getCO2eTestPlan = myCalculator.calculateCO2e(testPlan);
+        float getCO2eTestPlan = myCalculator.calculateCO2ePerYear(testPlan);
         testCO2e -= getCO2eTestPlan;
         float getComparison = myCalculator.comparePlan(2, testPlan);
         //assert(getComparison == testCO2e);
@@ -74,7 +74,7 @@ public class CalculatorTest {
     @Test
     public void testCalculateVancouver() {
         Calculator myCalculator = new Calculator();
-        float testCO2e = myCalculator.calculateCO2e(testPlan);
+        float testCO2e = myCalculator.calculateCO2ePerYear(testPlan);
 
         float testVancouverCalculation = myCalculator.calculateVancouver(testPlan);
 

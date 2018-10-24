@@ -23,7 +23,7 @@ public class Calculator {
 
     // Parameters: Plan, so that co2e can be calculated.
     // Post: Calculates and returns co2e.
-    public static float calculateCO2e(Plan myCurrentPlan){
+    public static float calculateCO2ePerYear(Plan myCurrentPlan){
 
         float myCO2e = 0;
         float co2ePerYear;
@@ -44,6 +44,29 @@ public class Calculator {
         co2ePerYear = co2ePerYear / 1000000;
 
         return co2ePerYear;
+    }
+
+    public static float calculateCO2ePerDay(Plan myCurrentPlan){
+
+        float myCO2e = 0;
+        float co2ePerDay;
+
+        // Equation to calculate co2e: %Co2e * daily serving * co2e/1000
+        myCO2e += myCurrentPlan.beef * co2Beef;
+        myCO2e += myCurrentPlan.pork * co2Pork;
+        myCO2e += myCurrentPlan.chicken * co2Chicken;
+        myCO2e += myCurrentPlan.fish * co2Fish;
+        myCO2e += myCurrentPlan.eggs * co2Eggs;
+        myCO2e += myCurrentPlan.beans * co2Beans;
+        myCO2e += myCurrentPlan.vegetables * co2Veggies;
+
+        // Per DAY
+        co2ePerDay = myCO2e;
+
+        // This current answer will give you grams. Converting to metric tonnes.
+        co2ePerDay = co2ePerDay / 1000000;
+
+        return co2ePerDay;
     }
 
 
@@ -67,7 +90,7 @@ public class Calculator {
     //       CO2e than the old.
     public static float comparePlan(float previousCO2e, Plan newPlan){
 
-        float getNewCO2e = calculateCO2e(newPlan);
+        float getNewCO2e = calculateCO2ePerYear(newPlan);
 
         // Note: difference might be negative if new plan is worse than old plan.
         return (previousCO2e - getNewCO2e);
@@ -103,7 +126,7 @@ public class Calculator {
     // Post: Calculates the grand total CO2e if everyone in Vancouver used user's plan
     public static float calculateVancouver(Plan myPlan){
 
-        float getCO2e = calculateCO2e(myPlan);
+        float getCO2e = calculateCO2ePerYear(myPlan);
         float grandTotalCO2e = getCO2e * populationVancouver;
 
         return grandTotalCO2e;
