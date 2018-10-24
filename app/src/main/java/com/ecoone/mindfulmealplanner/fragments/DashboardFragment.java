@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.Calculator;
 import com.ecoone.mindfulmealplanner.ChartValueFormatter;
+import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
@@ -54,8 +56,6 @@ public class DashboardFragment extends Fragment {
     private TextView currentCo2eTextView;
     private EditText editPlanName;
 
-
-
     private static final String TAG = "testActivity";
 
     @Nullable
@@ -90,6 +90,7 @@ public class DashboardFragment extends Fragment {
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for initializeEditTextView()
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
+        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
 
         initializeEditTextView();
         setEditDoneIconAction(view);
@@ -138,7 +139,6 @@ public class DashboardFragment extends Fragment {
             }
         });
     }
-
 
     private void pieChartsView() {
 
@@ -197,8 +197,8 @@ public class DashboardFragment extends Fragment {
         improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked 'improve'.", Toast.LENGTH_SHORT)
-                        .show();
+                Intent intent = new Intent(getActivity(), ImproveActivity.class);
+                startActivity(intent);
             }
         });
     }

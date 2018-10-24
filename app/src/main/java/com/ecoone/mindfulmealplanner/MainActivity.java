@@ -54,11 +54,8 @@ public class MainActivity extends AppCompatActivity
 
         setSidebarAction();
         showDashboard();
-
-
-
-
     }
+
 
     private void setSidebarAction() {
         setSupportActionBar(mToolbar);
