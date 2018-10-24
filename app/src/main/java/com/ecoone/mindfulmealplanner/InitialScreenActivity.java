@@ -17,9 +17,11 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
-    private dbInterface mDbInterface;
+    private dbInterface dbInterface;
 
     private Toast mToast;
 
@@ -71,7 +73,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
-        mDbInterface = new dbInterface(mDb);
+        dbInterface.setDb(mDb);
 
         // Remove data from database and SharedPreferences
 //        initialization();
@@ -107,7 +109,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         else {
             Log.i(TAG, "Someone already login");
             mUsername = getUsernameInSharedPreference();
-            if (mUsername == "") {
+            if (mUsername == null) {
                 Log.i(TAG, "Error. Username is empty.");
                 return;
             }
@@ -120,7 +122,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     }
 
     private String getUsernameInSharedPreference() {
-        return settings.getString(EXTRA_USERNAME, "");
+        return settings.getString(EXTRA_USERNAME, null);
     }
 
     private void setGenderTextViewAction() {
@@ -151,8 +153,8 @@ public class InitialScreenActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isInfoEntered()) {
                     Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
-                    mDbInterface.addUser(mUsername, mGender, "Plan1");
-                    mDbInterface.addPlan(mUsername, foodAmount);
+                    dbInterface.addUser(mUsername, mGender, "Plan1");
+                    dbInterface.addPlan(mUsername, foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(EXTRA_LOGIN_FLAG, 1);
@@ -244,11 +246,17 @@ public class InitialScreenActivity extends AppCompatActivity {
     private void setPieChartView(int[] data) {
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < foodLen; i++) {
-            entries.add(new PieEntry(data[i], foodName[i]));
+            // filter out 0 values
+            if(data[i] > 0)
+                entries.add(new PieEntry(data[i], foodName[i]));
         }
-        PieDataSet pieDataSet = new PieDataSet(entries, "Test");
+        PieDataSet pieDataSet = new PieDataSet(entries, null);
+        pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
         PieData piedata = new PieData(pieDataSet);
+        Legend legend = mPieChart.getLegend();
+        legend.setEnabled(false);
         mPieChart.setData(piedata);
+        mPieChart.setUsePercentValues(true);
         mPieChart.invalidate();
 
     }
