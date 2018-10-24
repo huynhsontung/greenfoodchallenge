@@ -179,10 +179,16 @@ public class Calculator {
 
     // Relevant information/sources:
         // Average mature tree consumes 48 pounds (approx 21772 grams) of CO2 per year.
+        // If tree exists for 40 years, it will consume approximately 870,880 grams of CO2
         // Source: https://onetreeplanted.org/blogs/news/14245701-how-planting-trees-can-help-reduce-your-carbon-footprint
     public static float calculateTreesPlanted(float CO2eInTonnes){
 
-        return 0;
+        float numberOfTrees;
+        float co2ConsumedPerTree = (float)0.871;
+        numberOfTrees = CO2eInTonnes/co2ConsumedPerTree;
+
+        numberOfTrees = Math.round(numberOfTrees); // So you don't plant a fraction of a tree
+        return numberOfTrees;
     }
 
 }
