@@ -99,7 +99,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void calculateCurrentCo2e() {
-        float sumCo2ePerYear = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
         if (sumCo2ePerYear > 1.7)
@@ -183,7 +183,7 @@ public class DashboardFragment extends Fragment {
 
 //        float percentage[] ={ beefPercentage, porkPercentage, chickenPercentage, fishPercentage , eggsPercentage, beansPercentage, vegetablesPercentage};
 //        float co2Percentage[] = {beefco2per,porkco2per, chickenco2per,fishco2per,eggsco2per,beansco2per,vegetablesco2per};
-//        float sumco2e = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+//        float sumco2e = Calculator.calculateCO2ePerYear(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
         float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
         setupPieChart1(foodAmount, foodName);
         setupPieChart2(co2Amount,foodName);
