@@ -16,9 +16,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.HistoryFragment;
+import com.ecoone.mindfulmealplanner.fragments.SettingsActivity;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -114,15 +117,20 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Log.i("test", "Item:" +item);
         Fragment fragment = null;
-        // Handle navigation view item clicks here.
+        // Handle navigation view item clicks here..
         int id = item.getItemId();
 
         if (id == R.id.fragment_dashboard) {
             fragment = new DashboardFragment();
 
         }
-        else if (id == R.id.fragment_history) {
-            fragment = new HistoryFragment();
+        else if (id == R.id.fragment_settings) {
+            //..
+            Intent intent =new  Intent(this,SettingsActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putString("VALUE_SEND","Settings");
+            intent.putExtras(bundle);
+            startActivity(intent);
         }
 
         if (fragment != null) {

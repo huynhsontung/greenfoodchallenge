@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.aboutpage">
+//...
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="361dp"
+        android:layout_height="555dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="About \n \n \n
+ \t \t Food’s carbon footprint, or foodprint, is the greenhouse gas emissions produced by growing, rearing, farming, processing, transporting, storing, cooking and disposing of the food you eat. \n \n
+
+  \t \t In the US, each household produces 48 tons of greenhouse gases. Transport, housing and food have the three largest carbon footprints. Food produces about 8 tons of emissions per household, or about 17% of the total. Worldwide, new reports suggest that livestock agriculture produces around a half of all man-made emissions. \n\n
+
+ \t \t Changing the foods that you eat can have a big impact on your carbon footprint. And reduce pollution, preserve the environment and slow global warming. Many of these changes will also save you money, improve your health and even keep you fit! Have a browse of How You Can Fight Climate Change for more ideas on taking action to save our beautiful planet. \n \n
+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</android.support.constraint.ConstraintLayout>

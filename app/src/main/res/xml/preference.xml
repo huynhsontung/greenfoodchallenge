@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen  xmlns:android="http://schemas.android.com/apk/res/android">
+//...
+    <PreferenceScreen
+        android:key="about"
+        android:title="About">
+        <intent android:action="openaboutpage"/>
+
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:key="button_clearallappdata_category_key"
+        android:title="Clear all app data"
+        android:persistent="false">
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:key="button_changeprofiledata_category_key"
+        android:title="Change Profile data"
+        android:persistent="false">
+    </PreferenceScreen>
+
+</PreferenceScreen>
