@@ -34,8 +34,48 @@ public class NewPlanTest {
         }
     };
 
+    public Plan edgeCasePlan = new Plan() {
+        {
+            beef = 300;
+            pork = 0;
+            chicken = 0;
+            fish = 0;
+            eggs = 0;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+    public Plan edgeCasePlan2 = new Plan() {
+        {
+            beef = 0;
+            pork = 0;
+            chicken = 0;
+            fish = 0;
+            eggs = 0;
+            beans = 300;
+            vegetables = 0;
+        }
+    };
+
+    public Plan edgeCasePlan3 = new Plan() {
+        {
+            beef = 150;
+            pork = 150;
+            chicken = 0;
+            fish = 0;
+            eggs = 0;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+
     public NewPlan smallPlanTest = new NewPlan(smallServingThanRecommended, "male");
     public NewPlan largePlanTest = new NewPlan(largeServingPlan, "male");
+    public NewPlan edgeCaseTest = new NewPlan(edgeCasePlan, "male");
+    public NewPlan edgeCaseTest2 = new NewPlan(edgeCasePlan2, "male");
+    public NewPlan edgeCaseTest3 = new NewPlan(edgeCasePlan3, "male");
 
     @Test
     public void suggestPlan() {
@@ -60,7 +100,13 @@ public class NewPlanTest {
         NewPlan finalSuggestTest = new NewPlan(suggestedPlan2,"male");
         suggestedPlan2 = finalSuggestTest.suggestPlan();
         assertEquals(x.get(2).vegetables, suggestedPlan2.vegetables,5); // no more plans available to recommend
-    }
+        System.out.println("=========== new test ============");
+        edgeCasePlan = edgeCaseTest.suggestPlan();
+        System.out.println("=========== new test ============");
+        edgeCasePlan2  =edgeCaseTest2.suggestPlan();
+        System.out.println("=========== new test ============");
+        edgeCasePlan3 = edgeCaseTest3.suggestPlan()
+;    }
 
     @Test
     public void getScaledPlan() {
