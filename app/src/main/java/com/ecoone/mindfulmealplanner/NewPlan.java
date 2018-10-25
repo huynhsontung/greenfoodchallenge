@@ -2,8 +2,6 @@ package com.ecoone.mindfulmealplanner;
 
 import com.ecoone.mindfulmealplanner.db.Plan;
 
-import java.util.*;
-
 public class NewPlan {
     Calculator myCalculator = new Calculator();
     private Plan usersCurrentPlan;
@@ -26,8 +24,8 @@ public class NewPlan {
         usersCurrentPlan = plan;
         copyPlan(plan);
         checkRelativeSize(newPlan);
-        currentCO2e = myCalculator.calculateCO2e(usersCurrentPlan);
-        currentCO2eAfterAdjustment = myCalculator.calculateCO2e(newPlan);
+        currentCO2e = myCalculator.calculateCO2ePerYear(usersCurrentPlan);
+        currentCO2eAfterAdjustment = myCalculator.calculateCO2ePerYear(newPlan);
         usersGender = gender;
         ourChosenRecommendedPlan(gender);
     }
@@ -39,7 +37,7 @@ public class NewPlan {
     public Plan suggestPlan() {
         float usersDailyServing = calculateDailyServing(newPlan);
         float scaleFactor = myCalculator.getScalingFactor(usersDailyServing, usersGender);
-        bestCO2e = myCalculator.calculateCO2e(ourChosenRecommendedPlan);
+        bestCO2e = myCalculator.calculateCO2ePerYear(ourChosenRecommendedPlan);
         scaleRecommendedPlan(scaleFactor);
         if (currentCO2e <= bestCO2e) {
             if (adjustmentFlag == 0) {
@@ -85,7 +83,7 @@ public class NewPlan {
                     newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
                     newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 1:
                 if(newPlan.pork > ourChosenRecommendedPlan.pork) {
@@ -94,7 +92,7 @@ public class NewPlan {
                     newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
                     newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 2:
                 if(newPlan.chicken > ourChosenRecommendedPlan.chicken) {
@@ -103,7 +101,7 @@ public class NewPlan {
                     newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
                     newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 3:
                 if(newPlan.fish > ourChosenRecommendedPlan.fish) {
@@ -112,7 +110,7 @@ public class NewPlan {
                     newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
                     newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 4:
                 if(newPlan.eggs > ourChosenRecommendedPlan.eggs) {
@@ -121,7 +119,7 @@ public class NewPlan {
                     newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
                     newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 5:
                 if(newPlan.beans > ourChosenRecommendedPlan.beans) {
@@ -129,13 +127,13 @@ public class NewPlan {
                     newPlan.beans = ourChosenRecommendedPlan.beans;
                     newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngregient));
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 6:
                 if(newPlan.vegetables > ourChosenRecommendedPlan.vegetables) {
                     newPlan.vegetables = ourChosenRecommendedPlan.vegetables;
                 }
-                newCO2e = myCalculator.calculateCO2e(newPlan);
+                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             default:
                 break;
@@ -157,31 +155,25 @@ public class NewPlan {
 
     //Initializes our recommended plan with values based on gender
     public void ourChosenRecommendedPlan(String gender) {
+        ourChosenRecommendedPlan = new Plan();
         if(gender == "male") {
-            ourChosenRecommendedPlan = new Plan() {
-                {
-                    beef = 25;
-                    pork = 50;
-                    chicken = 50;
-                    fish = 50;
-                    eggs = 25;
-                    beans = 25;
-                    vegetables = 125;
-                }
-            };
+            ourChosenRecommendedPlan.beef = 25;
+            ourChosenRecommendedPlan.pork = 50;
+            ourChosenRecommendedPlan.chicken = 50;
+            ourChosenRecommendedPlan.fish = 50;
+            ourChosenRecommendedPlan.eggs = 25;
+            ourChosenRecommendedPlan.beans = 25;
+            ourChosenRecommendedPlan.vegetables = 125;
+
         }
         else if(gender == "female") {
-            ourChosenRecommendedPlan = new Plan() {
-                {
-                    beef = 15;
-                    pork = 30;
-                    chicken = 45;
-                    fish = 30;
-                    eggs = 15;
-                    beans = 15;
-                    vegetables = 100;
-                }
-            };
+            ourChosenRecommendedPlan.beef = 15;
+            ourChosenRecommendedPlan.pork = 30;
+            ourChosenRecommendedPlan.chicken = 45;
+            ourChosenRecommendedPlan.fish = 30;
+            ourChosenRecommendedPlan.eggs = 15;
+            ourChosenRecommendedPlan.beans = 15;
+            ourChosenRecommendedPlan.vegetables = 100;
         }
     }
 
@@ -231,7 +223,7 @@ public class NewPlan {
 
     }
 
-    // Temporary until database is implemented
+    // Temporary until database is implemented(DataBase was completed)
     public float calculateDailyServing(Plan plan) {
         return (plan.beef + plan.pork + plan.chicken + plan.fish + plan.eggs + plan.beans + plan.vegetables);
     }

@@ -33,7 +33,9 @@ public class MainActivity extends AppCompatActivity
 
     public static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.mainactivity.username";
-//    private static final String TAG = "testActivity";
+
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(MainActivity)";
 
     public static Intent newIntent(Context packageContext, String username) {
         Intent intent = new Intent(packageContext, MainActivity.class);
@@ -50,7 +52,7 @@ public class MainActivity extends AppCompatActivity
         mDrawer = findViewById(R.id.drawer_layout);
 
         mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
-//        Log.i(TAG, "Name in main activity: " + mUsername);
+//        Log.i(TAG, "Username: " + mUsername + CLASSTAG);
 
         setSidebarAction();
         showDashboard();

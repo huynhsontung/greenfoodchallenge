@@ -1,6 +1,8 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -17,13 +19,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import android.widget.Toast;
-
 import com.ecoone.mindfulmealplanner.Calculator;
+import com.ecoone.mindfulmealplanner.ChartValueFormatter;
+import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
-import com.ecoone.mindfulmealplanner.dbInterface;
+import com.ecoone.mindfulmealplanner.DbInterface;
+import com.ecoone.mindfulmealplanner.db.Plan;
 import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.DecimalFormat;
@@ -33,7 +36,7 @@ public class DashboardFragment extends Fragment {
 
     private String mUsername;
     private String mGender;
-    private String mCurrentPlan;
+    private String mCurrentPlanName;
     private String[] foodName;
     private float[] foodAmount;
     private int foodLen;
@@ -42,7 +45,7 @@ public class DashboardFragment extends Fragment {
 
     private Button improveButton;
     private TextView mEditDoneIcon;
-    private TextView currentPlanTextView; // just for initializeEditTextView()
+    private TextView currentPlanTextView; // just for setEditTextView()
     private TextView currentCo2eTextView;
     private EditText editPlanName;
 
@@ -50,6 +53,7 @@ public class DashboardFragment extends Fragment {
     private PagerAdapter mChartPagerAdapter;
 
     private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(DashboardFragment)";
 
     @Nullable
     @Override
@@ -66,23 +70,22 @@ public class DashboardFragment extends Fragment {
 
         // write your code here
         mDb = AppDatabase.getDatabase(getContext());
-        dbInterface.setDb(mDb);
-
-        foodName = findStringArrayRes("food_name");
-        foodLen = foodName.length;
+        DbInterface.setDb(mDb);
 
         mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
-        mGender = dbInterface.getGenderByUsername(mUsername);
-        mCurrentPlan = dbInterface.getCurrentPlanNameByUsername(mUsername);
-        foodAmount = dbInterface.getCurrentPlanArray(mUsername, mCurrentPlan);
+        mGender = DbInterface.getGender(mUsername);
+        foodName = findStringArrayRes("food_name");
+        foodLen = foodName.length;
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
-        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for initializeEditTextView()
+        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for setEditTextView()
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
+        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
 
-        initializeEditTextView();
+        setUserInfo();
+        setEditTextView();
         setEditDoneIconAction(view);
         setupImproveButton();
         pieChartsView();
@@ -90,16 +93,26 @@ public class DashboardFragment extends Fragment {
 
     }
 
+    private void setUserInfo() {
+        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
+        Plan plan = DbInterface.getCurrentPlan(mUsername);
+        foodAmount = DbInterface.getPlanArray(plan);
+    }
+
     private void calculateCurrentCo2e() {
-        float sumCo2ePerYear = Calculator.calculateCO2e(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
         if (sumCo2ePerYear > 1.7)
-            currentCo2eTextView.setTextColor(getResources().getColor(R.color.chartRed1));
+            currentCo2eTextView.setTextColor(Color.RED);
+        else {
+            currentCo2eTextView.setTextColor(Color.BLUE);
+        }
     }
 
-    private void initializeEditTextView() {
-        editPlanName.setText(mCurrentPlan);
+    private void setEditTextView() {
+        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
+        editPlanName.setText(mCurrentPlanName);
         editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
         editPlanName.setTypeface(currentPlanTextView.getTypeface());
 //        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
@@ -120,11 +133,12 @@ public class DashboardFragment extends Fragment {
                 }
                 else {
                     editPlanName.setInputType(0);
-                    mCurrentPlan = editPlanName.getText().toString();
-                    editPlanName.setText(mCurrentPlan);
+                    mCurrentPlanName = editPlanName.getText().toString();
+                    editPlanName.setText(mCurrentPlanName);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    DbInterface.changeCurrentPlanName(mUsername, mCurrentPlanName);
                 }
             }
         });
@@ -159,8 +173,8 @@ public class DashboardFragment extends Fragment {
         improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(), "Clicked 'improve'.", Toast.LENGTH_SHORT)
-                        .show();
+                Intent intent = ImproveActivity.newIntent(getContext(), mUsername);
+                startActivityForResult(intent,0);
             }
         });
     }
@@ -181,4 +195,14 @@ public class DashboardFragment extends Fragment {
         Random rand = new Random();
         return rand.nextInt(max- min + 1) + min;
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        pieChartsView();
+        calculateCurrentCo2e();
+        setEditTextView();
+    }
+
+
 }
