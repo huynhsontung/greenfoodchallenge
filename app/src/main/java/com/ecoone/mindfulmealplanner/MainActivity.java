@@ -16,6 +16,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.PlanListFragment;
@@ -25,7 +27,6 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private String mUsername;
-
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mToggle;
@@ -55,6 +56,10 @@ public class MainActivity extends AppCompatActivity
         mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
         Log.i(TAG, "Username: " + mUsername + CLASSTAG);
 
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        View hView = navigationView.getHeaderView(0);
+        TextView nav_user = hView.findViewById(R.id.nav_username);
+        nav_user.setText(mUsername);
         setSidebarAction();
         showDashboard();
     }
@@ -122,6 +127,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
+        else if (id == R.id.fragment_plan_list) {
+            fragment = new PlanListFragment();
+        }
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);
@@ -129,9 +137,6 @@ public class MainActivity extends AppCompatActivity
             bundle.putString("VALUE_SEND","Settings");
             intent.putExtras(bundle);
             startActivity(intent);
-        }
-        else if (id == R.id.fragment_plan_list) {
-            fragment = new PlanListFragment();
         }
 
         if (fragment != null) {
