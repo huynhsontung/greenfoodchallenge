@@ -18,10 +18,10 @@ import java.util.List;
 @Dao
 public interface PlanDao {
     @Query("SELECT * FROM `Plan` WHERE username = :username AND planName = :planName LIMIT 1")
-    Plan getPlanFromUser(String username, String planName);
+    Plan getPlan(String username, String planName);
 
     @Query("SELECT * FROM `Plan` WHERE username = :username")
-    List<Plan> getAllPlansFromUser(String username);
+    List<Plan> getAllPlans(String username);
 
     @Query("SELECT count(*) FROM `Plan` WHERE username = :username")
     int getPlansCount(String username);

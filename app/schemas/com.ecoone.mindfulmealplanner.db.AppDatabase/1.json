@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "ab4a504da865161b7fc8485f3d74fe89",
+    "identityHash": "8f8aeb9fbc1c92d0af71f9c6c1c5d38a",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `currentPlan` TEXT, PRIMARY KEY(`username`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `currentPlanName` TEXT, PRIMARY KEY(`username`))",
         "fields": [
           {
             "fieldPath": "username",
@@ -21,8 +21,8 @@
             "notNull": true
           },
           {
-            "fieldPath": "currentPlan",
-            "columnName": "currentPlan",
+            "fieldPath": "currentPlanName",
+            "columnName": "currentPlanName",
             "affinity": "TEXT",
             "notNull": false
           }
@@ -129,7 +129,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"ab4a504da865161b7fc8485f3d74fe89\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"8f8aeb9fbc1c92d0af71f9c6c1c5d38a\")"
     ]
   }
 }

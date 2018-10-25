@@ -8,32 +8,18 @@
     android:orientation="vertical">
 
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/PieChart2"
-        android:layout_width="175dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="8dp"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/fragment_dashboard_chart_pager"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="0dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_dashboard_improve"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
-
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/PieChart1"
-        android:layout_width="175dp"
-        android:layout_height="250dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/fragment_dashboard_improve"
+        app:layout_constraintBottom_toTopOf="@+id/CurrentCo2eView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/PieChart2"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></android.support.v4.view.ViewPager>
 
 
     <LinearLayout
@@ -41,14 +27,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/fragment_dashboard_improve"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PieChart2"
-        app:layout_constraintVertical_bias="0.5">
+        app:layout_constraintStart_toStartOf="parent">
 
         <TextView
             android:id="@+id/fragment_dashboard_currentplan_text_view"
@@ -59,7 +42,7 @@
 
         <EditText
             android:id="@+id/fragment_dashboard_edit_plan_name"
-            android:layout_width="64dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:maxLines="1" />
@@ -95,27 +78,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/current_co2e"
         android:textAlignment="center"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/PieChart2" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment_dashboard_chart_pager" />
 
 
 </android.support.constraint.ConstraintLayout>
-
-
-
-
-
-
-
-
-
-<!--</android.support.constraint.ConstraintLayout>-->
