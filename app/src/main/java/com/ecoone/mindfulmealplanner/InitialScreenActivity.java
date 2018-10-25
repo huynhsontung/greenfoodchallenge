@@ -154,7 +154,7 @@ public class InitialScreenActivity extends AppCompatActivity {
                 if (isInfoEntered()) {
                     Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db" + CLASSTAG);
                     DbInterface.addUser(mUsername, mGender, "Plan1");
-                    DbInterface.addPlan(mUsername, foodAmount);
+                    DbInterface.addPlan(mUsername,"Plan1", foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(EXTRA_LOGIN_FLAG, 1);

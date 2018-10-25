@@ -3,7 +3,6 @@ package com.ecoone.mindfulmealplanner.fragments;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 import com.ecoone.mindfulmealplanner.Calculator;
 import com.ecoone.mindfulmealplanner.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
-import com.ecoone.mindfulmealplanner.InitialScreenActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
@@ -117,7 +115,12 @@ public class DashboardFragment extends Fragment {
 
     private void setEditTextView() {
         mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
+        // ----------------------------------------------------
+        Log.i(TAG, "=========================test SAVEAS button in Dashboard Activity==========================");
         Log.i(TAG, "Current Plan name:" + mCurrentPlanName + CLASSTAG);
+        Log.i(TAG, "Current Plan: " + DbInterface.getPlanDatatoString(DbInterface.getCurrentPlan(mUsername)).toString());
+        Log.i(TAG, "All Plan: " + DbInterface.getUserPlansDatatoString(mUsername));
+        Log.i(TAG, "=========================test SAVEAS button in Dashboard Activity==========================");
         editPlanName.setText(mCurrentPlanName);
         editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
         editPlanName.setTypeface(currentPlanTextView.getTypeface());
@@ -255,6 +258,7 @@ public class DashboardFragment extends Fragment {
         Random rand = new Random();
         return rand.nextInt(max- min + 1) + min;
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

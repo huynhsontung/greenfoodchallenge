@@ -1,21 +1,23 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
+import com.ecoone.mindfulmealplanner.fragments.InputTextDialogFragment;
+import com.ecoone.mindfulmealplanner.fragments.InputTextDialogFragment.OnInputListener;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -26,7 +28,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImproveActivity extends AppCompatActivity {
+public class ImproveActivity extends AppCompatActivity implements OnInputListener {
 
     private String mUsername;
     private String mGender;
@@ -63,7 +65,7 @@ public class ImproveActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_improve);
 
@@ -155,8 +157,7 @@ public class ImproveActivity extends AppCompatActivity {
         saveAsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                InputTextDialogFragment inputTextDialogFragment = new InputTextDialogFragment();
-                inputTextDialogFragment.onCreateDialog(null).show();
+                showAlertDialog();
             }
         });
     }
@@ -228,7 +229,6 @@ public class ImproveActivity extends AppCompatActivity {
         }
     }
 
-
     private void setPieChartView(int[] percentage, boolean animate, int color){
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
@@ -280,8 +280,26 @@ public class ImproveActivity extends AppCompatActivity {
 
 
     private String[] findStringArrayRes(String resName) {
-        int resId = getResources().getIdentifier(resName,
+        int resId = getApplicationContext().getResources().getIdentifier(resName,
                 "array", getPackageName());
-        return getResources().getStringArray(resId);
+        return getApplicationContext().getResources().getStringArray(resId);
+    }
+
+    private void showAlertDialog() {
+        FragmentManager fm = getSupportFragmentManager();
+        InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
+        dialog.show(fm, "fragment_alert");
+    }
+
+    private void saveAsDbAction(String newPlanName) {
+        DbInterface.addPlan(mUsername, newPlanName, foodAmount);
+        DbInterface.updateUserCurrentPlanName(mUsername, newPlanName);
+        finish();
+    }
+
+    @Override
+    public void sendInput(String input) {
+        Log.i(TAG, "sendInput: got the input: " + input + CLASSTAG);
+        saveAsDbAction(input);
     }
 }

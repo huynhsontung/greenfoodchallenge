@@ -19,7 +19,7 @@ public abstract class DbInterface {
         User user = new User();
         user.username = username;
         user.gender = gender;
-        user.currentPlan =currentPlan;
+        user.currentPlanName =currentPlan;
         mDb.userDao().addUser(user);
     }
 
@@ -31,12 +31,25 @@ public abstract class DbInterface {
         return mDb.userDao().getCurrentPlanName(username);
     }
 
+    public static void updateUserCurrentPlanName(final String username,
+                                                 final String newPlanName) {
+        User user = mDb.userDao().getUser(username);
+        user.currentPlanName = newPlanName;
+        mDb.userDao().updateUser(user);
+    }
+
 
     public static void addPlan(final String username,
+                               final String planName,
                                final int[] foodAmount) {
         Plan plan = new Plan();
         plan.username = username;
-        plan.planName = "Plan" + (mDb.planDao().getPlansCount(username) + 1);
+        if (planName == "") {
+            plan.planName = "Plan" + (mDb.planDao().getPlansCount(username) + 1);
+        }
+        else {
+            plan.planName = planName;
+        }
         plan.beef = foodAmount[0];
         plan.pork = foodAmount[1];
         plan.chicken = foodAmount[2];
@@ -53,7 +66,7 @@ public abstract class DbInterface {
 
         sb.append(String.format(Locale.CANADA,
                 "Username: %s, Gender: %s, Current Plan name: %s\n\n" ,
-                user.username, user.gender, user.currentPlan));
+                user.username, user.gender, user.currentPlanName));
 
         return sb;
     }
@@ -63,14 +76,16 @@ public abstract class DbInterface {
         return mDb.planDao().getPlan(username, currentPlanName);
     }
 
+    // Change the plan name which is the current plan of the User in Plan table
+    // Also change the currentplan name entry in User table
     // need to change user and plan table
     // 1. update user
     // 2. delete target plan and add the plan with new name
     public static void changeCurrentPlanName(final String username,
                                              final String newPlanName) {
         User user = mDb.userDao().getUser(username);
-        String oldPlanName = user.currentPlan;
-        user.currentPlan = newPlanName;
+        String oldPlanName = user.currentPlanName;
+        user.currentPlanName = newPlanName;
         mDb.userDao().updateUser(user);
         // get old plan
         Plan oldPlan = mDb.planDao().getPlan(username, oldPlanName);
