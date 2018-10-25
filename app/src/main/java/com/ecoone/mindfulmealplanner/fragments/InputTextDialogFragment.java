@@ -15,14 +15,22 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DbInterface;
+import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+
+import java.util.List;
 
 import javax.annotation.Nullable;
 
 
 public class InputTextDialogFragment extends DialogFragment{
 
+    private String mUsername;
+
     private EditText mEditText;
+
+    private AppDatabase mDb;
+
     private static final String EXTRA_TITLE =
             "com.ecoone.mindfulmealplanner.inputtextdialogframent.title";
     private static final String TAG = "testActivity";
@@ -48,8 +56,11 @@ public class InputTextDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
+        mDb = AppDatabase.getDatabase(getContext());
+        DbInterface.setDb(mDb);
 
-        // Use the Builder class for convenient dialog construction
+        mUsername = getArguments().getString(ImproveActivity.EXTRA_USERNAME);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         AlertDialog dialog;
         builder.setTitle("Enter a New Name");
@@ -58,8 +69,13 @@ public class InputTextDialogFragment extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String input = mEditText.getText().toString();
+                List<String> plansName = DbInterface.getAllPlansName(mUsername);
+                Log.i(TAG, "Check if input plan name is in the database: " + plansName.contains(input) + CLASSTAG);
                 if (input.equals("")) {
-                    showCustomToast("Please enter the new plan name!");
+                    showCustomToast("the new plan name is empty!");
+                }
+                else if (plansName.contains(input)) {
+                    showCustomToast("the new plan name is duplicated!");
                 }
                 else{
                     Log.i(TAG, "EditText:" + input + CLASSTAG);

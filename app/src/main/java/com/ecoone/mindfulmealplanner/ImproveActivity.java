@@ -55,7 +55,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private AppDatabase mDb;
     private PieChart mPieChart;
 
-    private static final String EXTRA_USERNAME =
+    public static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.improveactivity.username";
 
     private static final String TAG = "testActivity";
@@ -288,8 +288,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void showAlertDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_USERNAME, mUsername);
         FragmentManager fm = getSupportFragmentManager();
         InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
+        dialog.setArguments(bundle);
         dialog.show(fm, "fragment_alert");
     }
 

@@ -23,6 +23,9 @@ public interface PlanDao {
     @Query("SELECT * FROM `Plan` WHERE username = :username")
     List<Plan> getAllPlans(String username);
 
+    @Query("SELECT planName FROM `Plan` WHERE username = :username")
+    List<String> getAllPlansName(String username);
+
     @Query("SELECT count(*) FROM `Plan` WHERE username = :username")
     int getPlansCount(String username);
 

@@ -1,5 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.widget.LinearLayout;
+
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
@@ -36,6 +38,10 @@ public abstract class DbInterface {
         User user = mDb.userDao().getUser(username);
         user.currentPlanName = newPlanName;
         mDb.userDao().updateUser(user);
+    }
+
+    public static List<String> getAllPlansName(final String username) {
+        return mDb.planDao().getAllPlansName(username);
     }
 
 
