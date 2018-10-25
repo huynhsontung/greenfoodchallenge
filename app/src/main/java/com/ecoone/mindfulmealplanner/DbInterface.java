@@ -1,5 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.widget.LinearLayout;
+
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
@@ -36,6 +38,10 @@ public abstract class DbInterface {
         User user = mDb.userDao().getUser(username);
         user.currentPlanName = newPlanName;
         mDb.userDao().updateUser(user);
+    }
+
+    public static List<String> getAllPlansName(final String username) {
+        return mDb.planDao().getAllPlansName(username);
     }
 
 
@@ -117,26 +123,26 @@ public abstract class DbInterface {
         return foodAmount;
     }
 
-//    public static StringBuilder getPlanDatatoString(final Plan plan) {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(String.format(Locale.CANADA,
-//                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
-//                        "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
-//                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-//                plan.beans, plan.vegetables));
-//        return sb;
-//    }
-//
-//    public static StringBuilder getUserPlansDatatoString(final String username) {
-//        StringBuilder sb = new StringBuilder();
-//        List<Plan> allPlans = mDb.planDao().getAllPlans(username);
-//        for (Plan plan: allPlans) {
-//            sb.append(String.format(Locale.CANADA,
-//                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
-//                            "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
-//                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-//                    plan.beans, plan.vegetables));
-//        }
-//        return sb;
-//    }
+    public static StringBuilder getPlanDatatoString(final Plan plan) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.CANADA,
+                "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f, " +
+                        "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
+                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+                plan.beans, plan.vegetables));
+        return sb;
+    }
+
+    public static StringBuilder getUserPlansDatatoString(final String username) {
+        StringBuilder sb = new StringBuilder();
+        List<Plan> allPlans = mDb.planDao().getAllPlans(username);
+        for (Plan plan: allPlans) {
+            sb.append(String.format(Locale.CANADA,
+                    "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f" +
+                            "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
+                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+                    plan.beans, plan.vegetables));
+        }
+        return sb;
+    }
 }

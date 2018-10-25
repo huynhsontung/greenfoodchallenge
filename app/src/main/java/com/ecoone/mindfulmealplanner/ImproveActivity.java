@@ -33,8 +33,8 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private String mUsername;
     private String mGender;
 
-    private TextView mCurrentPlanCo2eTextView;
-    private TextView mImprovedPlanCo2eTextView;
+    private TextView mImprovedPlanCo2ePerYearTextView;
+    private TextView mPlanDifferenceCo2ePerYearTextView;
     private Button editButton;
     private Button saveAsButton;
     private Button saveButton;
@@ -48,11 +48,15 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private float[] foodAmount;
     private Plan currentPlan;
     private Plan improvedPlan;
+    private float currentPlanCo2ePerYear;
+    private float differenceCo2ePerYear;
+
+
 
     private AppDatabase mDb;
     private PieChart mPieChart;
 
-    private static final String EXTRA_USERNAME =
+    public static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.improveactivity.username";
 
     private static final String TAG = "testActivity";
@@ -79,15 +83,19 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
-        mCurrentPlanCo2eTextView = findViewById(R.id.improve_current_plan);
-        mImprovedPlanCo2eTextView = findViewById(R.id.improve_improved_plan);
+        mImprovedPlanCo2ePerYearTextView = findViewById(R.id.improve_improved_plan_per_year);
+        mPlanDifferenceCo2ePerYearTextView = findViewById(R.id.improve_difference_of_plan_per_year);
         editButton = findViewById(R.id.improve_edit);
         saveAsButton = findViewById(R.id.improve_save_as);
         saveButton = findViewById(R.id.improve_save);
 
-
         Log.i(TAG, "Username in Improve:" + mUsername + CLASSTAG);
         Log.i(TAG, "Gender in Improve:" + mGender + CLASSTAG);
+
+        currentPlan = DbInterface.getCurrentPlan(mUsername);
+        Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
+                DbInterface.getPlanDatatoString(currentPlan));
+        currentPlanCo2ePerYear = Calculator.calculateCO2ePerYear(currentPlan);
 
         initializePlansCo2eTextView();
         initializeSeekBarView();
@@ -96,19 +104,29 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void initializePlansCo2eTextView() {
-        currentPlan = DbInterface.getCurrentPlan(mUsername);
-//        Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
-//                DbInterface.getPlanDatatoString(currentPlan));
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
-//        Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
-//                DbInterface.getPlanDatatoString(improvedPlan));
         foodAmount = DbInterface.getPlanArray(improvedPlan);
-        String mCurrentPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(currentPlan));
-        mCurrentPlanCo2eTextView.setText(String.format("%s g", mCurrentPlanCo2e));
-        mCurrentPlanCo2eTextView.setTextColor(Color.BLACK);
-        setImprovedPlanCo2eText(0);
+        Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
+                DbInterface.getPlanDatatoString(improvedPlan));
+        setPlanCo2eText(0);
         setPieChartView(DbInterface.getPlanArray(improvedPlan), true,0);
+    }
+
+    private void setPlanCo2eText(int color) {
+        String mImporvedPlanCo2ePerYear = String.valueOf(Calculator.calculateCO2ePerYear(improvedPlan));
+        mImprovedPlanCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", mImporvedPlanCo2ePerYear));
+        differenceCo2ePerYear = Calculator.comparePlan(currentPlanCo2ePerYear, improvedPlan);
+        mPlanDifferenceCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", String.valueOf(differenceCo2ePerYear)));
+        if (color == 0){
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.BLUE);
+        }
+        else if (color == 1){
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.RED);
+        }
+        else {
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.BLACK);
+        }
     }
 
     private void initializeSeekBarView() {
@@ -177,7 +195,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
                 foodAmount[i] = Integer.valueOf(amountText);
                 updateImprovedPlan();
                 int color = getColorInt();
-                setImprovedPlanCo2eText(color);
+                setPlanCo2eText(color);
                 setPieChartView(foodAmount, false,color);
             }
 
@@ -194,12 +212,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
     // color, 0: blue, 1: red, 2: black
     private int getColorInt() {
-        float mCurrentPlanCo2e = Calculator.calculateCO2ePerDay(currentPlan);
-        float mImporvedPlanCo2e = Calculator.calculateCO2ePerDay(improvedPlan);
-        if (mImporvedPlanCo2e < mCurrentPlanCo2e) {
+        differenceCo2ePerYear = Calculator.comparePlan(currentPlanCo2ePerYear, improvedPlan);
+        if (differenceCo2ePerYear > 0) {
             return 0;
         }
-        else if (mImporvedPlanCo2e > mCurrentPlanCo2e){
+        else if (differenceCo2ePerYear < 0){
             return 1;
         }
         return 2;
@@ -213,20 +230,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         improvedPlan.eggs = foodAmount[4];
         improvedPlan.beans = foodAmount[5];
         improvedPlan.vegetables = foodAmount[6];
-    }
-
-    private void setImprovedPlanCo2eText(int color) {
-        String mImporvedPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(improvedPlan));
-        mImprovedPlanCo2eTextView.setText(String.format("%s g", mImporvedPlanCo2e));
-        if (color == 0){
-            mImprovedPlanCo2eTextView.setTextColor(Color.BLUE);
-        }
-        else if (color == 1){
-            mImprovedPlanCo2eTextView.setTextColor(Color.RED);
-        }
-        else {
-            mImprovedPlanCo2eTextView.setTextColor(Color.BLACK);
-        }
     }
 
     private void setPieChartView(float[] percentage, boolean animate, int color){
@@ -287,8 +290,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void showAlertDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_USERNAME, mUsername);
         FragmentManager fm = getSupportFragmentManager();
         InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
+        dialog.setArguments(bundle);
         dialog.show(fm, "fragment_alert");
     }
 
