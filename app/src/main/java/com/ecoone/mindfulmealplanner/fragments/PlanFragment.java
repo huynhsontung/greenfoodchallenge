@@ -2,10 +2,14 @@ package com.ecoone.mindfulmealplanner.fragments;
 
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.Printer;
 import android.util.TypedValue;
@@ -19,11 +23,13 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.Calculator;
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.github.mikephil.charting.charts.PieChart;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class PlanFragment extends Fragment {
@@ -43,6 +49,9 @@ public class PlanFragment extends Fragment {
     private TextView currentPlanTextView; // just for setEditTextView()
     private TextView currentCo2eTextView;
     private EditText editPlanName;
+
+    private ViewPager mChartPager;
+    private PagerAdapter mChartPagerAdapter;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(PlanFragment)";
@@ -88,8 +97,21 @@ public class PlanFragment extends Fragment {
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view);
         currentCo2eTextView = view.findViewById(R.id.frag_CurrentCo2eView);
 
+        calculateCurrentCo2e();
         setEditTextView();
         setEditDoneIconAction(view);
+        setupPieChartFragmentPager();
+    }
+
+    private void calculateCurrentCo2e() {
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
+        String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
+        currentCo2eTextView.setText(message);
+        if (sumCo2ePerYear > 1.7)
+            currentCo2eTextView.setTextColor(Color.RED);
+        else {
+            currentCo2eTextView.setTextColor(Color.BLUE);
+        }
     }
 
     private void setEditTextView() {
@@ -140,6 +162,28 @@ public class PlanFragment extends Fragment {
             DbInterface.changePlanName(mUsername, mPlanName, newPlanName);
             mPlanName = newPlanName;
         }
+    }
+
+    private void setupPieChartFragmentPager() {
+        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
+
+        mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
+        mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
+                if (i == 0)
+                    return DashboardChartFragment.newInstance(i,foodAmount);
+                else
+                    return DashboardChartFragment.newInstance(i,co2Amount);
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
+        mChartPager.setAdapter(mChartPagerAdapter);
+        mChartPager.setCurrentItem(0);
     }
 
     private String[] findStringArrayRes(String resName) {
