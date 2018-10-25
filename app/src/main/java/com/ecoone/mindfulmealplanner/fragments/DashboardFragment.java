@@ -110,7 +110,10 @@ public class DashboardFragment extends Fragment {
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
         if (sumCo2ePerYear > 1.7)
-            currentCo2eTextView.setTextColor(getResources().getColor(R.color.chartRed1));
+            currentCo2eTextView.setTextColor(Color.RED);
+        else {
+            currentCo2eTextView.setTextColor(Color.BLUE);
+        }
     }
 
     private void setEditTextView() {
@@ -265,6 +268,7 @@ public class DashboardFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.i(TAG, "In DashBoardFragment now");
         setpieChartsView();
+        calculateCurrentCo2e();
         setEditTextView();
     }
 
