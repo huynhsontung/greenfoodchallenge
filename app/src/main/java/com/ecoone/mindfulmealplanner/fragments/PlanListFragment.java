@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -8,14 +9,15 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.MainActivity;
+import com.ecoone.mindfulmealplanner.PlanPagerActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
@@ -81,13 +83,14 @@ public class PlanListFragment extends Fragment {
             super(inflater.inflate(R.layout.list_item_plan, parent, false));
             itemView.setOnClickListener(this);
 
-            mPlanNameTextView = itemView.findViewById(R.id.plan_name);
+            mPlanNameTextView = itemView.findViewById(R.id.recyclerview_plan_name);
             mPlanFoodAmountTextView = itemView.findViewById(R.id.plan_food_amount);
         }
 
         @Override
         public void onClick(View view) {
-            Toast.makeText(getActivity(), mPlan.planName + " clicked!", Toast.LENGTH_SHORT).show();
+            Intent intent = PlanPagerActivity.newIntent(getActivity(), mUsername, mPlan.planName);
+            startActivity(intent);
         }
 
         public void bind(Plan plan) {

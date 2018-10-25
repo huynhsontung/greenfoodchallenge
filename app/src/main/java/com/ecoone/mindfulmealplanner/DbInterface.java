@@ -1,5 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.support.annotation.NonNull;
+
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
@@ -40,6 +42,10 @@ public abstract class DbInterface {
 
     public static List<Plan> getAllPlans(final String username) {
         return mDb.planDao().getAllPlans(username);
+    }
+
+    public static List<String> getAllPlansName(final String username) {
+        return mDb.planDao().getAllPlansName(username);
     }
 
     public static void addPlan(final String username,
@@ -152,4 +158,17 @@ public abstract class DbInterface {
         }
         return sb;
     }
+
+    public static StringBuilder getPlansListtoString(final List<Plan> allPlans) {
+        StringBuilder sb = new StringBuilder();
+        for (Plan plan: allPlans) {
+            sb.append(String.format(Locale.CANADA,
+                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
+                            "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
+                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+                    plan.beans, plan.vegetables));
+        }
+        return sb;
+    }
+
 }
