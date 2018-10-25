@@ -20,14 +20,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.Calculator;
-import com.ecoone.mindfulmealplanner.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
-import com.github.mikephil.charting.charts.PieChart;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -88,7 +86,7 @@ public class DashboardFragment extends Fragment {
         setEditTextView();
         setEditDoneIconAction(view);
         setupImproveButton();
-        pieChartsView();
+        setupPieChartFragmentPager();
         calculateCurrentCo2e();
 
     }
@@ -145,8 +143,8 @@ public class DashboardFragment extends Fragment {
     }
 
 
-    private void pieChartsView() {
-        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlanFromUser(mUsername,mCurrentPlan));
+    private void setupPieChartFragmentPager() {
+        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
         mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
@@ -180,11 +178,6 @@ public class DashboardFragment extends Fragment {
     }
 
 
-
-
-
-
-
     private String[] findStringArrayRes(String resName) {
         int resId = getResources().getIdentifier(resName,
                 "array", getActivity().getPackageName());
@@ -199,7 +192,7 @@ public class DashboardFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        pieChartsView();
+        setupPieChartFragmentPager();
         calculateCurrentCo2e();
         setEditTextView();
     }

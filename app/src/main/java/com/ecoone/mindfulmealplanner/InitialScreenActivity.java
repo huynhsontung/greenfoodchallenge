@@ -45,7 +45,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
     private PieChart mPieChart;
     private String[] foodName;
-    private int[] foodAmount;
+    private float[] foodAmount;
     private int foodLen;
     private ConstraintLayout[] mFoodSeekBarView;
     private TextView[] mFoodSeekBarTextView;
@@ -76,7 +76,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         DbInterface.setDb(mDb);
 
         // Remove data from database and SharedPreferences
-        initialization();
+//        setAllDataTemporary();
 
         // check if go to the fragment_dashboard
         checkIfGotoDashboard();
@@ -90,7 +90,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
     }
 
-    private void initialization() {
+    private void setAllDataTemporary() {
         SharedPreferences.Editor editor = settings.edit();
         editor.remove(EXTRA_USERNAME);
         editor.remove(EXTRA_LOGIN_FLAG);
@@ -189,7 +189,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private void initializeSeekBarView() {
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
-        foodAmount = new int[foodLen];
+        foodAmount = new float[foodLen];
         mFoodSeekBarView = new ConstraintLayout[foodLen];
         mFoodSeekBarTextView = new TextView[foodLen];
         mFoodSeekBarAction = new SeekBar[foodLen];
@@ -243,7 +243,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         });
     }
 
-    private void setPieChartView(int[] data) {
+    private void setPieChartView(float[] data) {
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < foodLen; i++) {
             // filter out 0 values
