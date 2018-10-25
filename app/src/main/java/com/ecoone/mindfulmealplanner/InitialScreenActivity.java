@@ -168,12 +168,12 @@ public class InitialScreenActivity extends AppCompatActivity {
 
     private boolean isInfoEntered() {
         mUsername = mEditText.getText().toString();
-        if (mUsername.length() == 0) {
-            showCustomToast("please enter your username!");
+        if (mUsername.equals("")) {
+            showCustomToast("Please enter your username!");
             return false;
         }
         if (mGender == null) {
-            showCustomToast("please choose the gender!");
+            showCustomToast("Please choose the gender!");
             return false;
         }
         return true;

@@ -44,12 +44,7 @@ public abstract class DbInterface {
                                final int[] foodAmount) {
         Plan plan = new Plan();
         plan.username = username;
-        if (planName == "") {
-            plan.planName = "Plan" + (mDb.planDao().getPlansCount(username) + 1);
-        }
-        else {
-            plan.planName = planName;
-        }
+        plan.planName = planName;
         plan.beef = foodAmount[0];
         plan.pork = foodAmount[1];
         plan.chicken = foodAmount[2];
@@ -125,7 +120,7 @@ public abstract class DbInterface {
     public static StringBuilder getPlanDatatoString(final Plan plan) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.CANADA,
-                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
+                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
                         "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
                 plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                 plan.beans, plan.vegetables));

@@ -9,8 +9,10 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
@@ -56,8 +58,14 @@ public class InputTextDialogFragment extends DialogFragment{
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String input = mEditText.getText().toString();
-                Log.i(TAG, "EditText:" + input + CLASSTAG);
-                mOnInputListener.sendInput(input);
+                if (input.equals("")) {
+                    showCustomToast("Please enter the new plan name!");
+                }
+                else{
+                    Log.i(TAG, "EditText:" + input + CLASSTAG);
+                    mOnInputListener.sendInput(input);
+                }
+
             }
         });
 
@@ -75,6 +83,13 @@ public class InputTextDialogFragment extends DialogFragment{
         dialog = builder.create();
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         return dialog;
+    }
+
+    private void showCustomToast(String message) {
+        Toast mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
+                0, 0);
+        mToast.show();
     }
 
     @Override
