@@ -1,8 +1,6 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
-import android.content.Context;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -88,7 +86,7 @@ public class DashboardChartFragment extends Fragment {
         if (chartNum == 0)
             setupPieChart1(foodAmount,foodName);
         else
-            setupPieChart2(foodCo2Amount,foodName);
+            setupPieChart1(foodCo2Amount,foodName);
     }
 
     void setupPieChart1(float[] percentage, String[] foodNames){
@@ -98,62 +96,44 @@ public class DashboardChartFragment extends Fragment {
             if(percentage[i] > 0.001)
                 pieEntries.add(new PieEntry(percentage[i], foodNames[i]));
         }
-
         PieDataSet dataSet = new PieDataSet(pieEntries,null);
-        dataSet.setColors(new int[]{
-                        R.color.chartBlue1,
-                        R.color.chartBlue2,
-                        R.color.chartBlue3,
-                        R.color.chartBlue4,
-                        R.color.chartBlue5,
-                        R.color.chartBlue6,
-                        R.color.chartBlue7},
-                getContext());
-        dataSet.setValueFormatter(new ChartValueFormatter());
-        dataSet.setValueTextSize(10);
-        dataSet.setValueTextColor(Color.WHITE);
-        PieData data = new PieData(dataSet);
-        chart.setData(data);
+        // setup colors, chart description and labels
+        int[] colors;
         Description description = chart.getDescription();
-        description.setText("Portion percentage");
-        Legend legend = chart.getLegend();
-        legend.setWordWrapEnabled(true);
-        chart.setDescription(description);
-        chart.setUsePercentValues(true);
-        chart.setDrawEntryLabels(false);
-        chart.animateY(1000);
-        chart.invalidate();
-    }
-
-    void setupPieChart2(float[] co2Percentage, String[] foodNames){
-        List<PieEntry> pieEntries = new ArrayList<>();
-        for (int i=0; i<co2Percentage.length;i++){
-            // filter out small values
-            if(co2Percentage[i] > 0.001)
-                pieEntries.add(new PieEntry(co2Percentage[i], foodNames[i]));
+        if(chartNum == 0) {
+            colors = new int[]{
+                    R.color.chartBlue1,
+                    R.color.chartBlue2,
+                    R.color.chartBlue3,
+                    R.color.chartBlue4,
+                    R.color.chartBlue5,
+                    R.color.chartBlue6,
+                    R.color.chartBlue7};
+            description.setText("Portion percentage");
         }
-
-        PieDataSet dataSet = new PieDataSet(pieEntries,null);
-        dataSet.setColors(new int[]{
-                        R.color.chartRed1,
-                        R.color.chartRed2,
-                        R.color.chartRed3,
-                        R.color.chartRed4,
-                        R.color.chartRed5,
-                        R.color.chartRed6,
-                        R.color.chartRed7},
-                getContext());
+        else {
+            colors = new int[] {
+                    R.color.chartRed1,
+                    R.color.chartRed2,
+                    R.color.chartRed3,
+                    R.color.chartRed4,
+                    R.color.chartRed5,
+                    R.color.chartRed6,
+                    R.color.chartRed7};
+            description.setText("CO2e percentage");
+        }
+        dataSet.setColors(colors, getContext());
         dataSet.setValueFormatter(new ChartValueFormatter());
-        dataSet.setValueTextSize(10);
+        dataSet.setValueTextSize(12);
         dataSet.setValueTextColor(Color.WHITE);
         PieData data = new PieData(dataSet);
         chart.setData(data);
-        Description description = chart.getDescription();
-        description.setText("CO2e percentage");
         Legend legend = chart.getLegend();
         legend.setWordWrapEnabled(true);
         chart.setDescription(description);
         chart.setUsePercentValues(true);
+        chart.setHoleRadius(40);
+        chart.setTransparentCircleRadius(50);
         chart.setDrawEntryLabels(false);
         chart.animateY(1000);
         chart.invalidate();
