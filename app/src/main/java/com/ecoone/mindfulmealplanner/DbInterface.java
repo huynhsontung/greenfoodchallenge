@@ -81,9 +81,22 @@ public abstract class DbInterface {
         mDb.planDao().addPlan(newPlan);
     }
 
-    public static float[] getCurrentPlanArray(final String username, final String planName) {
-        Plan plan = mDb.planDao().getPlan(username, planName);
-        float[] foodAmount = new float[7];
+    public static void updateCurrentPlan(final String username, final Plan plan) {
+        Plan currentPlan = getCurrentPlan(username);
+        Plan newPlan = getCurrentPlan(username);
+        mDb.planDao().deletePlan(currentPlan);
+        newPlan.beef = plan.beef;
+        newPlan.pork = plan.pork;
+        newPlan.chicken = plan.chicken;
+        newPlan.fish = plan.fish;
+        newPlan.eggs = plan.eggs;
+        newPlan.beans = plan.beans;
+        newPlan.vegetables = plan.vegetables;
+        mDb.planDao().addPlan(newPlan);
+    }
+
+    public static int[] getPlanArray(final Plan plan) {
+        int[] foodAmount = new int[7];
         foodAmount[0] = plan.beef;
         foodAmount[1] = plan.pork;
         foodAmount[2] = plan.chicken;
@@ -94,19 +107,17 @@ public abstract class DbInterface {
         return foodAmount;
     }
 
-    public static StringBuilder getCurrentPlanDatatoString(final String username) {
+    public static StringBuilder getPlanDatatoString(final Plan plan) {
         StringBuilder sb = new StringBuilder();
-        Plan plan = getCurrentPlan(username);
         sb.append(String.format(Locale.CANADA,
                 "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
                         "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
                 plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                 plan.beans, plan.vegetables));
-
         return sb;
     }
 
-    public static StringBuilder getPlanDatatoString(final String username) {
+    public static StringBuilder getUserPlansDatatoString(final String username) {
         StringBuilder sb = new StringBuilder();
         List<Plan> allPlans = mDb.planDao().getAllPlans(username);
         for (Plan plan: allPlans) {

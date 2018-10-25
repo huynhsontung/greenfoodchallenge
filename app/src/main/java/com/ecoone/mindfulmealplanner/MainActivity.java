@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+
     private void setSidebarAction() {
         setSupportActionBar(mToolbar);
         mToggle = new ActionBarDrawerToggle(
