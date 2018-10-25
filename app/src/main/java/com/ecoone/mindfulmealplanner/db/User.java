@@ -17,5 +17,5 @@ public class User {
     public String gender;
 //    public long createDate;
 //    public long lastLoginDate;
-    public String currentPlan;
+    public String currentPlanName;
 }

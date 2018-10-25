@@ -40,7 +40,6 @@ public class InitialScreenActivity extends AppCompatActivity {
     private SharedPreferences settings;
     private int loginFlag = 0;
     private AppDatabase mDb;
-    private dbInterface dbInterface;
 
     private Toast mToast;
 
@@ -58,6 +57,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     private static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.initialscreenactivity.username";
     private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(InitialActivity)";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +73,7 @@ public class InitialScreenActivity extends AppCompatActivity {
 
         settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mDb = AppDatabase.getDatabase(getApplicationContext());
-        dbInterface.setDb(mDb);
+        DbInterface.setDb(mDb);
 
         // Remove data from database and SharedPreferences
 //        initialization();
@@ -97,20 +97,20 @@ public class InitialScreenActivity extends AppCompatActivity {
         editor.apply();
         mDb.planDao().deleteAll();
         mDb.userDao().deleteALL();
-//        dbInterface.addUser(mDb, "arlenx", "male");
+//        DbInterface.addUser(mDb, "arlenx", "male");
     }
 
     private void checkIfGotoDashboard() {
         loginFlag = isLogin();
         // if no user login
         if (loginFlag == 0) {
-            Log.i(TAG, "No user log in. Wait for initialization.");
+            Log.i(TAG, "No user log in. Wait for initialization." + CLASSTAG);
         }
         else {
-            Log.i(TAG, "Someone already login");
+            Log.i(TAG, "Someone already login" + CLASSTAG);
             mUsername = getUsernameInSharedPreference();
             if (mUsername == null) {
-                Log.i(TAG, "Error. Username is empty.");
+                Log.i(TAG, "Error. Username is empty." + CLASSTAG);
                 return;
             }
             startActivityAndFinish(mUsername);
@@ -129,7 +129,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         maleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click male");
+                Log.i(TAG, "Click male" + CLASSTAG);
                 maleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
                 femaleTextView.setBackgroundResource(R.drawable.border_grey);
                 mGender = "male";
@@ -139,7 +139,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         femaleTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Click female");
+                Log.i(TAG, "Click female" + CLASSTAG);
                 femaleTextView.setBackgroundResource(R.drawable.inside_and_border_grey);
                 maleTextView.setBackgroundResource(R.drawable.border_grey);
                 mGender = "female";
@@ -152,9 +152,9 @@ public class InitialScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isInfoEntered()) {
-                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db");
-                    dbInterface.addUser(mUsername, mGender, "Plan1");
-                    dbInterface.addPlan(mUsername, foodAmount);
+                    Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db" + CLASSTAG);
+                    DbInterface.addUser(mUsername, mGender, "Plan1");
+                    DbInterface.addPlan(mUsername,"Plan1", foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
                     editor.putInt(EXTRA_LOGIN_FLAG, 1);
@@ -168,12 +168,12 @@ public class InitialScreenActivity extends AppCompatActivity {
 
     private boolean isInfoEntered() {
         mUsername = mEditText.getText().toString();
-        if (mUsername.length() == 0) {
-            showCustomToast("please enter your username!");
+        if (mUsername.equals("")) {
+            showCustomToast("Please enter your username!");
             return false;
         }
         if (mGender == null) {
-            showCustomToast("please choose the gender!");
+            showCustomToast("Please choose the gender!");
             return false;
         }
         return true;
