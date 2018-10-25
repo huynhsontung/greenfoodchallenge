@@ -47,7 +47,7 @@ public abstract class DbInterface {
 
     public static void addPlan(final String username,
                                final String planName,
-                               final int[] foodAmount) {
+                               final float[] foodAmount) {
         Plan plan = new Plan();
         plan.username = username;
         plan.planName = planName;
@@ -111,8 +111,8 @@ public abstract class DbInterface {
         mDb.planDao().addPlan(newPlan);
     }
 
-    public static int[] getPlanArray(final Plan plan) {
-        int[] foodAmount = new int[7];
+    public static float[] getPlanArray(final Plan plan) {
+        float[] foodAmount = new float[7];
         foodAmount[0] = plan.beef;
         foodAmount[1] = plan.pork;
         foodAmount[2] = plan.chicken;
@@ -123,26 +123,26 @@ public abstract class DbInterface {
         return foodAmount;
     }
 
-    public static StringBuilder getPlanDatatoString(final Plan plan) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.CANADA,
-                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
-                        "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
-                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-                plan.beans, plan.vegetables));
-        return sb;
-    }
-
-    public static StringBuilder getUserPlansDatatoString(final String username) {
-        StringBuilder sb = new StringBuilder();
-        List<Plan> allPlans = mDb.planDao().getAllPlans(username);
-        for (Plan plan: allPlans) {
-            sb.append(String.format(Locale.CANADA,
-                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
-                            "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
-                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-                    plan.beans, plan.vegetables));
-        }
-        return sb;
-    }
+//    public static StringBuilder getPlanDatatoString(final Plan plan) {
+//        StringBuilder sb = new StringBuilder();
+//        sb.append(String.format(Locale.CANADA,
+//                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
+//                        "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
+//                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+//                plan.beans, plan.vegetables));
+//        return sb;
+//    }
+//
+//    public static StringBuilder getUserPlansDatatoString(final String username) {
+//        StringBuilder sb = new StringBuilder();
+//        List<Plan> allPlans = mDb.planDao().getAllPlans(username);
+//        for (Plan plan: allPlans) {
+//            sb.append(String.format(Locale.CANADA,
+//                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
+//                            "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
+//                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+//                    plan.beans, plan.vegetables));
+//        }
+//        return sb;
+//    }
 }

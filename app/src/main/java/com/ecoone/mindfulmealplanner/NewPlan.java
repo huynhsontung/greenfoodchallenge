@@ -138,7 +138,6 @@ public class NewPlan {
             default:
                 break;
         }
-        printPlan(newPlan);
     }
 
     //Adjusts our recommended plan ingredient values based on the scale factor,

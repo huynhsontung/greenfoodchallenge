@@ -52,13 +52,11 @@ public class MainActivity extends AppCompatActivity
         mDrawer = findViewById(R.id.drawer_layout);
 
         mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
-        Log.i(TAG, "Username: " + mUsername + CLASSTAG);
+//        Log.i(TAG, "Username: " + mUsername + CLASSTAG);
 
         setSidebarAction();
         showDashboard();
     }
-
-
 
     private void setSidebarAction() {
         setSupportActionBar(mToolbar);
@@ -112,7 +110,7 @@ public class MainActivity extends AppCompatActivity
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        Log.i("test", "Item:" +item);
+//        Log.i("test", "Item:" +item);
         Fragment fragment = null;
         // Handle navigation view item clicks here..
         int id = item.getItemId();
