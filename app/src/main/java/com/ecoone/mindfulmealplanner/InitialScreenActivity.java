@@ -76,7 +76,7 @@ public class InitialScreenActivity extends AppCompatActivity {
         DbInterface.setDb(mDb);
 
         // Remove data from database and SharedPreferences
-        initialization();
+//        initialization();
 
         // check if go to the fragment_dashboard
         checkIfGotoDashboard();
