@@ -3,6 +3,7 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,26 +33,30 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private String mUsername;
     private String mGender;
 
-    private TextView mCurrentPlanCo2eTextView;
-    private TextView mImporvedPlanCo2eTextView;
+    private TextView mImprovedPlanCo2ePerYearTextView;
+    private TextView mPlanDifferenceCo2ePerYearTextView;
     private Button editButton;
     private Button saveAsButton;
     private Button saveButton;
-    private LinearLayout[] mfoodSeekBarView;
-    private TextView[] mfoodSeekBarTextView;
-    private SeekBar[] mfoodSeekBarAction;
-    private TextView[] mfoodSeekBarValueView;
+    private ConstraintLayout[] mFoodSeekBarView;
+    private TextView[] mFoodSeekBarTextView;
+    private SeekBar[] mFoodSeekBarAction;
+    private TextView[] mFoodSeekBarValueView;
 
     private String[] foodName;
     private int foodLen;
-    private int[] foodAmount;
+    private float[] foodAmount;
     private Plan currentPlan;
     private Plan improvedPlan;
+    private float currentPlanCo2ePerYear;
+    private float differenceCo2ePerYear;
+
+
 
     private AppDatabase mDb;
     private PieChart mPieChart;
 
-    private static final String EXTRA_USERNAME =
+    public static final String EXTRA_USERNAME =
             "com.ecoone.mindfulmealplanner.improveactivity.username";
 
     private static final String TAG = "testActivity";
@@ -78,15 +83,19 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
-        mCurrentPlanCo2eTextView = findViewById(R.id.improve_current_plan);
-        mImporvedPlanCo2eTextView = findViewById(R.id.improve_improved_plan);
+        mImprovedPlanCo2ePerYearTextView = findViewById(R.id.improve_improved_plan_per_year);
+        mPlanDifferenceCo2ePerYearTextView = findViewById(R.id.improve_difference_of_plan_per_year);
         editButton = findViewById(R.id.improve_edit);
         saveAsButton = findViewById(R.id.improve_save_as);
         saveButton = findViewById(R.id.improve_save);
 
-
         Log.i(TAG, "Username in Improve:" + mUsername + CLASSTAG);
         Log.i(TAG, "Gender in Improve:" + mGender + CLASSTAG);
+
+        currentPlan = DbInterface.getCurrentPlan(mUsername);
+        Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
+                DbInterface.getPlanDatatoString(currentPlan));
+        currentPlanCo2ePerYear = Calculator.calculateCO2ePerYear(currentPlan);
 
         initializePlansCo2eTextView();
         initializeSeekBarView();
@@ -95,42 +104,52 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void initializePlansCo2eTextView() {
-        currentPlan = DbInterface.getCurrentPlan(mUsername);
-        Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
-                DbInterface.getPlanDataWithNametoString(currentPlan));
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
-        Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
-                DbInterface.getPlanDataWithNametoString(improvedPlan));
         foodAmount = DbInterface.getPlanArray(improvedPlan);
-        String mCurrentPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(currentPlan));
-        mCurrentPlanCo2eTextView.setText(String.format("%s g", mCurrentPlanCo2e));
-        mCurrentPlanCo2eTextView.setTextColor(Color.BLACK);
-        setImprovedPlanCo2eText(0);
+        Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
+                DbInterface.getPlanDatatoString(improvedPlan));
+        setPlanCo2eText(0);
         setPieChartView(DbInterface.getPlanArray(improvedPlan), true,0);
     }
 
-    private void initializeSeekBarView() {
-        mfoodSeekBarView = new LinearLayout[foodLen];
-        mfoodSeekBarTextView = new TextView[foodLen];
-        mfoodSeekBarAction = new SeekBar[foodLen];
-        mfoodSeekBarValueView = new TextView[foodLen];
+    private void setPlanCo2eText(int color) {
+        String mImporvedPlanCo2ePerYear = String.valueOf(Calculator.calculateCO2ePerYear(improvedPlan));
+        mImprovedPlanCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", mImporvedPlanCo2ePerYear));
+        differenceCo2ePerYear = Calculator.comparePlan(currentPlanCo2ePerYear, improvedPlan);
+        mPlanDifferenceCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", String.valueOf(differenceCo2ePerYear)));
+        if (color == 0){
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.BLUE);
+        }
+        else if (color == 1){
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.RED);
+        }
+        else {
+            mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.BLACK);
+        }
+    }
 
-        mfoodSeekBarView[0] = findViewById(R.id.improve_seekbar_component_1);
-        mfoodSeekBarView[1] = findViewById(R.id.improve_seekbar_component_2);
-        mfoodSeekBarView[2] = findViewById(R.id.improve_seekbar_component_3);
-        mfoodSeekBarView[3] = findViewById(R.id.improve_seekbar_component_4);
-        mfoodSeekBarView[4] = findViewById(R.id.improve_seekbar_component_5);
-        mfoodSeekBarView[5] = findViewById(R.id.improve_seekbar_component_6);
-        mfoodSeekBarView[6] = findViewById(R.id.improve_seekbar_component_7);
+    private void initializeSeekBarView() {
+        mFoodSeekBarView = new ConstraintLayout[foodLen];
+        mFoodSeekBarTextView = new TextView[foodLen];
+        mFoodSeekBarAction = new SeekBar[foodLen];
+        mFoodSeekBarValueView = new TextView[foodLen];
+
+        mFoodSeekBarView[0] = findViewById(R.id.improve_seekbar_component_1);
+        mFoodSeekBarView[1] = findViewById(R.id.improve_seekbar_component_2);
+        mFoodSeekBarView[2] = findViewById(R.id.improve_seekbar_component_3);
+        mFoodSeekBarView[3] = findViewById(R.id.improve_seekbar_component_4);
+        mFoodSeekBarView[4] = findViewById(R.id.improve_seekbar_component_5);
+        mFoodSeekBarView[5] = findViewById(R.id.improve_seekbar_component_6);
+        mFoodSeekBarView[6] = findViewById(R.id.improve_seekbar_component_7);
 
         for (int i = 0; i < foodLen; i++) {
-            mfoodSeekBarTextView[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_text);
-            mfoodSeekBarAction[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_action);
-            mfoodSeekBarValueView[i] = mfoodSeekBarView[i].findViewById(R.id.seekbar_value);
-            mfoodSeekBarTextView[i].setText(foodName[i]);
-            mfoodSeekBarAction[i].setProgress(foodAmount[i]);
-            mfoodSeekBarValueView[i].setText(String.valueOf(foodAmount[i]) + " g");
+            mFoodSeekBarTextView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_text);
+            mFoodSeekBarAction[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_action);
+            mFoodSeekBarValueView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_value);
+            mFoodSeekBarTextView[i].setText(foodName[i]);
+            mFoodSeekBarAction[i].setProgress((int)foodAmount[i]);
+            mFoodSeekBarValueView[i].setText(String.valueOf(foodAmount[i]) + " g");
         }
     }
 
@@ -139,7 +158,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
             @Override
             public void onClick(View v) {
                 for (int i = 0; i < foodLen; i++) {
-                    mfoodSeekBarView[i].setVisibility(View.VISIBLE);
+                    mFoodSeekBarView[i].setVisibility(View.VISIBLE);
                 }
                 v.setVisibility(View.GONE);
             }
@@ -168,15 +187,15 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void setSeekBarListener(final int i) {
-        mfoodSeekBarAction[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        mFoodSeekBarAction[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 String amountText = String.valueOf(progress);
-                mfoodSeekBarValueView[i].setText(amountText+ " g");
+                mFoodSeekBarValueView[i].setText(amountText+ " g");
                 foodAmount[i] = Integer.valueOf(amountText);
                 updateImprovedPlan();
                 int color = getColorInt();
-                setImprovedPlanCo2eText(color);
+                setPlanCo2eText(color);
                 setPieChartView(foodAmount, false,color);
             }
 
@@ -193,12 +212,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
     // color, 0: blue, 1: red, 2: black
     private int getColorInt() {
-        float mCurrentPlanCo2e = Calculator.calculateCO2ePerDay(currentPlan);
-        float mImporvedPlanCo2e = Calculator.calculateCO2ePerDay(improvedPlan);
-        if (mImporvedPlanCo2e < mCurrentPlanCo2e) {
+        differenceCo2ePerYear = Calculator.comparePlan(currentPlanCo2ePerYear, improvedPlan);
+        if (differenceCo2ePerYear > 0) {
             return 0;
         }
-        else if (mImporvedPlanCo2e > mCurrentPlanCo2e){
+        else if (differenceCo2ePerYear < 0){
             return 1;
         }
         return 2;
@@ -214,21 +232,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         improvedPlan.vegetables = foodAmount[6];
     }
 
-    private void setImprovedPlanCo2eText(int color) {
-        String mImporvedPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(improvedPlan));
-        mImporvedPlanCo2eTextView.setText(String.format("%s g", mImporvedPlanCo2e));
-        if (color == 0){
-            mImporvedPlanCo2eTextView.setTextColor(Color.BLUE);
-        }
-        else if (color == 1){
-            mImporvedPlanCo2eTextView.setTextColor(Color.RED);
-        }
-        else {
-            mImporvedPlanCo2eTextView.setTextColor(Color.BLACK);
-        }
-    }
-
-    private void setPieChartView(int[] percentage, boolean animate, int color){
+    private void setPieChartView(float[] percentage, boolean animate, int color){
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<percentage.length;i++){
@@ -267,6 +271,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         Description description = mPieChart.getDescription();
         description.setText("Portion percentage");
         Legend legend = mPieChart.getLegend();
+        legend.setEnabled(false);
         legend.setWordWrapEnabled(true);
         mPieChart.setDescription(description);
         mPieChart.setUsePercentValues(true);
@@ -285,8 +290,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void showAlertDialog() {
+        Bundle bundle = new Bundle();
+        bundle.putString(EXTRA_USERNAME, mUsername);
         FragmentManager fm = getSupportFragmentManager();
         InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
+        dialog.setArguments(bundle);
         dialog.show(fm, "fragment_alert");
     }
 

@@ -31,10 +31,10 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Co2e For Current Plan:" />
+            android:text="Co2e For Improved Plan Per Year:" />
 
         <TextView
-            android:id="@+id/improve_current_plan"
+            android:id="@+id/improve_improved_plan_per_year"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>
@@ -54,10 +54,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Co2e For Improved Plan:" />
+            android:text="Co2e For the Difference Per Year:" />
 
         <TextView
-            android:id="@+id/improve_improved_plan"
+            android:id="@+id/improve_difference_of_plan_per_year"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"/>

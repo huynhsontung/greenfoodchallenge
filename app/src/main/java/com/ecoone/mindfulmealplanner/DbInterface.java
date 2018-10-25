@@ -1,7 +1,5 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.support.annotation.NonNull;
-
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
@@ -50,7 +48,7 @@ public abstract class DbInterface {
 
     public static void addPlan(final String username,
                                final String planName,
-                               final int[] foodAmount) {
+                               final float[] foodAmount) {
         Plan plan = new Plan();
         plan.username = username;
         plan.planName = planName;
@@ -120,8 +118,8 @@ public abstract class DbInterface {
         mDb.planDao().addPlan(newPlan);
     }
 
-    public static int[] getPlanArray(final Plan plan) {
-        int[] foodAmount = new int[7];
+    public static float[] getPlanArray(final Plan plan) {
+        float[] foodAmount = new float[7];
         foodAmount[0] = plan.beef;
         foodAmount[1] = plan.pork;
         foodAmount[2] = plan.chicken;
@@ -135,18 +133,8 @@ public abstract class DbInterface {
     public static StringBuilder getPlanDatatoString(final Plan plan) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.CANADA,
-                "Beef: %d, Pork: %d, Chicken: %d, Fish: %d,\n" +
-                        "Eggs: %d, Beans: %d, Vegetables: %d",
-                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-                plan.beans, plan.vegetables));
-        return sb;
-    }
-
-    public static StringBuilder getPlanDataWithNametoString(final Plan plan) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.format(Locale.CANADA,
-                "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
-                        "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
+                "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f, " +
+                        "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
                 plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                 plan.beans, plan.vegetables));
         return sb;
@@ -157,6 +145,8 @@ public abstract class DbInterface {
         List<Plan> allPlans = mDb.planDao().getAllPlans(username);
         for (Plan plan: allPlans) {
             sb.append(String.format(Locale.CANADA,
+                    "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f" +
+                            "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
                     "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
                             "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
                     plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
@@ -169,12 +159,11 @@ public abstract class DbInterface {
         StringBuilder sb = new StringBuilder();
         for (Plan plan: allPlans) {
             sb.append(String.format(Locale.CANADA,
-                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
-                            "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
+                    "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f" +
+                            "Eggs: %f, Beans: %f, Vegetables: %f\n", plan.planName,
                     plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                     plan.beans, plan.vegetables));
         }
         return sb;
     }
-
 }
