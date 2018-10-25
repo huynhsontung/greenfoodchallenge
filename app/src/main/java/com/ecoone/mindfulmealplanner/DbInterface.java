@@ -38,6 +38,9 @@ public abstract class DbInterface {
         mDb.userDao().updateUser(user);
     }
 
+    public static List<Plan> getAllPlans(final String username) {
+        return mDb.planDao().getAllPlans(username);
+    }
 
     public static void addPlan(final String username,
                                final String planName,
