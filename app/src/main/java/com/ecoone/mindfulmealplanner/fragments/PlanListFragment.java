@@ -64,11 +64,22 @@ public class PlanListFragment extends Fragment {
         updateUI();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
+
     private void updateUI() {
         List<Plan> plans = DbInterface.getAllPlans(mUsername);
 
-        mAdapter = new PlanAdapter(plans);
-        mRecyclerView.setAdapter(mAdapter);
+        if (mAdapter == null) {
+            mAdapter = new PlanAdapter(plans);
+            mRecyclerView.setAdapter(mAdapter);
+        }
+        else {
+            mAdapter.notifyDataSetChanged();
+        }
 
     }
 
@@ -127,5 +138,7 @@ public class PlanListFragment extends Fragment {
             return mPlans.size();
         }
     }
+
+
 
 }

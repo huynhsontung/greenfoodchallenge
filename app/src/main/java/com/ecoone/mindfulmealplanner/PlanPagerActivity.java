@@ -73,7 +73,7 @@ public class PlanPagerActivity extends AppCompatActivity {
             @Override
             public Fragment getItem(int position) {
                 Plan plan = mPlans.get(position);
-                return PlanFragment.newInstance(plan.planName);
+                return PlanFragment.newInstance(mUsername, plan.planName);
             }
 
             @Override

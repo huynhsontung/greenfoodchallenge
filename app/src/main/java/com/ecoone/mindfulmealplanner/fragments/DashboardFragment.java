@@ -88,7 +88,6 @@ public class DashboardFragment extends Fragment {
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for setEditTextView()
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
-        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
 
         setUserInfo();
         setEditTextView();

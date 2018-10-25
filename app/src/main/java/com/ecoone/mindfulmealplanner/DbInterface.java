@@ -80,6 +80,12 @@ public abstract class DbInterface {
         return mDb.planDao().getPlan(username, currentPlanName);
     }
 
+    public static void changePlanName(final String username,
+                                      final String oldPlanName,
+                                      final String newPlanName) {
+        mDb.planDao().changePlanName(username, oldPlanName, newPlanName);
+    }
+
     // Change the plan name which is the current plan of the User in Plan table
     // Also change the currentplan name entry in User table
     // need to change user and plan table
