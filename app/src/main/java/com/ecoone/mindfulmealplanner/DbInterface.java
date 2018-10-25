@@ -104,6 +104,7 @@ public abstract class DbInterface {
         mDb.planDao().addPlan(newPlan);
     }
 
+    // For Save Button in Improve Activity
     public static void updateCurrentPlan(final String username, final Plan plan) {
         Plan currentPlan = getCurrentPlan(username);
         Plan newPlan = getCurrentPlan(username);

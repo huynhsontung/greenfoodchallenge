@@ -67,20 +67,14 @@ public class PlanListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.i(TAG, "Resume" +CLASSTAG);
         updateUI();
     }
 
     private void updateUI() {
         List<Plan> plans = DbInterface.getAllPlans(mUsername);
-
-        if (mAdapter == null) {
-            mAdapter = new PlanAdapter(plans);
-            mRecyclerView.setAdapter(mAdapter);
-        }
-        else {
-            mAdapter.notifyDataSetChanged();
-        }
-
+        mAdapter = new PlanAdapter(plans);
+        mRecyclerView.setAdapter(mAdapter);
     }
 
     private class PlanHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
