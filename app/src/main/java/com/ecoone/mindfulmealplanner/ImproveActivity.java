@@ -33,8 +33,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private String mUsername;
     private String mGender;
 
-    private TextView mCurrentPlanCo2eTextView;
-    private TextView mImprovedPlanCo2eTextView;
     private TextView mImprovedPlanCo2ePerYearTextView;
     private TextView mPlanDifferenceCo2ePerYearTextView;
     private Button editButton;
@@ -234,7 +232,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         improvedPlan.vegetables = foodAmount[6];
     }
 
-    private void setPieChartView(int[] percentage, boolean animate, int color){
+    private void setPieChartView(float[] percentage, boolean animate, int color){
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<percentage.length;i++){
