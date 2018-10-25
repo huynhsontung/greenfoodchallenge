@@ -8,6 +8,7 @@
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/PieChart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_margin="8dp"/>
 
 </FrameLayout>

@@ -84,12 +84,12 @@ public class DashboardChartFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         chart = view.findViewById(R.id.PieChart);
         if (chartNum == 0)
-            setupPieChart1(foodAmount,foodName);
+            setupPieChart(foodAmount,foodName);
         else
-            setupPieChart1(foodCo2Amount,foodName);
+            setupPieChart(foodCo2Amount,foodName);
     }
 
-    void setupPieChart1(float[] percentage, String[] foodNames){
+    void setupPieChart(float[] percentage, String[] foodNames){
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<percentage.length;i++){
@@ -135,6 +135,7 @@ public class DashboardChartFragment extends Fragment {
         chart.setHoleRadius(40);
         chart.setTransparentCircleRadius(50);
         chart.setDrawEntryLabels(false);
+        chart.setTouchEnabled(false);
         chart.animateY(1000);
         chart.invalidate();
     }
