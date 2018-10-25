@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
@@ -98,11 +97,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private void initializePlansCo2eTextView() {
         currentPlan = DbInterface.getCurrentPlan(mUsername);
         Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
-                DbInterface.getPlanDatatoString(currentPlan));
+                DbInterface.getPlanDataWithNametoString(currentPlan));
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
         Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
-                DbInterface.getPlanDatatoString(improvedPlan));
+                DbInterface.getPlanDataWithNametoString(improvedPlan));
         foodAmount = DbInterface.getPlanArray(improvedPlan);
         String mCurrentPlanCo2e = String.valueOf(Calculator.calculateCO2ePerDay(currentPlan));
         mCurrentPlanCo2eTextView.setText(String.format("%s g", mCurrentPlanCo2e));

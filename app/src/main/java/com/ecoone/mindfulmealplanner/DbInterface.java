@@ -123,8 +123,18 @@ public abstract class DbInterface {
     public static StringBuilder getPlanDatatoString(final Plan plan) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.CANADA,
+                "Beef: %d, Pork: %d, Chicken: %d, Fish: %d,\n" +
+                        "Eggs: %d, Beans: %d, Vegetables: %d",
+                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+                plan.beans, plan.vegetables));
+        return sb;
+    }
+
+    public static StringBuilder getPlanDataWithNametoString(final Plan plan) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.CANADA,
                 "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
-                        "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
+                        "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
                 plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                 plan.beans, plan.vegetables));
         return sb;
@@ -136,7 +146,7 @@ public abstract class DbInterface {
         for (Plan plan: allPlans) {
             sb.append(String.format(Locale.CANADA,
                     "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
-                            "Eggs: %d, Beans: %d, Vegetables: %d\n\n", plan.planName,
+                            "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
                     plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                     plan.beans, plan.vegetables));
         }

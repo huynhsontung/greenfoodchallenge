@@ -121,7 +121,7 @@ public class DashboardFragment extends Fragment {
         // ----------------------------------------------------
         Log.i(TAG, "=========================test SAVEAS button in Dashboard Activity==========================");
         Log.i(TAG, "Current Plan name:" + mCurrentPlanName + CLASSTAG);
-        Log.i(TAG, "Current Plan: " + DbInterface.getPlanDatatoString(DbInterface.getCurrentPlan(mUsername)).toString());
+        Log.i(TAG, "Current Plan: " + DbInterface.getPlanDataWithNametoString(DbInterface.getCurrentPlan(mUsername)).toString());
         Log.i(TAG, "All Plan:\n " + DbInterface.getUserPlansDatatoString(mUsername));
         Log.i(TAG, "=========================test SAVEAS button in Dashboard Activity==========================");
         editPlanName.setText(mCurrentPlanName);
@@ -154,7 +154,7 @@ public class DashboardFragment extends Fragment {
                     Log.i(TAG, "-------------------------------------------------");
                     Log.i(TAG, "Current Plan name changed" + CLASSTAG);
                     Log.i(TAG, DbInterface.getUserDatatoString(mUsername).toString());
-                    Log.i(TAG, DbInterface.getPlanDatatoString(DbInterface.getCurrentPlan(mUsername)).toString());
+                    Log.i(TAG, DbInterface.getPlanDataWithNametoString(DbInterface.getCurrentPlan(mUsername)).toString());
                     Log.i(TAG, "All Plan:\n " + DbInterface.getUserPlansDatatoString(mUsername));
                     Log.i(TAG, "-------------------------------------------------");
                 }
