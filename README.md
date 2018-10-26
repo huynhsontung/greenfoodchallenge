@@ -1,8 +1,9 @@
 # Header
 
 ## Initial Screen Activity
+Initial screen
 
-Initial screen\n
+
 ![alt text](ReadmePic/initScreen.PNG)
 
 ## Dashboard Activity
