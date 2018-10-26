@@ -135,4 +135,33 @@ public class CalculatorTest {
 
         assertEquals(manualCalculationVancouver, getNewCO2eTest, 1);
     }
+
+    @Test
+    public void testCalculateCO2eEachFood(){
+        float[] testCO2eAmount = new float[7];
+        Calculator myCalculator = new Calculator();
+
+        testCO2eAmount = myCalculator.calculateCO2eEachFood(testPlan);
+
+        assertEquals(50*27, testCO2eAmount[0],0);
+        assertEquals(75*12.1, testCO2eAmount[1],0.1);
+        assertEquals(50*6.9,testCO2eAmount[2], 0.1);
+        assertEquals(50*6.1, testCO2eAmount[3],0.1);
+        assertEquals(50*4.8, testCO2eAmount[4], 0.1);
+        assertEquals(25*2, testCO2eAmount[5], 0.1);
+        assertEquals(100*2, testCO2eAmount[6], 0.1);
+    }
+
+    @Test
+    public void testCalculateSavingsInKm(){
+        Calculator myCalculator = new Calculator();
+        float testCO2eManually = 2;
+
+        float getSavings = myCalculator.calculateSavingsInKm(2);
+
+        testCO2eManually *= 1000000;
+        testCO2eManually /= 178;
+
+        assertEquals(testCO2eManually, getSavings, 1);
+    }
 }
