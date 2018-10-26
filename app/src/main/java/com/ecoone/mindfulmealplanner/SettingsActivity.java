@@ -1,30 +1,44 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
-import android.preference.PreferenceScreen;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 
-import com.ecoone.mindfulmealplanner.MainActivity;
-import com.ecoone.mindfulmealplanner.R;
-//...
-public class SettingsActivity extends PreferenceActivity {
+public class SettingsActivity extends AppCompatActivity {
+
+    Toolbar mToolbar;
+
     @Override
-    protected void onCreate( Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        getFragmentManager().beginTransaction().replace(android.R.id.content,new MainSettingsFragment()).commit();
-
+        setContentView(R.layout.activity_settings);
+        setupToolbar();
+        getFragmentManager().beginTransaction().replace(R.id.screen_area, new SettingsFragment()).commit();
     }
 
-    public static class MainSettingsFragment extends PreferenceFragment{
+    private void setupToolbar() {
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("Settings");
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
+
+    public static class SettingsFragment extends PreferenceFragment{
         @Override
-        public void onCreate(Bundle savedInstanceState) {
+        public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.preference);
         }
     }
 
 }
+
