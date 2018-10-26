@@ -155,7 +155,7 @@ public class DashboardFragment extends Fragment {
         final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
-        mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
+        mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
                 if (i == 0)
