@@ -110,10 +110,10 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
 
-        String str = String.valueOf(Calculator.calculateVancouver(improvedPlan));
-        String messsage = String.format("If everyone in Vancouver uses your " +
+        String str = new DecimalFormat("###,###,###").format(Calculator.calculateVancouver(improvedPlan));
+        String message = String.format("If everyone in Vancouver uses your " +
                 "plan, %s tonnes of CO2e can be saved! Way to go!", str);
-        Toast.makeText(getApplicationContext(), messsage, Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
         foodAmount = DbInterface.getPlanArray(improvedPlan);
         Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
                 DbInterface.getPlanDatatoString(improvedPlan));
