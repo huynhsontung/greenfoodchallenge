@@ -9,13 +9,13 @@
             android:targetClass="com.ecoone.mindfulmealplanner.AboutPageActivity"/>
     </Preference>
 
-    <Preference
-        android:key="preference_clear_all_app_data_category_key"
-        android:title="Clear all app data" />
+    <!--<Preference-->
+        <!--android:key="preference_clear_all_app_data_category_key"-->
+        <!--android:title="Clear all app data" />-->
 
-    <Preference
-        android:key="preference_change_profile_data_category_key"
-        android:title="Change Profile data" />
+    <!--<Preference-->
+        <!--android:key="preference_change_profile_data_category_key"-->
+        <!--android:title="Change Profile data" />-->
 
 
 </PreferenceScreen>
