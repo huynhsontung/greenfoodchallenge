@@ -25,6 +25,7 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -114,10 +115,10 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void setPlanCo2eText(int color) {
-        String mImporvedPlanCo2ePerYear = String.valueOf(Calculator.calculateCO2ePerYear(improvedPlan));
-        mImprovedPlanCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", mImporvedPlanCo2ePerYear));
+        float mImprovedPlanCo2ePerYear = Calculator.calculateCO2ePerYear(improvedPlan);
+        mImprovedPlanCo2ePerYearTextView.setText(String.format("%s Tonnes", new DecimalFormat("###.###").format(mImprovedPlanCo2ePerYear)));
         differenceCo2ePerYear = Calculator.comparePlan(currentPlanCo2ePerYear, improvedPlan);
-        mPlanDifferenceCo2ePerYearTextView.setText(String.format("%s Metric Tonnes", String.valueOf(differenceCo2ePerYear)));
+        mPlanDifferenceCo2ePerYearTextView.setText(String.format("%s Tonnes", new DecimalFormat("###.###").format(differenceCo2ePerYear)));
         if (color == 0){
             mPlanDifferenceCo2ePerYearTextView.setTextColor(Color.BLUE);
         }
