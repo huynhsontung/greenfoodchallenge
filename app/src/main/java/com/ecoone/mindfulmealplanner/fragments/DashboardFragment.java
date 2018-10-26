@@ -38,7 +38,6 @@ public class DashboardFragment extends Fragment {
     private String mCurrentPlanName;
     private String[] foodName;
     private float[] foodAmount;
-    private float[] co2Amount;
     private int foodLen;
 
     private AppDatabase mDb;
@@ -145,7 +144,7 @@ public class DashboardFragment extends Fragment {
 
 
     private void setupPieChartFragmentPager() {
-        co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
+        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
         mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
@@ -202,6 +201,7 @@ public class DashboardFragment extends Fragment {
     public void onResume() {
         super.onResume();
         Log.i(TAG, "resume" + CLASSTAG);
-        setupPieChartFragmentPager();
+//        mChartPager.setAdapter(mChartPagerAdapter);
+//        mChartPager.setCurrentItem(0);
     }
 }
