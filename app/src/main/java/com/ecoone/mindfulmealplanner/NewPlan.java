@@ -45,8 +45,9 @@ public class NewPlan {
         printPlan(ourChosenRecommendedPlan);
         if (currentCO2e <= bestCO2e) {
             if (adjustmentFlag == 0) {
-                return usersCurrentPlan;
-                // Users' plan is better than out recommended plan and relative size was fine; no new plan suggested
+                return newPlan;
+                // Users' plan is better than our recommended plan and relative size was fine; no new plan suggested
+                // return newPlan, which is a copy of the users current plan (avoids returning the plan that is passed in)
             }
             else if (adjustmentFlag == 1 && currentCO2eAfterAdjustment <= bestCO2e) {
                 return newPlan;
@@ -130,12 +131,6 @@ public class NewPlan {
                     gramsRemovedFromIngredient = newPlan.beans - ourChosenRecommendedPlan.beans;
                     newPlan.beans = ourChosenRecommendedPlan.beans;
                     newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngredient));
-                }
-                newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
-                break;
-            case 6:
-                if(newPlan.vegetables > ourChosenRecommendedPlan.vegetables) {
-                    newPlan.vegetables = ourChosenRecommendedPlan.vegetables;
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
