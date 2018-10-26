@@ -74,58 +74,58 @@ public class NewPlan {
     // i.e index 0 = beef, index 1 = pork, etc..
     //Takes the grams from ingredient reduced, split it between vegetables and beans at a 70/30 ratio
     public void adjustNewPlan(int ingredientIndex) {
-        float gramsRemovedFromIngregient;
+        float gramsRemovedFromIngredient;
         switch(ingredientIndex) {
             case 0:
-                gramsRemovedFromIngregient = newPlan.beef - ourChosenRecommendedPlan.beef;
+                gramsRemovedFromIngredient = newPlan.beef - ourChosenRecommendedPlan.beef;
                 if(newPlan.beef > ourChosenRecommendedPlan.beef) {
                     newPlan.beef = ourChosenRecommendedPlan.beef;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
-                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngredient * 0.7));
+                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngredient * 0.3));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 1:
                 if(newPlan.pork > ourChosenRecommendedPlan.pork) {
-                    gramsRemovedFromIngregient = newPlan.pork - ourChosenRecommendedPlan.pork;
+                    gramsRemovedFromIngredient = newPlan.pork - ourChosenRecommendedPlan.pork;
                     newPlan.pork = ourChosenRecommendedPlan.pork;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
-                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngredient * 0.7));
+                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngredient * 0.3));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 2:
                 if(newPlan.chicken > ourChosenRecommendedPlan.chicken) {
-                    gramsRemovedFromIngregient = newPlan.chicken - ourChosenRecommendedPlan.chicken;
+                    gramsRemovedFromIngredient = newPlan.chicken - ourChosenRecommendedPlan.chicken;
                     newPlan.chicken = ourChosenRecommendedPlan.chicken;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
-                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngredient * 0.7));
+                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngredient * 0.3));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 3:
                 if(newPlan.fish > ourChosenRecommendedPlan.fish) {
-                    gramsRemovedFromIngregient = newPlan.fish - ourChosenRecommendedPlan.fish;
+                    gramsRemovedFromIngredient = newPlan.fish - ourChosenRecommendedPlan.fish;
                     newPlan.fish = ourChosenRecommendedPlan.fish;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
-                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngredient * 0.7));
+                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngredient * 0.3));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 4:
                 if(newPlan.eggs > ourChosenRecommendedPlan.eggs) {
-                    gramsRemovedFromIngregient = newPlan.eggs - ourChosenRecommendedPlan.eggs;
+                    gramsRemovedFromIngredient = newPlan.eggs - ourChosenRecommendedPlan.eggs;
                     newPlan.eggs = ourChosenRecommendedPlan.eggs;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngregient * 0.7));
-                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngregient * 0.3));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float) (gramsRemovedFromIngredient * 0.7));
+                    newPlan.beans = newPlan.beans + Math.round((float) (gramsRemovedFromIngredient * 0.3));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
             case 5:
                 if(newPlan.beans > ourChosenRecommendedPlan.beans) {
-                    gramsRemovedFromIngregient = newPlan.beans - ourChosenRecommendedPlan.beans;
+                    gramsRemovedFromIngredient = newPlan.beans - ourChosenRecommendedPlan.beans;
                     newPlan.beans = ourChosenRecommendedPlan.beans;
-                    newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngregient));
+                    newPlan.vegetables = newPlan.vegetables + Math.round((float)(gramsRemovedFromIngredient));
                 }
                 newCO2e = myCalculator.calculateCO2ePerYear(newPlan);
                 break;
@@ -155,7 +155,7 @@ public class NewPlan {
     //Initializes our recommended plan with values based on gender
     public void ourChosenRecommendedPlan(String gender) {
         ourChosenRecommendedPlan = new Plan();
-        if(gender == "male") {
+        if(gender.equals("male")) {
             ourChosenRecommendedPlan.beef = 25;
             ourChosenRecommendedPlan.pork = 50;
             ourChosenRecommendedPlan.chicken = 50;
@@ -165,7 +165,7 @@ public class NewPlan {
             ourChosenRecommendedPlan.vegetables = 125;
 
         }
-        else if(gender == "female") {
+        else {
             ourChosenRecommendedPlan.beef = 15;
             ourChosenRecommendedPlan.pork = 30;
             ourChosenRecommendedPlan.chicken = 45;

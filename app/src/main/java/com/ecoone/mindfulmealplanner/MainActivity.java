@@ -131,8 +131,11 @@ public class MainActivity extends AppCompatActivity
         if (fragment != null) {
             switchFragment(fragment);
         }
-
-        setTitle(item.getTitle());
+        if(id != R.id.fragment_settings)
+            setTitle(item.getTitle());
+        else {
+            item.setCheckable(false);
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
