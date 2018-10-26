@@ -16,6 +16,7 @@
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="current_co2e">Current Plan Produces\nApprox. %1$s Tonnes CO2e Yearly</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="km_wasted">You can drive %1$skm with that amount of CO2</string>
 
     <string name="about_description">
         \t\tFood’s carbon footprint, or footprint, is the greenhouse gas emissions produced by growing, rearing, farming, processing, transporting, storing, cooking and disposing of the food you eat.\n\n

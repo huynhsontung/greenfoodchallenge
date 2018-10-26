@@ -45,6 +45,7 @@ public class DashboardFragment extends Fragment {
     private TextView mEditDoneIcon;
     private TextView currentPlanTextView; // just for setEditTextView()
     private TextView currentCo2eTextView;
+    private TextView relevantInfo;
     private EditText editPlanName;
 
     private ViewPager mChartPager;
@@ -80,6 +81,7 @@ public class DashboardFragment extends Fragment {
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for setEditTextView()
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
+        relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
 
         setUserInfo();
@@ -101,6 +103,12 @@ public class DashboardFragment extends Fragment {
         float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
+        float kmWasted = Calculator.calculateSavingsInKm(sumCo2ePerYear);
+        if(kmWasted > 100){
+            relevantInfo.setText(getString(R.string.km_wasted,new DecimalFormat("###,###,###.#").format(kmWasted)));
+            relevantInfo.setVisibility(View.VISIBLE);
+        }
+
         if (sumCo2ePerYear > 1.7)
             currentCo2eTextView.setTextColor(Color.RED);
         else {
