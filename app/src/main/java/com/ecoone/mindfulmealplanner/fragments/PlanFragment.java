@@ -89,18 +89,19 @@ public class PlanFragment extends Fragment {
         mPlanName = getArguments().getString(EXTRA_PLANNAME);
         mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
         mPlanNameList = DbInterface.getAllPlansName(mUsername);
+        foodAmount = DbInterface.getPlanArrayByName(mUsername, mPlanName);
         foodName = findStringArrayRes("food_name");
 
-        setAsCurrentButton = view.findViewById(R.id.fragment_plan_set_as_current);
+//        setAsCurrentButton = view.findViewById(R.id.fragment_plan_set_as_current);
         editPlanName = view.findViewById(R.id.fragment_plan_edit_plan_name);
         mEditDoneIcon = view.findViewById(R.id.fragment_plan_icon_edit_done);
-        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view);
-        currentCo2eTextView = view.findViewById(R.id.frag_CurrentCo2eView);
+        currentPlanTextView = view.findViewById(R.id.fragment_plan_currentplan_text_view);
+        currentCo2eTextView = view.findViewById(R.id.frag_plan_currentCo2eView);
 
-        calculateCurrentCo2e();
         setEditTextView();
         setEditDoneIconAction(view);
         setupPieChartFragmentPager();
+        calculateCurrentCo2e();
     }
 
     private void calculateCurrentCo2e() {
@@ -167,7 +168,7 @@ public class PlanFragment extends Fragment {
     private void setupPieChartFragmentPager() {
         final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
 
-        mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
+        mChartPager = getView().findViewById(R.id.fragment_plan_chart_pager);
         mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
             @Override
             public Fragment getItem(int i) {

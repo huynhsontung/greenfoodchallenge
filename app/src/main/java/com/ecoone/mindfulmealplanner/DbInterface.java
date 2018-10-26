@@ -131,6 +131,19 @@ public abstract class DbInterface {
         return foodAmount;
     }
 
+    public static float[] getPlanArrayByName(final String username, final String planName) {
+        Plan plan = mDb.planDao().getPlan(username, planName);
+        float[] foodAmount = new float[7];
+        foodAmount[0] = plan.beef;
+        foodAmount[1] = plan.pork;
+        foodAmount[2] = plan.chicken;
+        foodAmount[3] = plan.fish;
+        foodAmount[4] = plan.eggs;
+        foodAmount[5] = plan.beans;
+        foodAmount[6] = plan.vegetables;
+        return foodAmount;
+    }
+
     public static StringBuilder getPlanDatatoString(final Plan plan) {
         StringBuilder sb = new StringBuilder();
         sb.append(String.format(Locale.CANADA,

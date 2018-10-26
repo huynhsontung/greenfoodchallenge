@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ public class DashboardFragment extends Fragment {
     private String mCurrentPlanName;
     private String[] foodName;
     private float[] foodAmount;
+    private float[] co2Amount;
     private int foodLen;
 
     private AppDatabase mDb;
@@ -79,7 +81,7 @@ public class DashboardFragment extends Fragment {
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
         mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
         currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for setEditTextView()
-        currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
+        currentCo2eTextView = view.findViewById(R.id.frag_plan_currentCo2eView);
 
         setUserInfo();
         setEditTextView();
@@ -143,7 +145,7 @@ public class DashboardFragment extends Fragment {
 
 
     private void setupPieChartFragmentPager() {
-        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
+        co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
         mChartPagerAdapter = new FragmentPagerAdapter(getFragmentManager()) {
@@ -196,5 +198,10 @@ public class DashboardFragment extends Fragment {
         setEditTextView();
     }
 
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG, "resume" + CLASSTAG);
+        setupPieChartFragmentPager();
+    }
 }
