@@ -3,6 +3,7 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
@@ -107,6 +109,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private void initializePlansCo2eTextView() {
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
+
+        String str = String.valueOf(Calculator.calculateVancouver(improvedPlan));
+        String messsage = String.format("If everyone in Vancouver uses your " +
+                "plan, %s tonnes of CO2e can be saved! Way to go!", str);
+        Toast.makeText(getApplicationContext(), messsage, Toast.LENGTH_LONG).show();
         foodAmount = DbInterface.getPlanArray(improvedPlan);
         Log.i(TAG, "Get the improved plan" + CLASSTAG + ":\n" +
                 DbInterface.getPlanDatatoString(improvedPlan));
