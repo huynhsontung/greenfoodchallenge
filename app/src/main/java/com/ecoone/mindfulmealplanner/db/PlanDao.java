@@ -29,6 +29,9 @@ public interface PlanDao {
     @Query("SELECT count(*) FROM `Plan` WHERE username = :username")
     int getPlansCount(String username);
 
+    @Query("UPDATE `Plan` SET planname = :newPlanName WHERE username = :username AND planName = :oldPlanName")
+    void changePlanName(String username, String oldPlanName, String newPlanName);
+
     @Insert
     void addPlan(Plan plan);
 

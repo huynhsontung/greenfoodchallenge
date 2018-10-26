@@ -16,14 +16,25 @@
             </intent-filter>
         </activity>
         <activity android:name=".MainActivity" />
-        <!-- <activity -->
-        <!-- android:name=".MainActivity" -->
-        <!-- android:label="@string/title_activity_dashboard" -->
-        <!-- android:theme="@style/AppTheme.NoActionBar"></activity> -->
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.ecoone.mindfulmealplanner.MainActivity" />
+        </activity>
+        <activity android:name=".AboutPageActivity">
+            <intent-filter>
+                <action android:name="openaboutpage" />
 
-        <activity android:name=".AboutPageActivity"></activity>
-        <activity android:name=".ImproveActivity"></activity>
-        <activity android:name=".SettingsActivity"></activity>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ImproveActivity" />
+        <activity
+            android:name=".PlanPagerActivity"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>
