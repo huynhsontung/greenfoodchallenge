@@ -72,6 +72,18 @@ public class NewPlanTest {
         }
     };
 
+    public Plan bugPlan = new Plan() {
+        {
+            beef = 300;
+            pork = 300;
+            chicken = 300;
+            fish = 300;
+            eggs = 300;
+            beans = 300;
+            vegetables = 300;
+        }
+    };
+
 
     public NewPlan smallPlanTest = new NewPlan(smallServingThanRecommended, "male");
     public NewPlan largePlanTest = new NewPlan(largeServingPlan, "male");
@@ -114,7 +126,23 @@ public class NewPlanTest {
         edgeCasePlan = suggestTheSuggested2.suggestPlan();
         assertEquals(x.get(6).beef, edgeCasePlan.beef, 5);
         assertNotEquals(x.get(6).pork, edgeCasePlan.pork, 5);
-        ;
+        System.out.println("-----");
+        Plan bugPlanFinal;
+        NewPlan bugTest = new NewPlan(bugPlan, "male");
+        System.out.println("Current Plan:");
+        bugTest.printPlan(bugPlan);
+        bugPlanFinal = bugTest.suggestPlan();
+        System.out.println("New Plan: ");
+        bugTest.printPlan(bugPlanFinal);
+        System.out.println("----");
+        System.out.println("Current plan:");
+        NewPlan bugTest2 = new NewPlan(bugPlanFinal, "male");
+        bugTest2.printPlan(bugPlanFinal);
+        bugPlanFinal = bugTest2.suggestPlan();
+        System.out.println("New Plan: ");
+        bugTest2.printPlan(bugPlanFinal);
+        NewPlan bugTest3 = new NewPlan(bugPlanFinal, "male");
+        bugPlanFinal = bugTest3.suggestPlan();
+        bugTest3.printPlan(bugPlanFinal);  // should be the same as previous recommended plan
     }
-
 }
