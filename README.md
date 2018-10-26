@@ -6,11 +6,17 @@ Initial screen
 
 ![alt text](ReadmePic/initScreen.PNG)
 
+This is the initial activity that appears on the user's first use of the app. Here, the user will be asked to input some information about themselves: Their name, gender, and approximate current meal plan.
+
 ## Dashboard Activity
 Dashboard:
+
+
 ![alt text](ReadmePic/dashboard.PNG)
 
 Upon pressing the edit icon:
+
+
 ![alt text](ReadmePic/changeNameDashboard.PNG)
 
 ## Improve Plan Activity
