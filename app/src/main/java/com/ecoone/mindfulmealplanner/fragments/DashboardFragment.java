@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,10 +20,12 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.Calculator;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.MainActivity;
+import com.ecoone.mindfulmealplanner.NewPlan;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.DbInterface;
@@ -175,7 +178,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setupImproveButton(){
-        //Wire up the button to improve the plan
+        //Wire up the button to improve the plan3
         //...get the button
         improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
