@@ -45,7 +45,7 @@ If the user wishes to edit the plan, the edit button will reveal sliders and upd
 A screenshot of the sidebar, containing access to the settings activity which contains the about page activity and the dashboard activity. The sidebar can be reached by either the icon on the top left corner, or by swiping from the left side of the application.
 
 
-![alt text](ReadmePic/sidebar.PNG)
+![alt text](ReadmePic/sidebar2.PNG)
 
 
 ## Settings 
