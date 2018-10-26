@@ -1,8 +1,10 @@
-# Header1
+# Header 1
 
-## Header 2
+## Initial Screen Activity
 
 Picture 
 
 ![alt text](ReadmePic/Android_robot.png)
+
+### Dashboard Activity
 
