@@ -1,4 +1,5 @@
-# Header
+# Mindful Meal Planner 
+Team members: Tung Huynh Son, Peter Tran, Jacky Cao, Arlen Xu, Jesse Zhou
 
 ## Initial Screen Activity
 This is the initial activity that appears on the user's first use of the app. Here, the user will be asked to input some information about themselves: Their name, gender, and approximate current meal plan.
