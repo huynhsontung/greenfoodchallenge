@@ -38,7 +38,11 @@ public class NewPlan {
         float usersDailyServing = calculateDailyServing(newPlan);
         float scaleFactor = myCalculator.getScalingFactor(usersDailyServing, usersGender);
         bestCO2e = myCalculator.calculateCO2ePerYear(ourChosenRecommendedPlan);
+        System.out.println("before scale with scale factor: " + scaleFactor);
+        printPlan(ourChosenRecommendedPlan);
         scaleRecommendedPlan(scaleFactor);
+        System.out.println("Recommended plan: ");
+        printPlan(ourChosenRecommendedPlan);
         if (currentCO2e <= bestCO2e) {
             if (adjustmentFlag == 0) {
                 return usersCurrentPlan;
