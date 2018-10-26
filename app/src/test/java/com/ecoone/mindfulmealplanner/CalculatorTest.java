@@ -163,6 +163,9 @@ public class CalculatorTest {
         testCO2eManually /= 178;
 
         assertEquals(testCO2eManually, getSavings, 1);
+
+        float testZero = myCalculator.calculateSavingsInKm(0);
+        assertEquals(0, testZero, 0);
     }
 
     @Test
@@ -177,5 +180,9 @@ public class CalculatorTest {
         float getTreesPlanted = myCalculator.calculateTreesPlanted(2);
 
         assertEquals(testCO2eManually, getTreesPlanted, 0);
+
+        float testZeroCase = myCalculator.calculateTreesPlanted(0);
+
+        assertEquals(0, testZeroCase, 0);
     }
 }
