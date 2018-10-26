@@ -1,7 +1,5 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.widget.LinearLayout;
-
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
@@ -40,10 +38,13 @@ public abstract class DbInterface {
         mDb.userDao().updateUser(user);
     }
 
+    public static List<Plan> getAllPlans(final String username) {
+        return mDb.planDao().getAllPlans(username);
+    }
+
     public static List<String> getAllPlansName(final String username) {
         return mDb.planDao().getAllPlansName(username);
     }
-
 
     public static void addPlan(final String username,
                                final String planName,
@@ -77,6 +78,12 @@ public abstract class DbInterface {
         return mDb.planDao().getPlan(username, currentPlanName);
     }
 
+    public static void changePlanName(final String username,
+                                      final String oldPlanName,
+                                      final String newPlanName) {
+        mDb.planDao().changePlanName(username, oldPlanName, newPlanName);
+    }
+
     // Change the plan name which is the current plan of the User in Plan table
     // Also change the currentplan name entry in User table
     // need to change user and plan table
@@ -97,6 +104,7 @@ public abstract class DbInterface {
         mDb.planDao().addPlan(newPlan);
     }
 
+    // For Save Button in Improve Activity
     public static void updateCurrentPlan(final String username, final Plan plan) {
         Plan currentPlan = getCurrentPlan(username);
         Plan newPlan = getCurrentPlan(username);
@@ -112,6 +120,19 @@ public abstract class DbInterface {
     }
 
     public static float[] getPlanArray(final Plan plan) {
+        float[] foodAmount = new float[7];
+        foodAmount[0] = plan.beef;
+        foodAmount[1] = plan.pork;
+        foodAmount[2] = plan.chicken;
+        foodAmount[3] = plan.fish;
+        foodAmount[4] = plan.eggs;
+        foodAmount[5] = plan.beans;
+        foodAmount[6] = plan.vegetables;
+        return foodAmount;
+    }
+
+    public static float[] getPlanArrayByName(final String username, final String planName) {
+        Plan plan = mDb.planDao().getPlan(username, planName);
         float[] foodAmount = new float[7];
         foodAmount[0] = plan.beef;
         foodAmount[1] = plan.pork;
@@ -140,6 +161,20 @@ public abstract class DbInterface {
             sb.append(String.format(Locale.CANADA,
                     "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f" +
                             "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
+                    "%s: Beef: %d, Pork: %d, Chicken: %d, Fish: %d" +
+                            "Eggs: %d, Beans: %d, Vegetables: %d\n", plan.planName,
+                    plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
+                    plan.beans, plan.vegetables));
+        }
+        return sb;
+    }
+
+    public static StringBuilder getPlansListtoString(final List<Plan> allPlans) {
+        StringBuilder sb = new StringBuilder();
+        for (Plan plan: allPlans) {
+            sb.append(String.format(Locale.CANADA,
+                    "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f" +
+                            "Eggs: %f, Beans: %f, Vegetables: %f\n", plan.planName,
                     plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
                     plan.beans, plan.vegetables));
         }

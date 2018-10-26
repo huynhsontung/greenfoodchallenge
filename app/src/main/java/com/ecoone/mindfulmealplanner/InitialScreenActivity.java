@@ -110,7 +110,7 @@ public class InitialScreenActivity extends AppCompatActivity {
             Log.i(TAG, "Someone already login" + CLASSTAG);
             mUsername = getUsernameInSharedPreference();
             if (mUsername == null) {
-                Log.i(TAG, "Error. Username is empty." + CLASSTAG);
+                Log.i(TAG, "Error. Username In SharedPreference is empty." + CLASSTAG);
                 return;
             }
             startActivityAndFinish(mUsername);
