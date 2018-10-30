@@ -3,6 +3,7 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -16,18 +17,30 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.User;
+import com.ecoone.mindfulmealplanner.db.UserDao;
+import com.firebase.ui.auth.AuthUI;
+import com.firebase.ui.auth.IdpResponse;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthCredential;
+import com.google.firebase.auth.UserInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class InitialScreenActivity extends AppCompatActivity {
+    private static final int RC_SIGN_IN = 123;
+    private User userObj = new User();
 
     private String mUsername;
     private String mGender;
@@ -62,6 +75,15 @@ public class InitialScreenActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        startActivityForResult(
+                AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(Arrays.asList(
+                                new AuthUI.IdpConfig.EmailBuilder().build(),
+                                new AuthUI.IdpConfig.GoogleBuilder().build()))
+                        .build(),
+                RC_SIGN_IN);
+
         setContentView(R.layout.activity_initial_screen);
 
         mEditText = findViewById(R.id.initial_screen_username_edit_text);
@@ -87,7 +109,24 @@ public class InitialScreenActivity extends AppCompatActivity {
         initializeSeekBarView();
         setSeekBarValueView();
         setPieChartView(foodAmount);
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            IdpResponse response = IdpResponse.fromResultIntent(data);
+            if (resultCode == RESULT_OK) {
+                // Successfully signed in
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user != null) {
+                    userObj.username = Objects.requireNonNull(user.getEmail());
+                    mUsername = userObj.username;
+                    userObj.displayName = user.getDisplayName();
+                    userObj.photoUrl = user.getPhotoUrl().toString();
+                }
+            }
+        }
     }
 
     private void setAllDataTemporary() {
@@ -152,8 +191,10 @@ public class InitialScreenActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (isInfoEntered()) {
+                    userObj.gender = mGender;
+                    userObj.currentPlanName = "Plan1";
                     Log.i(TAG, "Get username in Edittext:" + mUsername + " and write into db" + CLASSTAG);
-                    DbInterface.addUser(mUsername, mGender, "Plan1");
+                    mDb.userDao().addUser(userObj);
                     DbInterface.addPlan(mUsername,"Plan1", foodAmount);
                     Log.i(TAG, "Add User Info into db successfully");
                     SharedPreferences.Editor editor = settings.edit();
@@ -167,7 +208,7 @@ public class InitialScreenActivity extends AppCompatActivity {
     }
 
     private boolean isInfoEntered() {
-        mUsername = mEditText.getText().toString();
+//        mUsername = mEditText.getText().toString();
         if (mUsername.equals("")) {
             showCustomToast("Please enter your username!");
             return false;

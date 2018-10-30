@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 
 // I added this.
 android {
@@ -48,7 +49,6 @@ dependencies {
 
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
-    // use kapt for Kotlin
 
     // optional - RxJava support for Room
     implementation "android.arch.persistence.room:rxjava2:$room_version"
@@ -69,45 +69,12 @@ dependencies {
 }
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
     implementation 'com.android.support:support-v4:28.+'
 }
 
 dependencies {
-    implementation 'com.android.support:support-v4:28.+'
+    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
 
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
-}
-
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
-}
-
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
-}
