@@ -78,3 +78,15 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
 
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:28.+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:28.+'
+    implementation 'android.arch.lifecycle:extensions:1.+'
+}
