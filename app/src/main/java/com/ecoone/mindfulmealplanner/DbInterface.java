@@ -1,14 +1,18 @@
 package com.ecoone.mindfulmealplanner;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Locale;
 
 public abstract class DbInterface {
 
+    static FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private static AppDatabase mDb;
 
     public static void setDb(AppDatabase db){mDb = db;}
@@ -21,6 +25,7 @@ public abstract class DbInterface {
         user.gender = gender;
         user.currentPlanName =currentPlan;
         mDb.userDao().addUser(user);
+        FirebaseDatabaseInterface.writeUser(firebaseUser.getUid(),user);
     }
 
     public static String getGender(final String username) {
@@ -36,6 +41,8 @@ public abstract class DbInterface {
         User user = mDb.userDao().getUser(username);
         user.currentPlanName = newPlanName;
         mDb.userDao().updateUser(user);
+
+        FirebaseDatabaseInterface.updateCurrentPlanName(firebaseUser.getUid(),newPlanName);
     }
 
     public static List<Plan> getAllPlans(final String username) {
@@ -60,6 +67,8 @@ public abstract class DbInterface {
         plan.beans = foodAmount[5];
         plan.vegetables = foodAmount[6];
         mDb.planDao().addPlan(plan);
+        // Firebase Database transaction
+        FirebaseDatabaseInterface.writePlan(firebaseUser.getUid(),plan);
     }
 
     public static StringBuilder getUserDatatoString(final String username) {
@@ -102,6 +111,8 @@ public abstract class DbInterface {
         newPlan.planName = newPlanName;
         mDb.planDao().deletePlan(oldPlan);
         mDb.planDao().addPlan(newPlan);
+
+        FirebaseDatabaseInterface.updateCurrentPlanName(firebaseUser.getUid(),newPlanName);
     }
 
     // For Save Button in Improve Activity

@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
@@ -52,6 +54,7 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     private InitialSetupViewModel mViewModel;
     AppDatabase database;
+    FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,10 +70,13 @@ public class InitialSetupActivity extends AppCompatActivity {
     private void observeFinish() {
         final android.arch.lifecycle.Observer<Boolean> checkerObserver = new android.arch.lifecycle.Observer<Boolean>() {
             @Override
-            public void onChanged(Boolean aBoolean) {
-                if(mViewModel.getChecker().getValue() == null || !mViewModel.getChecker().getValue()){return;}
+            public void onChanged(Boolean checker) {
+                if(!checker){return;}
                 database.userDao().addUser(mViewModel.localUser);
                 database.planDao().addPlan(mViewModel.localPlan);
+                user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabaseInterface.writeUser(user.getUid(),mViewModel.localUser);
+                FirebaseDatabaseInterface.writePlan(user.getUid(),mViewModel.localPlan);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putInt(EXTRA_LOGIN_FLAG, 1);
@@ -145,6 +151,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 mViewModel.localUser.username = user.getEmail();
                 mViewModel.localUser.displayName = user.getDisplayName();
                 mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
+                mViewModel.getDisplayName().setValue(user.getDisplayName());
             }
         }
     }
@@ -164,7 +171,14 @@ public class InitialSetupActivity extends AppCompatActivity {
             mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(InitialSetupViewModel.class);
             View view = inflater.inflate(R.layout.fragment_initial_setup_greeting, container, false);
             greetingText = view.findViewById(R.id.greeting_text);
-            greetingText.setText(getString(R.string.greeting_user,mViewModel.localUser.displayName));
+            greetingText.setText("Greeting!");
+            mViewModel.getDisplayName().observe(this, new Observer<String>() {
+                @Override
+                public void onChanged(String newDisplayName) {
+                    mViewModel.localUser.displayName = newDisplayName;
+                    greetingText.setText(getString(R.string.greeting_user,newDisplayName));
+                }
+            });
             return view;
         }
 

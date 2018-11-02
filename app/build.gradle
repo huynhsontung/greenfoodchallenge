@@ -75,15 +75,8 @@ dependencies {
 dependencies {
     implementation 'com.google.firebase:firebase-auth:16.0.5'
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
+    implementation 'com.google.firebase:firebase-database:16.0.4'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support:support-v4:28.+'
 }
 
 dependencies {
