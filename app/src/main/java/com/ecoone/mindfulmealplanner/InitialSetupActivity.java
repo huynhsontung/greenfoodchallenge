@@ -37,6 +37,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -74,7 +75,9 @@ public class InitialSetupActivity extends AppCompatActivity {
                 if(!checker){return;}
                 database.userDao().addUser(mViewModel.localUser);
                 database.planDao().addPlan(mViewModel.localPlan);
+
                 user = FirebaseAuth.getInstance().getCurrentUser();
+                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
                 FirebaseDatabaseInterface.writeUser(user.getUid(),mViewModel.localUser);
                 FirebaseDatabaseInterface.writePlan(user.getUid(),mViewModel.localPlan);
                 SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
@@ -89,14 +92,13 @@ public class InitialSetupActivity extends AppCompatActivity {
     }
 
     private void checkIfGoToDashboard() {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int loginFlag = preferences.getInt(EXTRA_LOGIN_FLAG, 0);
-        // if no user login
-        if (loginFlag != 0){
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if(user == null){
+            getUserId();
+        } else {
+            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
             String mUsername = preferences.getString(EXTRA_USERNAME, null);
             startActivityAndFinish(mUsername);
-        } else {
-            getUserId();
         }
     }
 
