@@ -51,6 +51,7 @@ public class PledgeFragment extends Fragment {
         TabLayout myTabs = (TabLayout) rootView.findViewById(R.id.result_tabs);
         myTabs.setupWithViewPager(viewPager);
 
+
         /*
         mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
         mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
