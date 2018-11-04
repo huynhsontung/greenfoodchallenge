@@ -30,6 +30,7 @@ import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.DecimalFormat;
 import java.util.Random;
@@ -51,6 +52,7 @@ public class DashboardFragment extends Fragment {
     private TextView currentCo2eTextView;
     private TextView relevantInfo;
     private EditText editPlanName;
+    private Button logout;
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
@@ -87,6 +89,15 @@ public class DashboardFragment extends Fragment {
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
+        logout = view.findViewById(R.id.logout);
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+            }
+        });
 
         setUserInfo();
         setEditTextView();

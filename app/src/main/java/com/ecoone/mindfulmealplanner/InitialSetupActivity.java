@@ -64,21 +64,9 @@ public class InitialSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setup);
         database = AppDatabase.getDatabase(this);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
-//        setAllDataTemporary();
         checkIfGoToDashboard();
         setupViewPager();
         observeFinish();
-    }
-
-    private void setAllDataTemporary() {
-        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = settings.edit();
-        editor.remove(EXTRA_USERNAME);
-        editor.remove(EXTRA_LOGIN_FLAG);
-        editor.apply();
-        database.planDao().deleteAll();
-        database.userDao().deleteALL();
-//        DbInterface.addUser(mDb, "arlenx", "male");
     }
 
 
@@ -110,14 +98,14 @@ public class InitialSetupActivity extends AppCompatActivity {
         if(user == null){
             getUserId();
         } else {
-            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            String mUsername = preferences.getString(EXTRA_USERNAME, null);
-            startActivityAndFinish(mUsername);
+//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//            String mUsername = preferences.getString(EXTRA_USERNAME, null);
+            startActivityAndFinish(user.getDisplayName());
         }
     }
 
     private void startActivityAndFinish(String username) {
-        Intent intent = MainActivity.newIntent(InitialSetupActivity.this, username);
+        Intent intent = MainActivity.newIntent(InitialSetupActivity.this);
         startActivity(intent);
         InitialSetupActivity.this.finish();
     }

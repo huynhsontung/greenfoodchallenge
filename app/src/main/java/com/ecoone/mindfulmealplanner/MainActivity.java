@@ -50,9 +50,9 @@ public class MainActivity extends AppCompatActivity
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
 
-    public static Intent newIntent(Context packageContext, String username) {
+    public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MainActivity.class);
-        intent.putExtra(EXTRA_USERNAME, username);
+//        intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
 
