@@ -1,10 +1,12 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.google.gms.google-services'
 
 // I added this.
 android {
     configurations.all {
         resolutionStrategy.force 'com.google.code.findbugs:jsr305:1.3.9'
+    }
+    buildToolsVersion '28.0.3'
+    productFlavors {
     }
 }
 // Up to here 
@@ -12,7 +14,7 @@ android {
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.ecoone.mindfulmealplanner"
-        minSdkVersion 21
+        minSdkVersion 27
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -73,8 +75,11 @@ dependencies {
 
 
 dependencies {
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
+    implementation 'com.google.firebase:firebase-core:16.0.1'
+    implementation 'com.google.firebase:firebase-auth:16.0.1'
     implementation 'com.firebaseui:firebase-ui-auth:4.1.0'
-    implementation 'com.google.firebase:firebase-database:16.0.4'
-    implementation 'com.google.android.gms:play-services-auth:16.0.1'
+    implementation 'com.google.firebase:firebase-database:16.0.1'
+//    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
+
+apply plugin: 'com.google.gms.google-services'

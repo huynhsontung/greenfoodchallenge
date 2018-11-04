@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 import static com.ecoone.mindfulmealplanner.MainActivity.EXTRA_USERNAME;
 
@@ -63,10 +64,23 @@ public class InitialSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setup);
         database = AppDatabase.getDatabase(this);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
+//        setAllDataTemporary();
         checkIfGoToDashboard();
         setupViewPager();
         observeFinish();
     }
+
+    private void setAllDataTemporary() {
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = settings.edit();
+        editor.remove(EXTRA_USERNAME);
+        editor.remove(EXTRA_LOGIN_FLAG);
+        editor.apply();
+        database.planDao().deleteAll();
+        database.userDao().deleteALL();
+//        DbInterface.addUser(mDb, "arlenx", "male");
+    }
+
 
     private void observeFinish() {
         final android.arch.lifecycle.Observer<Boolean> checkerObserver = new android.arch.lifecycle.Observer<Boolean>() {
@@ -101,8 +115,6 @@ public class InitialSetupActivity extends AppCompatActivity {
             startActivityAndFinish(mUsername);
         }
     }
-
-
 
     private void startActivityAndFinish(String username) {
         Intent intent = MainActivity.newIntent(InitialSetupActivity.this, username);
@@ -141,6 +153,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                         .build(),
                 RC_SIGN_IN);
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -347,6 +360,11 @@ public class InitialSetupActivity extends AppCompatActivity {
             int resId = getResources().getIdentifier(resName,
                     "array", Objects.requireNonNull(getActivity()).getPackageName());
             return getResources().getStringArray(resId);
+        }
+
+        private static int randInt(int min, int max) {
+            Random rand = new Random();
+            return rand.nextInt(max- min + 1) + min;
         }
     }
 
