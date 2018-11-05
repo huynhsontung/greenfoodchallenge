@@ -112,6 +112,9 @@ public class MainActivity extends AppCompatActivity
         MenuInflater inflater=getMenuInflater();
         inflater.inflate(R.menu.share,menu);
         return true;
+        /**
+         *
+         */
     }
 
     @Override
