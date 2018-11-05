@@ -34,6 +34,7 @@ public class MyPledgeFragment extends Fragment {
     private String mUserName;
     private Context mContext;
     private Button pledgeButton;
+    View view;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String pTag = "pledge";
@@ -94,7 +95,7 @@ public class MyPledgeFragment extends Fragment {
     public void onStart() {
         super.onStart();
         Log.i(pTag, "onStart");
-        View view = getView();
+        view = getView();
         pledgeButton = view.findViewById(R.id.my_pledge_pledge);
         pledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override

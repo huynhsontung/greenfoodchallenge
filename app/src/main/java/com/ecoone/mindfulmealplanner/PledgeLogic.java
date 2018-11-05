@@ -4,10 +4,10 @@ import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.Calculator;
 
 public class PledgeLogic {
-    private Plan usersCurrentPlan;
-    private float currentPledgePerWeek;
-    private float currentPledgePerDay;
-    private float currentPlanCO2PerDay;
+    private static Plan usersCurrentPlan;
+    private static float currentPledgePerWeek;
+    private static float currentPledgePerDay;
+    private static float currentPlanCO2PerDay;
 
     public PledgeLogic(Plan plan, float pledgeAmount) {
         usersCurrentPlan = plan;
@@ -16,15 +16,19 @@ public class PledgeLogic {
         currentPledgePerDay = currentPledgePerWeek/7;
     }
 
-    public Plan getUsersCurrentPlan() {
+    public static Plan getUsersCurrentPlan() {
         return usersCurrentPlan;
     }
 
-    public float getCurrentPledgePerWeek() {
+    public static float getCurrentPledgePerWeek() {
         return currentPledgePerWeek;
     }
 
-    public float getCurrentPledgePerDay() {
+    public static float getCurrentPledgePerDay() {
+        return currentPledgePerDay;
+    }
+
+    public static float getCurrentPlanCO2PerDay() {
         return currentPledgePerDay;
     }
 
@@ -38,7 +42,7 @@ public class PledgeLogic {
         currentPledgePerDay = currentPledgePerWeek/7;
     }
 
-    public float differenceInCO2() {
+    public static float differenceInCO2() {
         float difference;
         if(currentPledgePerDay >= currentPlanCO2PerDay) {
             difference = currentPledgePerDay - currentPlanCO2PerDay;
@@ -49,4 +53,9 @@ public class PledgeLogic {
         return difference;
     }
 
+    public static void checkEveryHourForChange() {
+        if(Calculator.calculateCO2ePerDay(usersCurrentPlan) != currentPlanCO2PerDay) {
+            currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
+        }
+    }
 }
