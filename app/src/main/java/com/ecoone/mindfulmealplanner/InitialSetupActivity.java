@@ -14,6 +14,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import android.widget.TextView;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
+import com.ecoone.mindfulmealplanner.db.mCallback;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.IdpResponse;
 import com.github.mikephil.charting.charts.PieChart;
@@ -50,8 +52,8 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
     private static final int NUMBER_OF_PAGES = 3;
-    private static final String EXTRA_LOGIN_FLAG =
-            "com.ecoone.mindfulmealplanner.initialscreenactivity.login_flag";
+
+    private static final String TAG = "testActivity";
 
     private InitialSetupViewModel mViewModel;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -63,7 +65,7 @@ public class InitialSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setup);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
-        setupViewPager();
+//        setupViewPager();
         observeFinish();
     }
 
@@ -149,15 +151,29 @@ public class InitialSetupActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//                mViewModel.localUser.username = user.getEmail();
-//                mViewModel.localUser.displayName = user.getDisplayName();
-//                if (user.getPhotoUrl() != null) {
-//                    mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
-//                }
-//                mViewModel.localUser.location = "";
-//                mViewModel.getDisplayName().setValue(user.getDisplayName());
-                startActivityAndFinish();
+                FirebaseDatabaseInterface.DoesUserExist(new mCallback<Boolean>() {
+                    @Override
+                    public void callback(Boolean data) {
+                        if (data) {
+                            Log.i(TAG, "exist");
+                            startActivityAndFinish();
+                        }
+                        else {
+                            Log.i(TAG, "not exist");
+                            setupViewPager();
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            mViewModel.localUser.username = user.getEmail();
+                            mViewModel.localUser.displayName = user.getDisplayName();
+                            if (user.getPhotoUrl() != null) {
+                                mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
+                            }
+                            mViewModel.localUser.location = "";
+                            mViewModel.getDisplayName().setValue(user.getDisplayName());
+                        }
+                    }
+                });
+
             }
         }
     }

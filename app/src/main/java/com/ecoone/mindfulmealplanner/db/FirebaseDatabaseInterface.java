@@ -21,12 +21,44 @@ public abstract class FirebaseDatabaseInterface {
 
     private static final String TAG = "testActivity";
 
-    public static void writeUser(User user){
+
+    public static void writeUser(User user) {
         mDatabase.child(USERS_NODE).child(userUid).setValue(user);
     }
 
-    public static void getUserGender() {
+    public static void DoesUserExist(@NonNull final mCallback<Boolean> finishedCallback) {
+        mDatabase.child(USERS_NODE).child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+//                    Log.i(TAG, "exist");
+                    finishedCallback.callback(true);
+                }
+                else {
+//                    Log.i(TAG, "not exist");
+                    finishedCallback.callback(false);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+    }
+
+    public static void getUserGender() {
+        mDatabase.child(USERS_NODE).child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                Log.i(TAG, "Gender " + user.gender);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static void writePlan(Plan plan){
@@ -53,4 +85,6 @@ public abstract class FirebaseDatabaseInterface {
     public static void updateCurrentPlanName(String newName){
         mDatabase.child(USERS_NODE).child(userUid).child("currentPlanName").setValue(newName);
     }
+
+
 }
