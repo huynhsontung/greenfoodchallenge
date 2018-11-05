@@ -46,8 +46,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-import static com.ecoone.mindfulmealplanner.MainActivity.EXTRA_USERNAME;
-
 public class InitialSetupActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 123;
@@ -57,14 +55,12 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     private InitialSetupViewModel mViewModel;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    AppDatabase database;
     FirebaseUser user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_initial_setup);
-        database = AppDatabase.getDatabase(this);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
         setupViewPager();
@@ -77,8 +73,6 @@ public class InitialSetupActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean checker) {
                 if(!checker){return;}
-                database.userDao().addUser(mViewModel.localUser);
-                database.planDao().addPlan(mViewModel.localPlan);
 
                 if (mDatabase == null) {
                     FirebaseDatabase database = FirebaseDatabase.getInstance();

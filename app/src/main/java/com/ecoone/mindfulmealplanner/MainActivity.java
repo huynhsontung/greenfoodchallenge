@@ -44,9 +44,6 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private FirebaseUser firebaseUser;
 
-    public static final String EXTRA_USERNAME =
-            "com.ecoone.mindfulmealplanner.mainactivity.username";
-
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
 
@@ -73,9 +70,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setupNavigationDrawer() {
-
-
-
         setSupportActionBar(mToolbar);
         mToggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar,
@@ -138,9 +132,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void switchFragment(Fragment fragment) {
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_USERNAME, mUsername);
-        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);

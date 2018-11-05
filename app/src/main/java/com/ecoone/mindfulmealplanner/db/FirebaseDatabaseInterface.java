@@ -1,8 +1,14 @@
 package com.ecoone.mindfulmealplanner.db;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,8 +19,14 @@ public abstract class FirebaseDatabaseInterface {
     private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+    private static final String TAG = "testActivity";
+
     public static void writeUser(User user){
         mDatabase.child(USERS_NODE).child(userUid).setValue(user);
+    }
+
+    public static void getUserGender() {
+
     }
 
     public static void writePlan(Plan plan){
