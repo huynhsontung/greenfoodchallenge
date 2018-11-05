@@ -16,9 +16,26 @@ public class PledgeLogic {
         currentPledgePerDay = currentPledgePerWeek/7;
     }
 
+    public Plan getUsersCurrentPlan() {
+        return usersCurrentPlan;
+    }
+
+    public float getCurrentPledgePerWeek() {
+        return currentPledgePerWeek;
+    }
+
+    public float getCurrentPledgePerDay() {
+        return currentPledgePerDay;
+    }
+
     public void updateCurrentPlan(Plan newPlan) {
         usersCurrentPlan = newPlan;
         currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
+    }
+
+    public void updatePledgeAmount(float newPledge) {
+        currentPledgePerWeek = newPledge;
+        currentPledgePerDay = currentPledgePerWeek/7;
     }
 
     public float differenceInCO2() {
