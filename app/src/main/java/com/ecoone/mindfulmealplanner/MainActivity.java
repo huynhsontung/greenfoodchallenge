@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.PlanListFragment;
+import com.ecoone.mindfulmealplanner.fragments.PledgeFragment;
 
 
 public class MainActivity extends AppCompatActivity
@@ -125,9 +126,15 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
+
+        else if (id == R.id.fragment_pledge) {
+            fragment = new PledgeFragment();
+        }
+
         else if (id == R.id.fragment_plan_list) {
             fragment = new PlanListFragment();
         }
+
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);

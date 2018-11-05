@@ -23,4 +23,8 @@
         \t\tIn the US, each household produces 48 tons of greenhouse gases. Transport, housing and food have the three largest carbon footprints. Food produces about 8 tons of emissions per household, or about 17% of the total. Worldwide, new reports suggest that livestock agriculture produces around a half of all man-made emissions.\n\n
         \t\tChanging the foods that you eat can have a big impact on your carbon footprint. And reduce pollution, preserve the environment and slow global warming. Many of these changes will also save you money, improve your health and even keep you fit! Have a browse of How You Can Fight Climate Change for more ideas on taking action to save our beautiful planet.</string>
     <string name="let_us_know">Let us know something about you</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
 </resources>
