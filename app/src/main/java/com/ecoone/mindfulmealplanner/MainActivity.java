@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
                         android.content.Intent.ACTION_SEND);
                 i.setType("text/plain");
                 i.putExtra(
-                        android.content.Intent.EXTRA_TEXT, "My new app https://play.google.com/store/search?q=TECHHUBINDIAN");
+                        android.content.Intent.EXTRA_TEXT, "let's reduce carbon footprint https://play.google.com/store/search?q=green%20food%20challenge");
                 startActivity(Intent.createChooser(
                         i,
                         "Share Via"));
