@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity
         return intent;
     }
 
+    private ShareActionProvider mShareActionProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,6 +67,29 @@ public class MainActivity extends AppCompatActivity
         nav_user.setText(mUsername);
         setSidebarAction();
         showDashboard();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.mShare:
+                Intent i = new Intent(
+                        android.content.Intent.ACTION_SEND);
+                i.setType("text/plain");
+                i.putExtra(
+                        android.content.Intent.EXTRA_TEXT, "My new app https://play.google.com/store/search?q=TECHHUBINDIAN");
+                startActivity(Intent.createChooser(
+                        i,
+                        "Share Via"));
+                break;
+        }
+        Toast.makeText(getApplicationContext(), "You click on menu share", Toast.LENGTH_SHORT).show();
+        return super.onOptionsItemSelected(item);
     }
 
     private void setSidebarAction() {
@@ -107,27 +132,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater=getMenuInflater();
-        inflater.inflate(R.menu.share,menu);
-        return true;
-        /**
-         *
-         */
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.sharetofb:
-                Toast.makeText(this,"share to facebook",Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
