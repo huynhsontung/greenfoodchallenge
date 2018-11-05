@@ -12,28 +12,32 @@ public class MyPledgeViewModel extends ViewModel {
     private static String planName;
     private static Plan myPlan;
 
-    // Post: Updates database if user changes their pledge.
+    // Post: Sets pledge and updates database if user changes their pledge.
     public static void setCurrentPledge(){
 
     }
 
     // Post: Gets user's pledge from the database.
-    public static void getCurrentPledge(){
+    public static float getCurrentPledge(){
 
+        return myPledge;
     }
 
     // Post: Gets current username (For the database)
-    public static void getUserName(){
+    public static String getUserName(){
 
+        return myUserName;
     }
 
     // Post: Gets the user's current plan name
-    public static void getPlanName(){
+    public static String getPlanNamePledge(){
 
+        return planName;
     }
 
     // Post: Gets the user's current plan.
-    public static void getPlan(){
+    public static Plan getPlanPledge(){
 
+        return myPlan;
     }
 }
