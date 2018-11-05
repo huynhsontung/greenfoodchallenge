@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.fragments.InputTextDialogFragment;
 import com.ecoone.mindfulmealplanner.fragments.InputTextDialogFragment.OnInputListener;
@@ -109,7 +110,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private void initializePlansCo2eTextView() {
         NewPlan mNewPlan = new NewPlan(currentPlan, mGender);
         improvedPlan = mNewPlan.suggestPlan();
-
+        improvedPlan.planName = currentPlan.planName;
         String str = new DecimalFormat("###,###,###").format(Calculator.calculateVancouver(improvedPlan));
         String message = String.format("If everyone in Vancouver uses your " +
                 "plan, %s tonnes of CO2e can be saved! Way to go!", str);
@@ -176,6 +177,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
             @Override
             public void onClick(View v) {
                 DbInterface.updateCurrentPlan(mUsername, improvedPlan);
+                FirebaseDatabaseInterface.updatePlan(improvedPlan);
                 finish();
             }
         });

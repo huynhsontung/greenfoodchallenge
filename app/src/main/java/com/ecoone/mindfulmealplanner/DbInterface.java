@@ -25,7 +25,7 @@ public abstract class DbInterface {
         user.gender = gender;
         user.currentPlanName =currentPlan;
         mDb.userDao().addUser(user);
-        FirebaseDatabaseInterface.writeUser(firebaseUser.getUid(),user);
+        FirebaseDatabaseInterface.writeUser(user);
     }
 
     public static String getGender(final String username) {
@@ -42,7 +42,7 @@ public abstract class DbInterface {
         user.currentPlanName = newPlanName;
         mDb.userDao().updateUser(user);
 
-        FirebaseDatabaseInterface.updateCurrentPlanName(firebaseUser.getUid(),newPlanName);
+        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
     }
 
     public static List<Plan> getAllPlans(final String username) {
@@ -68,7 +68,7 @@ public abstract class DbInterface {
         plan.vegetables = foodAmount[6];
         mDb.planDao().addPlan(plan);
         // Firebase Database transaction
-        FirebaseDatabaseInterface.writePlan(firebaseUser.getUid(),plan);
+        FirebaseDatabaseInterface.writePlan(plan);
     }
 
     public static StringBuilder getUserDatatoString(final String username) {
@@ -112,7 +112,7 @@ public abstract class DbInterface {
         mDb.planDao().deletePlan(oldPlan);
         mDb.planDao().addPlan(newPlan);
 
-        FirebaseDatabaseInterface.updateCurrentPlanName(firebaseUser.getUid(),newPlanName);
+        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
     }
 
     // For Save Button in Improve Activity

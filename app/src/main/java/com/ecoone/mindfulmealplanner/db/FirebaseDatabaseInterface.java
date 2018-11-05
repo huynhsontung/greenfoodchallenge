@@ -1,20 +1,23 @@
 package com.ecoone.mindfulmealplanner.db;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class FirebaseDatabaseInterface {
     static final String USERS_NODE = "users";
     static final String PLANS_NODE = "plans";
     private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private static final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    public static void writeUser(String userId, User user){
-        mDatabase.child(USERS_NODE).child(userId).setValue(user);
+    public static void writeUser(User user){
+        mDatabase.child(USERS_NODE).child(userUid).setValue(user);
     }
 
-    public static void writePlan(String userId, Plan plan){
+    public static void writePlan(Plan plan){
         HashMap<String, Object> planMap = new HashMap<>();
         planMap.put("beef", plan.beef);
         planMap.put("pork", plan.pork);
@@ -23,14 +26,19 @@ public abstract class FirebaseDatabaseInterface {
         planMap.put("eggs", plan.eggs);
         planMap.put("beans", plan.beans);
         planMap.put("vegetables", plan.vegetables);
-        mDatabase.child(USERS_NODE).child(userId).child(PLANS_NODE).child(plan.planName).setValue(planMap);
+        mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE).child(plan.planName).setValue(planMap);
     }
 
-    public static void deletePlan(String userId, String planName){
-        mDatabase.child(USERS_NODE).child(userId).child(PLANS_NODE).child(planName).removeValue();
+    public static void updatePlan(Plan plan) {
+        deletePlan(plan.planName);
+        writePlan(plan);
     }
 
-    public static void updateCurrentPlanName(String userID, String newName){
-        mDatabase.child(USERS_NODE).child(userID).child("currentPlanName").setValue(newName);
+    public static void deletePlan(String planName){
+        mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE).child(planName).removeValue();
+    }
+
+    public static void updateCurrentPlanName(String newName){
+        mDatabase.child(USERS_NODE).child(userUid).child("currentPlanName").setValue(newName);
     }
 }

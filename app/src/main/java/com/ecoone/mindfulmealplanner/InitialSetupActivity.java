@@ -37,6 +37,7 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
@@ -55,6 +56,7 @@ public class InitialSetupActivity extends AppCompatActivity {
             "com.ecoone.mindfulmealplanner.initialscreenactivity.login_flag";
 
     private InitialSetupViewModel mViewModel;
+    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     AppDatabase database;
     FirebaseUser user;
 
@@ -78,16 +80,19 @@ public class InitialSetupActivity extends AppCompatActivity {
                 database.userDao().addUser(mViewModel.localUser);
                 database.planDao().addPlan(mViewModel.localPlan);
 
-                user = FirebaseAuth.getInstance().getCurrentUser();
-                FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-                FirebaseDatabaseInterface.writeUser(user.getUid(),mViewModel.localUser);
-                FirebaseDatabaseInterface.writePlan(user.getUid(),mViewModel.localPlan);
-                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-                SharedPreferences.Editor editor = preferences.edit();
-                editor.putInt(EXTRA_LOGIN_FLAG, 1);
-                editor.putString(EXTRA_USERNAME, mViewModel.localUser.username);
-                editor.apply();
-                startActivityAndFinish(mViewModel.localUser.username);
+                if (mDatabase == null) {
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    database.setPersistenceEnabled(true);
+                    mDatabase = database.getReference();
+                }
+                FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
+                FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
+//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//                SharedPreferences.Editor editor = preferences.edit();
+//                editor.putInt(EXTRA_LOGIN_FLAG, 1);
+//                editor.putString(EXTRA_USERNAME, mViewModel.localUser.username);
+//                editor.apply();
+                startActivityAndFinish();
             }
         };
         mViewModel.getChecker().observe(this,checkerObserver);
@@ -100,11 +105,11 @@ public class InitialSetupActivity extends AppCompatActivity {
         } else {
 //            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //            String mUsername = preferences.getString(EXTRA_USERNAME, null);
-            startActivityAndFinish(user.getDisplayName());
+            startActivityAndFinish();
         }
     }
 
-    private void startActivityAndFinish(String username) {
+    private void startActivityAndFinish() {
         Intent intent = MainActivity.newIntent(InitialSetupActivity.this);
         startActivity(intent);
         InitialSetupActivity.this.finish();
@@ -150,11 +155,15 @@ public class InitialSetupActivity extends AppCompatActivity {
             IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
                 // Successfully signed in
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                mViewModel.localUser.username = user.getEmail();
-                mViewModel.localUser.displayName = user.getDisplayName();
-                mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
-                mViewModel.getDisplayName().setValue(user.getDisplayName());
+//                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//                mViewModel.localUser.username = user.getEmail();
+//                mViewModel.localUser.displayName = user.getDisplayName();
+//                if (user.getPhotoUrl() != null) {
+//                    mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
+//                }
+//                mViewModel.localUser.location = "";
+//                mViewModel.getDisplayName().setValue(user.getDisplayName());
+                startActivityAndFinish();
             }
         }
     }
@@ -293,7 +302,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 mFoodSeekBarAction[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_action);
                 mFoodSeekBarValueView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_value);
                 mFoodSeekBarTextView[i].setText(foodName[i]);
-                mFoodSeekBarAction[i].setProgress(50);
+                mFoodSeekBarAction[i].setProgress(randInt(0, mFoodSeekBarAction[i].getMax()));
                 int amount = mFoodSeekBarAction[i].getProgress();
                 mFoodSeekBarValueView[i].setText(getString(R.string.amount_gram,amount));
                 foodAmount[i] = amount;
