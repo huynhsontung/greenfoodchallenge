@@ -1,10 +1,10 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,33 +19,45 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.Calculator;
-import com.ecoone.mindfulmealplanner.ImproveActivity;
-import com.ecoone.mindfulmealplanner.MainActivity;
-import com.ecoone.mindfulmealplanner.NewPlan;
-import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.DbInterface;
+import com.ecoone.mindfulmealplanner.ImproveActivity;
+import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
+import com.ecoone.mindfulmealplanner.db.User;
+import com.ecoone.mindfulmealplanner.db.mCallback;
+import com.ecoone.mindfulmealplanner.db.onGetDataListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutionException;
 
 public class DashboardFragment extends Fragment {
-    private String mGender;
+
+    private Plan mCurrentPlan;
     private String mCurrentPlanName;
     private String[] foodName;
-    private float[] foodAmount;
-    private int foodLen;
 
-    private FirebaseUser firebaseUser;
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+    private Task<Void> allTask;
 
     private Button improveButton;
     private TextView mEditDoneIcon;
@@ -54,6 +66,7 @@ public class DashboardFragment extends Fragment {
     private TextView relevantInfo;
     private EditText editPlanName;
     private Button logout;
+
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
@@ -71,13 +84,12 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-        FirebaseDatabaseInterface.getUserGender();
+
         foodName = findStringArrayRes("food_name");
-        foodLen = foodName.length;
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
@@ -88,6 +100,31 @@ public class DashboardFragment extends Fragment {
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         logout = view.findViewById(R.id.logout);
 
+        mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                User user = dataSnapshot.getValue(User.class);
+                mCurrentPlanName = user.currentPlanName;
+                setEditTextView(mCurrentPlanName);
+                mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
+                if (mCurrentPlan != null) {
+                    calculateCurrentCo2e(mCurrentPlan);
+                    setupPieChartFragmentPager(mCurrentPlan);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        setEditDoneIconAction(view);
+        setupImproveButton();
+
+
+
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,106 +133,94 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-//        setUserInfo();
-//        setEditTextView();
-//        setEditDoneIconAction(view);
-//        setupImproveButton();
-//        setupPieChartFragmentPager();
-//        calculateCurrentCo2e();
+
 
     }
 
-//    private void setUserInfo() {
-//        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
-//        Plan plan = DbInterface.getCurrentPlan(mUsername);
-//        foodAmount = DbInterface.getPlanArray(plan);
-//    }
-//
-//    private void calculateCurrentCo2e() {
-//        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
-//        String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
-//        currentCo2eTextView.setText(message);
-//        float kmWasted = Calculator.calculateSavingsInKm(sumCo2ePerYear);
-//        if(kmWasted > 100){
-//            relevantInfo.setText(getString(R.string.km_wasted,new DecimalFormat("###,###,###.#").format(kmWasted)));
-//            relevantInfo.setVisibility(View.VISIBLE);
-//        }
-//
-//        if (sumCo2ePerYear > 1.7)
-//            currentCo2eTextView.setTextColor(Color.RED);
-//        else {
-//            currentCo2eTextView.setTextColor(Color.BLUE);
-//        }
-//    }
-//
-//    private void setEditTextView() {
-//        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
-//        editPlanName.setText(mCurrentPlanName);
-//        editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
-//        editPlanName.setTypeface(currentPlanTextView.getTypeface());
-////        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
-//        editPlanName.setInputType(0);
-//    }
-//
-//    private void setEditDoneIconAction(final View view) {
-//        mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if (editPlanName.getInputType() == 0) {
-//                    editPlanName.setInputType(1);
-//                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
-//                    editPlanName.setSelection(editPlanName.getText().length());
-//                    editPlanName.selectAll();
-//                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
-//                }
-//                else {
-//                    editPlanName.setInputType(0);
-//                    mCurrentPlanName = editPlanName.getText().toString();
-//                    editPlanName.setText(mCurrentPlanName);
-//                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
-//                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-//                    DbInterface.changeCurrentPlanName(mUsername, mCurrentPlanName);
-//                }
-//            }
-//        });
-//    }
-//
-//
-//    private void setupPieChartFragmentPager() {
-//        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
-//
-//        mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
-//        mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
-//            @Override
-//            public Fragment getItem(int i) {
-//                if (i == 0)
-//                    return DashboardChartFragment.newInstance(i,foodAmount);
-//                else
-//                    return DashboardChartFragment.newInstance(i,co2Amount);
-//            }
-//
-//            @Override
-//            public int getCount() {
-//                return 2;
-//            }
-//        };
-//        mChartPager.setAdapter(mChartPagerAdapter);
-//        mChartPager.setCurrentItem(0);
-//    }
-//
-//    private void setupImproveButton(){
-//        //Wire up the button to improve the plan3
-//        //...get the button
-//        improveButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intent = ImproveActivity.newIntent(getContext(), mUsername);
-//                startActivityForResult(intent,0);
-//            }
-//        });
-//    }
+    private void calculateCurrentCo2e(Plan plan) {
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(plan);
+        String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
+        currentCo2eTextView.setText(message);
+        float kmWasted = Calculator.calculateSavingsInKm(sumCo2ePerYear);
+        if(kmWasted > 100){
+            relevantInfo.setText(getString(R.string.km_wasted,new DecimalFormat("###,###,###.#").format(kmWasted)));
+            relevantInfo.setVisibility(View.VISIBLE);
+        }
+
+        if (sumCo2ePerYear > 1.7)
+            currentCo2eTextView.setTextColor(Color.RED);
+        else {
+            currentCo2eTextView.setTextColor(Color.BLUE);
+        }
+    }
+
+    private void setEditTextView(String currentPlanName) {
+        editPlanName.setText(currentPlanName);
+        editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
+        editPlanName.setTypeface(currentPlanTextView.getTypeface());
+//        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
+        editPlanName.setInputType(0);
+    }
+
+    private void setEditDoneIconAction(final View view ) {
+        mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (editPlanName.getInputType() == 0) {
+                    editPlanName.setInputType(1);
+                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
+                    editPlanName.setSelection(editPlanName.getText().length());
+                    editPlanName.selectAll();
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                }
+                else {
+                    editPlanName.setInputType(0);
+                    String newPlanName = editPlanName.getText().toString();
+                    editPlanName.setText(newPlanName);
+                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    FirebaseDatabaseInterface.updateCurrentPlanName(mCurrentPlan, mCurrentPlanName, newPlanName);
+                }
+            }
+        });
+    }
+
+    private void setupPieChartFragmentPager(Plan plan) {
+        final float[] co2Amount = Calculator.calculateCO2eEachFood(plan);
+        final float[] foodAmount = DbInterface.getPlanArray(plan);
+
+        mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
+        mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
+                if (i == 0)
+                    return DashboardChartFragment.newInstance(i,foodAmount);
+                else
+                    return DashboardChartFragment.newInstance(i,co2Amount);
+            }
+
+            @Override
+            public int getCount() {
+                return 2;
+            }
+        };
+        mChartPager.setAdapter(mChartPagerAdapter);
+        mChartPager.setCurrentItem(0);
+    }
+
+    private void setupImproveButton(){
+        //Wire up the button to improve the plan3
+        //...get the button
+        improveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = ImproveActivity.newIntent(getContext());
+                startActivityForResult(intent,0);
+            }
+        });
+    }
 
 
     private String[] findStringArrayRes(String resName) {

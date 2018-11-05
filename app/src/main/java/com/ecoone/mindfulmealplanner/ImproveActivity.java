@@ -3,7 +3,6 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,15 +58,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private AppDatabase mDb;
     private PieChart mPieChart;
 
-    public static final String EXTRA_USERNAME =
-            "com.ecoone.mindfulmealplanner.improveactivity.username";
-
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ImproveActivity)";
 
-    public static Intent newIntent(Context packageContext, String username) {
+    public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, ImproveActivity.class);
-        intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
 
@@ -82,7 +76,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
         mPieChart = findViewById(R.id.improve_piechart);
 
-        mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
         mGender = DbInterface.getGender(mUsername);
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
@@ -93,9 +86,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         saveAsButton = findViewById(R.id.improve_save_as);
         saveButton = findViewById(R.id.improve_save);
 
-        Log.i(TAG, "Username in Improve:" + mUsername + CLASSTAG);
-        Log.i(TAG, "Gender in Improve:" + mGender + CLASSTAG);
-
         currentPlan = DbInterface.getCurrentPlan(mUsername);
         Log.i(TAG, "Get the current plan" + CLASSTAG + ":\n" +
                 DbInterface.getPlanDatatoString(currentPlan));
@@ -103,7 +93,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
         initializePlansCo2eTextView();
         initializeSeekBarView();
-        setButtonAction();
+//        setButtonAction();
         setSeekBarValueView();
     }
 
@@ -162,33 +152,33 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         }
     }
 
-    private void setButtonAction() {
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < foodLen; i++) {
-                    mFoodSeekBarView[i].setVisibility(View.VISIBLE);
-                }
-                v.setVisibility(View.GONE);
-            }
-        });
-
-        saveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                DbInterface.updateCurrentPlan(mUsername, improvedPlan);
-                FirebaseDatabaseInterface.updatePlan(improvedPlan);
-                finish();
-            }
-        });
-
-        saveAsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showAlertDialog();
-            }
-        });
-    }
+//    private void setButtonAction() {
+//        editButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                for (int i = 0; i < foodLen; i++) {
+//                    mFoodSeekBarView[i].setVisibility(View.VISIBLE);
+//                }
+//                v.setVisibility(View.GONE);
+//            }
+//        });
+//
+//        saveButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                DbInterface.updateCurrentPlan(mUsername, improvedPlan);
+//                FirebaseDatabaseInterface.updatePlan(improvedPlan);
+//                finish();
+//            }
+//        });
+//
+//        saveAsButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                showAlertDialog();
+//            }
+//        });
+//    }
 
     private void setSeekBarValueView() {
         for (int i = 0; i < foodLen; i++) {
@@ -298,25 +288,25 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
                 "array", getPackageName());
         return getApplicationContext().getResources().getStringArray(resId);
     }
+//
+//    private void showAlertDialog() {
+//        Bundle bundle = new Bundle();
+//        bundle.putString(EXTRA_USERNAME, mUsername);
+//        FragmentManager fm = getSupportFragmentManager();
+//        InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
+//        dialog.setArguments(bundle);
+//        dialog.show(fm, "fragment_alert");
+//    }
 
-    private void showAlertDialog() {
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_USERNAME, mUsername);
-        FragmentManager fm = getSupportFragmentManager();
-        InputTextDialogFragment dialog = InputTextDialogFragment.newInstance();
-        dialog.setArguments(bundle);
-        dialog.show(fm, "fragment_alert");
-    }
-
-    private void saveAsDbAction(String newPlanName) {
-        DbInterface.addPlan(mUsername, newPlanName, foodAmount);
-        DbInterface.updateUserCurrentPlanName(mUsername, newPlanName);
-        finish();
-    }
+//    private void saveAsDbAction(String newPlanName) {
+//        DbInterface.addPlan(mUsername, newPlanName, foodAmount);
+//        DbInterface.updateUserCurrentPlanName(mUsername, newPlanName);
+//        finish();
+//    }
 
     @Override
     public void sendInput(String input) {
         Log.i(TAG, "sendInput: got the input: " + input + CLASSTAG);
-        saveAsDbAction(input);
+//        saveAsDbAction(input);
     }
 }

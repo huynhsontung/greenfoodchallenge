@@ -36,14 +36,14 @@ public abstract class DbInterface {
         return mDb.userDao().getCurrentPlanName(username);
     }
 
-    public static void updateUserCurrentPlanName(final String username,
-                                                 final String newPlanName) {
-        User user = mDb.userDao().getUser(username);
-        user.currentPlanName = newPlanName;
-        mDb.userDao().updateUser(user);
-
-        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
-    }
+//    public static void updateUserCurrentPlanName(final String username,
+//                                                 final String newPlanName) {
+//        User user = mDb.userDao().getUser(username);
+//        user.currentPlanName = newPlanName;
+//        mDb.userDao().updateUser(user);
+//
+//        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
+//    }
 
     public static List<Plan> getAllPlans(final String username) {
         return mDb.planDao().getAllPlans(username);
@@ -98,22 +98,22 @@ public abstract class DbInterface {
     // need to change user and plan table
     // 1. update user
     // 2. delete target plan and add the plan with new name
-    public static void changeCurrentPlanName(final String username,
-                                             final String newPlanName) {
-        User user = mDb.userDao().getUser(username);
-        String oldPlanName = user.currentPlanName;
-        user.currentPlanName = newPlanName;
-        mDb.userDao().updateUser(user);
-        // get old plan
-        Plan oldPlan = mDb.planDao().getPlan(username, oldPlanName);
-        // create new plan
-        Plan newPlan = mDb.planDao().getPlan(username, oldPlanName);
-        newPlan.planName = newPlanName;
-        mDb.planDao().deletePlan(oldPlan);
-        mDb.planDao().addPlan(newPlan);
-
-        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
-    }
+//    public static void changeCurrentPlanName(final String username,
+//                                             final String newPlanName) {
+//        User user = mDb.userDao().getUser(username);
+//        String oldPlanName = user.currentPlanName;
+//        user.currentPlanName = newPlanName;
+//        mDb.userDao().updateUser(user);
+//        // get old plan
+//        Plan oldPlan = mDb.planDao().getPlan(username, oldPlanName);
+//        // create new plan
+//        Plan newPlan = mDb.planDao().getPlan(username, oldPlanName);
+//        newPlan.planName = newPlanName;
+//        mDb.planDao().deletePlan(oldPlan);
+//        mDb.planDao().addPlan(newPlan);
+//
+//        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
+//    }
 
     // For Save Button in Improve Activity
     public static void updateCurrentPlan(final String username, final Plan plan) {

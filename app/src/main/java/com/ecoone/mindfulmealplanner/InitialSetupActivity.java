@@ -3,8 +3,6 @@ package com.ecoone.mindfulmealplanner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -25,7 +23,6 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ecoone.mindfulmealplanner.db.AppDatabase;
 import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.mCallback;
@@ -40,7 +37,6 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,7 +52,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     private static final String TAG = "testActivity";
 
     private InitialSetupViewModel mViewModel;
-    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mDatabase = com.google.firebase.database.FirebaseDatabase.getInstance().getReference();
     FirebaseUser user;
 
     @Override
@@ -77,7 +73,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 if(!checker){return;}
 
                 if (mDatabase == null) {
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    com.google.firebase.database.FirebaseDatabase database = com.google.firebase.database.FirebaseDatabase.getInstance();
                     database.setPersistenceEnabled(true);
                     mDatabase = database.getReference();
                 }
