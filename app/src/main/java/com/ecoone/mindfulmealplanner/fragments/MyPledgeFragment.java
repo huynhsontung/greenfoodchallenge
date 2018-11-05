@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.MainActivity;
@@ -31,9 +33,10 @@ public class MyPledgeFragment extends Fragment {
     private String myCurrentPlanName;
     private String mUserName;
     private Context mContext;
-
+    private Button pledgeButton;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+    private static final String pTag = "pledge";
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MyPledgeFragment)";
 
@@ -82,11 +85,23 @@ public class MyPledgeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.i("pledge", "in view");
+        Log.i(pTag, "in view");
         mContext = getContext();
-        Intent mIntent = newIntent(getContext());
-        mContext.startService(mIntent);
-        Log.i("pledge", "inbetween");
         return inflater.inflate(R.layout.fragment_my_pledge, null);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.i(pTag, "onStart");
+        View view = getView();
+        pledgeButton = view.findViewById(R.id.my_pledge_pledge);
+        pledgeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent mIntent = newIntent(getContext());
+                mContext.startService(mIntent);
+            }
+        });
     }
 }
