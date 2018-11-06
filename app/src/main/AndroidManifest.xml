@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <service android:name="com.ecoone.mindfulmealplanner.DailyPledgeService"/>
-        <activity android:name=".InitialScreenActivity">
+        <activity android:name=".InitialSetupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

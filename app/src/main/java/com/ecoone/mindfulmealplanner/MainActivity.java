@@ -194,9 +194,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new PledgeFragment();
         }
 
-        else if (id == R.id.fragment_plan_list) {
-            fragment = new PlanListFragment();
-        }
+//        else if (id == R.id.fragment_plan_list) {
+//            fragment = new PlanListFragment();
+//        }
 
         else if (id == R.id.fragment_settings) {
             //..
