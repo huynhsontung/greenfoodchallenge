@@ -1,14 +1,20 @@
 package com.ecoone.mindfulmealplanner;
 
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,6 +24,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +32,12 @@ import android.widget.Toast;
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.PlanListFragment;
 import com.ecoone.mindfulmealplanner.fragments.PledgeFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
+
 
 
 public class MainActivity extends AppCompatActivity
@@ -91,7 +104,6 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    private void setSidebarAction() {
     private void setupNavigationDrawer() {
         setSupportActionBar(mToolbar);
         mToggle = new ActionBarDrawerToggle(
@@ -111,7 +123,6 @@ public class MainActivity extends AppCompatActivity
         navUsernameText.setText(firebaseUser.getEmail());
         ImageView navUserIcon = headerView.findViewById(R.id.nav_user_icon);
         Transformation circularTransform = new Transformation() {
-
             @Override
             public Bitmap transform(Bitmap source) {
                 final int margin = 0;
@@ -145,6 +156,7 @@ public class MainActivity extends AppCompatActivity
                 .transform(circularTransform)
                 .into(navUserIcon);
     }
+
 
     private void showDashboard() {
         Menu menu = mNavigationView.getMenu();
