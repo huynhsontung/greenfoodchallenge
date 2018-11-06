@@ -17,8 +17,6 @@ public class User {
     public String gender;
     public String displayName;
     public String photoUrl;
-    public String location;
-    public float pledge;
 //    public long createDate;
 //    public long lastLoginDate;
     public String currentPlanName;

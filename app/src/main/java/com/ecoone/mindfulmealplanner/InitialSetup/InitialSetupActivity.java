@@ -23,6 +23,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.DB.Pledge;
 import com.ecoone.mindfulmealplanner.Tool.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -82,6 +83,11 @@ public class InitialSetupActivity extends AppCompatActivity {
                 }
                 FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
                 FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
+
+                Pledge pledge = new Pledge();
+                pledge.amount = 0;
+                pledge.location = "";
+                FirebaseDatabaseInterface.writePledge(pledge);
 //                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 //                SharedPreferences.Editor editor = preferences.edit();
 //                editor.putInt(EXTRA_LOGIN_FLAG, 1);
@@ -167,7 +173,6 @@ public class InitialSetupActivity extends AppCompatActivity {
                             if (user.getPhotoUrl() != null) {
                                 mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
                             }
-                            mViewModel.localUser.location = "";
                             mViewModel.getDisplayName().setValue(user.getDisplayName());
                         }
                     }

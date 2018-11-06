@@ -15,6 +15,7 @@ import java.util.HashMap;
 public abstract class FirebaseDatabaseInterface {
     static final String USERS_NODE = "users";
     static final String PLANS_NODE = "plans";
+    static final String PLEDGE_NODE = "pledge";
     private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     private static final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private static final FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
@@ -133,5 +134,16 @@ public abstract class FirebaseDatabaseInterface {
         writePlan(plan);
     }
 
+    public static void writePledge(Pledge pledge) {
+        mDatabase.child(USERS_NODE).child(userUid).child(PLEDGE_NODE).setValue(pledge);
+    }
+
+    public static void updatePledgeAmount(int amount) {
+        mDatabase.child(USERS_NODE).child(userUid).child(PLEDGE_NODE).child("amount").setValue(amount);
+    }
+
+    public static void updatePledgeLocation(String location) {
+        mDatabase.child(USERS_NODE).child(userUid).child(PLEDGE_NODE).child("location").setValue(location);
+    }
 
 }

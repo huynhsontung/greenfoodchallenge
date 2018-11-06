@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "07773a8a4fec9d3fee1e417432e66f08",
+    "identityHash": "e41ff002b0051ee285bada601e230330",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `displayName` TEXT, `photoUrl` TEXT, `location` TEXT, `pledge` REAL NOT NULL, `currentPlanName` TEXT, PRIMARY KEY(`username`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `displayName` TEXT, `photoUrl` TEXT, `currentPlanName` TEXT, PRIMARY KEY(`username`))",
         "fields": [
           {
             "fieldPath": "username",
@@ -31,18 +31,6 @@
             "columnName": "photoUrl",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "location",
-            "columnName": "location",
-            "affinity": "TEXT",
-            "notNull": false
-          },
-          {
-            "fieldPath": "pledge",
-            "columnName": "pledge",
-            "affinity": "REAL",
-            "notNull": true
           },
           {
             "fieldPath": "currentPlanName",
@@ -153,7 +141,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"07773a8a4fec9d3fee1e417432e66f08\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e41ff002b0051ee285bada601e230330\")"
     ]
   }
 }
