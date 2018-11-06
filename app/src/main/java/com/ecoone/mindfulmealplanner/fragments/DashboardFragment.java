@@ -119,9 +119,9 @@ public class DashboardFragment extends Fragment {
                 mCurrentPlanName = user.currentPlanName;
                 setEditTextView(mCurrentPlanName);
                 Plan mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
-                if(mCurrentPlan != null)
+                if(mCurrentPlan != null) {
                     mViewModel.mCurrentPlan.setValue(mCurrentPlan);
-
+                }
             }
 
             @Override
@@ -129,6 +129,7 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
         mViewModel.mCurrentPlan.observe(this, new Observer<Plan>() {
             @Override
             public void onChanged(Plan plan) {
@@ -137,10 +138,9 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+
         setEditDoneIconAction(view);
         setupImproveButton();
-
-
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,31 +151,31 @@ public class DashboardFragment extends Fragment {
         });
 
 
-        getSumPledge()
-                .addOnCompleteListener(new OnCompleteListener<Integer>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Integer> task) {
-                        test = task.getResult();
-                        Log.i(TAG, "cloud func: " +test);
-                    }
-                });
-
-        Log.i(TAG, "cloud func: " +test);
+//        getSumPledge()
+//                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Integer> task) {
+//                        test = task.getResult();
+//                        Log.i(TAG, "cloud func: " +test);
+//                    }
+//                });
+//
+//        Log.i(TAG, "cloud func: " +test);
 
     }
 
-    private Task<Integer> getSumPledge() {
-        return mFunctions
-                .getHttpsCallable("getSumPledge")
-                .call()
-                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
-                    @Override
-                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        Integer result = (Integer) task.getResult().getData();
-                        return result;
-                    }
-                });
-    }
+//    private Task<Integer> getSumPledge() {
+//        return mFunctions
+//                .getHttpsCallable("getSumPledge")
+//                .call()
+//                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
+//                    @Override
+//                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+//                        Integer result = (Integer) task.getResult().getData();
+//                        return result;
+//                    }
+//                });
+//    }
 
     private void calculateCurrentCo2e(Plan plan) {
         float sumCo2ePerYear = Calculator.calculateCO2ePerYear(plan);

@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "285258899406",
-    "firebase_url": "https://greenfoodchallenge-6ae84.firebaseio.com",
-    "project_id": "greenfoodchallenge-6ae84",
-    "storage_bucket": "greenfoodchallenge-6ae84.appspot.com"
+    "project_number": "1003185605814",
+    "firebase_url": "https://mindfulmealplanner.firebaseio.com",
+    "project_id": "mindfulmealplanner",
+    "storage_bucket": "mindfulmealplanner.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:285258899406:android:e2caa92e79899972",
+        "mobilesdk_app_id": "1:1003185605814:android:e2caa92e79899972",
         "android_client_info": {
           "package_name": "com.ecoone.mindfulmealplanner"
         }
       },
       "oauth_client": [
         {
-          "client_id": "285258899406-s5hc12lhhav880q7k5lc88l40eea32rd.apps.googleusercontent.com",
+          "client_id": "1003185605814-9evpdmcqmkauhd4ulq7o5curldi3mdv5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.ecoone.mindfulmealplanner",
-            "certificate_hash": "b8bf0c7474f9e6fb53f92eac185b015c233ddd73"
+            "certificate_hash": "d73a70f555b4c24d2b9a282f7ba8a0d190e7e987"
           }
         },
         {
-          "client_id": "285258899406-ukh25btih3m22m1qg2veoum9d2o5aidb.apps.googleusercontent.com",
+          "client_id": "1003185605814-majgruue0ve4mcmtams3j6448581neu2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDbZuQ2gyABaM1-37OPWpgDyffMLXZa_KQ"
+          "current_key": "AIzaSyDN4SoHX9iayjPnXzpUpNz4tKI_8UQ-U90"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "285258899406-ukh25btih3m22m1qg2veoum9d2o5aidb.apps.googleusercontent.com",
+              "client_id": "1003185605814-majgruue0ve4mcmtams3j6448581neu2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
