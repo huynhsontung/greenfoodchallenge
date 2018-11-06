@@ -3,13 +3,15 @@ package com.ecoone.mindfulmealplanner;
 import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DiscoverViewModel extends ViewModel {
 
     private static int countPledges;
     private static float totalCO2ePledges;
     private static float averageCO2ePledges;
-    private static ArrayList<String> municipalities;
+    private static List<PeoplePledging> myPeoplePledgingList;
+    private static List<String> municipalities;
 
     private static float equivalenceCar;
 
@@ -39,7 +41,15 @@ public class DiscoverViewModel extends ViewModel {
         return (convertToGrams / gramsPerKmToyota);
     }
 
-    public static ArrayList<String> getMunicipalitiesList(){
+    public static void addPersonPledging(PeoplePledging newPerson){
+        myPeoplePledgingList.add(newPerson);
+    }
+
+    public static List<PeoplePledging> getPledgeList(){
+        return myPeoplePledgingList;
+    }
+
+    public static List<String> getMunicipalities(){
 
         return municipalities;
     }
