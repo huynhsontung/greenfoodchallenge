@@ -16,5 +16,13 @@ exports.getUserGender = functions.https.onCall((req, res) => {
 });
 
 exports.getSumPledge = functions.https.onCall((data, context ) => {
-
+    var sum = 0;
+    var query = firebase.database.ref("users");
+    query.once("value")
+        .then(function(snapshot) {
+            snapshot.forEach(function(childSnapshot) =>{
+                sum = sum + childSnapshot.child("pledge").val();
+            })
+        });
+    return sum;
 });
