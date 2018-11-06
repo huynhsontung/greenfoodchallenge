@@ -81,8 +81,12 @@ public class MainActivity extends AppCompatActivity
                 Intent i = new Intent(
                         android.content.Intent.ACTION_SEND);
                 i.setType("text/plain");
+                String shareText = "I have pledged ";
+                shareText = shareText + "   "+"in this app. Come and take a look!";
                 i.putExtra(
-                        android.content.Intent.EXTRA_TEXT, "let's reduce carbon footprint https://play.google.com/store/search?q=green%20food%20challenge");
+
+                        android.content.Intent.EXTRA_TEXT, shareText+"     Download this app here https://play.google.com/store/search?q=greenfoodchallenge");
+
                 startActivity(Intent.createChooser(
                         i,
                         "Share Via"));
