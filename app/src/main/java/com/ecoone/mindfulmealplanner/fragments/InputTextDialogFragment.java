@@ -59,7 +59,7 @@ public class InputTextDialogFragment extends DialogFragment{
         mDb = AppDatabase.getDatabase(getContext());
         DbInterface.setDb(mDb);
 
-        mUsername = getArguments().getString(ImproveActivity.EXTRA_USERNAME);
+//        mUsername = getArguments().getString(ImproveActivity.EXTRA_USERNAME);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         AlertDialog dialog;

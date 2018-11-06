@@ -1,6 +1,8 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -23,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.Calculator;
+import com.ecoone.mindfulmealplanner.DashboardViewModel;
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -50,7 +53,7 @@ import java.util.concurrent.ExecutionException;
 
 public class DashboardFragment extends Fragment {
 
-    private Plan mCurrentPlan;
+
     private String mCurrentPlanName;
     private String[] foodName;
 
@@ -70,7 +73,7 @@ public class DashboardFragment extends Fragment {
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
-
+    private DashboardViewModel mViewModel;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(DashboardFragment)";
 
@@ -88,7 +91,7 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         foodName = findStringArrayRes("food_name");
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
@@ -103,15 +106,13 @@ public class DashboardFragment extends Fragment {
         mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
                 User user = dataSnapshot.getValue(User.class);
                 mCurrentPlanName = user.currentPlanName;
                 setEditTextView(mCurrentPlanName);
-                mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
-                if (mCurrentPlan != null) {
-                    calculateCurrentCo2e(mCurrentPlan);
-                    setupPieChartFragmentPager(mCurrentPlan);
-                }
+                Plan mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
+                if(mCurrentPlan != null)
+                    mViewModel.mCurrentPlan.setValue(mCurrentPlan);
+
             }
 
             @Override
@@ -119,7 +120,14 @@ public class DashboardFragment extends Fragment {
 
             }
         });
+        mViewModel.mCurrentPlan.observe(this, new Observer<Plan>() {
+            @Override
+            public void onChanged(Plan plan) {
+                calculateCurrentCo2e(plan);
+                setupPieChartFragmentPager(plan);
 
+            }
+        });
         setEditDoneIconAction(view);
         setupImproveButton();
 
@@ -166,6 +174,7 @@ public class DashboardFragment extends Fragment {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Plan mCurrentPlan = mViewModel.mCurrentPlan.getValue();
                 if (editPlanName.getInputType() == 0) {
                     editPlanName.setInputType(1);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
@@ -185,6 +194,7 @@ public class DashboardFragment extends Fragment {
                 }
             }
         });
+
     }
 
     private void setupPieChartFragmentPager(Plan plan) {

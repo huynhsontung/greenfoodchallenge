@@ -14,3 +14,7 @@ exports.getUserGender = functions.https.onCall((req, res) => {
            return snapshot.child("gender").val();
        });
 });
+
+exports.getSumPledge = functions.https.onCall((data, context ) => {
+
+});
