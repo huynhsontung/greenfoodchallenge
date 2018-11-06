@@ -101,6 +101,9 @@ public class MyPledgeFragment extends Fragment {
         pledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // *TO-DO*
+                // update PledgeLogic with the current plan in database
+                // update PledgeLogic with the enw pledge entered
                 Intent mIntent = newIntent(getContext());
                 // start the service in the background
                 mContext.startService(mIntent);
