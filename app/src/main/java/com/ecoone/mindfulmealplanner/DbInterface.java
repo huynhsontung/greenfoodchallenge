@@ -1,14 +1,18 @@
 package com.ecoone.mindfulmealplanner;
 
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.List;
 import java.util.Locale;
 
 public abstract class DbInterface {
 
+    static FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     private static AppDatabase mDb;
 
     public static void setDb(AppDatabase db){mDb = db;}
@@ -21,6 +25,7 @@ public abstract class DbInterface {
         user.gender = gender;
         user.currentPlanName =currentPlan;
         mDb.userDao().addUser(user);
+        FirebaseDatabaseInterface.writeUser(user);
     }
 
     public static String getGender(final String username) {
@@ -31,12 +36,14 @@ public abstract class DbInterface {
         return mDb.userDao().getCurrentPlanName(username);
     }
 
-    public static void updateUserCurrentPlanName(final String username,
-                                                 final String newPlanName) {
-        User user = mDb.userDao().getUser(username);
-        user.currentPlanName = newPlanName;
-        mDb.userDao().updateUser(user);
-    }
+//    public static void updateUserCurrentPlanName(final String username,
+//                                                 final String newPlanName) {
+//        User user = mDb.userDao().getUser(username);
+//        user.currentPlanName = newPlanName;
+//        mDb.userDao().updateUser(user);
+//
+//        FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(newPlanName);
+//    }
 
     public static List<Plan> getAllPlans(final String username) {
         return mDb.planDao().getAllPlans(username);
@@ -60,6 +67,8 @@ public abstract class DbInterface {
         plan.beans = foodAmount[5];
         plan.vegetables = foodAmount[6];
         mDb.planDao().addPlan(plan);
+        // Firebase Database transaction
+        FirebaseDatabaseInterface.writePlan(plan);
     }
 
     public static StringBuilder getUserDatatoString(final String username) {
@@ -89,20 +98,22 @@ public abstract class DbInterface {
     // need to change user and plan table
     // 1. update user
     // 2. delete target plan and add the plan with new name
-    public static void changeCurrentPlanName(final String username,
-                                             final String newPlanName) {
-        User user = mDb.userDao().getUser(username);
-        String oldPlanName = user.currentPlanName;
-        user.currentPlanName = newPlanName;
-        mDb.userDao().updateUser(user);
-        // get old plan
-        Plan oldPlan = mDb.planDao().getPlan(username, oldPlanName);
-        // create new plan
-        Plan newPlan = mDb.planDao().getPlan(username, oldPlanName);
-        newPlan.planName = newPlanName;
-        mDb.planDao().deletePlan(oldPlan);
-        mDb.planDao().addPlan(newPlan);
-    }
+//    public static void changeCurrentPlanName(final String username,
+//                                             final String newPlanName) {
+//        User user = mDb.userDao().getUser(username);
+//        String oldPlanName = user.currentPlanName;
+//        user.currentPlanName = newPlanName;
+//        mDb.userDao().updateUser(user);
+//        // get old plan
+//        Plan oldPlan = mDb.planDao().getPlan(username, oldPlanName);
+//        // create new plan
+//        Plan newPlan = mDb.planDao().getPlan(username, oldPlanName);
+//        newPlan.planName = newPlanName;
+//        mDb.planDao().deletePlan(oldPlan);
+//        mDb.planDao().addPlan(newPlan);
+//
+//        FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(newPlanName);
+//    }
 
     // For Save Button in Improve Activity
     public static void updateCurrentPlan(final String username, final Plan plan) {

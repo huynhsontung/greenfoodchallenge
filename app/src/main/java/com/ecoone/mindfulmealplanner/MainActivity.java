@@ -2,13 +2,18 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
+import android.graphics.Shader;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.util.Log;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -18,12 +23,18 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.PlanListFragment;
 import com.ecoone.mindfulmealplanner.fragments.PledgeFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.NetworkPolicy;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 
 public class MainActivity extends AppCompatActivity
@@ -34,17 +45,14 @@ public class MainActivity extends AppCompatActivity
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
-
-
-    public static final String EXTRA_USERNAME =
-            "com.ecoone.mindfulmealplanner.mainactivity.username";
+    private FirebaseUser firebaseUser;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
 
-    public static Intent newIntent(Context packageContext, String username) {
+    public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MainActivity.class);
-        intent.putExtra(EXTRA_USERNAME, username);
+//        intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
 
@@ -53,21 +61,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         mToolbar = findViewById(R.id.toolbar);
         mDrawer = findViewById(R.id.drawer_layout);
 
-        mUsername = getIntent().getStringExtra(EXTRA_USERNAME);
+        mUsername = firebaseUser.getEmail();
 //        Log.i(TAG, "Username: " + mUsername + CLASSTAG);
 
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        View hView = navigationView.getHeaderView(0);
-        TextView nav_user = hView.findViewById(R.id.nav_username);
-        nav_user.setText(mUsername);
-        setSidebarAction();
+
+        setupNavigationDrawer();
         showDashboard();
     }
 
-    private void setSidebarAction() {
+    private void setupNavigationDrawer() {
         setSupportActionBar(mToolbar);
         mToggle = new ActionBarDrawerToggle(
                 this, mDrawer, mToolbar,
@@ -77,6 +83,48 @@ public class MainActivity extends AppCompatActivity
         mToggle.syncState();
         mNavigationView = findViewById(R.id.nav_view);
         mNavigationView.setNavigationItemSelectedListener(this);
+
+        // Setup icon and name
+        View headerView = mNavigationView.getHeaderView(0);
+        TextView navUsernameText = headerView.findViewById(R.id.nav_username);
+        TextView navDisplayNameText = headerView.findViewById(R.id.nav_display_name);
+        navDisplayNameText.setText(firebaseUser.getDisplayName());
+        navUsernameText.setText(firebaseUser.getEmail());
+        ImageView navUserIcon = headerView.findViewById(R.id.nav_user_icon);
+        Transformation circularTransform = new Transformation() {
+
+            @Override
+            public Bitmap transform(Bitmap source) {
+                final int margin = 0;
+                final int radius = 50;
+                final Paint paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP,
+                        Shader.TileMode.CLAMP));
+
+                Bitmap output = Bitmap.createBitmap(source.getWidth(),
+                        source.getHeight(), Bitmap.Config.ARGB_8888);
+                Canvas canvas = new Canvas(output);
+                canvas.drawRoundRect(new RectF(margin, margin, source.getWidth()
+                        - margin, source.getHeight() - margin), radius, radius, paint);
+
+                if (source != output) {
+                    source.recycle();
+                }
+
+                return output;
+            }
+
+            @Override
+            public String key() {
+                return "rounded";
+            }
+        };
+        Picasso.get()
+                .load(firebaseUser.getPhotoUrl())
+                .resize(200,200)
+                .transform(circularTransform)
+                .into(navUserIcon);
     }
 
     private void showDashboard() {
@@ -88,9 +136,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void switchFragment(Fragment fragment) {
-        Bundle bundle = new Bundle();
-        bundle.putString(EXTRA_USERNAME, mUsername);
-        fragment.setArguments(bundle);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);
@@ -141,6 +186,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
+//        else if (id == R.id.fragment_plan_list) {
+//            fragment = new PlanListFragment();
+//        }
 
         else if (id == R.id.fragment_pledge) {
             fragment = new PledgeFragment();
