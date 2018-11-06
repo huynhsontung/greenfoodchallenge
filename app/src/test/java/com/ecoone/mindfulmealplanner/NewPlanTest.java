@@ -1,8 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
-import android.util.Log;
-
-import com.ecoone.mindfulmealplanner.db.Plan;
+import com.ecoone.mindfulmealplanner.DB.Plan;
+import com.ecoone.mindfulmealplanner.Tool.NewPlan;
 
 import org.junit.Test;
 

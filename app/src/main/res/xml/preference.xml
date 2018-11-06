@@ -9,7 +9,7 @@
             android:targetClass="com.ecoone.mindfulmealplanner.AboutPageActivity"/>
     </Preference>
 
-    <com.ecoone.mindfulmealplanner.LogoutDialogPreference
+    <com.ecoone.mindfulmealplanner.Setting.LogoutDialogPreference
         android:key="logout"
         android:title="Logout" />
 

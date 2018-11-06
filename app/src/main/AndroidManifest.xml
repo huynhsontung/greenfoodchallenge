@@ -11,8 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <service android:name="com.ecoone.mindfulmealplanner.DailyPledgeService"/>
-        <activity android:name=".InitialSetupActivity">
+        <service android:name="com.ecoone.mindfulmealplanner.Pledge.DailyPledgeService"/>
+        <activity android:name=".InitialSetup.InitialSetupActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,23 +21,23 @@
         </activity>
         <activity android:name=".MainActivity" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Setting.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
-        <activity android:name=".AboutPageActivity">
+        <activity android:name=".Setting.AboutPageActivity">
             <intent-filter>
                 <action android:name="openaboutpage" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".ImproveActivity" />
+        <activity android:name=".DashBoard.Improve.ImproveActivity" />
         <activity
-            android:name=".PlanPagerActivity"
+            android:name=".PlanList.PlanPagerActivity"
             android:theme="@style/AppTheme"></activity>
     </application>
 
