@@ -107,6 +107,17 @@ public abstract class FirebaseDatabaseInterface {
         mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE).child(plan.planName).setValue(planMap);
     }
 
+    public static float[] getPlanArray(final Plan plan) {
+        float[] foodAmount = new float[7];
+        foodAmount[0] = plan.beef;
+        foodAmount[1] = plan.pork;
+        foodAmount[2] = plan.chicken;
+        foodAmount[3] = plan.fish;
+        foodAmount[4] = plan.eggs;
+        foodAmount[5] = plan.beans;
+        foodAmount[6] = plan.vegetables;
+        return foodAmount;
+    }
 
     public static void updatePlan(Plan plan) {
         deletePlan(plan.planName);
@@ -117,7 +128,7 @@ public abstract class FirebaseDatabaseInterface {
         mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE).child(planName).removeValue();
     }
 
-    public static void updateCurrentPlanName(Plan plan,String oldName, String newName){
+    public static void updateCurrentPlanNameAndPlan(Plan plan, String oldName, String newName){
         mDatabase.child(USERS_NODE).child(userUid).child("currentPlanName").setValue(newName);
         deletePlan(oldName);
         plan.planName = newName;

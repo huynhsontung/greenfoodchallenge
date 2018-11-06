@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.text.InputType;
 import android.util.Log;
@@ -17,7 +18,14 @@ import android.widget.Toast;
 import com.ecoone.mindfulmealplanner.DbInterface;
 import com.ecoone.mindfulmealplanner.ImproveActivity;
 import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nullable;
@@ -25,14 +33,11 @@ import javax.annotation.Nullable;
 
 public class InputTextDialogFragment extends DialogFragment{
 
-    private String mUsername;
-
     private EditText mEditText;
+    private ArrayList<String> planNameList = new ArrayList<>();
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    private AppDatabase mDb;
-
-    private static final String EXTRA_TITLE =
-            "com.ecoone.mindfulmealplanner.inputtextdialogframent.title";
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(DialogFrament)";
 
@@ -56,32 +61,39 @@ public class InputTextDialogFragment extends DialogFragment{
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
-        mDb = AppDatabase.getDatabase(getContext());
-        DbInterface.setDb(mDb);
-
-//        mUsername = getArguments().getString(ImproveActivity.EXTRA_USERNAME);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         AlertDialog dialog;
         builder.setTitle("Enter a New Name");
+
+        mDatabase.child("users").child(userUid).child("plans").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot mDataSnapshot: dataSnapshot.getChildren()) {
+                    String planName = mDataSnapshot.getKey();
+                    planNameList.add(planName);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String input = mEditText.getText().toString();
-                List<String> plansName = DbInterface.getAllPlansName(mUsername);
-                Log.i(TAG, "Check if input plan name is in the database: " + plansName.contains(input) + CLASSTAG);
                 if (input.equals("")) {
                     showCustomToast("the new plan name is empty!");
                 }
-                else if (plansName.contains(input)) {
+                else if (planNameList.contains(input)) {
                     showCustomToast("the new plan name is duplicated!");
                 }
                 else{
                     Log.i(TAG, "EditText:" + input + CLASSTAG);
                     mOnInputListener.sendInput(input);
                 }
-
             }
         });
 

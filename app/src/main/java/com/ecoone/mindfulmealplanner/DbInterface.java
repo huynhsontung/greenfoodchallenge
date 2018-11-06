@@ -42,7 +42,7 @@ public abstract class DbInterface {
 //        user.currentPlanName = newPlanName;
 //        mDb.userDao().updateUser(user);
 //
-//        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
+//        FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(newPlanName);
 //    }
 
     public static List<Plan> getAllPlans(final String username) {
@@ -112,7 +112,7 @@ public abstract class DbInterface {
 //        mDb.planDao().deletePlan(oldPlan);
 //        mDb.planDao().addPlan(newPlan);
 //
-//        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
+//        FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(newPlanName);
 //    }
 
     // For Save Button in Improve Activity

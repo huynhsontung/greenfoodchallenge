@@ -170,9 +170,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-        else if (id == R.id.fragment_plan_list) {
-            fragment = new PlanListFragment();
-        }
+//        else if (id == R.id.fragment_plan_list) {
+//            fragment = new PlanListFragment();
+//        }
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);
