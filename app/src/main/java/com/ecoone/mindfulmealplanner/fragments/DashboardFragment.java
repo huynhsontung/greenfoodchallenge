@@ -34,6 +34,7 @@ import com.ecoone.mindfulmealplanner.db.Plan;
 import com.ecoone.mindfulmealplanner.db.User;
 import com.ecoone.mindfulmealplanner.db.mCallback;
 import com.ecoone.mindfulmealplanner.db.onGetDataListener;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -45,9 +46,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
@@ -70,6 +74,9 @@ public class DashboardFragment extends Fragment {
     private EditText editPlanName;
     private Button logout;
 
+    private FirebaseFunctions mFunctions;
+
+    private Integer test;
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
@@ -102,6 +109,8 @@ public class DashboardFragment extends Fragment {
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         logout = view.findViewById(R.id.logout);
+
+        mFunctions = FirebaseFunctions.getInstance();
 
         mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
@@ -142,7 +151,30 @@ public class DashboardFragment extends Fragment {
         });
 
 
+        getSumPledge()
+                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Integer> task) {
+                        test = task.getResult();
+                        Log.i(TAG, "cloud func: " +test);
+                    }
+                });
 
+        Log.i(TAG, "cloud func: " +test);
+
+    }
+
+    private Task<Integer> getSumPledge() {
+        return mFunctions
+                .getHttpsCallable("getSumPledge")
+                .call()
+                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
+                    @Override
+                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        Integer result = (Integer) task.getResult().getData();
+                        return result;
+                    }
+                });
     }
 
     private void calculateCurrentCo2e(Plan plan) {
