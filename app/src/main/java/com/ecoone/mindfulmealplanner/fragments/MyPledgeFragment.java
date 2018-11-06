@@ -96,11 +96,13 @@ public class MyPledgeFragment extends Fragment {
         super.onStart();
         Log.i(pTag, "onStart");
         view = getView();
+
         pledgeButton = view.findViewById(R.id.my_pledge_pledge);
         pledgeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent mIntent = newIntent(getContext());
+                // start the service in the background
                 mContext.startService(mIntent);
             }
         });

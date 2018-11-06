@@ -32,11 +32,13 @@ public class PledgeLogic {
         return currentPledgePerDay;
     }
 
+    // after button press
     public void updateCurrentPlan(Plan newPlan) {
         usersCurrentPlan = newPlan;
         currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
     }
 
+    // after button press
     public void updatePledgeAmount(float newPledge) {
         currentPledgePerWeek = newPledge;
         currentPledgePerDay = currentPledgePerWeek/7;

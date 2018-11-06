@@ -84,6 +84,18 @@ public class NewPlanTest {
         }
     };
 
+    public Plan bugPlan2 = new Plan() {
+        {
+            beef = 139;
+            pork = 43;
+            chicken = 135;
+            fish = 128;
+            eggs = 69;
+            beans = 116;
+            vegetables = 165;
+        }
+    };
+
 
     public NewPlan smallPlanTest = new NewPlan(smallServingThanRecommended, "male");
     public NewPlan largePlanTest = new NewPlan(largeServingPlan, "male");
@@ -144,5 +156,12 @@ public class NewPlanTest {
         NewPlan bugTest3 = new NewPlan(bugPlanFinal, "male");
         bugPlanFinal = bugTest3.suggestPlan();
         bugTest3.printPlan(bugPlanFinal);  // should be the same as previous recommended plan
+        System.out.println("--------");
+        NewPlan bugTest4 = new NewPlan(bugPlan2, "male");
+        System.out.println("Before Change ");
+        bugTest4.printPlan(bugPlan2);
+        Plan bugPlan4 = bugTest4.suggestPlan();
+        System.out.println("After change:");
+        bugTest4.printPlan(bugPlan4);
     }
 }
