@@ -325,8 +325,9 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void saveAsDbAction(String newPlanName) {
-//        DbInterface.addPlan(mUsername, newPlanName, mFoodAmount);
-//        DbInterface.updateUserCurrentPlanName(mUsername, newPlanName);
+        improvedPlan.planName = newPlanName;
+        FirebaseDatabaseInterface.writePlan(improvedPlan);
+        FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
         finish();
     }
 

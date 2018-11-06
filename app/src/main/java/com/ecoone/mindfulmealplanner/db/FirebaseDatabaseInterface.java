@@ -128,6 +128,10 @@ public abstract class FirebaseDatabaseInterface {
         mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE).child(planName).removeValue();
     }
 
+    public static void updateCurrentPlanName(String planName) {
+        mDatabase.child(USERS_NODE).child(userUid).child("currentPlanName").setValue(planName);
+    }
+
     public static void updateCurrentPlanNameAndPlan(Plan plan, String oldName, String newName){
         mDatabase.child(USERS_NODE).child(userUid).child("currentPlanName").setValue(newName);
         deletePlan(oldName);
