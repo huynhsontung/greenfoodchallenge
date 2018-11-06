@@ -11,6 +11,9 @@
             <!--android:id="@+id/fragment_plan_list"-->
             <!--android:title="Plan List"/>-->
         <item
+            android:id="@+id/fragment_pledge"
+            android:title="Pledge"/>
+        <item
             android:id="@+id/fragment_settings"
             android:title="Settings" />
     </group>

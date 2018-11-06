@@ -20,13 +20,16 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.fragments.DashboardFragment;
 import com.ecoone.mindfulmealplanner.fragments.PlanListFragment;
+import com.ecoone.mindfulmealplanner.fragments.PledgeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.NetworkPolicy;
@@ -150,11 +153,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater=getMenuInflater();
+        inflater.inflate(R.menu.share,menu);
+        return true;
+        /**
+         *
+         */
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (mToggle.onOptionsItemSelected(item)) {
-            return true;
+        switch (item.getItemId()){
+            case R.id.sharetofb:
+                Toast.makeText(this,"share to facebook",Toast.LENGTH_SHORT).show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
 
     }
 
@@ -173,6 +189,15 @@ public class MainActivity extends AppCompatActivity
 //        else if (id == R.id.fragment_plan_list) {
 //            fragment = new PlanListFragment();
 //        }
+
+        else if (id == R.id.fragment_pledge) {
+            fragment = new PledgeFragment();
+        }
+
+//        else if (id == R.id.fragment_plan_list) {
+//            fragment = new PlanListFragment();
+//        }
+
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);
