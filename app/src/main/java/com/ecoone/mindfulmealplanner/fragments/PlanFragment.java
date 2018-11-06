@@ -150,7 +150,7 @@ public class PlanFragment extends Fragment {
 
     private void changePlanName(String newPlanName) {
         if (mPlanName.equals(mCurrentPlanName)) {
-            DbInterface.changeCurrentPlanName(mUsername, newPlanName);
+//            DbInterface.changeCurrentPlanName(mUsername, newPlanName);
             mPlanName = newPlanName;
         }
         else if (newPlanName.equals("")) {

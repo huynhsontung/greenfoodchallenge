@@ -52,7 +52,7 @@ public class PlanListFragment extends Fragment {
         mDb = AppDatabase.getDatabase(getContext());
         DbInterface.setDb(mDb);
 
-        mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
+//        mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
 
         mRecyclerView = view.findViewById(R.id.plan_list_recycler_view);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());

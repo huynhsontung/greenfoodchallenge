@@ -22,6 +22,9 @@ public interface UserDao {
     @Query("SELECT username FROM User WHERE username = :username")
     String getUsername(String username);
 
+    @Query("SELECT displayName FROM User WHERE username = :username")
+    String getDisplayName(String username);
+
     @Query("SELECT currentPlanName FROM User WHERE username = :username")
     String getCurrentPlanName(String username);
 

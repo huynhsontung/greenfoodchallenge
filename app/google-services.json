@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1003185605814",
+    "firebase_url": "https://mindfulmealplanner.firebaseio.com",
+    "project_id": "mindfulmealplanner",
+    "storage_bucket": "mindfulmealplanner.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003185605814:android:e2caa92e79899972",
+        "android_client_info": {
+          "package_name": "com.ecoone.mindfulmealplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1003185605814-9evpdmcqmkauhd4ulq7o5curldi3mdv5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ecoone.mindfulmealplanner",
+            "certificate_hash": "d73a70f555b4c24d2b9a282f7ba8a0d190e7e987"
+          }
+        },
+        {
+          "client_id": "1003185605814-majgruue0ve4mcmtams3j6448581neu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDN4SoHX9iayjPnXzpUpNz4tKI_8UQ-U90"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1003185605814-majgruue0ve4mcmtams3j6448581neu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

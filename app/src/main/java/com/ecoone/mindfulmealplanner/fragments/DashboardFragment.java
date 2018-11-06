@@ -1,10 +1,11 @@
 package com.ecoone.mindfulmealplanner.fragments;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,30 +21,34 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.Calculator;
-import com.ecoone.mindfulmealplanner.ImproveActivity;
-import com.ecoone.mindfulmealplanner.MainActivity;
-import com.ecoone.mindfulmealplanner.NewPlan;
-import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.db.AppDatabase;
+import com.ecoone.mindfulmealplanner.DashboardViewModel;
 import com.ecoone.mindfulmealplanner.DbInterface;
+import com.ecoone.mindfulmealplanner.ImproveActivity;
+import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.db.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.db.Plan;
+import com.ecoone.mindfulmealplanner.db.User;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.text.DecimalFormat;
 import java.util.Random;
 
 public class DashboardFragment extends Fragment {
 
-    private String mUsername;
-    private String mGender;
-    private String mCurrentPlanName;
-    private String[] foodName;
-    private float[] foodAmount;
-    private int foodLen;
 
-    private AppDatabase mDb;
+    private String mCurrentPlanName;
+
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private Button improveButton;
     private TextView mEditDoneIcon;
@@ -51,10 +56,13 @@ public class DashboardFragment extends Fragment {
     private TextView currentCo2eTextView;
     private TextView relevantInfo;
     private EditText editPlanName;
+    private Button logout;
+
+    private FirebaseFunctions mFunctions;
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
-
+    private DashboardViewModel mViewModel;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(DashboardFragment)";
 
@@ -68,17 +76,11 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-        mDb = AppDatabase.getDatabase(getContext());
-        DbInterface.setDb(mDb);
-
-        mUsername = getArguments().getString(MainActivity.EXTRA_USERNAME);
-        mGender = DbInterface.getGender(mUsername);
-        foodName = findStringArrayRes("food_name");
-        foodLen = foodName.length;
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
@@ -87,24 +89,80 @@ public class DashboardFragment extends Fragment {
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
+        logout = view.findViewById(R.id.logout);
 
-        setUserInfo();
-        setEditTextView();
+        mFunctions = FirebaseFunctions.getInstance();
+
+
+        setFirebaseValueLisener();
         setEditDoneIconAction(view);
         setupImproveButton();
-        setupPieChartFragmentPager();
-        calculateCurrentCo2e();
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+            }
+        });
+
+//        getSumPledge()
+//                .addOnCompleteListener(new OnCompleteListener<Integer>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Integer> task) {
+//                        test = task.getResult();
+//                        Log.i(TAG, "cloud func: " +test);
+//                    }
+//                });
+//
+//        Log.i(TAG, "cloud func: " +test);
 
     }
 
-    private void setUserInfo() {
-        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
-        Plan plan = DbInterface.getCurrentPlan(mUsername);
-        foodAmount = DbInterface.getPlanArray(plan);
+    private void setFirebaseValueLisener() {
+        mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                mCurrentPlanName = user.currentPlanName;
+                setEditTextView(mCurrentPlanName);
+                Plan mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
+                if(mCurrentPlan != null) {
+                    mViewModel.mCurrentPlan.setValue(mCurrentPlan);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        mViewModel.mCurrentPlan.observe(this, new Observer<Plan>() {
+            @Override
+            public void onChanged(Plan plan) {
+                calculateCurrentCo2e(plan);
+                setupPieChartFragmentPager(plan);
+
+            }
+        });
     }
 
-    private void calculateCurrentCo2e() {
-        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(mDb.planDao().getPlan(mUsername, mCurrentPlanName));
+//    private Task<Integer> getSumPledge() {
+//        return mFunctions
+//                .getHttpsCallable("getSumPledge")
+//                .call()
+//                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
+//                    @Override
+//                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+//                        Integer result = (Integer) task.getResult().getData();
+//                        return result;
+//                    }
+//                });
+//    }
+
+    private void calculateCurrentCo2e(Plan plan) {
+        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(plan);
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
         currentCo2eTextView.setText(message);
         float kmWasted = Calculator.calculateSavingsInKm(sumCo2ePerYear);
@@ -120,19 +178,19 @@ public class DashboardFragment extends Fragment {
         }
     }
 
-    private void setEditTextView() {
-        mCurrentPlanName = DbInterface.getCurrentPlanName(mUsername);
-        editPlanName.setText(mCurrentPlanName);
+    private void setEditTextView(String currentPlanName) {
+        editPlanName.setText(currentPlanName);
         editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
         editPlanName.setTypeface(currentPlanTextView.getTypeface());
 //        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
         editPlanName.setInputType(0);
     }
 
-    private void setEditDoneIconAction(final View view) {
+    private void setEditDoneIconAction(final View view ) {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Plan mCurrentPlan = mViewModel.mCurrentPlan.getValue();
                 if (editPlanName.getInputType() == 0) {
                     editPlanName.setInputType(1);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
@@ -143,20 +201,21 @@ public class DashboardFragment extends Fragment {
                 }
                 else {
                     editPlanName.setInputType(0);
-                    mCurrentPlanName = editPlanName.getText().toString();
-                    editPlanName.setText(mCurrentPlanName);
+                    String newPlanName = editPlanName.getText().toString();
+                    editPlanName.setText(newPlanName);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    DbInterface.changeCurrentPlanName(mUsername, mCurrentPlanName);
+                    FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
                 }
             }
         });
+
     }
 
-
-    private void setupPieChartFragmentPager() {
-        final float[] co2Amount = Calculator.calculateCO2eEachFood(mDb.planDao().getPlan(mUsername,mCurrentPlanName));
+    private void setupPieChartFragmentPager(Plan plan) {
+        final float[] co2Amount = Calculator.calculateCO2eEachFood(plan);
+        final float[] foodAmount = FirebaseDatabaseInterface.getPlanArray(plan);
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
         mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
@@ -183,31 +242,48 @@ public class DashboardFragment extends Fragment {
         improveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = ImproveActivity.newIntent(getContext(), mUsername);
+                Intent intent = ImproveActivity.newIntent(getContext());
                 startActivityForResult(intent,0);
             }
         });
     }
 
-
-    private String[] findStringArrayRes(String resName) {
-        int resId = getResources().getIdentifier(resName,
-                "array", getActivity().getPackageName());
-        return getResources().getStringArray(resId);
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
     }
-
-    private static int randInt(int min, int max) {
-        Random rand = new Random();
-        return rand.nextInt(max- min + 1) + min;
-    }
-
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        setupPieChartFragmentPager();
-        calculateCurrentCo2e();
-        setEditTextView();
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
     }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
+    }
+
+    //    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        setupPieChartFragmentPager();
+//        calculateCurrentCo2e();
+//        setEditTextView();
+//    }
 
 
 }
