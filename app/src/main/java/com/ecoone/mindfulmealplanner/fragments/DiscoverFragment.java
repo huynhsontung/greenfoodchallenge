@@ -3,12 +3,19 @@ package com.ecoone.mindfulmealplanner.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import com.ecoone.mindfulmealplanner.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class DiscoverFragment extends Fragment {
@@ -20,7 +27,6 @@ public class DiscoverFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
 
     public DiscoverFragment() {
         // Required empty public constructor
