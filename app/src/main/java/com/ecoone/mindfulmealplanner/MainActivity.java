@@ -29,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
+import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -195,9 +196,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-//        else if (id == R.id.fragment_plan_list) {
-//            fragment = new PlanListFragment();
-//        }
+        else if (id == R.id.fragment_plan_list) {
+            fragment = new PlanListFragment();
+        }
 
         else if (id == R.id.fragment_pledge) {
             fragment = new PledgeFragment();

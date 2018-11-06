@@ -85,11 +85,11 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
 
-        setFirebaseValueLisener();
+        setFirebaseValueListener();
 
     }
 
-    private void setFirebaseValueLisener() {
+    private void setFirebaseValueListener() {
         mDatabase.child("users").child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

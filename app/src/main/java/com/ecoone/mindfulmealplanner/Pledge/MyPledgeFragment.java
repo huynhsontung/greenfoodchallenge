@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -87,6 +86,13 @@ public class MyPledgeFragment extends Fragment {
 
         setEditTextView(0);
 
+        setFirebaseValueListener();
+
+        setEditDoneIconAction(view);
+        setSpinnerListener();
+    }
+
+    private void setFirebaseValueListener() {
         mDatabase.child("users").child(userUid).child("pledge").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -104,9 +110,6 @@ public class MyPledgeFragment extends Fragment {
 
             }
         });
-
-        setEditDoneIconAction(view);
-        setSpinnerListener();
     }
 
     private void setEditTextView(int amount) {
