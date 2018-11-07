@@ -56,6 +56,7 @@ public class DashboardFragment extends Fragment {
     private Button logout;
 
     private FirebaseFunctions mFunctions;
+    private ValueEventListener mValueEventListener;
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
@@ -116,7 +117,7 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child(userUid).addValueEventListener(new ValueEventListener() {
+        mValueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
@@ -134,7 +135,9 @@ public class DashboardFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+
+        mDatabase.child(userUid).addValueEventListener(mValueEventListener);
 
     }
 
@@ -265,6 +268,8 @@ public class DashboardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
+        mDatabase.child(userUid).removeEventListener(mValueEventListener);
+
     }
 
     //    @Override
