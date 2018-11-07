@@ -86,7 +86,7 @@ public class MyPledgeFragment extends Fragment {
 
         setEditTextView(0);
 
-        setFirebaseValueListener();
+//        setFirebaseValueListener();
 
         setEditDoneIconAction(view);
         setSpinnerListener();

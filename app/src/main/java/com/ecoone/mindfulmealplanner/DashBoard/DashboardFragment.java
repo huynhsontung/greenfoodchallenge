@@ -90,7 +90,7 @@ public class DashboardFragment extends Fragment {
         mFunctions = FirebaseFunctions.getInstance();
 
 
-        setFirebaseValueListener();
+//        setFirebaseValueListener();
         setEditDoneIconAction(view);
         setupImproveButton();
 

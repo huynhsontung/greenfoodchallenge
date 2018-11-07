@@ -21,9 +21,11 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -52,22 +54,19 @@ public class DiscoverFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        Log.i(TAG, CLASSTAG + "11111111");
         setTotalPeoplePledgedListener();
 
     }
 
     private void setTotalPeoplePledgedListener() {
 
-        mDatabase.child("users").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot: dataSnapshot.getChildren()) {
-                    Pledge pledge = snapshot.child("pledge").getValue(Pledge.class);
-                    Log.i(TAG, CLASSTAG + pledge.location);
-                }
 
 
+                Log.i(TAG, CLASSTAG + dataSnapshot.getValue()
+                );
             }
 
             @Override

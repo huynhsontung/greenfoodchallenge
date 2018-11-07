@@ -29,9 +29,7 @@ import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.Plan;
-import com.ecoone.mindfulmealplanner.DB.mCallback;
 import com.firebase.ui.auth.AuthUI;
-import com.firebase.ui.auth.IdpResponse;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -40,7 +38,10 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,6 +54,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 123;
     private static final int NUMBER_OF_PAGES = 3;
 
+    private static final String CLASSTAG = "(InitialSetupActivity)";
     private static final String TAG = "testActivity";
 
     private InitialSetupViewModel mViewModel;
@@ -65,10 +67,8 @@ public class InitialSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setup);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
-//        setupViewPager();
         observeFinish();
     }
-
 
     private void observeFinish() {
         final android.arch.lifecycle.Observer<Boolean> checkerObserver = new android.arch.lifecycle.Observer<Boolean>() {
@@ -88,11 +88,6 @@ public class InitialSetupActivity extends AppCompatActivity {
                 pledge.amount = 0;
                 pledge.location = "";
                 FirebaseDatabaseInterface.writePledge(pledge);
-//                SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//                SharedPreferences.Editor editor = preferences.edit();
-//                editor.putInt(EXTRA_LOGIN_FLAG, 1);
-//                editor.putString(EXTRA_USERNAME, mViewModel.localUser.username);
-//                editor.apply();
                 startActivityAndFinish();
             }
         };
@@ -102,18 +97,16 @@ public class InitialSetupActivity extends AppCompatActivity {
     private void checkIfGoToDashboard() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if(user == null){
-            getUserId();
+            generateUserId();
         } else {
-//            SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-//            String mUsername = preferences.getString(EXTRA_USERNAME, null);
-            startActivityAndFinish();
+            checkIfUserDataExist();
         }
     }
 
     private void startActivityAndFinish() {
         Intent intent = MainActivity.newIntent(InitialSetupActivity.this);
         startActivity(intent);
-        InitialSetupActivity.this.finish();
+        finish();
     }
 
     private void setupViewPager() {
@@ -137,7 +130,7 @@ public class InitialSetupActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(0);
     }
 
-    private void getUserId() {
+    private void generateUserId() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -148,46 +141,55 @@ public class InitialSetupActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
+    private void checkIfUserDataExist() {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child(userUid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    startActivityAndFinish();
+                    Log.i(TAG, CLASSTAG + "exist");
+
+                }
+
+                else {
+                    Log.i(TAG, CLASSTAG + "not exist");
+                    setupViewPager();
+                    user = FirebaseAuth.getInstance().getCurrentUser();
+                    mViewModel.localUser.username = user.getEmail();
+                    mViewModel.localUser.displayName = user.getDisplayName();
+                    if (user.getPhotoUrl() != null) {
+                        mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
+                    }
+                    mViewModel.getDisplayName().setValue(user.getDisplayName());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == RC_SIGN_IN) {
-            IdpResponse response = IdpResponse.fromResultIntent(data);
             if (resultCode == RESULT_OK) {
-                // Successfully signed in
-                FirebaseDatabaseInterface.DoesUserExist(new mCallback<Boolean>() {
-                    @Override
-                    public void callback(Boolean data) {
-                        if (data) {
-                            Log.i(TAG, "exist");
-                            startActivityAndFinish();
-                        }
-                        else {
-                            Log.i(TAG, "not exist");
-                            setupViewPager();
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-                            mViewModel.localUser.username = user.getEmail();
-                            mViewModel.localUser.displayName = user.getDisplayName();
-                            if (user.getPhotoUrl() != null) {
-                                mViewModel.localUser.photoUrl = user.getPhotoUrl().toString();
-                            }
-                            mViewModel.getDisplayName().setValue(user.getDisplayName());
-                        }
-                    }
-                });
-
+                checkIfUserDataExist();
             }
         }
     }
-
-
+    
     // Fragments declarations
     public static class GreetingFragment extends Fragment {
         public static GreetingFragment newInstance() {
             return new GreetingFragment();
         }
+
+        private static final String CLASSTAG = "(GreetingFragment)";
+        private static final String TAG = "testActivity";
 
         InitialSetupViewModel mViewModel;
         TextView greetingText;
@@ -217,6 +219,8 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     public static class AskGenderFragment extends Fragment implements AdapterView.OnItemSelectedListener {
         InitialSetupViewModel mViewModel;
+        private static final String CLASSTAG = "( AskGenderFragment)";
+        private static final String TAG = "testActivity";
         public static AskGenderFragment newInstance() {
             return new AskGenderFragment();
         }
@@ -246,6 +250,10 @@ public class InitialSetupActivity extends AppCompatActivity {
     }
 
     public static class PlanSetterFragment extends Fragment{
+
+        private static final String CLASSTAG = "(PlanSetterFragment)";
+        private static final String TAG = "testActivity";
+
         public static PlanSetterFragment newInstance(){
             return new PlanSetterFragment();
         }
@@ -377,6 +385,38 @@ public class InitialSetupActivity extends AppCompatActivity {
             Random rand = new Random();
             return rand.nextInt(max- min + 1) + min;
         }
+
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
     }
 
 }
