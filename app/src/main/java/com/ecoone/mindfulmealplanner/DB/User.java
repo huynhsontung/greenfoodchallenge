@@ -16,7 +16,8 @@ public class User {
     @NonNull
     public String gender;
     public String displayName;
-    public String photoUrl;
+    public String email;
+//    public String photoUrl;
 //    public long createDate;
 //    public long lastLoginDate;
     public String currentPlanName;

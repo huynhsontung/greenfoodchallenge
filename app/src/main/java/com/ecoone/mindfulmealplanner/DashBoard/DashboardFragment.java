@@ -42,6 +42,7 @@ public class DashboardFragment extends Fragment {
 
 
     private String mCurrentPlanName;
+    private Plan mCurrentPlan;
 
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -58,7 +59,6 @@ public class DashboardFragment extends Fragment {
 
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
-    private DashboardViewModel mViewModel;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(DashboardFragment)";
 
@@ -76,7 +76,7 @@ public class DashboardFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         // write your code here
-        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
+
 
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
@@ -91,8 +91,8 @@ public class DashboardFragment extends Fragment {
 
 
         setFirebaseValueListener();
-        setEditDoneIconAction(view);
         setupImproveButton();
+        setEditDoneIconAction(view);
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,12 +119,14 @@ public class DashboardFragment extends Fragment {
         mDatabase.child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, CLASSTAG + "firebase listener call");
                 User user = dataSnapshot.child("userInfo").getValue(User.class);
                 mCurrentPlanName = user.currentPlanName;
                 setEditTextView(mCurrentPlanName);
-                Plan mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
+                mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
                 if(mCurrentPlan != null) {
-                    mViewModel.mCurrentPlan.setValue(mCurrentPlan);
+                    calculateCurrentCo2e(mCurrentPlan);
+                    setupPieChartFragmentPager(mCurrentPlan);
                 }
             }
 
@@ -134,14 +136,6 @@ public class DashboardFragment extends Fragment {
             }
         });
 
-        mViewModel.mCurrentPlan.observe(this, new Observer<Plan>() {
-            @Override
-            public void onChanged(Plan plan) {
-                calculateCurrentCo2e(plan);
-                setupPieChartFragmentPager(plan);
-
-            }
-        });
     }
 
 //    private Task<Integer> getSumPledge() {
@@ -182,11 +176,10 @@ public class DashboardFragment extends Fragment {
         editPlanName.setInputType(0);
     }
 
-    private void setEditDoneIconAction(final View view ) {
+    private void setEditDoneIconAction(final View view) {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Plan mCurrentPlan = mViewModel.mCurrentPlan.getValue();
                 if (editPlanName.getInputType() == 0) {
                     editPlanName.setInputType(1);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);

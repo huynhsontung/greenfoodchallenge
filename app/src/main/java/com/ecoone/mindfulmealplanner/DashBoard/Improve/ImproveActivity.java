@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.Tool.ChartValueFormatter;
-import com.ecoone.mindfulmealplanner.DB.DbInterface;
 import com.ecoone.mindfulmealplanner.Tool.NewPlan;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
@@ -93,13 +92,13 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         mDatabase.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                Log.i(TAG, CLASSTAG + "firebase listener call");
+                User user = dataSnapshot.child("userInfo").getValue(User.class);
                 String userGender = user.gender;
                 String mCurrentPlanName = user.currentPlanName;
-                Plan currentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
-                if (currentPlan != null && userGender != null && mCurrentPlanName != null) {
+                Plan currentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
+                if (userGender != null && mCurrentPlanName != null) {
                     currentPlan.planName = mCurrentPlanName;
-                    Log.i(TAG, DbInterface.getPlanDatatoString(currentPlan).toString());
                     initializePlansCo2eTextView(currentPlan, userGender);
                     initializeSeekBarView();
                     setButtonAction();
@@ -112,13 +111,13 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
             }
         });
+
     }
 
     private void initializePlansCo2eTextView(Plan currentPlan, String gender) {
         NewPlan mNewPlan = new NewPlan(currentPlan, gender);
         improvedPlan = mNewPlan.suggestPlan();
         improvedPlan.planName = currentPlan.planName;
-        Log.i(TAG, DbInterface.getPlanDatatoString(improvedPlan).toString());
         improvedPlan.planName = currentPlan.planName;
         String str = new DecimalFormat("###,###,###").format(Calculator.calculateVancouver(improvedPlan));
         String message = String.format("If everyone in Vancouver uses your " +
@@ -345,6 +344,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     public void onStart() {
         super.onStart();
         Log.d(TAG, CLASSTAG + " onStart");
+//        setFirebaseValueListener();
     }
 
     @Override
@@ -369,5 +369,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
+        ;
     }
 }

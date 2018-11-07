@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,9 +94,10 @@ public class MyPledgeFragment extends Fragment {
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child("users").child(userUid).child("pledge").addValueEventListener(new ValueEventListener() {
+        mDatabase.child(userUid).child("pledgeInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Log.i(TAG, CLASSTAG + "firebase listener call");
                 Pledge pledge = dataSnapshot.getValue(Pledge.class);
                 int amount = pledge.amount;
                 String location = pledge.location;

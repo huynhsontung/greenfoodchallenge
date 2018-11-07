@@ -30,7 +30,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
-import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,7 +42,8 @@ import com.squareup.picasso.Transformation;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private String mUsername;
+    private String userDisplayName;
+    private String userEmail;
     private Toolbar mToolbar;
     private DrawerLayout mDrawer;
     private ActionBarDrawerToggle mToggle;
@@ -69,9 +69,8 @@ public class MainActivity extends AppCompatActivity
         mToolbar = findViewById(R.id.toolbar);
         mDrawer = findViewById(R.id.drawer_layout);
 
-        mUsername = firebaseUser.getEmail();
-//        Log.i(TAG, "Username: " + mUsername + CLASSTAG);
-
+        userDisplayName = firebaseUser.getDisplayName();
+        userEmail = firebaseUser.getEmail();
 
         setupNavigationDrawer();
         showDashboard();
@@ -119,8 +118,8 @@ public class MainActivity extends AppCompatActivity
         View headerView = mNavigationView.getHeaderView(0);
         TextView navUsernameText = headerView.findViewById(R.id.nav_username);
         TextView navDisplayNameText = headerView.findViewById(R.id.nav_display_name);
-        navDisplayNameText.setText(firebaseUser.getDisplayName());
-        navUsernameText.setText(firebaseUser.getEmail());
+        navDisplayNameText.setText(userDisplayName);
+        navUsernameText.setText(userEmail);
         ImageView navUserIcon = headerView.findViewById(R.id.nav_user_icon);
         Transformation circularTransform = new Transformation() {
             @Override
@@ -195,9 +194,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-        else if (id == R.id.fragment_plan_list) {
-            fragment = new PlanListFragment();
-        }
+//        else if (id == R.id.fragment_plan_list) {
+//            fragment = new PlanListFragment();
+//        }
 
         else if (id == R.id.fragment_pledge) {
             fragment = new PledgeFragment();
