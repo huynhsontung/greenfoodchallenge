@@ -32,7 +32,7 @@
 //         var totalNumber = 0;
 //         var totalAmountSum = 0;
 //         var query1 = admin.database().ref("/users");
-//         var query2 = admin.database().ref("/pladgeResult");
+//         var query2 = admin.database().ref("/pledgeResult");
 //         return query1.once("value")
 //             .then((snapshot) => {
 //                 snapshot.forEach((childSnapshot) => {

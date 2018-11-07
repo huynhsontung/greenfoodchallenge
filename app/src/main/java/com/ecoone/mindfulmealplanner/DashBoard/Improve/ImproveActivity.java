@@ -90,7 +90,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child("users").child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
