@@ -416,6 +416,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.d(TAG, CLASSTAG + " onStart");
+        FirebaseDatabaseInterface.logUserUid();
     }
 
     @Override
@@ -440,8 +441,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.i(TAG, "check user UID: " + userUid);
+        FirebaseDatabaseInterface.logUserUid();
     }
 
 }

@@ -25,6 +25,10 @@ public abstract class FirebaseDatabaseInterface {
     private static final String CLASSTAG = "(FirebaseDatabaseInterface)";
 
 
+    public static void logUserUid() {
+        Log.i(TAG, CLASSTAG + "log uid: " +userUid);
+    }
+
     public static void writeUser(User user) {
 //        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
