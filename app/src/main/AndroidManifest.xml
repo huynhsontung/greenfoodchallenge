@@ -12,14 +12,21 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <service android:name="com.ecoone.mindfulmealplanner.Pledge.DailyPledgeService"/>
-        <activity android:name=".InitialSetup.InitialSetupActivity">
+        <!--<activity android:name=".InitialSetup.InitialSetupActivity">-->
+            <!--<intent-filter>-->
+                <!--<action android:name="android.intent.action.MAIN" />-->
+
+                <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
+        <!--</activity>-->
+        <!--<activity android:name=".MainActivity" />-->
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity
             android:name=".Setting.SettingsActivity"
             android:label="@string/title_activity_settings"

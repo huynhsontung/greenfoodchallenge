@@ -67,7 +67,9 @@ public class InitialSetupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_initial_setup);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
+
         observeFinish();
+
     }
 
     private void observeFinish() {
@@ -97,7 +99,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     private void checkIfGoToDashboard() {
         user = FirebaseAuth.getInstance().getCurrentUser();
         if(user == null){
-            generateUserId();
+            goLoginPage();
         } else {
             checkIfUserDataExist();
         }
@@ -130,7 +132,7 @@ public class InitialSetupActivity extends AppCompatActivity {
         mViewPager.setCurrentItem(0);
     }
 
-    private void generateUserId() {
+    private void goLoginPage() {
         startActivityForResult(
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
@@ -141,17 +143,25 @@ public class InitialSetupActivity extends AppCompatActivity {
                 RC_SIGN_IN);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == RESULT_OK) {
+                checkIfUserDataExist();
+            }
+        }
+    }
+
     private void checkIfUserDataExist() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
-                    startActivityAndFinish();
                     Log.i(TAG, CLASSTAG + "exist");
-
+                    startActivityAndFinish();
                 }
-
                 else {
                     Log.i(TAG, CLASSTAG + "not exist");
                     setupViewPager();
@@ -172,16 +182,6 @@ public class InitialSetupActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == RC_SIGN_IN) {
-            if (resultCode == RESULT_OK) {
-                checkIfUserDataExist();
-            }
-        }
-    }
-    
     // Fragments declarations
     public static class GreetingFragment extends Fragment {
         public static GreetingFragment newInstance() {

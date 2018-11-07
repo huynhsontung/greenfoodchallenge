@@ -90,7 +90,7 @@ public class DashboardFragment extends Fragment {
         mFunctions = FirebaseFunctions.getInstance();
 
 
-//        setFirebaseValueListener();
+        setFirebaseValueListener();
         setEditDoneIconAction(view);
         setupImproveButton();
 
@@ -116,13 +116,13 @@ public class DashboardFragment extends Fragment {
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child("users").child(userUid).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(userUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                User user = dataSnapshot.getValue(User.class);
+                User user = dataSnapshot.child("userInfo").getValue(User.class);
                 mCurrentPlanName = user.currentPlanName;
                 setEditTextView(mCurrentPlanName);
-                Plan mCurrentPlan = dataSnapshot.child("plans").child(mCurrentPlanName).getValue(Plan.class);
+                Plan mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
                 if(mCurrentPlan != null) {
                     mViewModel.mCurrentPlan.setValue(mCurrentPlan);
                 }
@@ -199,6 +199,9 @@ public class DashboardFragment extends Fragment {
                     editPlanName.setInputType(0);
                     String newPlanName = editPlanName.getText().toString();
                     editPlanName.setText(newPlanName);
+                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
+                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
                 }
             }

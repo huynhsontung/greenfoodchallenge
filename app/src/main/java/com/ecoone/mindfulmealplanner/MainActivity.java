@@ -20,6 +20,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -156,7 +157,6 @@ public class MainActivity extends AppCompatActivity
                 .into(navUserIcon);
     }
 
-
     private void showDashboard() {
         Menu menu = mNavigationView.getMenu();
         MenuItem menuItem = menu.findItem(R.id.fragment_dashboard);
@@ -174,6 +174,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        Log.i(TAG, CLASSTAG + "backpressed");
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -181,8 +182,6 @@ public class MainActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }
-
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -226,5 +225,33 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
+    }
 }
