@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.ecoone.mindfulmealplanner.Tool.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.R;
@@ -32,7 +33,9 @@ public class DashboardChartFragment extends Fragment {
     private static final String ARG_CHART_DATA = "chart_data";
 
     private int chartNum;
-
+    private int arrowFlag;
+    private ImageView rightArrow;
+    private ImageView leftArrow;
     private PieChart chart;
     private String[] foodName;
     private float[] foodAmount;
@@ -83,13 +86,28 @@ public class DashboardChartFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         chart = view.findViewById(R.id.PieChart);
-        if (chartNum == 0)
-            setupPieChart(foodAmount,foodName);
-        else
-            setupPieChart(foodCo2Amount,foodName);
+        if (chartNum == 0) {
+            arrowFlag = 0;
+            setupPieChart(foodAmount, foodName);
+        }
+        else {
+            arrowFlag = 1;
+            setupPieChart(foodCo2Amount, foodName);
+        }
     }
 
     void setupPieChart(float[] percentage, String[] foodNames){
+        // set up arrows
+        rightArrow = getView().findViewById(R.id.right_arrow);
+        leftArrow = getView().findViewById(R.id.left_arrow);
+        if(arrowFlag == 0) {
+            rightArrow.setVisibility(View.VISIBLE);
+            leftArrow.setVisibility(View.INVISIBLE);
+        }
+        else {
+            rightArrow.setVisibility(View.INVISIBLE);
+            leftArrow.setVisibility(View.VISIBLE);
+        }
         //setup pie chart
         List<PieEntry> pieEntries = new ArrayList<>();
         for (int i=0; i<percentage.length;i++){
