@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity
     private NavigationView mNavigationView;
     private FirebaseUser firebaseUser;
 
+
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
 
