@@ -1,23 +1,19 @@
 package com.ecoone.mindfulmealplanner.DB;
 
-import android.support.annotation.NonNull;
-import android.text.StaticLayout;
 import android.util.Log;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.HashMap;
 
 public abstract class FirebaseDatabaseInterface {
-    public static final String USERS_NODE = "userInfo";
-    public static final String PLANS_NODE = "planInfo";
-    public static final String PLEDGE_NODE = "pledgeInfo";
+    public static final String ALLUSERS_NODE = "allUsers";
+    public static final String USERINFO_NODE = "userInfo";
+    public static final String PLANINFO_NODE = "planInfo";
+    public static final String PLEDGEINFO_NODE = "pledgeInfo";
     private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 //    private static final FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 //    private static String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -27,7 +23,7 @@ public abstract class FirebaseDatabaseInterface {
     public static void writeUser(User user) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
-        mDatabase.child(userUid).child(USERS_NODE).setValue(user);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(USERINFO_NODE).setValue(user);
     }
 
 
@@ -35,7 +31,7 @@ public abstract class FirebaseDatabaseInterface {
 //
 //        final TaskCompletionSource<User> dbSource = new TaskCompletionSource<>();
 //
-//        mDatabase.child(USERS_NODE).child(userUid).addValueEventListener(new ValueEventListener() {
+//        mDatabase.child(USERINFO_NODE).child(userUid).addValueEventListener(new ValueEventListener() {
 //            @Override
 //            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 //                User user = dataSnapshot.getValue(User.class);
@@ -53,7 +49,7 @@ public abstract class FirebaseDatabaseInterface {
 
 //    public static Task<Plan> getPlan() {
 //        final TaskCompletionSource<Plan> dbSource = new TaskCompletionSource<>();
-//        mDatabase.child(USERS_NODE).child(userUid).child(PLANS_NODE)
+//        mDatabase.child(USERINFO_NODE).child(userUid).child(PLANINFO_NODE)
 //                .addValueEventListener(new ValueEventListener() {
 //                    @Override
 //                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -80,7 +76,7 @@ public abstract class FirebaseDatabaseInterface {
         planMap.put("eggs", plan.eggs);
         planMap.put("beans", plan.beans);
         planMap.put("vegetables", plan.vegetables);
-        mDatabase.child(userUid).child(PLANS_NODE).child(plan.planName).setValue(planMap);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(PLANINFO_NODE).child(plan.planName).setValue(planMap);
     }
 
     public static float[] getPlanArray(final Plan plan) {
@@ -102,17 +98,17 @@ public abstract class FirebaseDatabaseInterface {
 
     public static void deletePlan(String planName){
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(PLANS_NODE).child(planName).removeValue();
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(PLANINFO_NODE).child(planName).removeValue();
     }
 
     public static void updateCurrentPlanName(String planName) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(USERS_NODE).child("currentPlanName").setValue(planName);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(USERINFO_NODE).child("currentPlanName").setValue(planName);
     }
 
     public static void updateCurrentPlanNameAndPlan(Plan plan, String oldName, String newName){
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(USERS_NODE).child("currentPlanName").setValue(newName);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(USERINFO_NODE).child("currentPlanName").setValue(newName);
         deletePlan(oldName);
         plan.planName = newName;
         writePlan(plan);
@@ -120,17 +116,17 @@ public abstract class FirebaseDatabaseInterface {
 
     public static void writePledge(Pledge pledge) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(PLEDGE_NODE).setValue(pledge);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(PLEDGEINFO_NODE).setValue(pledge);
     }
 
     public static void updatePledgeAmount(int amount) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(PLEDGE_NODE).child("amount").setValue(amount);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(PLEDGEINFO_NODE).child("amount").setValue(amount);
     }
 
     public static void updatePledgeLocation(String location) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(userUid).child(PLEDGE_NODE).child("location").setValue(location);
+        mDatabase.child(ALLUSERS_NODE).child(userUid).child(PLEDGEINFO_NODE).child("location").setValue(location);
     }
 
 }

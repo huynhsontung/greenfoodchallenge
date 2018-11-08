@@ -148,7 +148,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     private void checkIfUserDataExist() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, "check user data, UID: " + userUid);
-        mDatabase.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child("allUsers").child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

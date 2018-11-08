@@ -137,7 +137,7 @@ public class DashboardFragment extends Fragment {
             }
         };
 
-        mDatabase.child(userUid).addValueEventListener(mValueEventListener);
+        mDatabase.child("allUsers").child(userUid).addValueEventListener(mValueEventListener);
 
     }
 
@@ -268,7 +268,7 @@ public class DashboardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child(userUid).removeEventListener(mValueEventListener);
+        mDatabase.child("allUsers").child(userUid).removeEventListener(mValueEventListener);
 
     }
 

@@ -94,7 +94,7 @@ public class MyPledgeFragment extends Fragment {
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child(userUid).child("pledgeInfo").addValueEventListener(new ValueEventListener() {
+        mDatabase.child("allUsers").child(userUid).child("pledgeInfo").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
