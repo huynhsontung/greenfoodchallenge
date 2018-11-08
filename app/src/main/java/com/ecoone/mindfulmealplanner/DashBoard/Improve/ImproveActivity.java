@@ -119,7 +119,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         improvedPlan = mNewPlan.suggestPlan();
         improvedPlan.planName = currentPlan.planName;
         improvedPlan.planName = currentPlan.planName;
-        String str = new DecimalFormat("###,###,###").format(Calculator.calculateVancouver(improvedPlan));
+        String str = new DecimalFormat("###,###,###").format(Calculator.usePlanVancouver(improvedPlan));
         String message = String.format("If everyone in Vancouver uses your " +
                 "plan, %s tonnes of CO2e can be saved! Way to go!", str);
 

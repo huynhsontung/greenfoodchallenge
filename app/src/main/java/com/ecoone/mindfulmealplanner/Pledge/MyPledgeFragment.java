@@ -39,7 +39,7 @@ public class MyPledgeFragment extends Fragment {
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private TextView mEditDoneIcon;
-    private EditText editPlesgeName;
+    private EditText editPledgeName;
     private Spinner mSpinner;
     private ArrayAdapter<CharSequence> mAdapter;
     private ArrayList<String> locationList;
@@ -77,7 +77,7 @@ public class MyPledgeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mEditDoneIcon = view.findViewById(R.id.my_pledge_icon_edit_done);
-        editPlesgeName = view.findViewById(R.id.my_pledge_edit_plan_name);
+        editPledgeName = view.findViewById(R.id.my_pledge_edit_plan_name);
         mSpinner = view.findViewById(R.id.my_pledge_spinner);
         mAdapter = ArrayAdapter.createFromResource(getContext(), R.array.location, android.R.layout.simple_spinner_item);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -115,8 +115,8 @@ public class MyPledgeFragment extends Fragment {
     }
 
     private void setEditTextView(int amount) {
-        editPlesgeName.setText(String.valueOf(amount));
-        editPlesgeName.setInputType(0);
+        editPledgeName.setText(String.valueOf(amount));
+        editPledgeName.setInputType(0);
     }
 
     private void setSpinnerView(String location) {
@@ -128,18 +128,18 @@ public class MyPledgeFragment extends Fragment {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (editPlesgeName.getInputType() == 0) {
-                    editPlesgeName.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
+                if (editPledgeName.getInputType() == 0) {
+                    editPledgeName.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
-                    editPlesgeName.setSelection(editPlesgeName.getText().length());
-                    editPlesgeName.selectAll();
+                    editPledgeName.setSelection(editPledgeName.getText().length());
+                    editPledgeName.selectAll();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editPlesgeName, InputMethodManager.SHOW_IMPLICIT);
+                    imm.showSoftInput(editPledgeName, InputMethodManager.SHOW_IMPLICIT);
                 }
                 else {
-                    editPlesgeName.setInputType(0);
-                    int newAmount = Integer.valueOf(editPlesgeName.getText().toString());
-                    editPlesgeName.setText(String.valueOf(newAmount));
+                    editPledgeName.setInputType(0);
+                    int newAmount = Integer.valueOf(editPledgeName.getText().toString());
+                    editPledgeName.setText(String.valueOf(newAmount));
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
