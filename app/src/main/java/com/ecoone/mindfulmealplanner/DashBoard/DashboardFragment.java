@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.DashBoard.Improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -126,6 +127,7 @@ public class DashboardFragment extends Fragment {
                 if(mCurrentPlan != null) {
                     calculateCurrentCo2e(mCurrentPlan);
                     setupPieChartFragmentPager(mCurrentPlan);
+                    PledgeLogic.updateCurrentPlan(mCurrentPlan);
                 }
             }
 

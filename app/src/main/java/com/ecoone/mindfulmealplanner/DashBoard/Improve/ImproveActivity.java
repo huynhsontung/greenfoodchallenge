@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.Tool.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.Tool.NewPlan;
@@ -104,6 +105,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
                     initializeSeekBarView();
                     setButtonAction();
                     setSeekBarValueView(currentPlan, improvedPlan);
+                    PledgeLogic.updateCurrentPlan(currentPlan);
                 }
             }
 

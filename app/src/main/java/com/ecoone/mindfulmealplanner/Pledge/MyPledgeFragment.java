@@ -16,6 +16,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Gallery;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -43,6 +46,9 @@ public class MyPledgeFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter<CharSequence> mAdapter;
     private ArrayList<String> locationList;
+    private LinearLayout mLinearLayout;
+    private ImageView mImageView;
+    private TextView planCO2TextView;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MyPledgeFragment)";
@@ -82,10 +88,10 @@ public class MyPledgeFragment extends Fragment {
         mAdapter = ArrayAdapter.createFromResource(getContext(), R.array.location, android.R.layout.simple_spinner_item);
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
-
+        planCO2TextView = view.findViewById(R.id.user_tip);
+        planCO2TextView.setText("Note: Your current plan produces " + PledgeLogic.getCurrentPlanCO2PerWeek() + "kg of CO2e per week");
         locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
 
-        setEditTextView(0);
 
         setFirebaseValueListener();
 
