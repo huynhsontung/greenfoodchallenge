@@ -18,8 +18,10 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.DashBoard.Improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -52,7 +54,7 @@ public class DashboardFragment extends Fragment {
     private TextView relevantInfo;
     private EditText editPlanName;
     private Button logout;
-
+    private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
 
@@ -126,6 +128,7 @@ public class DashboardFragment extends Fragment {
                 if(mCurrentPlan != null) {
                     calculateCurrentCo2e(mCurrentPlan);
                     setupPieChartFragmentPager(mCurrentPlan);
+                    PledgeLogic.updateCurrentPlan(mCurrentPlan);
                 }
             }
 
@@ -212,10 +215,14 @@ public class DashboardFragment extends Fragment {
         mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
-                if (i == 0)
-                    return DashboardChartFragment.newInstance(i,foodAmount);
-                else
-                    return DashboardChartFragment.newInstance(i,co2Amount);
+                if (i == 0) {
+                    Log.i("testing", "zerp");
+                    return DashboardChartFragment.newInstance(i, foodAmount);
+                }
+                else {
+                    Log.i("testing", "1");
+                    return DashboardChartFragment.newInstance(i, co2Amount);
+                }
             }
 
             @Override
