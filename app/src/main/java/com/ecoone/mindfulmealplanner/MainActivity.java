@@ -149,11 +149,11 @@ public class MainActivity extends AppCompatActivity
                 return "rounded";
             }
         };
-        Picasso.get()
-                .load(firebaseUser.getPhotoUrl())
-                .resize(200,200)
-                .transform(circularTransform)
-                .into(navUserIcon);
+//        Picasso.get()
+//                .load(firebaseUser.getPhotoUrl())
+//                .resize(200,200)
+//                .transform(circularTransform)
+//                .into(navUserIcon);
     }
 
     private void showDashboard() {

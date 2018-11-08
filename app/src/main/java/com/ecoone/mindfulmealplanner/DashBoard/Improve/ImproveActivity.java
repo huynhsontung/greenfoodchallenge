@@ -89,7 +89,8 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
