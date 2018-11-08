@@ -20,6 +20,12 @@ public abstract class FirebaseDatabaseInterface {
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(FirebaseDatabaseInterface)";
 
+    public static void deleteUserData() {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, CLASSTAG + "check UID: " + userUid);
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).removeValue();
+    }
+
     public static void writeUser(User user) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);

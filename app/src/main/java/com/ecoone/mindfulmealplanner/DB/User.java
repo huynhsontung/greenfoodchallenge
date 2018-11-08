@@ -21,4 +21,5 @@ public class User {
 //    public long createDate;
 //    public long lastLoginDate;
     public String currentPlanName;
+    public int isRemoved;
 }

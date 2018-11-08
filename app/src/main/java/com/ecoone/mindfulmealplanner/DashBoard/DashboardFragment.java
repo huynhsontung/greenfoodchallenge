@@ -119,13 +119,16 @@ public class DashboardFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
                 User user = dataSnapshot.child("userInfo").getValue(User.class);
-                mCurrentPlanName = user.currentPlanName;
-                setEditTextView(mCurrentPlanName);
-                mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
-                if(mCurrentPlan != null) {
-                    calculateCurrentCo2e(mCurrentPlan);
-                    setupPieChartFragmentPager(mCurrentPlan);
-                    PledgeLogic.updateCurrentPlan(mCurrentPlan);
+
+                if(user != null) {
+                    mCurrentPlanName = user.currentPlanName;
+                    mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
+                    setEditTextView(mCurrentPlanName);
+                    if (mCurrentPlan != null) {
+                        calculateCurrentCo2e(mCurrentPlan);
+                        setupPieChartFragmentPager(mCurrentPlan);
+                        PledgeLogic.updateCurrentPlan(mCurrentPlan);
+                    }
                 }
             }
 
@@ -275,13 +278,5 @@ public class DashboardFragment extends Fragment {
                 .child(userUid).removeEventListener(mValueEventListener);
 
     }
-
-    //    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        setupPieChartFragmentPager();
-//        calculateCurrentCo2e();
-//        setEditTextView();
-//    }
-
 
 }
