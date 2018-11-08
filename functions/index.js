@@ -4,7 +4,7 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.addTotalNumberOfPeoplePledged = functions.database.ref("/uids/{userUid}/pledgeInfo")
+exports.totalNumberAndAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
         var totalNumber = 0;
         var totalAmountSum = 0;
@@ -28,6 +28,11 @@ exports.addTotalNumberOfPeoplePledged = functions.database.ref("/uids/{userUid}/
                 });
             });
     });
+
+exports.localOfUsersPledgedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
+    .onWrite(((change, context) => {
+
+    }));
 
 
 
