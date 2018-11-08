@@ -172,5 +172,4 @@ public class MyPledgeFragment extends Fragment {
                 "array", getContext().getPackageName());
         return getContext().getResources().getStringArray(resId);
     }
-    
 }
