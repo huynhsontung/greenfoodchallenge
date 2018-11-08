@@ -36,6 +36,7 @@ import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.User;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupViewModel;
+import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
 import com.ecoone.mindfulmealplanner.UserIconDialogFragment.OnInputListener;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
@@ -255,9 +256,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-//        else if (id == R.id.fragment_plan_list) {
-//            fragment = new PlanListFragment();
-//        }
+        else if (id == R.id.fragment_plan_list) {
+            fragment = new PlanListFragment();
+        }
 
         else if (id == R.id.fragment_pledge) {
             fragment = new PledgeFragment();

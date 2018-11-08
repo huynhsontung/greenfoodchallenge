@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public abstract class FirebaseDatabaseInterface {
     public static final String ALLUSERSUID_NODE = "uids";
@@ -106,6 +107,16 @@ public abstract class FirebaseDatabaseInterface {
     public static void updatePlan(Plan plan) {
         deletePlan(plan.planName);
         writePlan(plan);
+    }
+
+    public static StringBuilder getPlanDatatoString(final Plan plan) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.CANADA,
+                "Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
+                        "Eggs: %d, Beans: %d, Vegetables: %d",
+                (int) plan.beef, (int) plan.pork ,(int) plan.chicken,
+                (int) plan.fish, (int) plan.eggs, (int) plan.beans, (int) plan.vegetables));
+        return sb;
     }
 
     public static void deletePlan(String planName){

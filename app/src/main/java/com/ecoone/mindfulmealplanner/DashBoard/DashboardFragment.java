@@ -63,7 +63,6 @@ public class DashboardFragment extends Fragment {
     private TextView currentCo2eTextView;
     private TextView relevantInfo;
     private EditText editPlanName;
-    private Button logout;
     private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
@@ -96,7 +95,6 @@ public class DashboardFragment extends Fragment {
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
-        logout = view.findViewById(R.id.logout);
 
         mFunctions = FirebaseFunctions.getInstance();
 
@@ -104,14 +102,6 @@ public class DashboardFragment extends Fragment {
         setFirebaseValueListener();
         setupImproveButton();
         setEditDoneIconAction(view);
-
-        logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                getActivity().finish();
-            }
-        });
     }
     private void setFirebaseValueListener() {
         mValueEventListener = new ValueEventListener() {
