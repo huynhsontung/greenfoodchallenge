@@ -147,13 +147,16 @@ public class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates how many metric tonnes Vancouver would save if everyone used plan
-    public static float usePlanVancouver(Plan myPlan){
+    public static float usePlanVancouver(Plan newPlan, Plan oldPlan){
+        float oldPlanCO2ForVancouver = calculateVancouver(oldPlan);
+        float newPlanCO2ForVancouver = calculateVancouver(newPlan);
+        // old co2 should be greater than new co2
+        float savingsIfEveryoneSwitchedPlans = oldPlanCO2ForVancouver - newPlanCO2ForVancouver;
+        return savingsIfEveryoneSwitchedPlans;
+        //float getNewTotalCO2e = calculateVancouver(newPlan);
+       // float oldTotalVancouver = populationVancouver * tCO2ePerCapita;
+        //return (float) (oldTotalVancouver - getNewTotalCO2e);
 
-        float getNewTotalCO2e = calculateVancouver(myPlan);
-
-        float oldTotalVancouver = populationVancouver * tCO2ePerCapita;
-
-        return (float) (oldTotalVancouver - getNewTotalCO2e);
     }
 
     // Parameters: CO2eInTonnes

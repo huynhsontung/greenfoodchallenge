@@ -121,23 +121,42 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         NewPlan mNewPlan = new NewPlan(currentPlan, gender);
         improvedPlan = mNewPlan.suggestPlan();
         improvedPlan.planName = currentPlan.planName;
-        improvedPlan.planName = currentPlan.planName;
-        String str = new DecimalFormat("###,###,###").format(Calculator.usePlanVancouver(improvedPlan));
-        String message = String.format("If everyone in Vancouver uses your " +
-                "plan, %s tonnes of CO2e can be saved! Way to go!", str);
+        float savingsInVancouver = Calculator.usePlanVancouver(improvedPlan, currentPlan);
+        String str = new DecimalFormat("###,###,###").format(savingsInVancouver);
+        if(savingsInVancouver != 0) {
+            String message1 = String.format("If everyone in Vancouver uses your " +
+                    "plan, %s tonnes of CO2e can be saved! Way to go!", str);
 
-        final Snackbar mSnackbar = Snackbar.make(findViewById(R.id.layout_improve),
-                                    message, Snackbar.LENGTH_INDEFINITE);
-        mSnackbar.setAction("Got it!", new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mSnackbar.dismiss();
-            }
-        });
-        View mSnackbarView = mSnackbar.getView();
-        TextView textView = mSnackbarView.findViewById(android.support.design.R.id.snackbar_text);
-        textView.setTextSize(10);
-        mSnackbar.show();
+            final Snackbar mSnackbar = Snackbar.make(findViewById(R.id.layout_improve),
+                    message1, Snackbar.LENGTH_INDEFINITE);
+            mSnackbar.setAction("Got it!", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSnackbar.dismiss();
+                }
+            });
+            View mSnackbarView = mSnackbar.getView();
+            TextView textView = mSnackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextSize(10);
+            mSnackbar.show();
+        }
+        else {
+            String message2 = String.format("Your current plan is already good! Lowering your daily " +
+                    "serving amount will make it even better.");
+
+            final Snackbar mSnackbar = Snackbar.make(findViewById(R.id.layout_improve),
+                    message2, Snackbar.LENGTH_INDEFINITE);
+            mSnackbar.setAction("Got it!", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSnackbar.dismiss();
+                }
+            });
+            View mSnackbarView = mSnackbar.getView();
+            TextView textView = mSnackbarView.findViewById(android.support.design.R.id.snackbar_text);
+            textView.setTextSize(10);
+            mSnackbar.show();
+        }
 
         float[] foodAmount = FirebaseDatabaseInterface.getPlanArray(improvedPlan);
 
