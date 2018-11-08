@@ -58,6 +58,7 @@ public class MainActivity extends AppCompatActivity
 //        intent.putExtra(EXTRA_USERNAME, username);
         return intent;
     }
+    
 
     private ShareActionProvider mShareActionProvider;
     @Override
