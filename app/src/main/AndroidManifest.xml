@@ -47,7 +47,7 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Setting.Logout"
+        <activity android:name=".Setting.LogoutActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="openLogout" />

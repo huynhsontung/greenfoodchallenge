@@ -13,7 +13,7 @@
         android:title="Log out">
     <intent
         android:targetPackage="com.ecoone.mindfulmealplanner"
-        android:targetClass="com.ecoone.mindfulmealplanner.Setting.Logout"/>
+        android:targetClass="com.ecoone.mindfulmealplanner.Setting.LogoutActivity"/>
     </Preference>
 
 
