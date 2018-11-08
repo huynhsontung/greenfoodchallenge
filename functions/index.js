@@ -4,35 +4,74 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.totalNumberAndAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+exports.totalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
-        var totalNumber = 0;
-        var totalAmountSum = 0;
-        var query1 = admin.database().ref("/uids");
-        var query2 = admin.database().ref("/pledgeResult");
-        return query1.once("value")
-            .then((snapshot) => {
-                snapshot.forEach((childSnapshot) => {
-                    var amount = childSnapshot.child("pledgeInfo").child("amount").val();
-                    // console.log("test", amount);
-                    if (amount !== 0) {
-                        totalNumber ++;
-                        totalAmountSum += amount;
-                    }
-                    // console.log("test", totalNumber, totalAmountSum);
-                });
-                console.log("test", totalNumber, totalAmountSum);
-                return query2.set({
-                    totalNumber: totalNumber,
-                    totalAmountSum: totalAmountSum
-                });
-            });
+
+        var originalAmount = change.before.val();
+        var finalAmount = change.after.val();
+
+        console.log("test", originalAmount, finalAmount);
+
+        var totalNumber = admin.database().ref("/pledgeResult/totalNumber");
+
+        return totalNumber.once("value").then((snapshot) => {
+            var totalNumberVal;
+            if (!snapshot.exists()) {
+                totalNumberVal = isUserPledge(originalAmount, finalAmount);
+            }
+            else {
+                totalNumberVal = snapshot.val();
+                totalNumberVal = totalNumberVal + isUserPledge(originalAmount, finalAmount);
+            }
+
+            return totalNumber.set(totalNumberVal);
+        });
+    });
+
+function isUserPledge(originalAmount, finalAmount) {
+    if (originalAmount === 0 && finalAmount !== 0) {
+        return 1
+    }
+    if (originalAmount !== 0 && finalAmount !== 0) {
+        return 0;
+    }
+    if (originalAmount !== 0 && finalAmount === 0) {
+        return -1;
+    }
+    console.log("isUserPledge Error");
+    return null;
+}
+
+
+exports.totalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+    .onWrite((change, context) => {
+
+        var originalAmount = change.before.val();
+        var finalAmount = change.after.val();
+
+        console.log("test", originalAmount, finalAmount);
+
+        var totalAmountSum = admin.database().ref("/pledgeResult/totalAmountSum");
+
+        return totalAmountSum.once("value").then((snapshot) => {
+            var totalNumberVal;
+            if (!snapshot.exists()) {
+                totalAmountSumValue = finalAmount;
+            }
+            else {
+                totalAmountSumValue = snapshot.val();
+                totalAmountSumValue = totalAmountSumValue - originalAmount + finalAmount;
+            }
+            return totalAmountSum.set(totalAmountSumValue);
+        });
     });
 
 exports.localOfUsersPledgedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
-    .onWrite(((change, context) => {
-
-    }));
+    .onWrite((change, context) => {
+        // var change.before
+        // var bar = context.params.userUid;
+        // var data = change.after.ref;
+    });
 
 
 
