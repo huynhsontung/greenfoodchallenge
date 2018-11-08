@@ -29,7 +29,6 @@ import com.ecoone.mindfulmealplanner.db.Plan;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class DiscoverFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -47,8 +46,6 @@ public class DiscoverFragment extends Fragment {
     public DiscoverFragment() {
         // Required empty public constructor
     }
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -79,23 +76,27 @@ public class DiscoverFragment extends Fragment {
                 ((LinearLayoutManager) layoutManager).getOrientation());
         myRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        //myPeoplePledgingList.add(new PeoplePledging("Peter Tran", 10, 0, "Vancouver"));
-        //populateListView();
         updateRecycler();
 
     }
+
+    // Post: Gets list of all people who pledged in Vancouver.
+    //       Includes name, pledged, icon, municipality
     private void updateRecycler() {
         List<PeoplePledging> testPledgingList = new ArrayList<PeoplePledging>();
         PeoplePledging testPeter = new PeoplePledging("Peter Tran", 10,
                 R.drawable.edit, "Vancouver");
 
-        PeoplePledging testOther = new PeoplePledging("Lalala Tran", 10,
+        PeoplePledging testOther = new PeoplePledging("Joe Tran", 10,
                 R.drawable.edit, "Burnaby");
 
+        // -------------------------------TESTING-------------------------------//
         testPledgingList.add(testPeter);
         testPledgingList.add(testOther);
         testPledgingList.add(testPeter);
         testPledgingList.add(testOther);
+        testPledgingList.add(testPeter);
+        // -------------------------------TESTING-------------------------------//
         myAdapter = new PeoplePledgeAdapter(testPledgingList);
         myRecyclerView.setAdapter(myAdapter);
     }
@@ -120,7 +121,7 @@ public class DiscoverFragment extends Fragment {
         public void bind(PeoplePledging personPledging) {
             myPeoplePledgeName.setText(personPledging.getNameUser());
             myPeoplePledgeCity.setText("Municipality: " + personPledging.getMunicipality());
-            //myPeoplePledgeAmount.setText((int) personPledging.getPledged());
+            myPeoplePledgeAmount.setText("Pledge: " + String.valueOf(personPledging.getPledged() ) + "g");
             myPeoplePledgeIcon.setImageResource(personPledging.getIconID());
         }
     }
