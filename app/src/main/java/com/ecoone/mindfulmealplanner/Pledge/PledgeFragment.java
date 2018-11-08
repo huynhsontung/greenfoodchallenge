@@ -21,6 +21,7 @@ import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class PledgeFragment extends Fragment {
@@ -34,7 +35,6 @@ public class PledgeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_pledge, null );
 
         ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
@@ -62,6 +62,22 @@ public class PledgeFragment extends Fragment {
         myAdapter.addFragment(new MyPledgeFragment(), "My Pledge");
         myAdapter.addFragment(new DiscoverFragment(), "Discover");
         viewPager.setAdapter(myAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     static class Adapter extends FragmentPagerAdapter {
@@ -93,9 +109,5 @@ public class PledgeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add("Withdraw my pledge");
-        super.onCreateOptionsMenu(menu, inflater);
-    }
+
 }

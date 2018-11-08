@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity
                         "Share Via"));
                 break;
         }
-        Toast.makeText(getApplicationContext(), "You click on menu share", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getApplicationContext(), "You click on menu share", Toast.LENGTH_SHORT).show();
         return super.onOptionsItemSelected(item);
     }
 
@@ -242,7 +242,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 //        Log.i("test", "Item:" +item);
-        invalidateOptionsMenu();
         Fragment fragment = null;
         // Handle navigation view item clicks here..
         int id = item.getItemId();
