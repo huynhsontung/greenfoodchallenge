@@ -26,14 +26,7 @@ exports.addTotalNumberOfPeoplePledged = functions.database.ref("/uids/{userUid}/
                     totalNumber: totalNumber,
                     totalAmountSum: totalAmountSum
                 });
-                // query2.child("totalAmountSum").set(totalAmountSum);
             });
-        // return change.after.ref.parent.child("pledge").once("value").then((snapshot) => {
-        //     snapshot.forEach((childSnapshot) => {
-        //        console.log("test", childSnapshot);
-        //     });
-        //     return 0
-        // })
     });
 
 
