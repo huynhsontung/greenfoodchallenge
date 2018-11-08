@@ -43,16 +43,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.151" />
 
-    <ListView
-        android:id="@+id/discover_list_view"
-        android:layout_width="match_parent"
-        android:layout_height="390dp"
-        android:scrollbars="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <TextView
         android:id="@+id/discover_num_pledges_textview"
         android:layout_width="wrap_content"
@@ -74,5 +64,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.256" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/discover_recycler_view"
+        android:layout_width="368dp"
+        android:layout_height="382dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.989" />
 
 </android.support.constraint.ConstraintLayout>
