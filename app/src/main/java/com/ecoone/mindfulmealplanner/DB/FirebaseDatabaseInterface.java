@@ -26,6 +26,12 @@ public abstract class FirebaseDatabaseInterface {
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(USERINFO_NODE).setValue(user);
     }
 
+    public static void updateUserIconName(String iconName) {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, CLASSTAG + "check UID: " + userUid);
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(USERINFO_NODE).child("iconName").setValue(iconName);
+    }
+
 
 //    public static Task<User> getUser() {
 //

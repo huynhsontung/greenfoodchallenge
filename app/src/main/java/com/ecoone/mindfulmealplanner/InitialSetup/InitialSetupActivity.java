@@ -92,6 +92,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
 
+                mViewModel.localUser.iconName = "android";
                 FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
                 FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
 
