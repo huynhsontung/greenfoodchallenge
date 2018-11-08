@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -26,6 +27,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 public class DiscoverFragment extends Fragment {
     private List<PeoplePledging> myPeoplePledgingList;
@@ -34,6 +36,7 @@ public class DiscoverFragment extends Fragment {
     private TextView totalPledgeAmountText;
     private TextView totalPledgeNumberText;
     private TextView totalPledgeAverageText;
+    private TextView relevantInfoText;
     private MyPledgeViewModel mViewModel;
 
     public DiscoverFragment() {
@@ -73,6 +76,7 @@ public class DiscoverFragment extends Fragment {
         totalPledgeAmountText = view.findViewById(R.id.discover_total_pledge_textview);
         totalPledgeNumberText = view.findViewById(R.id.discover_number_pledges_textview);
         totalPledgeAverageText = view.findViewById(R.id.discover_average_textview);
+        relevantInfoText = view.findViewById(R.id.discover_equivalence_textview);
         mViewModel.totalPledgeReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -83,6 +87,14 @@ public class DiscoverFragment extends Fragment {
                 totalPledgeAmountText.setText(getString(R.string.total_pledge_amount,totalPledgeAmount.toString()+"kg"));
                 totalPledgeNumberText.setText(getString(R.string.total_number_pledges,totalPledgeNumber));
                 totalPledgeAverageText.setText(getString(R.string.average_co2e_saved_per_person,totalPledgeAverage.toString()+"kg/person"));
+                int relevantInfoChooser = new Random().nextInt(2);
+                int treesPlanted = (int) Calculator.calculateTreesPlanted((float)totalPledgeAmount);
+                int kmSaved = (int) Calculator.calculateSavingsInKm((float)totalPledgeAmount);
+                if (relevantInfoChooser == 0){
+                    relevantInfoText.setText(getString(R.string.pledge_relevant_info,"planting "+String.valueOf(treesPlanted)+" trees"));
+                } else {
+                    relevantInfoText.setText(getString(R.string.pledge_relevant_info, "saving "+ String.valueOf(kmSaved)+" of driving"));
+                }
             }
 
             @Override

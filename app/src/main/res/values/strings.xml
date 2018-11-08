@@ -32,7 +32,7 @@
     <string name="greeting_user">Greetings %1$s!</string>
     <string name="total_pledge_amount">Total pledge amount: %1$s</string>
     <string name="average_co2e_saved_per_person">Average CO2e saved per person: %1$s</string>
-    <string name="pledge_relevant_info">Equivalent to: %1$s</string>
+    <string name="pledge_relevant_info">Equivalent to %1$s</string>
     <string name="total_number_pledges">Pledges made: %1$d</string>
     <string-array name="gender_array">
         <item>male</item>
