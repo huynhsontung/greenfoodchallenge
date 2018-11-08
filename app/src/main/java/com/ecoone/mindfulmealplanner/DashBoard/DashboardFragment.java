@@ -1,7 +1,5 @@
 package com.ecoone.mindfulmealplanner.DashBoard;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -137,7 +135,8 @@ public class DashboardFragment extends Fragment {
             }
         };
 
-        mDatabase.child("allUsers").child(userUid).addValueEventListener(mValueEventListener);
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).addValueEventListener(mValueEventListener);
 
     }
 
@@ -268,7 +267,8 @@ public class DashboardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child("allUsers").child(userUid).removeEventListener(mValueEventListener);
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 
