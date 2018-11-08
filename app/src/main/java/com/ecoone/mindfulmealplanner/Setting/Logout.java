@@ -25,7 +25,7 @@ public class Logout extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         View checkBoxView = View.inflate(this, R.layout.logout_layout, null);
-        CheckBox checkBox = (CheckBox) checkBoxView.findViewById(R.id.checkbox);
+        CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 
             @Override
@@ -47,8 +47,8 @@ public class Logout extends AppCompatActivity {
                 .setCancelable(false)
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        if(checkstatus==1){
-                            mDatabase.child(ALLUSERSUID_NODE).child(userUid).removeValue();
+                        if(checkstatus == 1){
+//                            mDatabase.child(ALLUSERSUID_NODE).child(userUid).removeValue();
                         }
                         FirebaseAuth.getInstance().signOut();
                         Intent intent = new Intent(Logout.this, InitialSetupActivity.class);
