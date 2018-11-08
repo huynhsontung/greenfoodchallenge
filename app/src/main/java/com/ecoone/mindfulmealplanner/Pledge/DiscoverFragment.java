@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
@@ -24,6 +28,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +42,7 @@ public class DiscoverFragment extends Fragment {
     private TextView totalPledgeNumberText;
     private TextView totalPledgeAverageText;
     private TextView relevantInfoText;
+    private Spinner filterSpinner;
     private MyPledgeViewModel mViewModel;
 
     public DiscoverFragment() {
@@ -68,8 +74,27 @@ public class DiscoverFragment extends Fragment {
                 ((LinearLayoutManager) layoutManager).getOrientation());
         myRecyclerView.addItemDecoration(dividerItemDecoration);
         setupDatabaseTransaction(view);
+        setupMunicipalityFilter(view);
         updateRecycler();
 
+    }
+
+    private void setupMunicipalityFilter(View view) {
+        filterSpinner = view.findViewById(R.id.discover_filter_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.location,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(adapter);
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mViewModel.cityFilter.setValue((String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mViewModel.cityFilter.setValue("Vancouver");
+            }
+        });
     }
 
     private void setupDatabaseTransaction(View view) {
