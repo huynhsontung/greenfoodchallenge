@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="location">
+        <item>Vancouver</item>
+        <item>Burnaby</item>
+        <item>West Vancouver</item>
+        <item>North Vancouver</item>
+        <item>Richmond</item>
+        <item>Coquitlam</item>
+        <item>Surrey</item>
+        <item>Langley</item>
+    </string-array>
+</resources>

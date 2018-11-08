@@ -6,12 +6,12 @@
         android:title="About">
         <intent
             android:targetPackage="com.ecoone.mindfulmealplanner"
-            android:targetClass="com.ecoone.mindfulmealplanner.AboutPageActivity"/>
+            android:targetClass="com.ecoone.mindfulmealplanner.Setting.AboutPageActivity"/>
     </Preference>
 
-    <!--<Preference-->
-        <!--android:key="preference_clear_all_app_data_category_key"-->
-        <!--android:title="Clear all app data" />-->
+    <com.ecoone.mindfulmealplanner.Setting.LogoutDialogPreference
+        android:key="logout"
+        android:title="Logout" />
 
     <!--<Preference-->
         <!--android:key="preference_change_profile_data_category_key"-->
