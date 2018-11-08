@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         return intent;
     }
 
-    
+
     private ShareActionProvider mShareActionProvider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
