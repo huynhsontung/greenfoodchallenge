@@ -23,6 +23,7 @@ import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.Pledge;
 import com.ecoone.mindfulmealplanner.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -171,4 +172,5 @@ public class MyPledgeFragment extends Fragment {
                 "array", getContext().getPackageName());
         return getContext().getResources().getStringArray(resId);
     }
+    
 }

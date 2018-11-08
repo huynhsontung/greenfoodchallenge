@@ -4,13 +4,13 @@ const admin = require("firebase-admin");
 
 admin.initializeApp();
 
-exports.totalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+exports.CountTotalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
         var originalAmount = change.before.val();
         var finalAmount = change.after.val();
 
-        console.log("test", originalAmount, finalAmount);
+        console.log("Check original and final data: ", originalAmount, finalAmount);
 
         var totalNumber = admin.database().ref("/pledgeResult/totalNumber");
 
@@ -42,13 +42,13 @@ function isUserPledge(originalAmount, finalAmount) {
 }
 
 
-exports.totalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
         var originalAmount = change.before.val();
         var finalAmount = change.after.val();
 
-        console.log("test", originalAmount, finalAmount);
+        console.log("Check original and final data: ", originalAmount, finalAmount);
 
         var totalAmountSum = admin.database().ref("/pledgeResult/totalAmountSum");
 
@@ -63,19 +63,63 @@ exports.totalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUi
         return 0;
     });
 
-exports.localOfUsersPledgedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
+exports.ModifyPledgeLocationWhenLocationChangedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
     .onWrite((change, context) => {
 
         var userUid = context.params.userUid;
         var originalLocation = change.before.val();
         var finalLocation = change.after.val();
 
-        console.log("test", userUid, originalLocation, finalLocation);
+        console.log("Check userUid, original and final data: ", userUid, originalLocation, finalLocation);
 
-        var pledgeLocation = admin.database().ref("/pledgeResult/pledgeLocation");
-        pledgeLocation.child(finalLocation).push().set(userUid);
+
+        admin.database().ref("/uids/" + userUid + "/pledgeInfo/amount")
+            .once("value").then((snapshot) => {
+                userPlesgeAmount = snapshot.val();
+                console.log("Check user pledge amount: ", userPlesgeAmount);
+                if (userPlesgeAmount !== 0) {
+                    // add new location
+                    addUserToLocationList(finalLocation, userUid);
+                    // delete old location
+                    removeUserFromLocationList(originalLocation, userUid);
+                }
+                return 0;
+            });
         return 0;
     });
+
+exports.ModifyPledgeLocationWhenAmountChangedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+    .onWrite((change, context) => {
+
+        var userUid = context.params.userUid;
+        var finalAmount = change.after.val();
+
+        if (finalAmount === 0) {
+            
+        }
+
+        return 0;
+    });
+
+function addUserToLocationList(location, userUid) {
+    var pledgeLocation = admin.database().ref("/pledgeResult/pledgeLocation");
+    pledgeLocation.child(location).push().set(userUid);
+}
+
+function removeUserFromLocationList(location, userUid) {
+    if (location !== null) {
+        admin.database().ref("/pledgeResult/pledgeLocation")
+            .child(location).once("value").then((snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    console.log("Check key and value: ", childSnapshot.key, childSnapshot.val());
+                    if (childSnapshot.val() === userUid) {
+                        childSnapshot.ref.remove();
+                    }
+                });
+                return 0;
+            });
+    }
+}
 
 
 
