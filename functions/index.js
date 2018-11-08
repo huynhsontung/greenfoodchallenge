@@ -17,9 +17,7 @@ exports.totalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUi
         totalNumber.transaction((currentTotalNumber) => {
            return (currentTotalNumber || 0) + isUserPledge(originalAmount, finalAmount);
         });
-
         return 0;
-
     });
 
 function isUserPledge(originalAmount, finalAmount) {
@@ -61,19 +59,8 @@ exports.totalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUi
             else {
                 return (currentTotalAmountSum || 0) - originalAmount + finalAmount
             }
-
-        })
-
-        // return totalAmountSum.once("value").then((snapshot) => {
-        //     if (!snapshot.exists()) {
-        //         totalAmountSumValue = finalAmount;
-        //     }
-        //     else {
-        //         totalAmountSumValue = snapshot.val();
-        //         totalAmountSumValue = totalAmountSumValue - originalAmount + finalAmount;
-        //     }
-        //     return totalAmountSum.set(totalAmountSumValue);
-        // });
+        });
+        return 0;
     });
 
 exports.localOfUsersPledgedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
