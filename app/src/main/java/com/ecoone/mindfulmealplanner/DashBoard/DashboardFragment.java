@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
@@ -53,7 +54,7 @@ public class DashboardFragment extends Fragment {
     private TextView relevantInfo;
     private EditText editPlanName;
     private Button logout;
-
+    private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
 
@@ -214,10 +215,14 @@ public class DashboardFragment extends Fragment {
         mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
-                if (i == 0)
-                    return DashboardChartFragment.newInstance(i,foodAmount);
-                else
-                    return DashboardChartFragment.newInstance(i,co2Amount);
+                if (i == 0) {
+                    Log.i("testing", "zerp");
+                    return DashboardChartFragment.newInstance(i, foodAmount);
+                }
+                else {
+                    Log.i("testing", "1");
+                    return DashboardChartFragment.newInstance(i, co2Amount);
+                }
             }
 
             @Override
