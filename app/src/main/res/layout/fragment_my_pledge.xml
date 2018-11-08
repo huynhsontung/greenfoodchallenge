@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
             android:maxLines="1"
+            android:text="0"
             android:textSize="36sp" />
 
     </LinearLayout>
