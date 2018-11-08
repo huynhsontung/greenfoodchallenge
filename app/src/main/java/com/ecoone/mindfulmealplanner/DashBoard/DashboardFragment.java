@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -215,7 +216,7 @@ public class DashboardFragment extends Fragment {
         final float[] foodAmount = FirebaseDatabaseInterface.getPlanArray(plan);
 
         mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
-        mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
+        mChartPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
                 if (i == 0) {
@@ -231,6 +232,11 @@ public class DashboardFragment extends Fragment {
             @Override
             public int getCount() {
                 return 2;
+            }
+
+            @Override
+            public int getItemPosition(@NonNull Object object) {
+                return POSITION_NONE;
             }
         };
         mChartPager.setAdapter(mChartPagerAdapter);
@@ -250,30 +256,6 @@ public class DashboardFragment extends Fragment {
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, CLASSTAG + " onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, CLASSTAG + " onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, CLASSTAG + " onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, CLASSTAG + " onStop");
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
@@ -288,6 +270,5 @@ public class DashboardFragment extends Fragment {
 //        calculateCurrentCo2e();
 //        setEditTextView();
 //    }
-
 
 }

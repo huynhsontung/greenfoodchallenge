@@ -93,10 +93,10 @@ public class MyPledgeFragment extends Fragment {
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
         planCO2TextView = view.findViewById(R.id.user_tip);
-        planCO2TextView.setText("Note: Your current plan produces " + PledgeLogic.getCurrentPlanCO2PerWeek() + "kg of CO2e per week");
+        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
         locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
 
-
+        setEditTextView(0);
         setFirebaseValueListener();
 
         setEditDoneIconAction(view);
@@ -112,8 +112,8 @@ public class MyPledgeFragment extends Fragment {
                 Pledge pledge = dataSnapshot.getValue(Pledge.class);
                 int amount = pledge.amount;
                 String location = pledge.location;
-                if (amount != 0 && location != null) {
-                    setEditTextView(amount);
+                setEditTextView(amount);
+                if (location != null) {
                     setSpinnerView(location);
                 }
             }
@@ -182,6 +182,7 @@ public class MyPledgeFragment extends Fragment {
         return getContext().getResources().getStringArray(resId);
     }
 
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.add("Withdraw my pledge");
@@ -196,4 +197,6 @@ public class MyPledgeFragment extends Fragment {
         } else super.onOptionsItemSelected(item);
         return true;
     }
+
+
 }
