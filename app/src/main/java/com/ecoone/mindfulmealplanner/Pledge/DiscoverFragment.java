@@ -1,9 +1,6 @@
 package com.ecoone.mindfulmealplanner.Pledge;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,31 +11,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.ecoone.mindfulmealplanner.Pledge.PeoplePledging;
 import com.ecoone.mindfulmealplanner.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DiscoverFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private List<PeoplePledging> myPeoplePledgingList;
     private RecyclerView myRecyclerView;
     private PeoplePledgeAdapter myAdapter;
+    private TextView totalPledgeAmountText;
+    private TextView totalPledgeNumberText;
+    private TextView totalPledgeAverageText;
+    private MyPledgeViewModel mViewModel;
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -47,10 +43,6 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -63,7 +55,7 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mViewModel = ViewModelProviders.of(this).get(MyPledgeViewModel.class);
         myRecyclerView = view.findViewById(R.id.discover_recycler_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -72,9 +64,32 @@ public class DiscoverFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(myRecyclerView.getContext(),
                 ((LinearLayoutManager) layoutManager).getOrientation());
         myRecyclerView.addItemDecoration(dividerItemDecoration);
-
+        setupDatabaseTransaction(view);
         updateRecycler();
 
+    }
+
+    private void setupDatabaseTransaction(View view) {
+        totalPledgeAmountText = view.findViewById(R.id.discover_total_pledge_textview);
+        totalPledgeNumberText = view.findViewById(R.id.discover_number_pledges_textview);
+        totalPledgeAverageText = view.findViewById(R.id.discover_average_textview);
+        mViewModel.totalPledgeReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> data = (Map<String, Object>) dataSnapshot.getValue();
+                Long totalPledgeAmount = (Long) data.get("totalAmountSum");
+                Long totalPledgeNumber = (Long) data.get("totalNumber");
+                Long totalPledgeAverage = totalPledgeAmount/totalPledgeNumber;
+                totalPledgeAmountText.setText(getString(R.string.total_pledge_amount,totalPledgeAmount.toString()+"kg"));
+                totalPledgeNumberText.setText(getString(R.string.total_number_pledges,totalPledgeNumber));
+                totalPledgeAverageText.setText(getString(R.string.average_co2e_saved_per_person,totalPledgeAverage.toString()+"kg/person"));
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     // Post: Gets list of all people who pledged in Vancouver.

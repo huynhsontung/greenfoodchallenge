@@ -10,6 +10,8 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -22,17 +24,6 @@ import java.util.List;
 
 
 public class PledgeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private FragmentTabHost mTabHost;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
 
     public PledgeFragment() {
         // Required empty public constructor
@@ -43,7 +34,7 @@ public class PledgeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        setHasOptionsMenu(true);
         View rootView = inflater.inflate(R.layout.fragment_pledge, null );
 
         ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
@@ -103,8 +94,8 @@ public class PledgeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add("Withdraw my pledge");
+        super.onCreateOptionsMenu(menu, inflater);
     }
 }
