@@ -1,7 +1,5 @@
 package com.ecoone.mindfulmealplanner.DashBoard;
 
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -20,14 +19,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.DashBoard.Improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.Plan;
 import com.ecoone.mindfulmealplanner.DB.User;
+import com.ecoone.mindfulmealplanner.UserIconDialogFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -54,7 +56,7 @@ public class DashboardFragment extends Fragment {
     private TextView relevantInfo;
     private EditText editPlanName;
     private Button logout;
-
+    private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
 
@@ -100,6 +102,7 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 getActivity().finish();
+
             }
         });
 
@@ -128,6 +131,7 @@ public class DashboardFragment extends Fragment {
                 if(mCurrentPlan != null) {
                     calculateCurrentCo2e(mCurrentPlan);
                     setupPieChartFragmentPager(mCurrentPlan);
+                    PledgeLogic.updateCurrentPlan(mCurrentPlan);
                 }
             }
 
@@ -137,7 +141,8 @@ public class DashboardFragment extends Fragment {
             }
         };
 
-        mDatabase.child(userUid).addValueEventListener(mValueEventListener);
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).addValueEventListener(mValueEventListener);
 
     }
 
@@ -213,10 +218,14 @@ public class DashboardFragment extends Fragment {
         mChartPagerAdapter = new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
-                if (i == 0)
-                    return DashboardChartFragment.newInstance(i,foodAmount);
-                else
-                    return DashboardChartFragment.newInstance(i,co2Amount);
+                if (i == 0) {
+                    Log.i("testing", "zerp");
+                    return DashboardChartFragment.newInstance(i, foodAmount);
+                }
+                else {
+                    Log.i("testing", "1");
+                    return DashboardChartFragment.newInstance(i, co2Amount);
+                }
             }
 
             @Override
@@ -268,7 +277,8 @@ public class DashboardFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child(userUid).removeEventListener(mValueEventListener);
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 

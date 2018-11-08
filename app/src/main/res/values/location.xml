@@ -2,12 +2,12 @@
 <resources>
     <string-array name="location">
         <item>Vancouver</item>
-        <item>Downtown</item>
         <item>Burnaby</item>
         <item>West Vancouver</item>
         <item>North Vancouver</item>
         <item>Richmond</item>
         <item>Coquitlam</item>
         <item>Surrey</item>
+        <item>Langley</item>
     </string-array>
 </resources>

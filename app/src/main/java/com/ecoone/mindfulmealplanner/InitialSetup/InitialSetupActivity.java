@@ -92,6 +92,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
 
+                mViewModel.localUser.iconName = "android";
                 FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
                 FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
 
@@ -148,7 +149,8 @@ public class InitialSetupActivity extends AppCompatActivity {
     private void checkIfUserDataExist() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, "check user data, UID: " + userUid);
-        mDatabase.child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {

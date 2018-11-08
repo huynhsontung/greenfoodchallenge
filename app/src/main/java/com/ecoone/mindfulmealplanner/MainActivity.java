@@ -3,12 +3,14 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -29,18 +31,27 @@ import android.widget.ShareActionProvider;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.DB.User;
+import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupViewModel;
+import com.ecoone.mindfulmealplanner.UserIconDialogFragment.OnInputListener;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, OnInputListener {
 
     private String userDisplayName;
     private String userEmail;
@@ -49,6 +60,12 @@ public class MainActivity extends AppCompatActivity
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
     private FirebaseUser firebaseUser;
+
+    private ImageView navUserIcon;
+    private View headerView;
+
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
@@ -72,8 +89,35 @@ public class MainActivity extends AppCompatActivity
         userDisplayName = firebaseUser.getDisplayName();
         userEmail = firebaseUser.getEmail();
 
+        mNavigationView = findViewById(R.id.nav_view);
+        mNavigationView.setNavigationItemSelectedListener(this);
+        headerView = mNavigationView.getHeaderView(0);
+        navUserIcon = headerView.findViewById(R.id.nav_user_icon);
+        navUserIcon.setImageDrawable(getDrawableIdbyName("egg"));
+
+        setUserIcon();
         setupNavigationDrawer();
         showDashboard();
+    }
+
+    private void setUserIcon() {
+        ValueEventListener valueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.child("userInfo").getValue(User.class);
+                String mIconName = user.iconName;
+                if (mIconName != null) {
+                    navUserIcon.setImageDrawable(getDrawableIdbyName(mIconName));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
+                .addValueEventListener(valueEventListener);
     }
 
     @Override
@@ -111,49 +155,55 @@ public class MainActivity extends AppCompatActivity
                 R.string.navigation_drawer_close);
         mDrawer.addDrawerListener(mToggle);
         mToggle.syncState();
-        mNavigationView = findViewById(R.id.nav_view);
-        mNavigationView.setNavigationItemSelectedListener(this);
 
         // Setup icon and name
-        View headerView = mNavigationView.getHeaderView(0);
+
         TextView navUsernameText = headerView.findViewById(R.id.nav_username);
         TextView navDisplayNameText = headerView.findViewById(R.id.nav_display_name);
         navDisplayNameText.setText(userDisplayName);
         navUsernameText.setText(userEmail);
-        ImageView navUserIcon = headerView.findViewById(R.id.nav_user_icon);
-        Transformation circularTransform = new Transformation() {
+
+        navUserIcon.setOnClickListener(new View.OnClickListener() {
             @Override
-            public Bitmap transform(Bitmap source) {
-                final int margin = 0;
-                final int radius = 50;
-                final Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP,
-                        Shader.TileMode.CLAMP));
-
-                Bitmap output = Bitmap.createBitmap(source.getWidth(),
-                        source.getHeight(), Bitmap.Config.ARGB_8888);
-                Canvas canvas = new Canvas(output);
-                canvas.drawRoundRect(new RectF(margin, margin, source.getWidth()
-                        - margin, source.getHeight() - margin), radius, radius, paint);
-
-                if (source != output) {
-                    source.recycle();
-                }
-
-                return output;
+            public void onClick(View v) {
+                FragmentManager fm = getSupportFragmentManager();
+                UserIconDialogFragment dialog= UserIconDialogFragment.newInstance();
+                dialog.show(fm, "fragment_icon");
             }
-
-            @Override
-            public String key() {
-                return "rounded";
-            }
-        };
-        Picasso.get()
-                .load(firebaseUser.getPhotoUrl())
-                .resize(200,200)
-                .transform(circularTransform)
-                .into(navUserIcon);
+        });
+//        Transformation circularTransform = new Transformation() {
+//            @Override
+//            public Bitmap transform(Bitmap source) {
+//                final int margin = 0;
+//                final int radius = 50;
+//                final Paint paint = new Paint();
+//                paint.setAntiAlias(true);
+//                paint.setShader(new BitmapShader(source, Shader.TileMode.CLAMP,
+//                        Shader.TileMode.CLAMP));
+//
+//                Bitmap output = Bitmap.createBitmap(source.getWidth(),
+//                        source.getHeight(), Bitmap.Config.ARGB_8888);
+//                Canvas canvas = new Canvas(output);
+//                canvas.drawRoundRect(new RectF(margin, margin, source.getWidth()
+//                        - margin, source.getHeight() - margin), radius, radius, paint);
+//
+//                if (source != output) {
+//                    source.recycle();
+//                }
+//
+//                return output;
+//            }
+//
+//            @Override
+//            public String key() {
+//                return "rounded";
+//            }
+//        };
+//        Picasso.get()
+//                .load(firebaseUser.getPhotoUrl())
+//                .resize(200,200)
+//                .transform(circularTransform)
+//                .into(navUserIcon);
     }
 
     private void showDashboard() {
@@ -169,6 +219,12 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.screen_area, fragment);
         ft.commit();
+    }
+
+    private Drawable getDrawableIdbyName(String name) {
+        Resources resources = getResources();
+        int resourceId = resources.getIdentifier(name, "drawable", getPackageName());
+        return resources.getDrawable(resourceId);
     }
 
     @Override
@@ -223,6 +279,15 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void sendInput(int input) {
+        Log.i(TAG, "sendInput: got the input: " + input + CLASSTAG);
+        navUserIcon.setImageResource(input);
+
+        String iconName = getResources().getResourceEntryName(input);
+        FirebaseDatabaseInterface.updateUserIconName(iconName);
     }
 
     @Override
