@@ -1,8 +1,8 @@
-// const functions = require('firebase-functions');
-//
-// const admin = require("firebase-admin");
-//
-// admin.initializeApp();
+const functions = require('firebase-functions');
+
+const admin = require("firebase-admin");
+
+admin.initializeApp();
 //
 // exports.getUserGender = functions.https.onCall((data, context) => {
 //   const userUid = data.userUid;
@@ -59,3 +59,36 @@
 //         // })
 //     });
 //
+
+exports.addTotalNumberOfPeoplePledged = functions.database.ref("/users/{userUid}/pledge")
+    .onWrite((change, context) => {
+        var totalNumber = 0;
+        var totalAmountSum = 0;
+        var query1 = admin.database().ref("/users");
+        var query2 = admin.database().ref("/pledgeResult");
+        return query1.once("value")
+            .then((snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    var amount = childSnapshot.child("pledge").child("amount").val();
+                    // console.log("test", amount);
+                    if (amount !== 0) {
+                        totalNumber ++;
+                        totalAmountSum += amount;
+                    }
+                    // console.log("test", totalNumber, totalAmountSum);
+                });
+                console.log("test", totalNumber, totalAmountSum);
+                return query2.set({
+                    totalNumber: totalNumber,
+                    totalAmountSum: totalAmountSum
+                });
+                // query2.child("totalAmountSum").set(totalAmountSum);
+            });
+        // return change.after.ref.parent.child("pledge").once("value").then((snapshot) => {
+        //     snapshot.forEach((childSnapshot) => {
+        //        console.log("test", childSnapshot);
+        //     });
+        //     return 0
+        // })
+    });
+

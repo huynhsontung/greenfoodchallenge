@@ -97,7 +97,7 @@ public class InitialSetupActivity extends AppCompatActivity {
 
                 Pledge pledge = new Pledge();
                 pledge.amount = 0;
-                pledge.location = "";
+                pledge.location = "Vancouver";
                 FirebaseDatabaseInterface.writePledge(pledge);
 
                 startActivityAndFinish();
@@ -416,7 +416,6 @@ public class InitialSetupActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         Log.d(TAG, CLASSTAG + " onStart");
-        FirebaseDatabaseInterface.logUserUid();
     }
 
     @Override
@@ -441,7 +440,6 @@ public class InitialSetupActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        FirebaseDatabaseInterface.logUserUid();
     }
 
 }

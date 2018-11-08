@@ -10,7 +10,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.functions.FirebaseFunctions;
+
 
 import java.util.HashMap;
 
@@ -20,17 +20,12 @@ public abstract class FirebaseDatabaseInterface {
     public static final String PLEDGE_NODE = "pledgeInfo";
     private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 //    private static final FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
-    private static final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//    private static String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(FirebaseDatabaseInterface)";
 
-
-    public static void logUserUid() {
-        Log.i(TAG, CLASSTAG + "log uid: " +userUid);
-    }
-
     public static void writeUser(User user) {
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
         mDatabase.child(userUid).child(USERS_NODE).setValue(user);
     }
@@ -75,7 +70,7 @@ public abstract class FirebaseDatabaseInterface {
 //    }
 
     public static void writePlan(Plan plan){
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
         HashMap<String, Object> planMap = new HashMap<>();
         planMap.put("beef", plan.beef);
@@ -106,17 +101,17 @@ public abstract class FirebaseDatabaseInterface {
     }
 
     public static void deletePlan(String planName){
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(PLANS_NODE).child(planName).removeValue();
     }
 
     public static void updateCurrentPlanName(String planName) {
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(USERS_NODE).child("currentPlanName").setValue(planName);
     }
 
     public static void updateCurrentPlanNameAndPlan(Plan plan, String oldName, String newName){
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(USERS_NODE).child("currentPlanName").setValue(newName);
         deletePlan(oldName);
         plan.planName = newName;
@@ -124,17 +119,17 @@ public abstract class FirebaseDatabaseInterface {
     }
 
     public static void writePledge(Pledge pledge) {
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(PLEDGE_NODE).setValue(pledge);
     }
 
     public static void updatePledgeAmount(int amount) {
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(PLEDGE_NODE).child("amount").setValue(amount);
     }
 
     public static void updatePledgeLocation(String location) {
-//        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(userUid).child(PLEDGE_NODE).child("location").setValue(location);
     }
 
