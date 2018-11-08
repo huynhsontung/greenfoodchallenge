@@ -54,10 +54,10 @@ exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{u
 
         totalAmountSum.transaction((currentTotalAmountSum) => {
             if (originalAmount === null) {
-                return (currentTotalAmountSum || 0) + finalAmount
+                return (currentTotalAmountSum || 0) + finalAmount;
             }
             else {
-                return (currentTotalAmountSum || 0) - originalAmount + finalAmount
+                return (currentTotalAmountSum || 0) - originalAmount + finalAmount;
             }
         });
         return 0;
@@ -92,14 +92,30 @@ exports.ModifyPledgeLocationWhenAmountChangedTriigger = functions.database.ref("
     .onWrite((change, context) => {
 
         var userUid = context.params.userUid;
+
+        var originalAmount = change.before.val();
         var finalAmount = change.after.val();
 
-        if (finalAmount === 0) {
-            
-        }
+        admin.database().ref("/uids/" + userUid + "/pledgeInfo/location")
+            .once("value").then((snapshot) =>{
+                userLocation = snapshot.val();
+                console.log("Check user final amount and location", finalAmount, userLocation);
 
+                if (originalAmount !== 0 && finalAmount !== 0) {
+                    return 0;
+                }
+
+                if (finalAmount === 0 ) {
+                    removeUserFromLocationList(userLocation, userUid);
+                }
+                else {
+                    addUserToLocationList(userLocation, userUid);
+                }
+                return 0;
+            });
         return 0;
     });
+
 
 function addUserToLocationList(location, userUid) {
     var pledgeLocation = admin.database().ref("/pledgeResult/pledgeLocation");
@@ -120,6 +136,31 @@ function removeUserFromLocationList(location, userUid) {
             });
     }
 }
+
+exports.UserDataDeletionTrigger = functions.database.ref("/uids/{userUid}")
+    .onDelete((snapshot, context) => {
+
+        var userUid = context.params.userUid;
+
+        var userPledgeAmount = snapshot.child("pledgeInfo").child("amount").val();
+        var userPledgeLocation = snapshot.child("pledgeInfo").child("location").val();
+
+        console.log("Check user pledge amount and location", userPledgeAmount, userPledgeLocation);
+
+        var totalAmountSum = admin.database().ref("/pledgeResult/totalAmountSum");
+        totalAmountSum.transaction((currentTotalAmountSum) =>{
+           return (currentTotalAmountSum || 0) - userPledgeAmount;
+        });
+
+        var totalNumber = admin.database().ref("/pledgeResult/totalNumber");
+        totalNumber.transaction((currentTotalNumber) => {
+            return (currentTotalNumber || 0) - 1;
+        });
+
+        removeUserFromLocationList(userPledgeLocation, userUid);
+
+        return 0;
+    });
 
 
 
