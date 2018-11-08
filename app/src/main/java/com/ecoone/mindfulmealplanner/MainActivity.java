@@ -93,7 +93,6 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         headerView = mNavigationView.getHeaderView(0);
         navUserIcon = headerView.findViewById(R.id.nav_user_icon);
-        navUserIcon.setImageDrawable(getDrawableIdbyName("egg"));
 
         setUserIcon();
         setupNavigationDrawer();
@@ -107,7 +106,7 @@ public class MainActivity extends AppCompatActivity
                 User user = dataSnapshot.child("userInfo").getValue(User.class);
                 String mIconName = user.iconName;
                 if (mIconName != null) {
-                    navUserIcon.setImageDrawable(getDrawableIdbyName(mIconName));
+                    navUserIcon.setImageResource(getDrawableIdbyName(mIconName));
                 }
             }
 
@@ -221,10 +220,9 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    private Drawable getDrawableIdbyName(String name) {
-        Resources resources = getResources();
-        int resourceId = resources.getIdentifier(name, "drawable", getPackageName());
-        return resources.getDrawable(resourceId);
+    private int getDrawableIdbyName(String name) {
+        int resourceId = getResources().getIdentifier(name, "drawable", getPackageName());
+        return resourceId;
     }
 
     @Override

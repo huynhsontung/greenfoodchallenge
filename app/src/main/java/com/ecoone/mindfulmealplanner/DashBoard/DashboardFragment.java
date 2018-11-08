@@ -3,6 +3,7 @@ package com.ecoone.mindfulmealplanner.DashBoard;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -30,6 +31,9 @@ import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.Plan;
 import com.ecoone.mindfulmealplanner.DB.User;
 import com.ecoone.mindfulmealplanner.UserIconDialogFragment;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,8 +41,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.text.DecimalFormat;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 public class DashboardFragment extends Fragment {
 
@@ -102,23 +110,9 @@ public class DashboardFragment extends Fragment {
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
                 getActivity().finish();
-
             }
         });
-
-//        getSumPledge()
-//                .addOnCompleteListener(new OnCompleteListener<Integer>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Integer> task) {
-//                        test = task.getResult();
-//                        Log.i(TAG, "cloud func: " +test);
-//                    }
-//                });
-//
-//        Log.i(TAG, "cloud func: " +test);
-
     }
-
     private void setFirebaseValueListener() {
         mValueEventListener = new ValueEventListener() {
             @Override

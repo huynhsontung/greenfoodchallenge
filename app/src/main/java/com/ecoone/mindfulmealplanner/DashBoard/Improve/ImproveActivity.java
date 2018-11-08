@@ -372,6 +372,5 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        ;
     }
 }

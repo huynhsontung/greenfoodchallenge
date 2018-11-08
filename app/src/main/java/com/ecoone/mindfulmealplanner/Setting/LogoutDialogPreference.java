@@ -18,6 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutDialogPreference extends DialogPreference {
+
+    private boolean isCheckboxChecked = false;
+
     public LogoutDialogPreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setDialogLayoutResource(R.layout.preference_logout_dialog);
@@ -32,20 +35,7 @@ public class LogoutDialogPreference extends DialogPreference {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                }
-                else {
-                    AuthUI.getInstance().signOut(getContext())
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Intent intent = new Intent(getContext(), InitialSetupActivity.class);
-//                                    getContext().startActivities(intent);
-                                }
-                            });
-                }
-
+                isCheckboxChecked = isChecked;
             }
         });
     }
@@ -54,10 +44,18 @@ public class LogoutDialogPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
         // When the user selects "OK", persist the new value
         if (positiveResult) {
-            // User selected OK
-        }
-        else {
-            // User selected Cancel
+            if (isCheckboxChecked) {
+
+            }
+            else {
+                AuthUI.getInstance().signOut(getContext())
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(getContext(), InitialSetupActivity.class);
+                                getContext().startActivity(intent);
+                            }});
+            }
         }
     }
 
