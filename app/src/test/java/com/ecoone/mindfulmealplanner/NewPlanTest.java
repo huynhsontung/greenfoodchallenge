@@ -71,6 +71,66 @@ public class NewPlanTest {
         }
     };
 
+    public Plan edgeCasePlan4 = new Plan() {
+        {
+            beef = 0;
+            pork = 300;
+            chicken = 0;
+            fish = 0;
+            eggs = 0;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+    public Plan edgeCasePlan5 = new Plan() {
+        {
+            beef = 0;
+            pork = 0;
+            chicken = 0;
+            fish = 300;
+            eggs = 0;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+    public Plan edgeCasePlan6 = new Plan() {
+        {
+            beef = 0;
+            pork = 0;
+            chicken = 0;
+            fish = 0;
+            eggs = 300;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+    public Plan edgeCasePlan7 = new Plan() {
+        {
+            beef = 0;
+            pork = 0;
+            chicken = 0;
+            fish = 0;
+            eggs = 0;
+            beans = 0;
+            vegetables = 300;
+        }
+    };
+    public Plan edgeCasePlan8 = new Plan() {
+        {
+            beef = 0;
+            pork = 0;
+            chicken = 300;
+            fish = 0;
+            eggs = 0;
+            beans = 0;
+            vegetables = 0;
+        }
+    };
+
+
     public Plan bugPlan = new Plan() {
         {
             beef = 300;
@@ -137,7 +197,35 @@ public class NewPlanTest {
         edgeCasePlan = suggestTheSuggested2.suggestPlan();
         assertEquals(x.get(6).beef, edgeCasePlan.beef, 5);
         assertNotEquals(x.get(6).pork, edgeCasePlan.pork, 5);
-        System.out.println("-----");
+
+        /*NewPlan edge2 = new NewPlan(edgeCasePlan2,"female");
+        Plan newEdge2 = edge2.suggestPlan();
+        assertNotEquals((newEdge2.beans), edgeCasePlan2.beans);*/
+
+        NewPlan edge3 = new NewPlan(edgeCasePlan3,"female");
+        Plan newEdge3 = edge3.suggestPlan();
+        assertNotEquals((newEdge3), edgeCasePlan3);
+
+        NewPlan edge4 = new NewPlan(edgeCasePlan4,"female");
+        Plan newEdge4 = edge4.suggestPlan();
+        assertNotEquals((newEdge4.pork), edgeCasePlan4.pork);
+
+        NewPlan edge5 = new NewPlan(edgeCasePlan5,"female");
+        Plan newEdge5 = edge5.suggestPlan();
+        assertNotEquals((newEdge5.fish), edgeCasePlan5.fish);
+
+        NewPlan edge6 = new NewPlan(edgeCasePlan6,"male");
+        Plan newEdge6 = edge6.suggestPlan();
+        assertNotEquals((newEdge6.eggs), edgeCasePlan6.eggs);
+
+        NewPlan edge7 = new NewPlan(edgeCasePlan7,"female");
+        Plan newEdge7 = edge7.suggestPlan();
+        assertEquals((newEdge7.vegetables), edgeCasePlan7.vegetables, 0.01);
+
+        NewPlan edge8 = new NewPlan(edgeCasePlan8,"female");
+        Plan newEdge8 = edge8.suggestPlan();
+        assertNotEquals((newEdge8.chicken), edgeCasePlan8.chicken);
+        /*System.out.println("-----");
         Plan bugPlanFinal;
         NewPlan bugTest = new NewPlan(bugPlan, "male");
         System.out.println("Current Plan:");
@@ -155,12 +243,10 @@ public class NewPlanTest {
         NewPlan bugTest3 = new NewPlan(bugPlanFinal, "male");
         bugPlanFinal = bugTest3.suggestPlan();
         bugTest3.printPlan(bugPlanFinal);  // should be the same as previous recommended plan
-        System.out.println("--------");
         NewPlan bugTest4 = new NewPlan(bugPlan2, "male");
-        System.out.println("Before Change ");
         bugTest4.printPlan(bugPlan2);
         Plan bugPlan4 = bugTest4.suggestPlan();
-        System.out.println("After change:");
-        bugTest4.printPlan(bugPlan4);
+        bugTest4.printPlan(bugPlan4);*/
+
     }
 }

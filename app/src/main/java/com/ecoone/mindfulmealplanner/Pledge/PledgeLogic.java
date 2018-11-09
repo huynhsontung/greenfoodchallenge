@@ -32,14 +32,16 @@ public class PledgeLogic {
     }
 
     public static float getCurrentPlanCO2PerDay() {
-        return currentPledgePerDay;
+        return currentPlanCO2PerDay;
     }
 
     public static float getCurrentPlanCO2PerWeek() {
         return currentPlanCO2PerWeek;
     }
 
-    // after button press
+    public static String getUsersCurrentPlanName() {
+        return usersCurrentPlanName;
+    }
     public static void updateCurrentPlan(Plan newPlan) {
         usersCurrentPlan = newPlan;
         currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
@@ -54,22 +56,5 @@ public class PledgeLogic {
     public void updatePledgeAmount(float newPledge) {
         currentPledgePerWeek = newPledge;
         currentPledgePerDay = currentPledgePerWeek/7;
-    }
-
-    public static float differenceInCO2() {
-        float difference;
-        if(currentPledgePerDay >= currentPlanCO2PerDay) {
-            difference = currentPledgePerDay - currentPlanCO2PerDay;
-        }
-        else {
-            difference = currentPlanCO2PerDay - currentPlanCO2PerDay;
-        }
-        return difference;
-    }
-
-    public static void checkEveryHourForChange() {
-        if(Calculator.calculateCO2ePerDay(usersCurrentPlan) != currentPlanCO2PerDay) {
-            currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
-        }
     }
 }

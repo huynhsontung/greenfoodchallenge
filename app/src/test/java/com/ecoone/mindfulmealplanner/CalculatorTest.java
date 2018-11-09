@@ -2,6 +2,7 @@ package com.ecoone.mindfulmealplanner;
 
 import com.ecoone.mindfulmealplanner.DB.Plan;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
+import com.ecoone.mindfulmealplanner.Tool.NewPlan;
 
 import org.junit.Test;
 
@@ -135,6 +136,14 @@ public class CalculatorTest {
         float getNewCO2eTest = myCalculator.usePlanVancouver(testPlan);
 
         assertEquals(manualCalculationVancouver, getNewCO2eTest, 1);*/
+        Calculator myCalculator = new Calculator();
+        NewPlan mNewPlan = new NewPlan(testPlan,"male");
+        Plan improvedPlan = mNewPlan.suggestPlan();
+        float vancouverSaved = myCalculator.usePlanVancouver(improvedPlan,testPlan);
+        float oldCo2 = myCalculator.calculateVancouver(testPlan);
+        float newCo2 = myCalculator.calculateVancouver(improvedPlan);
+        assertEquals(vancouverSaved, oldCo2 - newCo2, 0.001);
+
     }
 
     @Test
