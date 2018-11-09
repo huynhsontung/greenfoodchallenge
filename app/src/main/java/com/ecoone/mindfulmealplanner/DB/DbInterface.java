@@ -151,15 +151,7 @@
 //        return foodAmount;
 //    }
 //
-//    public static StringBuilder getPlanDatatoString(final Plan plan) {
-//        StringBuilder sb = new StringBuilder();
-//        sb.append(String.format(Locale.CANADA,
-//                "%s: Beef: %f, Pork: %f, Chicken: %f, Fish: %f, " +
-//                        "Eggs: %f, Beans: %f, Vegetables: %f\n\n", plan.planName,
-//                plan.beef, plan.pork, plan.chicken, plan.fish, plan.eggs,
-//                plan.beans, plan.vegetables));
-//        return sb;
-//    }
+
 //
 //    public static StringBuilder getUserPlansDatatoString(final String username) {
 //        StringBuilder sb = new StringBuilder();

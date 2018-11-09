@@ -47,11 +47,11 @@ function isUserPledge(originalAmount, finalAmount) {
     return null;
 }
 
+
 exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
         var originalAmount = change.before.val();
-
         var finalAmount = change.after.val();
 
         console.log("Check original and final data: ", originalAmount, finalAmount);

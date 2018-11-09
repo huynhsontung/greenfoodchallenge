@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape
+            android:shape="ring"
+            android:useLevel="false"
+            android:thickness="10dp">
+            <solid android:color="@color/chartBlue6"/>
+            <size android:width="200dp"
+                android:height="200dp"/>
+        </shape>
+    </item>
+</selector>

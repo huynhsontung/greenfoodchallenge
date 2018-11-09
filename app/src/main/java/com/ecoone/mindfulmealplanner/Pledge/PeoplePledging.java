@@ -2,11 +2,11 @@ package com.ecoone.mindfulmealplanner.Pledge;
 
 public class PeoplePledging {
     private String name;
-    private float pledged;
+    private int pledged;
     private int iconID;
     private String municipality;
 
-    public PeoplePledging(String name, float pledged, int iconID, String municipality) {
+    public PeoplePledging(String name, int pledged, int iconID, String municipality) {
         this.name = name;
         this.pledged = pledged;
         this.iconID = iconID;
@@ -17,7 +17,7 @@ public class PeoplePledging {
         return name;
     }
 
-    public float getPledged() {
+    public int getPledged() {
         return pledged;
     }
 
