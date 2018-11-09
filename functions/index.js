@@ -205,7 +205,9 @@ exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
     var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
 
     var random = require('./random-name');
-    var displayname = random.first + random.last;
+    var displayname = random.first() + ' ' + random.last();
+
+    var amount = Math.ceil(Math.random());
 
 
     var uid = user.uid;
@@ -225,7 +227,7 @@ exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
             },
 
             "pledgeInfo" : {
-                "amount" : 0,
+                "amount" : amount,
                 "location" : location
             },
 
