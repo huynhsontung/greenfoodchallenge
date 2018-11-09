@@ -41,7 +41,6 @@ function isUserPledge(originalAmount, finalAmount) {
     return null;
 }
 
-
 exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
