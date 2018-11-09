@@ -62,7 +62,7 @@ This fragment displays a history of the user's plans. The user may choose to swi
 ## Share button
 The user can their their pledge to social media via the share button on the top right corner.
 
-![alt text](ReadmePic/share.png)
+![alt text](ReadmePic/share2.png)
 
 
 ## Settings 
