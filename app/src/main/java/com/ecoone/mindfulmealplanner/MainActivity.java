@@ -248,6 +248,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 //        Log.i("test", "Item:" +item);
+        invalidateOptionsMenu();
         Fragment fragment = null;
         // Handle navigation view item clicks here..
         int id = item.getItemId();

@@ -7,16 +7,11 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ecoone.mindfulmealplanner.Pledge.DiscoverFragment;
-import com.ecoone.mindfulmealplanner.Pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;

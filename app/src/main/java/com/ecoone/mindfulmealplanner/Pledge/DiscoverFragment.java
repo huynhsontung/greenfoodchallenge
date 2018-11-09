@@ -118,8 +118,8 @@ public class DiscoverFragment extends Fragment {
                 totalPledgeNumberText.setText(getString(R.string.total_number_pledges,totalPledgeNumber));
                 totalPledgeAverageText.setText(getString(R.string.average_co2e_saved_per_person,totalPledgeAverage.toString()+"kg/person"));
                 int relevantInfoChooser = new Random().nextInt(2);
-                int treesPlanted = (int) Calculator.calculateTreesPlanted((float)totalPledgeAmount);
-                int kmSaved = (int) Calculator.calculateSavingsInKm((float)totalPledgeAmount);
+                int treesPlanted = (int) Calculator.calculateTreesPlanted((float)totalPledgeAmount/1000);
+                int kmSaved = (int) Calculator.calculateSavingsInKm((float)totalPledgeAmount/1000);
                 if (relevantInfoChooser == 0){
                     relevantInfoText.setText(getString(R.string.pledge_relevant_info,"planting "+String.valueOf(treesPlanted)+" trees"));
                 } else {
