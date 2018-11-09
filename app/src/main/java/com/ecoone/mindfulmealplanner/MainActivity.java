@@ -37,6 +37,7 @@ import com.ecoone.mindfulmealplanner.DB.User;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupViewModel;
 import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
+import com.ecoone.mindfulmealplanner.Pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.UserIconDialogFragment.OnInputListener;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
@@ -140,7 +141,7 @@ public class MainActivity extends AppCompatActivity
                         android.content.Intent.ACTION_SEND);
                 i.setType("text/plain");
                 String shareText = "I have pledged ";
-                shareText = shareText + "   "+"in this app. Come and take a look!";
+                shareText = shareText + String.valueOf(MyPledgeFragment.pledgeAmount) +"kg of CO2e in this app. Come and take a look!";
                 i.putExtra(
 
                         android.content.Intent.EXTRA_TEXT, shareText+"     Download this app here https://play.google.com/store/search?q=greenfoodchallenge");

@@ -44,7 +44,7 @@ public class MyPledgeFragment extends Fragment {
 
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+    public static int pledgeAmount;
     private TextView mEditDoneIcon;
     private EditText editPledgeName;
     private Spinner mSpinner;
@@ -117,6 +117,7 @@ public class MyPledgeFragment extends Fragment {
                     setEditTextView(amount);
                     setSpinnerView(location);
                 }
+                pledgeAmount = pledge.amount;
             }
 
             @Override
