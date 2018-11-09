@@ -54,10 +54,15 @@ The pledge activity has two fragments. The 'My Pledge' fragment allows the user 
 
 If the user wishes, they can remove their pledge via the 3 dot icon on the top right corner of the application.
 
+## Plan list
+This fragment displays a history of the user's plans. The user may choose to switch to a preivous plan if they wish.
+
+![alt text](ReadmePic/PlanList.PNG)
+
 ## Share button
 The user can their their pledge to social media via the share button on the top right corner.
 
-![alt text](ReadmePic/share.PNG)
+![alt text](ReadmePic/share.png)
 
 
 ## Settings 
