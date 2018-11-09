@@ -1,11 +1,14 @@
 # Mindful Meal Planner 
 
 ## Initialization
-This is the initial activity that appears on the user's first use of the app. Here, the user will be asked to input some information about themselves: Their name, gender, and approximate current meal plan.
-
-
+For the initialization, the user is allowed to log in with Gmail, or a regular email. If the already exists, then only the password will be required. 
 ![alt text](ReadmePic/Register.PNG) | ![alt text](ReadmePic/signInExisting.PNG)
 
+
+Otherwise, the user will be asked to create a password, select their gender, and enter their initial meal plan.
+
+
+![alt text](ReadmePic/Greetings.PNG) | ![alt text](ReadmePic/selectGender.PNG) | ![alt text](ReadmePic/updateMealPlan.PNG)
 
 ## Dashboard Activity
 This dashboard activity provides the user a visual as well as information about their current meal plan and its impact on the environment.
