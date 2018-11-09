@@ -204,7 +204,8 @@ exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
     var location = locationList[Math.floor(Math.random()*locationList.length)];
     var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
 
-    var random = require('random-name');
+    var random = require('./random-name');
+    var displayname = random.first + random.last;
 
 
     var uid = user.uid;
@@ -225,15 +226,15 @@ exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
 
             "pledgeInfo" : {
                 "amount" : 0,
-                "location" : "Vancouver"
+                "location" : location
             },
 
             "userInfo" : {
                 "currentPlanName" : "Plan1",
-                "displayName" : "Tom",
+                "displayName" : displayname,
                 "email" : email,
-                "gender" : "male",
-                "iconName" : "android"
+                "gender" : gender,
+                "iconName" : iconName
             }
         };
 
