@@ -26,15 +26,15 @@ function isUserPledge(originalAmount, finalAmount) {
         return 0;
     }
     if (originalAmount === 0 && finalAmount !== 0) {
-        console.log("isUserPledge: 3");
+        console.log("isUserPledge: 2");
         return 1
     }
     if (originalAmount !== 0 && finalAmount !== 0) {
-        console.log("isUserPledge: 4");
+        console.log("isUserPledge: 3");
         return 0;
     }
     if (originalAmount !== 0 && finalAmount === 0) {
-        console.log("isUserPledge: 5");
+        console.log("isUserPledge: 4");
         return -1;
     }
     console.log("isUserPledge Error");
@@ -46,6 +46,7 @@ exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{u
     .onWrite((change, context) => {
 
         var originalAmount = change.before.val();
+
         var finalAmount = change.after.val();
 
         console.log("Check original and final data: ", originalAmount, finalAmount);
@@ -193,8 +194,51 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
     });
 });
 
-// var userData = {};
-// userUidList.forEach((userUid) => {
-//     admin.database().ref("/uids/" + userUid).once("value").then((snapshot) => {
-//     });
-// });
+exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
+    var genderList = ['male', 'female'];
+    var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
+    var iconNameList = ['android', 'chicken', 'egg', 'fish', 'meat', 'moon', 'star', 'sun', 'tree'];
+
+
+    var gender = genderList[Math.floor(Math.random()*genderList.length)];
+    var location = locationList[Math.floor(Math.random()*locationList.length)];
+    var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
+
+    var random = require('random-name');
+
+
+    var uid = user.uid;
+    var email = user.email;
+    var userData =
+        {
+            "planInfo" : {
+                "Plan1": {
+                    "beans": 74,
+                    "beef": 105,
+                    "chicken": 102,
+                    "eggs": 41,
+                    "fish": 120,
+                    "pork": 40,
+                    "vegetables": 185
+                }
+            },
+
+            "pledgeInfo" : {
+                "amount" : 0,
+                "location" : "Vancouver"
+            },
+
+            "userInfo" : {
+                "currentPlanName" : "Plan1",
+                "displayName" : "Tom",
+                "email" : email,
+                "gender" : "male",
+                "iconName" : "android"
+            }
+        };
+
+    console.log("Check user data", userData);
+    admin.database().ref('/uids/' + uid).set(userData);
+    return 0;
+});
+
