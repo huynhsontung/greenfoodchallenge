@@ -26,26 +26,26 @@ function isUserPledge(originalAmount, finalAmount) {
         return 0;
     }
     if (originalAmount === 0 && finalAmount !== 0) {
-        console.log("isUserPledge: 3");
+        console.log("isUserPledge: 2");
         return 1
     }
     if (originalAmount !== 0 && finalAmount !== 0) {
-        console.log("isUserPledge: 4");
+        console.log("isUserPledge: 3");
         return 0;
     }
     if (originalAmount !== 0 && finalAmount === 0) {
-        console.log("isUserPledge: 5");
+        console.log("isUserPledge: 4");
         return -1;
     }
     console.log("isUserPledge Error");
     return null;
 }
 
-
 exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
         var originalAmount = change.before.val();
+
         var finalAmount = change.after.val();
 
         console.log("Check original and final data: ", originalAmount, finalAmount);
@@ -162,5 +162,85 @@ exports.UserDataDeletionTrigger = functions.database.ref("/uids/{userUid}")
         return 0;
     });
 
+exports.getUsersDataByLocation = functions.https.onCall((data) => {
 
+    const location = data.location;
+
+    return admin.database().ref("/pledgeResult/pledgeLocation/" + location).once("value").then((snapshot) => {
+        var userUidList = [];
+        snapshot.forEach((childSnapshot) => {
+            userUidList.push(childSnapshot.val());
+        });
+        return userUidList;
+    }).then((userUidList) => {
+       console.log("Check userUid list", userUidList);
+       return admin.database().ref("/uids").once("value").then((snapshot) => {
+           var usersData = {};
+           snapshot.forEach((childSnapshot) => {
+               var usrUid = childSnapshot.key;
+               if (userUidList.includes(usrUid)) {
+                   console.log("test", usrUid, childSnapshot.val());
+                   usersData[usrUid] = {
+                       displayName : childSnapshot.child('userInfo').child('displayName').val(),
+                       iconName: childSnapshot.child('userInfo').child('iconName').val(),
+                       amount : childSnapshot.child('pledgeInfo').child('amount').val()
+                   }
+               }
+           });
+           console.log("Check users data:", usersData);
+           return usersData;
+       });
+    });
+});
+
+exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
+    var genderList = ['male', 'female'];
+    var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
+    var iconNameList = ['android', 'chicken', 'egg', 'fish', 'meat', 'moon', 'star', 'sun', 'tree'];
+
+
+    var gender = genderList[Math.floor(Math.random()*genderList.length)];
+    var location = locationList[Math.floor(Math.random()*locationList.length)];
+    var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
+
+    var random = require('./random-name');
+    var displayname = random.first() + ' ' + random.last();
+
+    var amount = Math.ceil(Math.random());
+
+
+    var uid = user.uid;
+    var email = user.email;
+    var userData =
+        {
+            "planInfo" : {
+                "Plan1": {
+                    "beans": 74,
+                    "beef": 105,
+                    "chicken": 102,
+                    "eggs": 41,
+                    "fish": 120,
+                    "pork": 40,
+                    "vegetables": 185
+                }
+            },
+
+            "pledgeInfo" : {
+                "amount" : amount,
+                "location" : location
+            },
+
+            "userInfo" : {
+                "currentPlanName" : "Plan1",
+                "displayName" : displayname,
+                "email" : email,
+                "gender" : gender,
+                "iconName" : iconName
+            }
+        };
+
+    console.log("Check user data", userData);
+    admin.database().ref('/uids/' + uid).set(userData);
+    return 0;
+});
 

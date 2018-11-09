@@ -92,6 +92,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
                 Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
 
+                mViewModel.localUser.iconName = "android";
                 FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
                 FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
 
@@ -137,9 +138,13 @@ public class InitialSetupActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        Log.i(TAG, CLASSTAG + "resultCode: " + resultCode);
         if (requestCode == RC_SIGN_IN) {
             if (resultCode == RESULT_OK) {
                 checkIfUserDataExist();
+            }
+            if (resultCode == RESULT_CANCELED) {
+                finish();
             }
         }
     }
@@ -443,4 +448,10 @@ public class InitialSetupActivity extends AppCompatActivity {
         Log.d(TAG, CLASSTAG + " onDestroy");
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Log.i(TAG,CLASSTAG + "onbackpressed");
+        finish();
+    }
 }

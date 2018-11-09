@@ -8,6 +8,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.HashMap;
+import java.util.Locale;
 
 public abstract class FirebaseDatabaseInterface {
     public static final String ALLUSERSUID_NODE = "uids";
@@ -20,10 +21,22 @@ public abstract class FirebaseDatabaseInterface {
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(FirebaseDatabaseInterface)";
 
+    public static void deleteUserData() {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, CLASSTAG + "check UID: " + userUid);
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).removeValue();
+    }
+
     public static void writeUser(User user) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(USERINFO_NODE).setValue(user);
+    }
+
+    public static void updateUserIconName(String iconName) {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        Log.i(TAG, CLASSTAG + "check UID: " + userUid);
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(USERINFO_NODE).child("iconName").setValue(iconName);
     }
 
 
@@ -94,6 +107,16 @@ public abstract class FirebaseDatabaseInterface {
     public static void updatePlan(Plan plan) {
         deletePlan(plan.planName);
         writePlan(plan);
+    }
+
+    public static StringBuilder getPlanDatatoString(final Plan plan) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.format(Locale.CANADA,
+                "Beef: %d, Pork: %d, Chicken: %d, Fish: %d, " +
+                        "Eggs: %d, Beans: %d, Vegetables: %d",
+                (int) plan.beef, (int) plan.pork ,(int) plan.chicken,
+                (int) plan.fish, (int) plan.eggs, (int) plan.beans, (int) plan.vegetables));
+        return sb;
     }
 
     public static void deletePlan(String planName){

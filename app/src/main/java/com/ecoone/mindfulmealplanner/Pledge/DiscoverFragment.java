@@ -1,9 +1,7 @@
 package com.ecoone.mindfulmealplanner.Pledge;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.net.Uri;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,31 +12,43 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.ecoone.mindfulmealplanner.Pledge.PeoplePledging;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.Tool.Calculator;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 public class DiscoverFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
     private List<PeoplePledging> myPeoplePledgingList;
     private RecyclerView myRecyclerView;
     private PeoplePledgeAdapter myAdapter;
+    private TextView totalPledgeAmountText;
+    private TextView totalPledgeNumberText;
+    private TextView totalPledgeAverageText;
+    private TextView relevantInfoText;
+    private Spinner filterSpinner;
+    private PledgeViewModel mViewModel;
+    ValueEventListener totalPledgeListener;
+
 
     public DiscoverFragment() {
         // Required empty public constructor
@@ -47,10 +57,6 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -63,7 +69,7 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        mViewModel = ViewModelProviders.of(this).get(PledgeViewModel.class);
         myRecyclerView = view.findViewById(R.id.discover_recycler_view);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -72,29 +78,103 @@ public class DiscoverFragment extends Fragment {
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(myRecyclerView.getContext(),
                 ((LinearLayoutManager) layoutManager).getOrientation());
         myRecyclerView.addItemDecoration(dividerItemDecoration);
-
+        setupDatabaseTransaction(view);
+        setupMunicipalityFilter(view);
         updateRecycler();
 
+    }
+
+    private void setupMunicipalityFilter(View view) {
+        filterSpinner = view.findViewById(R.id.discover_filter_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.location,android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        filterSpinner.setAdapter(adapter);
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mViewModel.cityFilter.setValue((String) parent.getItemAtPosition(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                mViewModel.cityFilter.setValue("Vancouver");
+            }
+        });
+    }
+
+    private void setupDatabaseTransaction(View view) {
+        totalPledgeAmountText = view.findViewById(R.id.discover_total_pledge_textview);
+        totalPledgeNumberText = view.findViewById(R.id.discover_number_pledges_textview);
+        totalPledgeAverageText = view.findViewById(R.id.discover_average_textview);
+        relevantInfoText = view.findViewById(R.id.discover_equivalence_textview);
+        totalPledgeListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                Map<String,Object> data = (Map<String, Object>) dataSnapshot.getValue();
+                Long totalPledgeAmount = (Long) data.get("totalAmountSum");
+                Long totalPledgeNumber = (Long) data.get("totalNumber");
+                Long totalPledgeAverage = totalPledgeAmount/((totalPledgeNumber>0)?totalPledgeNumber:1);
+                totalPledgeAmountText.setText(getString(R.string.total_pledge_amount,totalPledgeAmount.toString()+"kg"));
+                totalPledgeNumberText.setText(getString(R.string.total_number_pledges,totalPledgeNumber));
+                totalPledgeAverageText.setText(getString(R.string.average_co2e_saved_per_person,totalPledgeAverage.toString()+"kg/person"));
+                int relevantInfoChooser = new Random().nextInt(2);
+                int treesPlanted = (int) Calculator.calculateTreesPlanted((float)totalPledgeAmount/1000);
+                int kmSaved = (int) Calculator.calculateSavingsInKm((float)totalPledgeAmount/1000);
+                if (relevantInfoChooser == 0){
+                    relevantInfoText.setText(getString(R.string.pledge_relevant_info,"planting "+String.valueOf(treesPlanted)+" trees"));
+                } else {
+                    relevantInfoText.setText(getString(R.string.pledge_relevant_info, "saving "+ String.valueOf(kmSaved)+"km of driving"));
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+        mViewModel.totalPledgeReference.addValueEventListener(totalPledgeListener);
     }
 
     // Post: Gets list of all people who pledged in Vancouver.
     //       Includes name, pledged, icon, municipality
     private void updateRecycler() {
-        List<PeoplePledging> testPledgingList = new ArrayList<PeoplePledging>();
-        PeoplePledging testPeter = new PeoplePledging("Peter Tran", 10,
-                R.drawable.edit, "Vancouver");
 
-        PeoplePledging testOther = new PeoplePledging("Joe Tran", 10,
-                R.drawable.edit, "Burnaby");
-
-        // -------------------------------TESTING-------------------------------//
-        testPledgingList.add(testPeter);
-        testPledgingList.add(testOther);
-        testPledgingList.add(testPeter);
-        testPledgingList.add(testOther);
-        testPledgingList.add(testPeter);
-        // -------------------------------TESTING-------------------------------//
-        myAdapter = new PeoplePledgeAdapter(testPledgingList);
+        mViewModel.cityFilter.observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String city) {
+                if(city!=null)
+                    getUsersDataByLocation(city).addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Map<String, Object>> usersData) {
+                            mViewModel.userList.setValue(usersData.getResult());
+                        }
+                    });
+            }
+        });
+        mViewModel.userList.observe(this, new Observer<Map<String, Object>>() {
+            @Override
+            public void onChanged(Map<String, Object> stringObjectMap) {
+                List<PeoplePledging> pledgingList = new ArrayList<>();
+                if(!stringObjectMap.isEmpty()){
+                    for(Map.Entry<String,Object> entry: stringObjectMap.entrySet()){
+                        Map<String,Object> userData = (Map<String, Object>) entry.getValue();
+                        String displayName = (String) userData.get("displayName");
+                        String iconName = (String) userData.get("iconName");
+                        int pledgeAmount = (int) userData.get("amount");
+                        pledgingList.add(new PeoplePledging(
+                                displayName,
+                                pledgeAmount,
+                                getDrawableIdbyName(iconName),
+                                mViewModel.cityFilter.getValue()));
+                    }
+                    myAdapter = new  PeoplePledgeAdapter(pledgingList);
+                } else {
+                    myAdapter = new PeoplePledgeAdapter(pledgingList);
+                }
+                myRecyclerView.setAdapter(myAdapter);
+            }
+        });
+        myAdapter = new PeoplePledgeAdapter(new ArrayList<PeoplePledging>());
         myRecyclerView.setAdapter(myAdapter);
     }
 
@@ -123,6 +203,22 @@ public class DiscoverFragment extends Fragment {
         }
     }
 
+
+    private Task<Map<String, Object>> getUsersDataByLocation(String location) {
+
+        Map<String, Object> data = new HashMap<>();
+        data.put("location", location);
+
+        return FirebaseFunctions.getInstance().getHttpsCallable("getUsersDataByLocation")
+                .call(data).continueWith(new Continuation<HttpsCallableResult, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        Map<String, Object> result = (Map<String, Object>) task.getResult().getData();
+                        return result;
+                    }
+                });
+    }
+
     private class PeoplePledgeAdapter extends RecyclerView.Adapter<PeoplePledgeHolder>{
         private List<PeoplePledging> mPeoplePledging;
 
@@ -147,5 +243,18 @@ public class DiscoverFragment extends Fragment {
         public int getItemCount() {
             return mPeoplePledging.size();
         }
+    }
+
+    private int getDrawableIdbyName(String name) {
+        if(name==null)
+            return R.drawable.android;
+        int resourceId = getResources().getIdentifier(name, "drawable", getActivity().getPackageName());
+        return resourceId;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mViewModel.totalPledgeReference.removeEventListener(totalPledgeListener);
     }
 }

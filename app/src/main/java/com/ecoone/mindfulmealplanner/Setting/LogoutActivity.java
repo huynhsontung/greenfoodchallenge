@@ -22,7 +22,7 @@ public class LogoutActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        View checkBoxView = View.inflate(this, R.layout.logout_layout, null);
+        View checkBoxView = View.inflate(this, R.layout.activity_logout, null);
         CheckBox checkBox = checkBoxView.findViewById(R.id.checkbox);
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 

@@ -17,8 +17,9 @@ public class User {
     public String gender;
     public String displayName;
     public String email;
-//    public String photoUrl;
+    public String iconName;
 //    public long createDate;
 //    public long lastLoginDate;
     public String currentPlanName;
+    public int isRemoved;
 }
