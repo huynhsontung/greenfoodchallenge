@@ -5,11 +5,12 @@ import android.content.Intent;
 import android.preference.DialogPreference;
 import android.support.annotation.NonNull;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 
-import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
+
 import com.ecoone.mindfulmealplanner.R;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.auth.api.Auth;
@@ -18,6 +19,18 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class LogoutDialogPreference extends DialogPreference {
+
+    private boolean isCheckboxChecked = false;
+
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(LogoutDialogPreference)";
+
+    public interface OnInputListener{
+        void sendInput(int input);
+    }
+
+    public OnInputListener mOnInputListener;
+
     public LogoutDialogPreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
         setDialogLayoutResource(R.layout.preference_logout_dialog);
@@ -32,20 +45,7 @@ public class LogoutDialogPreference extends DialogPreference {
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-
-                }
-                else {
-                    AuthUI.getInstance().signOut(getContext())
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    Intent intent = new Intent(getContext(), InitialSetupActivity.class);
-//                                    getContext().startActivities(intent);
-                                }
-                            });
-                }
-
+                isCheckboxChecked = isChecked;
             }
         });
     }
@@ -54,11 +54,22 @@ public class LogoutDialogPreference extends DialogPreference {
     protected void onDialogClosed(boolean positiveResult) {
         // When the user selects "OK", persist the new value
         if (positiveResult) {
-            // User selected OK
-        }
-        else {
-            // User selected Cancel
+            if (isCheckboxChecked) {
+                mOnInputListener.sendInput(1);
+            }
+            else {
+                mOnInputListener.sendInput(0);
+            }
         }
     }
 
+    @Override
+    protected void onAttachedToActivity() {
+        super.onAttachedToActivity();
+        try {
+            mOnInputListener = (OnInputListener) getContext();
+        }catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
+        }
+    }
 }

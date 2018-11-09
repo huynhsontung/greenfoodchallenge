@@ -13,6 +13,7 @@ import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -33,11 +34,16 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DB.User;
+import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupViewModel;
+import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
 import com.ecoone.mindfulmealplanner.UserIconDialogFragment.OnInputListener;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -69,6 +75,7 @@ public class MainActivity extends AppCompatActivity
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
+    private static final int LOGOUT_SIGN = 0;
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, MainActivity.class);
@@ -93,7 +100,6 @@ public class MainActivity extends AppCompatActivity
         mNavigationView.setNavigationItemSelectedListener(this);
         headerView = mNavigationView.getHeaderView(0);
         navUserIcon = headerView.findViewById(R.id.nav_user_icon);
-        navUserIcon.setImageDrawable(getDrawableIdbyName("egg"));
 
         setUserIcon();
         setupNavigationDrawer();
@@ -105,9 +111,10 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.child("userInfo").getValue(User.class);
-                String mIconName = user.iconName;
-                if (mIconName != null) {
-                    navUserIcon.setImageDrawable(getDrawableIdbyName(mIconName));
+
+                if (user != null) {
+                    String mIconName = user.iconName;
+                    navUserIcon.setImageResource(getDrawableIdbyName(mIconName));
                 }
             }
 
@@ -221,10 +228,9 @@ public class MainActivity extends AppCompatActivity
         ft.commit();
     }
 
-    private Drawable getDrawableIdbyName(String name) {
-        Resources resources = getResources();
-        int resourceId = resources.getIdentifier(name, "drawable", getPackageName());
-        return resources.getDrawable(resourceId);
+    private int getDrawableIdbyName(String name) {
+        int resourceId = getResources().getIdentifier(name, "drawable", getPackageName());
+        return resourceId;
     }
 
     @Override
@@ -250,9 +256,9 @@ public class MainActivity extends AppCompatActivity
             fragment = new DashboardFragment();
 
         }
-//        else if (id == R.id.fragment_plan_list) {
-//            fragment = new PlanListFragment();
-//        }
+        else if (id == R.id.fragment_plan_list) {
+            fragment = new PlanListFragment();
+        }
 
         else if (id == R.id.fragment_pledge) {
             fragment = new PledgeFragment();
@@ -261,10 +267,10 @@ public class MainActivity extends AppCompatActivity
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);
-            Bundle bundle = new Bundle();
-            bundle.putString("VALUE_SEND","Settings");
-            intent.putExtras(bundle);
-            startActivity(intent);
+//            Bundle bundle = new Bundle();
+//            bundle.putString("VALUE_SEND","Settings");
+//            intent.putExtras(bundle);
+            startActivityForResult(intent, LOGOUT_SIGN);
         }
 
         if (fragment != null) {
@@ -278,6 +284,35 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode != RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == LOGOUT_SIGN) {
+            if (data != null) {
+                int logoutSign = SettingsActivity.logoutAction(data);
+                if (logoutSign == 1) {
+                    FirebaseDatabaseInterface.deleteUserData();
+                }
+                AuthUI.getInstance().signOut(this)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+
+            }
+
+        }
     }
 
     @Override

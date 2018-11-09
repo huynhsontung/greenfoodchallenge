@@ -162,5 +162,39 @@ exports.UserDataDeletionTrigger = functions.database.ref("/uids/{userUid}")
         return 0;
     });
 
+exports.getUsersDataByLocation = functions.https.onCall((data) => {
 
+    const location = data.location;
 
+    return admin.database().ref("/pledgeResult/pledgeLocation/" + location).once("value").then((snapshot) => {
+        var userUidList = [];
+        snapshot.forEach((childSnapshot) => {
+            userUidList.push(childSnapshot.val());
+        });
+        return userUidList;
+    }).then((userUidList) => {
+       console.log("Check userUid list", userUidList);
+       return admin.database().ref("/uids").once("value").then((snapshot) => {
+           var usersData = {};
+           snapshot.forEach((childSnapshot) => {
+               var usrUid = childSnapshot.key;
+               if (userUidList.includes(usrUid)) {
+                   console.log("test", usrUid, childSnapshot.val());
+                   usersData[usrUid] = {
+                       displayName : childSnapshot.child('userInfo').child('displayName').val(),
+                       iconName: childSnapshot.child('userInfo').child('iconName').val(),
+                       amount : childSnapshot.child('pledgeInfo').child('amount').val()
+                   }
+               }
+           });
+           console.log("Check users data:", usersData);
+           return usersData;
+       });
+    });
+});
+
+// var userData = {};
+// userUidList.forEach((userUid) => {
+//     admin.database().ref("/uids/" + userUid).once("value").then((snapshot) => {
+//     });
+// });

@@ -110,10 +110,11 @@ public class MyPledgeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
                 Pledge pledge = dataSnapshot.getValue(Pledge.class);
-                int amount = pledge.amount;
-                String location = pledge.location;
-                setEditTextView(amount);
-                if (location != null) {
+
+                if (pledge != null) {
+                    int amount = pledge.amount;
+                    String location = pledge.location;
+                    setEditTextView(amount);
                     setSpinnerView(location);
                 }
             }
