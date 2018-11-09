@@ -7,32 +7,19 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTabHost;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ecoone.mindfulmealplanner.Pledge.DiscoverFragment;
-import com.ecoone.mindfulmealplanner.Pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class PledgeFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private FragmentTabHost mTabHost;
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
 
     public PledgeFragment() {
         // Required empty public constructor
@@ -43,7 +30,6 @@ public class PledgeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.fragment_pledge, null );
 
         ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
@@ -71,6 +57,22 @@ public class PledgeFragment extends Fragment {
         myAdapter.addFragment(new MyPledgeFragment(), "My Pledge");
         myAdapter.addFragment(new DiscoverFragment(), "Discover");
         viewPager.setAdapter(myAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     static class Adapter extends FragmentPagerAdapter {
@@ -102,9 +104,5 @@ public class PledgeFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
 
-    }
 }

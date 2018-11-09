@@ -9,6 +9,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
@@ -82,7 +85,7 @@ public class MyPledgeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setHasOptionsMenu(true);
         mEditDoneIcon = view.findViewById(R.id.my_pledge_icon_edit_done);
         editPledgeName = view.findViewById(R.id.my_pledge_edit_plan_name);
         mSpinner = view.findViewById(R.id.my_pledge_spinner);
@@ -90,10 +93,10 @@ public class MyPledgeFragment extends Fragment {
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
         planCO2TextView = view.findViewById(R.id.user_tip);
-        planCO2TextView.setText("Note: Your current plan produces " + PledgeLogic.getCurrentPlanCO2PerWeek() + "kg of CO2e per week");
+        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
         locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
 
-
+        setEditTextView(0);
         setFirebaseValueListener();
 
         setEditDoneIconAction(view);
@@ -179,4 +182,22 @@ public class MyPledgeFragment extends Fragment {
                 "array", getContext().getPackageName());
         return getContext().getResources().getStringArray(resId);
     }
+
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.add("Withdraw my pledge");
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if(item.getTitle() == "Withdraw my pledge" ){
+            setEditTextView(0);
+            FirebaseDatabaseInterface.updatePledgeAmount(0);
+        } else super.onOptionsItemSelected(item);
+        return true;
+    }
+
+
 }
