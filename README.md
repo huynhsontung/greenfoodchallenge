@@ -2,7 +2,7 @@
 
 ## Initialization
 This is the initial activity that appears on the user's first use of the app. Here, the user will be asked to input some information about themselves: Their name, gender, and approximate current meal plan.
-![alt](ReadmePic/Register) | ![alt](ReadmePic/signInExisting)
+![alt text](ReadmePic/Register) | ![alt text](ReadmePic/signInExisting)
 
 
 ## Dashboard Activity
