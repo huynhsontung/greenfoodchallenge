@@ -212,7 +212,7 @@ exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
     var random = require('./random-name');
     var displayname = random.first() + ' ' + random.last();
 
-    var amount = Math.ceil(Math.random()) * 200;
+    var amount = Math.ceil(Math.random() * 200);
 
 
     var uid = user.uid;
