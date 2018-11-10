@@ -413,7 +413,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     }
 
     private void startActivityAndFinish() {
-        Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
+        Intent intent = MainActivity.newIntent(InitialSetupActivity.this);
         startActivity(intent);
         finish();
     }

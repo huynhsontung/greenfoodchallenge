@@ -102,8 +102,6 @@ public class DashboardFragment extends Fragment {
         setFirebaseValueListener();
         setupImproveButton();
         setEditDoneIconAction(view);
-
-
     }
     private void setFirebaseValueListener() {
         mValueEventListener = new ValueEventListener() {

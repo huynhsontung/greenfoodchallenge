@@ -1,37 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
-    <!--<group android:checkableBehavior="single">-->
-        <!--<item-->
-            <!--android:id="@+id/fragment_dashboard"-->
-            <!--android:title="Dashboard" />-->
-        <!--<item-->
-            <!--android:id="@+id/fragment_plan_list"-->
-            <!--android:title="Plan List"/>-->
-        <!--<item-->
-            <!--android:id="@+id/fragment_pledge"-->
-            <!--android:title="Pledge"/>-->
-        <!--<item-->
-            <!--android:id="@+id/fragment_settings"-->
-            <!--android:title="Settings" />-->
-    <!--</group>-->
-    <item
-        android:id="@+id/nav_dashboard"
-        android:icon="@drawable/dashboard_dark"
-        android:title="Dashboard" />
-    <item
-        android:id="@+id/nav_meal_tracker"
-        android:icon="@drawable/explore_dark"
-        android:title="MealTracker" />
-
-    <item
-        android:id="@+id/nav_pledge"
-        android:icon="@drawable/pledge_dark"
-        android:title="Pledge" />
-    <item
-        android:id="@+id/nav_profile"
-        android:icon="@drawable/profile_dark"
-        android:title="Profile" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/fragment_dashboard"
+            android:title="Dashboard" />
+        <item
+            android:id="@+id/fragment_plan_list"
+            android:title="Plan List"/>
+        <item
+            android:id="@+id/fragment_pledge"
+            android:title="Pledge"/>
+        <item
+            android:id="@+id/fragment_settings"
+            android:title="Settings" />
+    </group>
 </menu>
