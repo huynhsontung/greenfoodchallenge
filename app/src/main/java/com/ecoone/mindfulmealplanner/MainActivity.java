@@ -77,7 +77,6 @@ public class MainActivity extends AppCompatActivity{
 //    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private BottomNavigationView mBottomNavigationView;
-    private FrameLayout mMainFrame;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
@@ -91,21 +90,24 @@ public class MainActivity extends AppCompatActivity{
         setContentView(R.layout.activity_main);
 
         mBottomNavigationView = findViewById(R.id.main_bottom_nav);
-        mMainFrame = findViewById(R.id.main_frame);
+
 
         mDashboardFragment = new DashboardFragment();
-
         switchFragment(mDashboardFragment);
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.nav_dashboard :
+                        mDashboardFragment = new DashboardFragment();
                         switchFragment(mDashboardFragment);
                         return true;
 
                     case R.id.nav_profile:
+                        mProfileFragment = new ProfileFragment();
                         switchFragment(mProfileFragment);
+                        return true;
 
                     default:
                         return false;
@@ -115,8 +117,6 @@ public class MainActivity extends AppCompatActivity{
 
 
     }
-
-
         private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -332,34 +332,7 @@ public class MainActivity extends AppCompatActivity{
 //        return true;
 //    }
 //
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
-//        if (resultCode != RESULT_OK) {
-//            return;
-//        }
-//
-//        if (requestCode == LOGOUT_SIGN) {
-//            if (data != null) {
-//                int logoutSign = SettingsActivity.logoutAction(data);
-//                if (logoutSign == 1) {
-//                    FirebaseDatabaseInterface.deleteUserData();
-//                }
-//                AuthUI.getInstance().signOut(this)
-//                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<Void> task) {
-//                                Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
-//                                startActivity(intent);
-//                                finish();
-//                            }
-//                        });
-//
-//            }
-//
-//        }
-//    }
+
 //
 //    @Override
 //    public void sendInput(int input) {

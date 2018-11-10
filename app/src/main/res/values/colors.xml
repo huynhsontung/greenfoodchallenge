@@ -7,7 +7,8 @@
     <color name="colorPrimaryDark">#3f4d9f</color>
     <color name="colorAccent">#D81B60</color>
 
-    <color name="bottomNavViewBackground">#FAFAFA</color>
+    <color name="bottomNavGrey">#FAFAFA</color>
+    <color name="my_grey">#EFF0F1</color>
 
     <color name="chartRed1">#b71e1b</color>
     <color name="chartRed2">#c62a27</color>
