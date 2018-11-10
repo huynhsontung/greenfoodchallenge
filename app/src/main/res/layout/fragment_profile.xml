@@ -1,11 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Profile.ProfileFragment">
+
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar">
+
+
+        <TextView
+            android:id="@+id/test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="DISCOVER"
+            android:textSize="14sp"
+            android:typeface="sans"
+            android:textColor="@android:color/black"
+            android:layout_gravity="center"/>
+
+
+    </android.support.v7.widget.Toolbar>
 
     <TextView
         android:layout_width="match_parent"
@@ -89,16 +113,10 @@
 
     </LinearLayout>
 
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/my_grey" />
-
-
-
-
 
 
 </LinearLayout>

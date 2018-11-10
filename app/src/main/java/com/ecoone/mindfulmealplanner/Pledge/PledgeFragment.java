@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.Pledge;
 
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -8,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 
@@ -32,11 +35,26 @@ public class PledgeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pledge, null );
 
-        ViewPager viewPager = (ViewPager)rootView.findViewById(R.id.viewpager);
+        ViewPager viewPager = rootView.findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        TabLayout myTabs = (TabLayout) rootView.findViewById(R.id.result_tabs);
+        TabLayout myTabs = rootView.findViewById(R.id.result_tabs);
         myTabs.setupWithViewPager(viewPager);
+
+        ViewGroup vg = (ViewGroup) myTabs.getChildAt(0);
+
+        int tabsCount = vg.getChildCount();
+        for (int j = 0; j < tabsCount; j++) {
+            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
+            int tabChildsCount = vgTab.getChildCount();
+            for (int i = 0; i < tabChildsCount; i++) {
+                View tabViewChild = vgTab.getChildAt(i);
+                if (tabViewChild instanceof TextView) {
+                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTextSize());
+                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTypeface());
+                }
+            }
+        }
 
 
         /*

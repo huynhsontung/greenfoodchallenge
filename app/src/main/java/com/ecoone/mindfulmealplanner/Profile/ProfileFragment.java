@@ -12,11 +12,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.Profile.Setting.SettingsActivity;
 
-public class ProfileFragment extends Fragment implements SettingsActivity.OnDataPassingListener {
+public class ProfileFragment extends Fragment {
 
     private LinearLayout settingLayout;
 
@@ -43,39 +44,35 @@ public class ProfileFragment extends Fragment implements SettingsActivity.OnData
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        TextView t = view.findViewById(R.id.test);
+
+        Log.i("testActivity", "test: " + t.getTextSize());
+        Log.i("testActivity", "test: " + t.getTypeface());
         settingLayout = view.findViewById(R.id.profile_setting_layout);
 
-        ((SettingsActivity)getActivity()).setOnDatPassingListener();
 
         settingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent =new  Intent(getContext(), SettingsActivity.class);
-//                startActivityForResult(intent, LOGOUT_SIGN);
-                startActivity(intent);
+                startActivityForResult(intent, LOGOUT_SIGN);
             }
         });
 
     }
 
 
-//    @Override
-//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == LOGOUT_SIGN) {
-//            if (data != null) {
-//                int logoutSign = SettingsActivity.getLogoutAction(data);
-//                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
-//                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
-//            }
-//
-//        }
-//    }
-
     @Override
-    public void passDataFroSettingToProfile(int input) {
-        Log.i(TAG, CLASSTAG + "passDataFromSettingToProfile: got the input " + input);
-        mOnDatPassingListener.passDataFromProfileToMain(input);
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == LOGOUT_SIGN) {
+            if (data != null) {
+                int logoutSign = SettingsActivity.getLogoutAction(data);
+                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
+                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
+            }
+
+        }
     }
 
     @Override

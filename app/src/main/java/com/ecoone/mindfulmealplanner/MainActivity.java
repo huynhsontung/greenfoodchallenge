@@ -15,6 +15,7 @@ import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
+import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.firebase.ui.auth.AuthUI;
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private DashboardFragment mDashboardFragment;
     private ProfileFragment mProfileFragment;
+    private PledgeFragment mPledgeFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,7 +69,12 @@ public class MainActivity extends AppCompatActivity implements
                         switchFragment(mDashboardFragment);
                         return true;
 
-                    case R.id.nav_profile:
+                    case R.id.nav_pledge :
+                        mPledgeFragment = new PledgeFragment();
+                        switchFragment(mPledgeFragment);
+                        return true;
+
+                    case R.id.nav_profile :
                         mProfileFragment = new ProfileFragment();
                         switchFragment(mProfileFragment);
                         return true;
@@ -92,18 +99,18 @@ public class MainActivity extends AppCompatActivity implements
     public void passDataFromProfileToMain(int input) {
         Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
 
-//        if (input == 1) {
-//            FirebaseDatabaseInterface.deleteUserData();
-//        }
-//        AuthUI.getInstance().signOut(this)
-//                .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<Void> task) {
-//                        Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
-//                        startActivity(intent);
-//                        finish();
-//                    }
-//                });
+        if (input == 1) {
+            FirebaseDatabaseInterface.deleteUserData();
+        }
+        AuthUI.getInstance().signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                });
     }
 
 

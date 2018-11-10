@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 
 import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
@@ -11,36 +12,32 @@ import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class SettingsActivity extends AppCompatActivity implements LogoutDialogPreference.OnDataPassingListener {
+public class SettingsActivity extends FragmentActivity implements LogoutDialogPreference.OnDataPassingListener {
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(SettingsActivity)";
     private static final String LOGOUT_ACTION = "com.ecoone.mindfulmealplanner.logoutaction";
-
-    public interface OnDataPassingListener {
-
-        void passDataFroSettingToProfile(int input);
-    }
-
-    public OnDataPassingListener mOnDatPassingListener;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
         getFragmentManager().beginTransaction().replace(R.id.setting_screen_area, new SettingsFragment()).commit();
+
+
+
     }
 
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
+//    @Override
+//    public boolean onSupportNavigateUp() {
+//        onBackPressed();
+//        return true;
+//    }
 
     public static int getLogoutAction(Intent result) {
         return result.getIntExtra(LOGOUT_ACTION, 0);
@@ -50,12 +47,10 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
     @Override
     public void passDataFromLogoutDialogToSetting(int input) {
         Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
-//        Intent data = new Intent();
-//        data.putExtra(LOGOUT_ACTION, input);
-//        setResult(RESULT_OK, data);
-//        finish();
-        mOnDatPassingListener.passDataFroSettingToProfile(input);
-
+        Intent data = new Intent();
+        data.putExtra(LOGOUT_ACTION, input);
+        setResult(RESULT_OK, data);
+        finish();
     }
 
     public static class SettingsFragment extends PreferenceFragment{
