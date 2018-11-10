@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.Profile;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,21 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
-import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.Task;
+import com.ecoone.mindfulmealplanner.Profile.Setting.SettingsActivity;
 
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements SettingsActivity.OnDataPassingListener {
 
     private LinearLayout settingLayout;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ProfileFragment)";
     private static final int LOGOUT_SIGN = 0;
+
+    public interface OnDatPassingListener {
+        void passDataFromProfileToMain(int input);
+    }
+
+    public OnDatPassingListener mOnDatPassingListener;
 
     @Nullable
     @Override
@@ -42,18 +45,48 @@ public class ProfileFragment extends Fragment {
 
         settingLayout = view.findViewById(R.id.profile_setting_layout);
 
+        ((SettingsActivity)getActivity()).setOnDatPassingListener();
 
         settingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "click", Toast.LENGTH_LONG).show();
                 Intent intent =new  Intent(getContext(), SettingsActivity.class);
+//                startActivityForResult(intent, LOGOUT_SIGN);
                 startActivity(intent);
             }
         });
 
     }
 
+
+//    @Override
+//    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == LOGOUT_SIGN) {
+//            if (data != null) {
+//                int logoutSign = SettingsActivity.getLogoutAction(data);
+//                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
+//                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
+//            }
+//
+//        }
+//    }
+
+    @Override
+    public void passDataFroSettingToProfile(int input) {
+        Log.i(TAG, CLASSTAG + "passDataFromSettingToProfile: got the input " + input);
+        mOnDatPassingListener.passDataFromProfileToMain(input);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            mOnDatPassingListener = (OnDatPassingListener) getContext();
+        }catch (ClassCastException e) {
+            Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
+        }
+    }
 
     @Override
     public void onStart() {

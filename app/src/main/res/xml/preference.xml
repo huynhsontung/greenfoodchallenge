@@ -9,16 +9,16 @@
             android:targetClass="com.ecoone.mindfulmealplanner.Setting.AboutPageActivity"/>
     </Preference>
 
-    <!--<com.ecoone.mindfulmealplanner.Setting.LogoutDialogPreference-->
-        <!--android:key="logout"-->
-        <!--android:title="Logout" />-->
+    <com.ecoone.mindfulmealplanner.Profile.Setting.LogoutDialogPreference
+        android:key="logout"
+        android:title="Logout" />
 
     <!--<Preference-->
         <!--android:key="logout"-->
         <!--android:title="Log out">-->
     <!--<intent-->
         <!--android:targetPackage="com.ecoone.mindfulmealplanner"-->
-        <!--android:targetClass="com.ecoone.mindfulmealplanner.Setting.LogoutActivity"/>-->
+        <!--android:targetClass="com.ecoone.mindfulmealplanner.Profile.Setting.LogoutActivity"/>-->
     <!--</Preference>-->
 
 

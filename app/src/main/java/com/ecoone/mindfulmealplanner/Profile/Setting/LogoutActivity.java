@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.Setting;
+package com.ecoone.mindfulmealplanner.Profile.Setting;
 
 import android.content.Context;
 import android.content.DialogInterface;

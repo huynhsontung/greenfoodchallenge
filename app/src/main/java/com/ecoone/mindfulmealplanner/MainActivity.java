@@ -1,66 +1,29 @@
 package com.ecoone.mindfulmealplanner;
 
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapShader;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
-import android.graphics.Shader;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.ShareActionProvider;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
-import com.ecoone.mindfulmealplanner.DB.User;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
-import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupViewModel;
-import com.ecoone.mindfulmealplanner.PlanList.PlanListFragment;
-import com.ecoone.mindfulmealplanner.Pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
-import com.ecoone.mindfulmealplanner.UserIconDialogFragment.OnInputListener;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
-import com.ecoone.mindfulmealplanner.Setting.SettingsActivity;
-import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Transformation;
 
 
-
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements
+        ProfileFragment.OnDatPassingListener {
 
 //    private String userDisplayName;
 //    private String userEmail;
@@ -123,6 +86,26 @@ public class MainActivity extends AppCompatActivity{
         ft.replace(R.id.main_frame, fragment);
         ft.commit();
     }
+
+
+    @Override
+    public void passDataFromProfileToMain(int input) {
+        Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
+
+//        if (input == 1) {
+//            FirebaseDatabaseInterface.deleteUserData();
+//        }
+//        AuthUI.getInstance().signOut(this)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                });
+    }
+
 
 
 //    private static final int LOGOUT_SIGN = 0;
@@ -335,8 +318,8 @@ public class MainActivity extends AppCompatActivity{
 
 //
 //    @Override
-//    public void sendInput(int input) {
-//        Log.i(TAG, "sendInput: got the input: " + input + CLASSTAG);
+//    public void passDataFromLogoutDialogToSetting(int input) {
+//        Log.i(TAG, "passDataFromLogoutDialogToSetting: got the input: " + input + CLASSTAG);
 //        navUserIcon.setImageResource(input);
 //
 //        String iconName = getResources().getResourceEntryName(input);

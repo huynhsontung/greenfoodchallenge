@@ -30,7 +30,7 @@
             tools:ignore="InnerclassSeparator"/>
 
         <activity
-            android:name=".Setting.SettingsActivity"
+            android:name=".Profile.Setting.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
             tools:ignore="InnerclassSeparator" >
@@ -39,14 +39,14 @@
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
 
-        <activity android:name=".Setting.AboutPageActivity"
+        <activity android:name=".Profile.Setting.AboutPageActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="openaboutpage" />
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity android:name=".Setting.LogoutActivity"
+        <activity android:name=".Profile.Setting.LogoutActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="openLogout" />
