@@ -1,4 +1,4 @@
-//package com.ecoone.mindfulmealplanner.PlanList;
+//package com.ecoone.mindfulmealplanner.DashBoard.PlanList;
 //
 //import android.content.Context;
 //import android.content.Intent;

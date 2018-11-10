@@ -12,12 +12,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toolbar;
 
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
+import com.ecoone.mindfulmealplanner.DashBoard.DashboardPlanFragment;
 import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
-import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements
 //    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private BottomNavigationView mBottomNavigationView;
-
+    private android.support.v7.widget.Toolbar mToolbar;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
 
@@ -54,15 +56,21 @@ public class MainActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mBottomNavigationView = findViewById(R.id.main_bottom_nav);
+        mToolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(mToolbar);
 
 
+        MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.nav_dashboard);
+        setTitle(menuItem.getTitle());
         mDashboardFragment = new DashboardFragment();
         switchFragment(mDashboardFragment);
 
         mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                setTitle(menuItem.getTitle());
                 switch (menuItem.getItemId()) {
                     case R.id.nav_dashboard :
                         mDashboardFragment = new DashboardFragment();
@@ -255,10 +263,10 @@ public class MainActivity extends AppCompatActivity implements
 //
 //    private void showDashboard() {
 //        Menu menu = mNavigationView.getMenu();
-//        MenuItem menuItem = menu.findItem(R.id.fragment_dashboard);
+//        MenuItem menuItem = menu.findItem(R.id.fragment_dashboard_plan);
 //        menuItem.setChecked(true);
 //        setTitle(menuItem.getTitle());
-//        switchFragment(new DashboardFragment());
+//        switchFragment(new DashboardPlanFragment());
 //    }
 //
 
@@ -288,8 +296,8 @@ public class MainActivity extends AppCompatActivity implements
 //        // Handle navigation view item clicks here..
 //        int id = item.getItemId();
 //
-//        if (id == R.id.fragment_dashboard) {
-//            fragment = new DashboardFragment();
+//        if (id == R.id.fragment_dashboard_plan) {
+//            fragment = new DashboardPlanFragment();
 //
 //        }
 //        else if (id == R.id.fragment_plan_list) {

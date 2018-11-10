@@ -1,279 +1,106 @@
 package com.ecoone.mindfulmealplanner.DashBoard;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
+
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
-import android.util.TypedValue;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.ecoone.mindfulmealplanner.Pledge.PledgeLogic;
-import com.ecoone.mindfulmealplanner.Tool.Calculator;
-import com.ecoone.mindfulmealplanner.DashBoard.Improve.ImproveActivity;
+import com.ecoone.mindfulmealplanner.DashBoard.PlanList.PlanListFragment;
+import com.ecoone.mindfulmealplanner.Pledge.DiscoverFragment;
+import com.ecoone.mindfulmealplanner.Pledge.MyPledgeFragment;
+import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
-import com.ecoone.mindfulmealplanner.DB.Plan;
-import com.ecoone.mindfulmealplanner.DB.User;
-import com.ecoone.mindfulmealplanner.UserIconDialogFragment;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
 
-import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class DashboardFragment extends Fragment {
 
-
-    private String mCurrentPlanName;
-    private Plan mCurrentPlan;
-
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-    private Button improveButton;
-    private TextView mEditDoneIcon;
-    private TextView currentPlanTextView; // just for setEditTextView()
-    private TextView currentCo2eTextView;
-    private TextView relevantInfo;
-    private EditText editPlanName;
-    private ImageView rightArrow;
-    private FirebaseFunctions mFunctions;
-    private ValueEventListener mValueEventListener;
-
-    private ViewPager mChartPager;
-    private PagerAdapter mChartPagerAdapter;
-    private static final String TAG = "testActivity";
-    private static final String CLASSTAG = "(DashboardFragment)";
+    public DashboardFragment() {
+        // Required empty public constructor
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_dashboard, null );
 
-        return inflater.inflate(R.layout.fragment_dashboard, null );
+        ViewPager viewPager = rootView.findViewById(R.id.dashboard_viewpager);
+        setupViewPager(viewPager);
+
+        TabLayout myTabs = rootView.findViewById(R.id.dashboard_result_tabs);
+        myTabs.setupWithViewPager(viewPager);
+
+        return rootView;
     }
 
-    @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    private void setupViewPager(ViewPager viewPager) {
 
-        // write your code here
-
-
-        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
-        editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
-        mEditDoneIcon = view.findViewById(R.id.fragment_dashboard_icon_edit_done);
-        currentPlanTextView = view.findViewById(R.id.fragment_dashboard_currentplan_text_view); // just for setEditTextView()
-        currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
-        relevantInfo = view.findViewById(R.id.relevantInfo);
-        improveButton = view.findViewById(R.id.fragment_dashboard_improve);
-
-        mFunctions = FirebaseFunctions.getInstance();
-
-
-        setFirebaseValueListener();
-        setupImproveButton();
-        setEditDoneIconAction(view);
-
-
-    }
-    private void setFirebaseValueListener() {
-        mValueEventListener = new ValueEventListener() {
+        DashboardFragment.Adapter myAdapter = new  DashboardFragment.Adapter(getChildFragmentManager());
+        myAdapter.addFragment(new DashboardPlanFragment(), "My Plan");
+        myAdapter.addFragment(new PlanListFragment(), "Plan List");
+        viewPager.setAdapter(myAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.i(TAG, CLASSTAG + "firebase listener call");
-                User user = dataSnapshot.child("userInfo").getValue(User.class);
-
-                if(user != null) {
-                    mCurrentPlanName = user.currentPlanName;
-                    mCurrentPlan = dataSnapshot.child("planInfo").child(mCurrentPlanName).getValue(Plan.class);
-                    setEditTextView(mCurrentPlanName);
-                    if (mCurrentPlan != null) {
-                        calculateCurrentCo2e(mCurrentPlan);
-                        setupPieChartFragmentPager(mCurrentPlan);
-                        PledgeLogic.updateCurrentPlan(mCurrentPlan);
-                    }
-                }
+            public void onPageScrolled(int i, float v, int i1) {
+                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onPageSelected(int i) {
 
-            }
-        };
-
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).addValueEventListener(mValueEventListener);
-
-    }
-
-//    private Task<Integer> getSumPledge() {
-//        return mFunctions
-//                .getHttpsCallable("getSumPledge")
-//                .call()
-//                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
-//                    @Override
-//                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-//                        Integer result = (Integer) task.getResult().getData();
-//                        return result;
-//                    }
-//                });
-//    }
-
-    private void calculateCurrentCo2e(Plan plan) {
-        float sumCo2ePerYear = Calculator.calculateCO2ePerYear(plan);
-        String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));
-        currentCo2eTextView.setText(message);
-        float kmWasted = Calculator.calculateSavingsInKm(sumCo2ePerYear);
-        if(kmWasted > 100){
-            relevantInfo.setText(getString(R.string.km_wasted,new DecimalFormat("###,###,###.#").format(kmWasted)));
-            relevantInfo.setVisibility(View.VISIBLE);
-        }
-
-        if (sumCo2ePerYear > 1.7)
-            currentCo2eTextView.setTextColor(Color.RED);
-        else {
-            currentCo2eTextView.setTextColor(Color.BLUE);
-        }
-    }
-
-    private void setEditTextView(String currentPlanName) {
-        editPlanName.setText(currentPlanName);
-        editPlanName.setTextSize(TypedValue.COMPLEX_UNIT_PX, currentPlanTextView.getTextSize());
-        editPlanName.setTypeface(currentPlanTextView.getTypeface());
-//        editPlanName.setTextColor(currentPlanTextView.getTextColors()); // grey(uncomment) or black(comment)
-        editPlanName.setInputType(0);
-    }
-
-    private void setEditDoneIconAction(final View view) {
-        mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (editPlanName.getInputType() == 0) {
-                    editPlanName.setInputType(1);
-                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
-                    editPlanName.setSelection(editPlanName.getText().length());
-                    editPlanName.selectAll();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
-                }
-                else {
-                    editPlanName.setInputType(0);
-                    String newPlanName = editPlanName.getText().toString();
-                    editPlanName.setText(newPlanName);
-                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
-                }
-            }
-        });
-
-    }
-
-    private void setupPieChartFragmentPager(Plan plan) {
-        final float[] co2Amount = Calculator.calculateCO2eEachFood(plan);
-        final float[] foodAmount = FirebaseDatabaseInterface.getPlanArray(plan);
-
-        mChartPager = getView().findViewById(R.id.fragment_dashboard_chart_pager);
-        mChartPagerAdapter = new FragmentStatePagerAdapter(getChildFragmentManager()) {
-            @Override
-            public Fragment getItem(int i) {
-                if (i == 0) {
-                    Log.i("testing", "zerp");
-                    return DashboardChartFragment.newInstance(i, foodAmount);
-                }
-                else {
-                    Log.i("testing", "1");
-                    return DashboardChartFragment.newInstance(i, co2Amount);
-                }
             }
 
             @Override
-            public int getCount() {
-                return 2;
-            }
+            public void onPageScrollStateChanged(int i) {
 
-            @Override
-            public int getItemPosition(@NonNull Object object) {
-                return POSITION_NONE;
-            }
-        };
-        mChartPager.setAdapter(mChartPagerAdapter);
-        mChartPager.setCurrentItem(0);
-    }
-
-    private void setupImproveButton(){
-        //Wire up the button to improve the plan3
-        //...get the button
-        improveButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = ImproveActivity.newIntent(getContext());
-                startActivityForResult(intent,0);
             }
         });
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, CLASSTAG + " onStart");
-    }
+    static class Adapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, CLASSTAG + " onResume");
-    }
+        public Adapter(FragmentManager manager) {
+            super(manager);
+        }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, CLASSTAG + " onPause");
-    }
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, CLASSTAG + " onStop");
-    }
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
 
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).removeEventListener(mValueEventListener);
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
 
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
 }

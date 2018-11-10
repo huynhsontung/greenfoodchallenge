@@ -1,6 +1,5 @@
-package com.ecoone.mindfulmealplanner.PlanList;
+package com.ecoone.mindfulmealplanner.DashBoard.PlanList;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -17,10 +16,8 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.DB.AppDatabase;
 import com.ecoone.mindfulmealplanner.DB.Plan;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;

@@ -44,10 +44,6 @@ public class ProfileFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        TextView t = view.findViewById(R.id.test);
-
-        Log.i("testActivity", "test: " + t.getTextSize());
-        Log.i("testActivity", "test: " + t.getTypeface());
         settingLayout = view.findViewById(R.id.profile_setting_layout);
 
 

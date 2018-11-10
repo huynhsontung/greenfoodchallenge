@@ -1,6 +1,5 @@
 package com.ecoone.mindfulmealplanner.Pledge;
 
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -35,10 +34,10 @@ public class PledgeFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_pledge, null );
 
-        ViewPager viewPager = rootView.findViewById(R.id.viewpager);
+        ViewPager viewPager = rootView.findViewById(R.id.pledge_viewpager);
         setupViewPager(viewPager);
 
-        TabLayout myTabs = rootView.findViewById(R.id.result_tabs);
+        TabLayout myTabs = rootView.findViewById(R.id.pledge_result_tabs);
         myTabs.setupWithViewPager(viewPager);
 
         ViewGroup vg = (ViewGroup) myTabs.getChildAt(0);

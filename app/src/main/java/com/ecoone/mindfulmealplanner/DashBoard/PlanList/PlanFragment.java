@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.PlanList;
+package com.ecoone.mindfulmealplanner.DashBoard.PlanList;
 
 
 import android.content.Context;
@@ -10,7 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -22,7 +21,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.Tool.Calculator;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardChartFragment;
 import com.ecoone.mindfulmealplanner.R;
