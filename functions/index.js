@@ -199,54 +199,91 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
     });
 });
 
-exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
-    var genderList = ['male', 'female'];
-    var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
-    var iconNameList = ['android', 'chicken', 'egg', 'fish', 'meat', 'moon', 'star', 'sun', 'tree'];
+// exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
+//     var genderList = ['male', 'female'];
+//     var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
+//     var iconNameList = ['android', 'chicken', 'egg', 'fish', 'meat', 'moon', 'star', 'sun', 'tree'];
+//
+//
+//     var gender = genderList[Math.floor(Math.random()*genderList.length)];
+//     var location = locationList[Math.floor(Math.random()*locationList.length)];
+//     var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
+//
+//     var random = require('./random-name');
+//     var displayname = random.first() + ' ' + random.last();
+//
+//     var amount = Math.ceil(Math.random() * 200);
+//
+//
+//     var uid = user.uid;
+//     var email = user.email;
+//     var userData =
+//         {
+//             "planInfo" : {
+//                 "Plan1": {
+//                     "beans": 74,
+//                     "beef": 105,
+//                     "chicken": 102,
+//                     "eggs": 41,
+//                     "fish": 120,
+//                     "pork": 40,
+//                     "vegetables": 185
+//                 }
+//             },
+//
+//             "pledgeInfo" : {
+//                 "amount" : amount,
+//                 "location" : location
+//             },
+//
+//             "userInfo" : {
+//                 "currentPlanName" : "Plan1",
+//                 "displayName" : displayname,
+//                 "email" : email,
+//                 "gender" : gender,
+//                 "iconName" : iconName
+//             }
+//         };
+//
+//     console.log("Check user data", userData);
+//     admin.database().ref('/uids/' + uid).set(userData);
+//     return 0;
+// });
 
+//
+// exports.test = functions.https.onRequest((req, resp) => {
+//     if(req.method !== "POST") {
+//         resp.status(400).send("not POST request");
+//         console.log("test", "not POST request");
+//     }
+//
+//     console.log("check type" , typeof req.body);
+//     var data = req.body;
+//
+//     if (typeof data === "string") {
+//         console.log("string")
+//         data = JSON.parse(data);
+//     }
+//     else if (typeof data === "object") {
+//         console.log("object")
+//     }
+//     //
+//     console.log("test req body", data);
+//     console.log("test name", data.user.name);
+//     console.log("test age", data.user.age);
+//
+//     resp.status(200).send("OK");
+//
+// });
 
-    var gender = genderList[Math.floor(Math.random()*genderList.length)];
-    var location = locationList[Math.floor(Math.random()*locationList.length)];
-    var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
-
-    var random = require('./random-name');
-    var displayname = random.first() + ' ' + random.last();
-
-    var amount = Math.ceil(Math.random() * 200);
-
-
-    var uid = user.uid;
-    var email = user.email;
-    var userData =
-        {
-            "planInfo" : {
-                "Plan1": {
-                    "beans": 74,
-                    "beef": 105,
-                    "chicken": 102,
-                    "eggs": 41,
-                    "fish": 120,
-                    "pork": 40,
-                    "vegetables": 185
-                }
-            },
-
-            "pledgeInfo" : {
-                "amount" : amount,
-                "location" : location
-            },
-
-            "userInfo" : {
-                "currentPlanName" : "Plan1",
-                "displayName" : displayname,
-                "email" : email,
-                "gender" : gender,
-                "iconName" : iconName
-            }
-        };
-
-    console.log("Check user data", userData);
-    admin.database().ref('/uids/' + uid).set(userData);
-    return 0;
-});
-
+// exports.adminCheckAndModifyTotalPledgeNumber = functions.https.onRequest((req, resp) => {
+//     var log = "";
+//     if(req.method !== "GET") {
+//         resp.status(400).send("Not GET request");
+//         console.log("Not GET request");
+//     }
+//
+//     var oldAmount =
+//
+//
+// });

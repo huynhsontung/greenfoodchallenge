@@ -2,13 +2,20 @@ package com.ecoone.mindfulmealplanner.Profile.Setting;
 
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
+import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
+import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 public class SettingsActivity extends AppCompatActivity implements LogoutDialogPreference.OnDataPassingListener {
 
@@ -44,10 +51,22 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
     @Override
     public void passDataFromLogoutDialogToSetting(int input) {
         Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
-        Intent data = new Intent();
-        data.putExtra(LOGOUT_ACTION, input);
-        setResult(RESULT_OK, data);
-        finish();
+        if (input == 1) {
+            FirebaseDatabaseInterface.deleteUserData();
+        }
+        AuthUI.getInstance().signOut(this)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Intent intent= new Intent(SettingsActivity.this, InitialSetupActivity.class);
+                        startActivity(intent);
+                        finishAffinity();
+                    }
+                });
+        //        Intent data = new Intent();
+//        data.putExtra(LOGOUT_ACTION, input);
+//        setResult(RESULT_OK, data);
+//        finish();
     }
 
     public static class SettingsFragment extends PreferenceFragment{

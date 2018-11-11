@@ -126,14 +126,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == LOGOUT_SIGN) {
-            if (data != null) {
-                int logoutSign = SettingsActivity.getLogoutAction(data);
-                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
-                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
-            }
-
-        }
+//        if (requestCode == LOGOUT_SIGN) {
+//            if (data != null) {
+//                int logoutSign = SettingsActivity.getLogoutAction(data);
+//                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
+//                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
+//            }
+//
+//        }
     }
 
     @Override

@@ -108,20 +108,20 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void passDataFromProfileToMain(int input) {
-        Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
-
-        if (input == 1) {
-            FirebaseDatabaseInterface.deleteUserData();
-        }
-        AuthUI.getInstance().signOut(this)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
-                        startActivity(intent);
-                        finish();
-                    }
-                });
+//        Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
+//
+//        if (input == 1) {
+//            FirebaseDatabaseInterface.deleteUserData();
+//        }
+//        AuthUI.getInstance().signOut(this)
+//                .addOnCompleteListener(new OnCompleteListener<Void>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<Void> task) {
+//                        Intent intent= new Intent(MainActivity.this, InitialSetupActivity.class);
+//                        startActivity(intent);
+//                        finish();
+//                    }
+//                });
     }
 
 
