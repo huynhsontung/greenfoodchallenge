@@ -26,7 +26,7 @@ import com.google.android.gms.tasks.Task;
 
 
 public class MainActivity extends AppCompatActivity implements
-        ProfileFragment.OnDatPassingListener {
+        ProfileFragment.OnDataPassingListener {
 
 //    private String userDisplayName;
 //    private String userEmail;
@@ -85,6 +85,9 @@ public class MainActivity extends AppCompatActivity implements
                     case R.id.nav_profile :
                         mProfileFragment = new ProfileFragment();
                         switchFragment(mProfileFragment);
+                        return true;
+
+                    case R.id.nav_meal_tracker :
                         return true;
 
                     default:

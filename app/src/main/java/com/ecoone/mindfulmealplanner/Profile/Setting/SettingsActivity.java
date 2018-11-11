@@ -3,20 +3,14 @@ package com.ecoone.mindfulmealplanner.Profile.Setting;
 import android.os.Bundle;
 import android.preference.PreferenceFragment;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
-
-import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
-
-
 import android.content.Intent;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class SettingsActivity extends FragmentActivity implements LogoutDialogPreference.OnDataPassingListener {
+public class SettingsActivity extends AppCompatActivity implements LogoutDialogPreference.OnDataPassingListener {
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(SettingsActivity)";
@@ -28,16 +22,19 @@ public class SettingsActivity extends FragmentActivity implements LogoutDialogPr
         setContentView(R.layout.activity_settings);
         getFragmentManager().beginTransaction().replace(R.id.setting_screen_area, new SettingsFragment()).commit();
 
-
+        Toolbar toolbar = findViewById(R.id.profile_setting_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
 
 
-//    @Override
-//    public boolean onSupportNavigateUp() {
-//        onBackPressed();
-//        return true;
-//    }
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
     public static int getLogoutAction(Intent result) {
         return result.getIntExtra(LOGOUT_ACTION, 0);

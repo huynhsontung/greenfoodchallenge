@@ -1,21 +1,17 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.Profile.UserAccount;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.Pledge.UserIconAdapter;
+import com.ecoone.mindfulmealplanner.R;
 
 
 public class UserIconDialogFragment extends DialogFragment {
@@ -37,11 +33,11 @@ public class UserIconDialogFragment extends DialogFragment {
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(UserIconDialogFragment)";
 
-    public interface OnInputListener{
-        void sendInput(int input);
+    public interface OnDataPassingListener {
+        void passDataFromUserIconDialogToUserAccount(int input);
     }
 
-    public OnInputListener mOnInputListener;
+    public OnDataPassingListener mOnDataPassingListener;
 
     public UserIconDialogFragment() {
 
@@ -66,7 +62,7 @@ public class UserIconDialogFragment extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //                Toast.makeText(getContext(), "item: " + mIconTextList[position], Toast.LENGTH_LONG).show();
-                mOnInputListener.sendInput(mIconImageIdList[position]);
+                mOnDataPassingListener.passDataFromUserIconDialogToUserAccount(mIconImageIdList[position]);
                 dialog.dismiss();
             }
         });
@@ -78,7 +74,7 @@ public class UserIconDialogFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mOnInputListener = (OnInputListener) getActivity();
+            mOnDataPassingListener = (OnDataPassingListener) getActivity();
         }catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
         }

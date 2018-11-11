@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private TextView[] mFoodSeekBarTextView;
     private SeekBar[] mFoodSeekBarAction;
     private TextView[] mFoodSeekBarValueView;
+    private Toolbar mToolbar;
 
     private String[] foodName;
     private int foodLen;
@@ -74,6 +76,12 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_improve);
+
+        mToolbar = findViewById(R.id.activity_improve_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("Improve");
 
         mPieChart = findViewById(R.id.improve_piechart);
         mImprovedPlanCo2ePerYearTextView = findViewById(R.id.improve_improved_plan_per_year);
@@ -354,6 +362,12 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         FirebaseDatabaseInterface.writePlan(improvedPlan);
         FirebaseDatabaseInterface.updateCurrentPlanName(newPlanName);
         finish();
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
 
     @Override

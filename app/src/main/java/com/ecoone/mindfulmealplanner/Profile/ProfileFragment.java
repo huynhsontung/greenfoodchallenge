@@ -11,25 +11,47 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.DB.User;
+import com.ecoone.mindfulmealplanner.Profile.UserAccount.UserAccountActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.Profile.Setting.SettingsActivity;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class ProfileFragment extends Fragment {
 
+    private int userIconId;
+    private String userDispalyName;
+    private String userEmail;
+    private String userGender;
+
     private LinearLayout settingLayout;
+    private LinearLayout userAccountLayout;
+    private ImageView usericonImageView;
+    private TextView userDisplayNameTextView;
+    private TextView userEmailTextView;
+
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ProfileFragment)";
     private static final int LOGOUT_SIGN = 0;
 
-    public interface OnDatPassingListener {
+    public interface OnDataPassingListener {
         void passDataFromProfileToMain(int input);
     }
 
-    public OnDatPassingListener mOnDatPassingListener;
+    public OnDataPassingListener mOnDatPassingListener;
 
     @Nullable
     @Override
@@ -45,18 +67,61 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         settingLayout = view.findViewById(R.id.profile_setting_layout);
+        userAccountLayout = view.findViewById(R.id.profile_user_data_detail);
+        usericonImageView = view.findViewById(R.id.profile_user_icon);
+        userDisplayNameTextView = view.findViewById(R.id.profile_user_display_name);
+        userEmailTextView = view.findViewById(R.id.profile_user_email);
 
 
         settingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent =new  Intent(getContext(), SettingsActivity.class);
+                Intent intent = new Intent(getContext(), SettingsActivity.class);
                 startActivityForResult(intent, LOGOUT_SIGN);
             }
         });
 
+        userAccountLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               Intent intent = UserAccountActivity.newIntent(getContext(), userDispalyName, userGender,
+                                                                        userEmail, userIconId);
+               startActivity(intent);
+            }
+        });
+
+
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
+                .child(FirebaseDatabaseInterface.USERINFO_NODE)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        User user = dataSnapshot.getValue(User.class);
+                        if (user != null) {
+                            userDispalyName = user.displayName;
+                            userEmail = user.email;
+                            userGender = user.gender;
+                            userIconId = getDrawableIdbyName(user.iconName);
+                            userDisplayNameTextView.setText(userDispalyName);
+                            userEmailTextView.setText(userEmail);
+                            usericonImageView.setImageResource(userIconId);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
     }
 
+    private int getDrawableIdbyName(String name) {
+        int resourceId = getActivity()
+                .getResources()
+                .getIdentifier(name, "drawable", getActivity().getPackageName());
+        return resourceId;
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -75,7 +140,7 @@ public class ProfileFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mOnDatPassingListener = (OnDatPassingListener) getContext();
+            mOnDatPassingListener = (OnDataPassingListener) getContext();
         }catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
         }

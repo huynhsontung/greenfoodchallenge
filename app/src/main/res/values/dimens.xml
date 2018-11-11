@@ -6,4 +6,10 @@
     <dimen name="nav_header_height">176dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="seekbar_component_height">25dp</dimen>
+    
+    <dimen name="profile_list_item_layout_padding">8dp</dimen>
+    <dimen name="profile_list_item_left_side_margin">10dp</dimen>
+    <dimen name="profile_list_item_right_side_margin">10dp</dimen>
+    <dimen name="profile_list_item_text_view_left_side_margin">10dp</dimen>
+    <dimen name="profile_list_item_title_name_size">15dp</dimen>
 </resources>

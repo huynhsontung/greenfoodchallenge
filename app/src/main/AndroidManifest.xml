@@ -61,6 +61,10 @@
         <!-- <activity -->
         <!-- android:name=".PlanList.PlanPagerActivity" -->
         <!-- android:theme="@style/AppTheme"></activity> -->
+        <activity
+            android:name=".Profile.UserAccount.UserAccountActivity"
+            android:label="@string/title_activity_user_account"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

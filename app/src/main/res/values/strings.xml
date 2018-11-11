@@ -38,4 +38,5 @@
         <item>male</item>
         <item>female</item>
     </string-array>
+    <string name="title_activity_user_account">UserAccountActivity</string>
 </resources>

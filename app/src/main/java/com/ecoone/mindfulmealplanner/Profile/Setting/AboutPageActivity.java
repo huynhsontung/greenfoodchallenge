@@ -17,12 +17,18 @@ public class AboutPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_page);
-//
-//        mToolbar = findViewById(R.id.toolbar);
-//        setSupportActionBar(mToolbar);
+
+        mToolbar = findViewById(R.id.profile_setting_about_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("About");
     }
 
-    public static Intent makeIntent(Context openAboutPage){
-        return new Intent(openAboutPage, AboutPageActivity.class);
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
     }
+
 }
