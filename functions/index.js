@@ -69,7 +69,7 @@ exports.CountTotalAmountOfUsersPledgedTrigger = functions.database.ref("/uids/{u
         return 0;
     });
 
-exports.ModifyPledgeLocationWhenLocationChangedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
+exports.ModifyPledgeLocationWhenLocationChangedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/location")
     .onWrite((change, context) => {
 
         var userUid = context.params.userUid;
@@ -94,7 +94,7 @@ exports.ModifyPledgeLocationWhenLocationChangedTriigger = functions.database.ref
         return 0;
     });
 
-exports.ModifyPledgeLocationWhenAmountChangedTriigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
+exports.ModifyPledgeLocationWhenAmountChangedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
 
         var userUid = context.params.userUid;
