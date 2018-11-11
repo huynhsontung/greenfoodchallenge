@@ -12,12 +12,15 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,6 +93,7 @@ public class DashboardPlanFragment extends Fragment {
 
         mFunctions = FirebaseFunctions.getInstance();
 
+        getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setFirebaseValueListener();
         setupImproveButton();
         setEditDoneIconAction(view);
@@ -165,16 +169,20 @@ public class DashboardPlanFragment extends Fragment {
     }
 
     private void setEditDoneIconAction(final View view) {
+
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, CLASSTAG + "inpute type: " + editPlanName.getInputType());
                 if (editPlanName.getInputType() == 0) {
+                    editPlanName.requestFocus();
                     editPlanName.setInputType(1);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
                     editPlanName.setSelection(editPlanName.getText().length());
                     editPlanName.selectAll();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                    boolean test = imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                    Log.i(TAG, CLASSTAG + "showsoftInput return: " + test);
                     Log.i(TAG, CLASSTAG + "keyboard open");
                 }
                 else {
@@ -183,7 +191,8 @@ public class DashboardPlanFragment extends Fragment {
                     editPlanName.setText(newPlanName);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    boolean test = imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    Log.i(TAG, CLASSTAG + "hidesoftInput return: " + test);
                     Log.i(TAG, CLASSTAG + "keyboard close");
                     FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
                 }

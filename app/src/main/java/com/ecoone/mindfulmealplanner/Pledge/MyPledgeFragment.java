@@ -140,13 +140,16 @@ public class MyPledgeFragment extends Fragment {
         mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i(TAG, CLASSTAG + "inpute type: " + editPledgeName.getInputType());
                 if (editPledgeName.getInputType() == 0) {
+                    editPledgeName.requestFocus();
                     editPledgeName.setInputType(EditorInfo.TYPE_CLASS_NUMBER);
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.done, 0, 0, 0);
                     editPledgeName.setSelection(editPledgeName.getText().length());
                     editPledgeName.selectAll();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.showSoftInput(editPledgeName, InputMethodManager.SHOW_IMPLICIT);
+                    boolean test = imm.showSoftInput(editPledgeName, InputMethodManager.SHOW_IMPLICIT);
+                    Log.i(TAG, CLASSTAG + "showsoftInput return: " + test);
                     Log.i(TAG, CLASSTAG + "keyboard open");
                 }
                 else {
@@ -155,9 +158,10 @@ public class MyPledgeFragment extends Fragment {
                     editPledgeName.setText(String.valueOf(newAmount));
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    FirebaseDatabaseInterface.updatePledgeAmount(newAmount);
+                    boolean test = imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    Log.i(TAG, CLASSTAG + "hidesoftInput return: " + test);
                     Log.i(TAG, CLASSTAG + "keyboard close");
+                    FirebaseDatabaseInterface.updatePledgeAmount(newAmount);
                 }
             }
         });
