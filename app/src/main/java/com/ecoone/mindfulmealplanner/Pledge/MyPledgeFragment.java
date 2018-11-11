@@ -96,7 +96,6 @@ public class MyPledgeFragment extends Fragment {
         planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
         locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
 
-        setEditTextView(0);
         setFirebaseValueListener();
 
         setEditDoneIconAction(view);
@@ -148,6 +147,7 @@ public class MyPledgeFragment extends Fragment {
                     editPledgeName.selectAll();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(editPledgeName, InputMethodManager.SHOW_IMPLICIT);
+                    Log.i(TAG, CLASSTAG + "keyboard open");
                 }
                 else {
                     editPledgeName.setInputType(0);
@@ -157,6 +157,7 @@ public class MyPledgeFragment extends Fragment {
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
                     FirebaseDatabaseInterface.updatePledgeAmount(newAmount);
+                    Log.i(TAG, CLASSTAG + "keyboard close");
                 }
             }
         });

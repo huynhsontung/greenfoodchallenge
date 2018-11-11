@@ -90,7 +90,6 @@ public class DashboardPlanFragment extends Fragment {
 
         mFunctions = FirebaseFunctions.getInstance();
 
-        editPlanName.setInputType(0);
         setFirebaseValueListener();
         setupImproveButton();
         setEditDoneIconAction(view);
@@ -176,6 +175,7 @@ public class DashboardPlanFragment extends Fragment {
                     editPlanName.selectAll();
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                    Log.i(TAG, CLASSTAG + "keyboard open");
                 }
                 else {
                     editPlanName.setInputType(0);
@@ -184,6 +184,7 @@ public class DashboardPlanFragment extends Fragment {
                     mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.edit, 0, 0, 0);
                     InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                    Log.i(TAG, CLASSTAG + "keyboard close");
                     FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
                 }
             }
