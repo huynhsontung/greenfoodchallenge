@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,6 +18,8 @@ public class AddGreenMealActivity extends AppCompatActivity {
     private static final int RESULT_CAMERA_IMAGE = 2;
     ImageView imageToUpload, mealImage, imageFromCamera;
     EditText getMealName;
+    private ViewPager viewPager;
+    private AddPhotoFragmentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +29,9 @@ public class AddGreenMealActivity extends AppCompatActivity {
         imageToUpload = (ImageView)findViewById(R.id.uploadImage);
         mealImage = (ImageView)findViewById(R.id.meal_image_view);
         imageFromCamera = (ImageView)findViewById(R.id.camera_image_view);
+        viewPager = findViewById(R.id.image_pager);
+        adapter = new AddPhotoFragmentAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapter);
 
         imageToUpload.setOnClickListener(new View.OnClickListener() {
             @Override
