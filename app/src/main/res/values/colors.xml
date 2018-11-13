@@ -4,8 +4,12 @@
     <!--<color name="colorPrimaryDark">#00574B</color>-->
     <!--<color name="colorAccent">#D81B60</color>-->
     <color name="colorPrimary">#496bbf</color>
-    <color name="colorPrimaryDark">#3f4d9f</color>
+    <color name="colorPrimaryLight">#7e99f2</color>
+    <color name="colorPrimaryDark">#00418e</color>
     <color name="colorAccent">#D81B60</color>
+    <color name="colorAccentLight">#ff5c8d</color>
+    <color name="colorAccentColor">#a00037</color>
+    <color name="colorText">#ffffff</color>
 
     <color name="bottomNavGrey">#FAFAFA</color>
     <color name="my_grey">#EFF0F1</color>

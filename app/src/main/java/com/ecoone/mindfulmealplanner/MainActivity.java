@@ -1,7 +1,6 @@
 package com.ecoone.mindfulmealplanner;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,17 +11,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toolbar;
 
-import com.ecoone.mindfulmealplanner.DB.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
-import com.ecoone.mindfulmealplanner.DashBoard.DashboardPlanFragment;
-import com.ecoone.mindfulmealplanner.InitialSetup.InitialSetupActivity;
 import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
-import com.firebase.ui.auth.AuthUI;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -101,7 +93,7 @@ public class MainActivity extends AppCompatActivity implements
         private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.main_frame, fragment);
+        ft.replace(R.id.main_content, fragment);
         ft.commit();
     }
 

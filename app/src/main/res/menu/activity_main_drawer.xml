@@ -24,7 +24,7 @@
     <item
         android:id="@+id/nav_meal_tracker"
         android:icon="@drawable/explore_dark"
-        android:title="MealTracker" />
+        android:title="Meal Tracker" />
 
     <item
         android:id="@+id/nav_pledge"
