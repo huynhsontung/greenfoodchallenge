@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "f5f8bc3442d171672f1861c1258d8057",
+    "identityHash": "75fe4dc600497052a1d9719ab5306d8a",
     "entities": [
       {
         "tableName": "User",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `displayName` TEXT, `email` TEXT, `iconName` TEXT, `currentPlanName` TEXT, `isRemoved` INTEGER NOT NULL, PRIMARY KEY(`username`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`username` TEXT NOT NULL, `gender` TEXT NOT NULL, `displayName` TEXT, `email` TEXT, `iconName` TEXT, `currentPlanName` TEXT, PRIMARY KEY(`username`))",
         "fields": [
           {
             "fieldPath": "username",
@@ -43,12 +43,6 @@
             "columnName": "currentPlanName",
             "affinity": "TEXT",
             "notNull": false
-          },
-          {
-            "fieldPath": "isRemoved",
-            "columnName": "isRemoved",
-            "affinity": "INTEGER",
-            "notNull": true
           }
         ],
         "primaryKey": {
@@ -153,7 +147,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"f5f8bc3442d171672f1861c1258d8057\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"75fe4dc600497052a1d9719ab5306d8a\")"
     ]
   }
 }

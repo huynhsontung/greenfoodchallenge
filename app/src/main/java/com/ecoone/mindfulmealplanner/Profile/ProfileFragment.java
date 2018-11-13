@@ -117,8 +117,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private int getDrawableIdbyName(String name) {
-        int resourceId = getActivity()
-                .getResources()
+        Log.i(TAG, CLASSTAG + "Icon name " + name);
+        int resourceId = getResources()
                 .getIdentifier(name, "drawable", getActivity().getPackageName());
         return resourceId;
     }
