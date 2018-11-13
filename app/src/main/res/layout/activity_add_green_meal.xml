@@ -8,59 +8,32 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <ImageView
-            android:id="@+id/uploadImage"
-            android:layout_width="85dp"
-            android:layout_height="54dp"
-            android:layout_marginTop="232dp"
-            android:layout_marginEnd="64dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
+        android:layout_height="match_parent">
 
         <EditText
             android:id="@+id/editTextMealName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="12dp"
             android:ems="10"
             android:hint="Meal Name"
             android:inputType="textPersonName"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/uploadImage" />
+            app:layout_constraintTop_toBottomOf="@+id/image_pager" />
 
-        <ImageView
-            android:id="@+id/camera_image_view"
-            android:layout_width="76dp"
-            android:layout_height="55dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="232dp"
-            android:layout_marginEnd="80dp"
-            app:layout_constraintEnd_toStartOf="@+id/uploadImage"
-            app:layout_constraintHorizontal_bias="0.887"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_camera" />
-
-        <ImageView
-            android:id="@+id/meal_image_view"
-            android:layout_width="393dp"
-            android:layout_height="211dp"
-            android:layout_marginTop="360dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/chicken" />
+        <Button
+            android:id="@+id/submit_meal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="16dp"
+            android:text="Submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMealName" />
 
         <android.support.v4.view.ViewPager
             android:id="@+id/image_pager"
             android:layout_width="match_parent"
-            android:layout_height="205dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="396dp" />
     </android.support.constraint.ConstraintLayout>
 </ScrollView>
