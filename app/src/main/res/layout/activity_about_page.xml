@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Profile.Setting.AboutPageActivity">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/profile_setting_about_toolbar"
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay" />
+        android:layout_height="wrap_content"/>
 
 
     <LinearLayout

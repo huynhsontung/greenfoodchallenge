@@ -6,12 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".Profile.Setting.SettingsActivity">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/profile_setting_toolbar"
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/setting_screen_area"

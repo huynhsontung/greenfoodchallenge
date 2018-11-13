@@ -77,7 +77,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_improve);
 
-        mToolbar = findViewById(R.id.activity_improve_toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

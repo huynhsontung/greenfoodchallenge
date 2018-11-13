@@ -1,39 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:openDrawer="start">
+    android:theme="@style/AppTheme"
+    tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/main_toolbar"
+        layout="@layout/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize"
-        android:background="@color/colorPrimary"
-        app:title="Main Activity"/>
+        android:layout_height="wrap_content"/>
 
-    <FrameLayout
-        android:id="@+id/main_content"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/main_bottom_nav"
-        android:layout_below="@+id/main_toolbar">
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    </FrameLayout>
-
-    <android.support.design.widget.BottomNavigationView
-        android:id="@+id/main_bottom_nav"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:background="@color/bottomNavGrey"
-        app:labelVisibilityMode="labeled"
-        app:menu="@menu/activity_main_drawer">
-
-    </android.support.design.widget.BottomNavigationView>
+        <FrameLayout
+            android:id="@+id/main_content"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            app:layout_constraintBottom_toTopOf="@id/main_bottom_nav"
+            app:layout_constraintTop_toTopOf="parent"/>
+        <android.support.design.widget.BottomNavigationView
+            android:id="@+id/main_bottom_nav"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/bottomNavGrey"
+            app:labelVisibilityMode="labeled"
+            android:layout_gravity="bottom"
+            app:menu="@menu/activity_main_drawer"
+            app:itemIconTint="@color/bottom_nav_color_selector"
+            app:itemTextColor="@color/bottom_nav_color_selector"
+            app:layout_constraintBottom_toBottomOf="parent">
+        </android.support.design.widget.BottomNavigationView>
+    </android.support.constraint.ConstraintLayout>
 
 
     <!--<include-->
@@ -50,4 +55,4 @@
     <!--app:headerLayout="@layout/nav_header_main"-->
     <!--app:menu="@menu/activity_main_drawer" />-->
 
-</RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

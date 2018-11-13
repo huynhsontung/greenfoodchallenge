@@ -12,6 +12,7 @@
     <color name="colorText">#ffffff</color>
 
     <color name="bottomNavGrey">#FAFAFA</color>
+    <color name="greyDeselected">#8c8c8c</color>
     <color name="my_grey">#EFF0F1</color>
     <color name="white">#FFFFFF</color>
 

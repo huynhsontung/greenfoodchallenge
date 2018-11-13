@@ -7,14 +7,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <android.support.v7.widget.Toolbar
+    <include
         android:id="@+id/activity_user_account_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="?attr/colorPrimary"
-        app:popupTheme="@style/AppTheme.NoActionBar.PopupOverlay" />
-
-    <include layout="@layout/grey_area" />
+        layout="@layout/app_bar"/>
 
     <LinearLayout
         android:id="@+id/user_account_icon_layout"

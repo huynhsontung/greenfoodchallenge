@@ -29,7 +29,7 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
         setContentView(R.layout.activity_settings);
         getFragmentManager().beginTransaction().replace(R.id.setting_screen_area, new SettingsFragment()).commit();
 
-        Toolbar toolbar = findViewById(R.id.profile_setting_toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

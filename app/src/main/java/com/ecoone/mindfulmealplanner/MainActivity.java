@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
         mBottomNavigationView = findViewById(R.id.main_bottom_nav);
-        mToolbar = findViewById(R.id.main_toolbar);
+        mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
 
@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements
 
 
     }
-        private void switchFragment(Fragment fragment) {
+    private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.main_content, fragment);
