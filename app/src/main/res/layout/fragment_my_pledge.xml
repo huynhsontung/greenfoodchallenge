@@ -4,22 +4,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Pledge.MyPledgeFragment">
+    tools:context=".pledge.MyPledgeFragment">
+
+    <ImageView
+        android:id="@+id/circle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:adjustViewBounds="true"
+        android:padding="32dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_ring"
+        app:layout_constraintDimensionRatio="w,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/my_pledge_edit_plan_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@android:color/transparent"
-        android:maxLines="1"
         android:inputType="none"
+        android:maxLines="1"
         android:text="0"
+        android:textColor="@color/colorAccent"
         android:textSize="48sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/circle"
         app:layout_constraintEnd_toEndOf="@+id/circle"
         app:layout_constraintStart_toStartOf="@+id/circle"
         app:layout_constraintTop_toTopOf="@+id/circle"
-        app:layout_constraintVertical_bias="0.435"/>
+        app:layout_constraintVertical_bias="0.40    " />
 
     <TextView
         android:id="@+id/kg_week"
@@ -31,23 +47,22 @@
         android:gravity="center"
         android:text="kg/week"
         android:textSize="36sp"
+        android:textColor="@color/colorPrimaryDark"
         app:layout_constraintBottom_toTopOf="@+id/user_tip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/my_pledge_edit_plan_name"
         app:layout_constraintVertical_bias="0.0" />
 
-    <TextView
+    <ImageView
         android:id="@+id/my_pledge_icon_edit_done"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:baselineAligned="false"
-        android:drawableStart="@drawable/edit"
-        android:gravity="center_vertical|center_horizontal"
-        app:layout_constraintStart_toEndOf="@+id/kg_week"
-        app:layout_constraintTop_toTopOf="@+id/kg_week" />
+        android:src="@drawable/ic_edit"
+        android:tint="@color/colorPrimaryDark"
+        app:layout_constraintEnd_toEndOf="@+id/kg_week"
+        app:layout_constraintStart_toStartOf="@+id/kg_week"
+        app:layout_constraintTop_toBottomOf="@+id/kg_week" />
 
     <LinearLayout
         android:id="@+id/linearLayout7"
@@ -77,31 +92,16 @@
 
     </LinearLayout>
 
-    <ImageView
-        android:id="@+id/circle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:src="@drawable/ic_ring"
-        android:scaleType="fitXY"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/user_tip"
-        android:padding="32dp"/>
-
     <TextView
         android:id="@+id/user_tip"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:gravity="center"
         android:text="TextView"
-        android:textColor="@color/chartBlue5"
+        android:textColor="@color/colorPrimaryLight"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout7"
         app:layout_constraintEnd_toEndOf="@+id/circle"
         app:layout_constraintStart_toStartOf="@+id/circle"

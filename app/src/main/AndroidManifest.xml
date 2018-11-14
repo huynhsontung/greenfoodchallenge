@@ -14,11 +14,11 @@
         android:theme="@style/AppTheme.NoActionBar"
         tools:ignore="GoogleAppIndexingWarning">
         <service
-            android:name=".Pledge.DailyPledgeService"
+            android:name=".pledge.DailyPledgeService"
             tools:ignore="InnerclassSeparator" />
 
         <activity
-            android:name=".InitialSetup.InitialSetupActivity"
+            android:name=".setup.InitialSetupActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,12 +26,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity" />
         <activity
-            android:name=".DashBoard.Improve.ImproveActivity"
+            android:name=".MainActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".dashboard.improve.ImproveActivity"
             tools:ignore="InnerclassSeparator" />
         <activity
-            android:name=".Profile.Setting.SettingsActivity"
+            android:name=".profile.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity"
             tools:ignore="InnerclassSeparator">
@@ -40,7 +42,7 @@
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
         <activity
-            android:name=".Profile.Setting.AboutPageActivity"
+            android:name=".profile.settings.AboutPageActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="openaboutpage" />
@@ -49,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Profile.Setting.LogoutActivity"
+            android:name=".profile.settings.LogoutActivity"
             tools:ignore="InnerclassSeparator">
             <intent-filter>
                 <action android:name="openLogout" />
@@ -62,7 +64,7 @@
         <!-- android:name=".PlanList.PlanPagerActivity" -->
         <!-- android:theme="@style/AppTheme"></activity> -->
         <activity
-            android:name=".Profile.UserAccount.UserAccountActivity"
+            android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

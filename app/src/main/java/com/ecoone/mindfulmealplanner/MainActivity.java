@@ -12,9 +12,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.ecoone.mindfulmealplanner.DashBoard.DashboardFragment;
-import com.ecoone.mindfulmealplanner.Pledge.PledgeFragment;
-import com.ecoone.mindfulmealplanner.Profile.ProfileFragment;
+import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
+import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
+import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity implements

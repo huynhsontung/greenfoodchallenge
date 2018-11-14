@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -47,14 +46,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:inputType="none"/>
 
         <TextView
             android:id="@+id/fragment_dashboard_icon_edit_done"
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:layout_marginStart="10dp"
-            android:drawableStart="@drawable/edit"
+            android:drawableStart="@drawable/ic_edit"
             android:gravity="center_vertical|center_horizontal" />
 
     </LinearLayout>
