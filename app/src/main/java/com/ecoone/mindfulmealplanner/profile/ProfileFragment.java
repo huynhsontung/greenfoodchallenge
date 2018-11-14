@@ -40,6 +40,8 @@ public class ProfileFragment extends Fragment {
     private TextView userDisplayNameTextView;
     private TextView userEmailTextView;
 
+    private ValueEventListener mValueEventListener;
+
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -90,30 +92,31 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        mValueEventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                User user = dataSnapshot.getValue(User.class);
+                if (user != null) {
+                    userDispalyName = user.displayName;
+                    userEmail = user.email;
+                    userGender = user.gender;
+                    userIconId = getDrawableIdbyName(user.iconName);
+                    userDisplayNameTextView.setText(userDispalyName);
+                    userEmailTextView.setText(userEmail);
+                    usericonImageView.setImageResource(userIconId);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        };
+
 
         mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
                 .child(FirebaseDatabaseInterface.USERINFO_NODE)
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                        User user = dataSnapshot.getValue(User.class);
-                        if (user != null) {
-                            userDispalyName = user.displayName;
-                            userEmail = user.email;
-                            userGender = user.gender;
-                            userIconId = getDrawableIdbyName(user.iconName);
-                            userDisplayNameTextView.setText(userDispalyName);
-                            userEmailTextView.setText(userEmail);
-                            usericonImageView.setImageResource(userIconId);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
-
-
+                .addValueEventListener(mValueEventListener);
     }
 
     private int getDrawableIdbyName(String name) {
@@ -174,6 +177,8 @@ public class ProfileFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
+                .child(FirebaseDatabaseInterface.USERINFO_NODE).removeEventListener(mValueEventListener);
 
     }
 }
