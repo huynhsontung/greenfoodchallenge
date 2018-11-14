@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.View;
@@ -43,10 +44,10 @@ public class UserIconDialogFragment extends DialogFragment {
 
     }
     public static UserIconDialogFragment newInstance() {
-        UserIconDialogFragment userIconDialogFragment = new UserIconDialogFragment();
-        return userIconDialogFragment;
+        return new UserIconDialogFragment();
     }
 
+    @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

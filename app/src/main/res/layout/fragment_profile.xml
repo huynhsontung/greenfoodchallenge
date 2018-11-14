@@ -93,7 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/profile_list_item_text_view_left_side_margin"
             android:textSize="@dimen/profile_list_item_title_name_size"
-            android:text="@string/action_settings" />
+            android:text="@string/title_activity_settings" />
 
         <View
             android:layout_width="0dp"

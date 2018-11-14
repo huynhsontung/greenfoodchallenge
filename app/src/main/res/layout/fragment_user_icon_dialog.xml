@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:columnWidth="100dp"
         android:gravity="center"
-        android:numColumns="auto_fit"/>
-
+        android:numColumns="auto_fit"
+        android:background="@android:color/white"/>
 
 </LinearLayout>
