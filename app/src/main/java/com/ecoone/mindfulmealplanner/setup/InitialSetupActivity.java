@@ -66,12 +66,10 @@ public class InitialSetupActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_initial_setup);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
 
         observeFinish();
-
     }
 
     private void observeFinish() {
@@ -187,6 +185,7 @@ public class InitialSetupActivity extends AppCompatActivity {
     }
 
     private void setupViewPager() {
+        setContentView(R.layout.activity_initial_setup);
         ViewPager mViewPager = findViewById(R.id.initial_setup_view_pager);
         PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
