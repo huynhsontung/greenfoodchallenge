@@ -10,9 +10,8 @@
         android:background="@color/colorPrimary"
         android:theme="@style/AppTheme.AppBarOverlay"
         app:tabGravity="fill"
-        app:tabBackground="@drawable/tab_color_selector"
         app:tabIndicatorColor="@color/colorAccentLight"
         app:tabMode="fixed"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextColor="@android:color/white"/>
+        app:tabSelectedTextColor="@android:color/white"
+        app:tabTextColor="@color/colorPrimaryLight"/>
 </android.support.design.widget.AppBarLayout>
