@@ -6,7 +6,7 @@
         android:title="About">
         <intent
             android:targetPackage="com.ecoone.mindfulmealplanner"
-            android:targetClass="com.ecoone.mindfulmealplanner.Profile.Setting.AboutPageActivity"/>
+            android:targetClass="com.ecoone.mindfulmealplanner.profile.settings.AboutPageActivity"/>
     </Preference>
 
     <com.ecoone.mindfulmealplanner.profile.settings.LogoutDialogPreference
