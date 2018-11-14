@@ -29,6 +29,15 @@ public class DashboardFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static DashboardFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        DashboardFragment fragment = new DashboardFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -70,7 +79,7 @@ public class DashboardFragment extends Fragment {
         });
     }
 
-    static class Adapter extends FragmentPagerAdapter {
+    class Adapter extends FragmentPagerAdapter {
         private final List<Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
 

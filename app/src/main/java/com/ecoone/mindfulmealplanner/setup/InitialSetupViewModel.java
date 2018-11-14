@@ -9,11 +9,8 @@ import com.ecoone.mindfulmealplanner.database.User;
 public class InitialSetupViewModel extends ViewModel {
     public User localUser = new User();
     public Plan localPlan = new Plan();
-    private MutableLiveData<Boolean> checker = new MutableLiveData<>();
+    public float[] foodAmount = new float[7];
     private MutableLiveData<String> displayName = new MutableLiveData<>();
 
-    public MutableLiveData<Boolean> getChecker() {
-        return checker;
-    }
     public MutableLiveData<String> getDisplayName(){return displayName;}
 }

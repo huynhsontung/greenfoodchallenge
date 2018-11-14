@@ -27,6 +27,14 @@ public class PledgeFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static PledgeFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        PledgeFragment fragment = new PledgeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,

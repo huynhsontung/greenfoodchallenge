@@ -27,6 +27,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 public class ProfileFragment extends Fragment {
 
     private int userIconId;
@@ -49,6 +51,15 @@ public class ProfileFragment extends Fragment {
     private static final String CLASSTAG = "(ProfileFragment)";
     private static final int LOGOUT_SIGN = 0;
 
+
+    public static ProfileFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        ProfileFragment fragment = new ProfileFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
     public interface OnDataPassingListener {
         void passDataFromProfileToMain(int input);
     }
@@ -65,7 +76,7 @@ public class ProfileFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         settingLayout = view.findViewById(R.id.profile_setting_layout);
@@ -121,9 +132,8 @@ public class ProfileFragment extends Fragment {
 
     private int getDrawableIdbyName(String name) {
         Log.i(TAG, CLASSTAG + "Icon name " + name);
-        int resourceId = getResources()
-                .getIdentifier(name, "drawable", getActivity().getPackageName());
-        return resourceId;
+        return getResources()
+                .getIdentifier(name, "drawable", Objects.requireNonNull(getActivity()).getPackageName());
     }
 
     @Override

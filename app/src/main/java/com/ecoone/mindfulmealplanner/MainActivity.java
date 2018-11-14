@@ -15,9 +15,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
+import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -41,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements
     private android.support.v7.widget.Toolbar mToolbar;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
-
+    private HashMap<String,Fragment> fragmentPageList = new HashMap<>();
     private DashboardFragment mDashboardFragment;
     private ProfileFragment mProfileFragment;
     private PledgeFragment mPledgeFragment;
@@ -59,10 +65,18 @@ public class MainActivity extends AppCompatActivity implements
 
         MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.nav_dashboard);
         setTitle(menuItem.getTitle());
-        mDashboardFragment = new DashboardFragment();
+        mDashboardFragment = DashboardFragment.newInstance();
         switchFragment(mDashboardFragment);
+        setupFragmentListForNav();
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
+
+    private void setupFragmentListForNav() {
+        fragmentPageList.put("Dashboard", DashboardFragment.newInstance());
+        fragmentPageList.put("Pledge", PledgeFragment.newInstance());
+        fragmentPageList.put("Profile", ProfileFragment.newInstance());
+    }
+
     private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -148,22 +162,19 @@ public class MainActivity extends AppCompatActivity implements
         setTitle(menuItem.getTitle());
         switch (menuItem.getItemId()) {
             case R.id.nav_dashboard :
-                mDashboardFragment = new DashboardFragment();
-                switchFragment(mDashboardFragment);
+                switchFragment(fragmentPageList.get("Dashboard"));
                 break;
 
             case R.id.nav_pledge :
-                mPledgeFragment = new PledgeFragment();
-                switchFragment(mPledgeFragment);
+                switchFragment(fragmentPageList.get("Pledge"));
                 break;
 
             case R.id.nav_profile :
-                mProfileFragment = new ProfileFragment();
-                switchFragment(mProfileFragment);
+                switchFragment(fragmentPageList.get("Profile"));
                 break;
 
-            case R.id.nav_meal_tracker :
-                break;
+//            case R.id.nav_meal_tracker :
+//                break;
 
             default:
                 return false;

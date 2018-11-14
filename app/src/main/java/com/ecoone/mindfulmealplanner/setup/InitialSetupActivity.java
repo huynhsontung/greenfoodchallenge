@@ -2,6 +2,7 @@ package com.ecoone.mindfulmealplanner.setup;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,14 +53,14 @@ import java.util.Objects;
 import java.util.Random;
 
 
-public class InitialSetupActivity extends AppCompatActivity {
+public class InitialSetupActivity extends AppCompatActivity implements Button.OnClickListener{
 
     private static final int RC_SIGN_IN = 123;
     private static final int NUMBER_OF_PAGES = 3;
 
     private static final String CLASSTAG = "(InitialSetupActivity)";
     private static final String TAG = "testActivity";
-
+    private NonSwipeableViewPager mViewPager;
     private InitialSetupViewModel mViewModel;
     DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     FirebaseUser user;
@@ -68,41 +70,6 @@ public class InitialSetupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
         checkIfGoToDashboard();
-
-        observeFinish();
-    }
-
-    private void observeFinish() {
-        final android.arch.lifecycle.Observer<Boolean> checkerObserver = new android.arch.lifecycle.Observer<Boolean>() {
-            @Override
-            public void onChanged(Boolean checker) {
-
-                Log.i(TAG, CLASSTAG + "View Model data changed");
-                if(!checker){return;}
-
-                if (mDatabase == null) {
-                    com.google.firebase.database.FirebaseDatabase database = com.google.firebase.database.FirebaseDatabase.getInstance();
-                    database.setPersistenceEnabled(true);
-                    mDatabase = database.getReference();
-                }
-
-
-                Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
-                Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
-
-                mViewModel.localUser.iconName = "android";
-                FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
-                FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
-
-                Pledge pledge = new Pledge();
-                pledge.amount = 0;
-                pledge.location = "Vancouver";
-                FirebaseDatabaseInterface.writePledge(pledge);
-
-                startActivityAndFinish();
-            }
-        };
-        mViewModel.getChecker().observe(this,checkerObserver);
     }
 
     private void checkIfGoToDashboard() {
@@ -186,7 +153,9 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     private void setupViewPager() {
         setContentView(R.layout.activity_initial_setup);
-        ViewPager mViewPager = findViewById(R.id.initial_setup_view_pager);
+        Button nextButton = findViewById(R.id.button_next);
+
+        mViewPager = findViewById(R.id.initial_setup_view_pager);
         PagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
@@ -204,6 +173,49 @@ public class InitialSetupActivity extends AppCompatActivity {
         };
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(0);
+
+        nextButton.setOnClickListener(this);
+    }
+
+        @Override
+    public void onClick(View v) {
+        int position = mViewPager.getCurrentItem();
+        if(position == 2){
+            Plan plan = new Plan();
+            plan.planName = "Plan1";
+            plan.beef = mViewModel.foodAmount[0];
+            plan.pork = mViewModel.foodAmount[1];
+            plan.chicken = mViewModel.foodAmount[2];
+            plan.fish = mViewModel.foodAmount[3];
+            plan.eggs = mViewModel.foodAmount[4];
+            plan.beans = mViewModel.foodAmount[5];
+            plan.vegetables = mViewModel.foodAmount[6];
+            mViewModel.localUser.currentPlanName = plan.planName;
+            mViewModel.localPlan = plan;
+
+            if (mDatabase == null) {
+                com.google.firebase.database.FirebaseDatabase database = com.google.firebase.database.FirebaseDatabase.getInstance();
+                database.setPersistenceEnabled(true);
+                mDatabase = database.getReference();
+            }
+
+
+            Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
+            Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
+
+            mViewModel.localUser.iconName = "android";
+            FirebaseDatabaseInterface.writeUser(mViewModel.localUser);
+            FirebaseDatabaseInterface.writePlan(mViewModel.localPlan);
+
+            Pledge pledge = new Pledge();
+            pledge.amount = 0;
+            pledge.location = "Vancouver";
+            FirebaseDatabaseInterface.writePledge(pledge);
+
+            startActivityAndFinish();
+        } else {
+            mViewPager.setCurrentItem(position+1);
+        }
     }
 
     // Fragments declarations
@@ -223,7 +235,7 @@ public class InitialSetupActivity extends AppCompatActivity {
             mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(InitialSetupViewModel.class);
             View view = inflater.inflate(R.layout.fragment_initial_setup_greeting, container, false);
             greetingText = view.findViewById(R.id.greeting_text);
-            greetingText.setText("Greeting!");
+            greetingText.setText("Greetings!");
             mViewModel.getDisplayName().observe(this, new Observer<String>() {
                 @Override
                 public void onChanged(String newDisplayName) {
@@ -283,11 +295,8 @@ public class InitialSetupActivity extends AppCompatActivity {
         }
 
         InitialSetupViewModel mViewModel;
-
-        private Button finishButton;
         private PieChart mPieChart;
         private String[] foodName;
-        private float[] foodAmount;
         private int foodLen;
         private ConstraintLayout[] mFoodSeekBarView;
         private TextView[] mFoodSeekBarTextView;
@@ -299,36 +308,14 @@ public class InitialSetupActivity extends AppCompatActivity {
             mViewModel = ViewModelProviders.of(getActivity()).get(InitialSetupViewModel.class);
             mPieChart = view.findViewById(R.id.initial_screen_pie_chart);
             initializeSeekBarView(view);
-            setPieChartView(foodAmount);
-            finishButton = view.findViewById(R.id.initial_screen_finish_button);
-            setupFinishButton();
+            setPieChartView(mViewModel.foodAmount);
             return view;
         }
 
-        private void setupFinishButton() {
-            finishButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Plan plan = new Plan();
-                    plan.planName = "Plan1";
-                    plan.beef = foodAmount[0];
-                    plan.pork = foodAmount[1];
-                    plan.chicken = foodAmount[2];
-                    plan.fish = foodAmount[3];
-                    plan.eggs = foodAmount[4];
-                    plan.beans = foodAmount[5];
-                    plan.vegetables = foodAmount[6];
-                    mViewModel.localUser.currentPlanName = plan.planName;
-                    mViewModel.localPlan = plan;
-                    mViewModel.getChecker().setValue(true);
-                }
-            });
-        }
 
         private void initializeSeekBarView(View view) {
             foodName = findStringArrayRes("food_name");
             foodLen = foodName.length;
-            foodAmount = new float[foodLen];
             mFoodSeekBarView = new ConstraintLayout[foodLen];
             mFoodSeekBarTextView = new TextView[foodLen];
             mFoodSeekBarAction = new SeekBar[foodLen];
@@ -350,7 +337,7 @@ public class InitialSetupActivity extends AppCompatActivity {
                 mFoodSeekBarAction[i].setProgress(randInt(0, mFoodSeekBarAction[i].getMax()));
                 int amount = mFoodSeekBarAction[i].getProgress();
                 mFoodSeekBarValueView[i].setText(getString(R.string.amount_gram,amount));
-                foodAmount[i] = amount;
+                mViewModel.foodAmount[i] = amount;
             }
             setSeekBarChangeListener();
         }
@@ -362,8 +349,8 @@ public class InitialSetupActivity extends AppCompatActivity {
                     @Override
                     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                         mFoodSeekBarValueView[finalI].setText(getString(R.string.amount_gram,progress));
-                        foodAmount[finalI] = progress;
-                        setPieChartView(foodAmount);
+                        mViewModel.foodAmount[finalI] = progress;
+                        setPieChartView(mViewModel.foodAmount);
                     }
 
                     @Override
@@ -411,11 +398,7 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     }
 
-    private void startActivityAndFinish() {
-        Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
+
 
     @Override
     public void onStart() {
@@ -449,8 +432,20 @@ public class InitialSetupActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
         Log.i(TAG,CLASSTAG + "onbackpressed");
+        int position = mViewPager.getCurrentItem();
+        if(position == 0){
+            super.onBackPressed();
+        } else {
+            mViewPager.setCurrentItem(position-1);
+        }
+    }
+
+    private void startActivityAndFinish() {
+        Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
+        startActivity(intent);
         finish();
     }
+
+
 }

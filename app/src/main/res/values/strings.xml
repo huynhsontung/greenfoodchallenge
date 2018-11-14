@@ -10,7 +10,7 @@
     <string name="initial_screen_gender">Gender</string>
     <string name="initial_screen_gender_male">Male</string>
     <string name="initial_screen_gender_female">Female</string>
-    <string name="initial_screen_next">finish</string>
+    <string name="initial_screen_next">next</string>
     <string name="first_log_in_button">submit</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="current_co2e">Current Plan Produces\nApprox. %1$s Tonnes CO2e Yearly</string>
