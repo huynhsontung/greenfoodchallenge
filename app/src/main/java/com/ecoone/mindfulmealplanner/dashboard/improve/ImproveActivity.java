@@ -46,7 +46,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
     private TextView mImprovedPlanCo2ePerYearTextView;
     private TextView mPlanDifferenceCo2ePerYearTextView;
-    private Button editButton;
     private Button saveAsButton;
     private Button saveButton;
     private ConstraintLayout[] mFoodSeekBarView;
@@ -86,7 +85,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         mPieChart = findViewById(R.id.improve_piechart);
         mImprovedPlanCo2ePerYearTextView = findViewById(R.id.improve_improved_plan_per_year);
         mPlanDifferenceCo2ePerYearTextView = findViewById(R.id.improve_difference_of_plan_per_year);
-        editButton = findViewById(R.id.improve_edit);
         saveAsButton = findViewById(R.id.improve_save_as);
         saveButton = findViewById(R.id.improve_save);
 
@@ -265,16 +263,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     }
 
     private void setButtonAction() {
-        editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                for (int i = 0; i < foodLen; i++) {
-                    mFoodSeekBarView[i].setVisibility(View.VISIBLE);
-                }
-                v.setVisibility(View.GONE);
-            }
-        });
-
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
