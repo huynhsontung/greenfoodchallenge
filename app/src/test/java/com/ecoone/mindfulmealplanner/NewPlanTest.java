@@ -1,7 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
-import com.ecoone.mindfulmealplanner.DB.Plan;
-import com.ecoone.mindfulmealplanner.Tool.NewPlan;
+import com.ecoone.mindfulmealplanner.database.Plan;
+import com.ecoone.mindfulmealplanner.tools.NewPlan;
 
 import org.junit.Test;
 

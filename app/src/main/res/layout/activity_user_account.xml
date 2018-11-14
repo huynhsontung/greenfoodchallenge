@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <include
+        android:id="@+id/activity_user_account_toolbar"
+        layout="@layout/component_app_bar"/>
+
+    <LinearLayout
+        android:id="@+id/user_account_icon_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/profile_list_item_layout_padding"
+        android:paddingTop="@dimen/profile_list_item_layout_padding"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:layout_gravity="top"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
+            android:textSize="@dimen/profile_list_item_title_name_size"
+            android:text="Photo"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/user_account_user_icon"
+            android:layout_width="192px"
+            android:layout_height="192px"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="@dimen/profile_list_item_right_side_margin"
+            android:src="@drawable/arrow_right" />
+
+    </LinearLayout>
+
+    <include layout="@layout/grey_area"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+    <LinearLayout
+        android:id="@+id/user_account_display_name_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/profile_list_item_layout_padding"
+        android:paddingTop="@dimen/profile_list_item_layout_padding"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:layout_gravity="top"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
+            android:textSize="@dimen/profile_list_item_title_name_size"
+            android:text="Name"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/user_account_user_display_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/profile_list_item_right_side_margin"/>
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginRight="@dimen/profile_list_item_right_side_margin"-->
+            <!--android:src="@drawable/arrow_right" />-->
+
+    </LinearLayout>
+
+    <include layout="@layout/grey_area"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+
+    <LinearLayout
+        android:id="@+id/user_account_display_email_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingTop="@dimen/profile_list_item_layout_padding"
+        android:paddingBottom="@dimen/profile_list_item_layout_padding">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
+            android:text="Email"
+            android:textSize="@dimen/profile_list_item_title_name_size" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/user_account_user_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/profile_list_item_right_side_margin" />
+
+    </LinearLayout>
+
+
+    <include layout="@layout/grey_area"
+        android:layout_width="match_parent"
+        android:layout_height="2dp" />
+
+    <LinearLayout
+        android:id="@+id/user_account_display_gender_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="@dimen/profile_list_item_layout_padding"
+        android:paddingTop="@dimen/profile_list_item_layout_padding"
+        android:orientation="horizontal"
+        android:clickable="true"
+        android:layout_gravity="top"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
+            android:textSize="@dimen/profile_list_item_title_name_size"
+            android:text="Gender"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <TextView
+            android:id="@+id/user_account_user_gender"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/profile_list_item_right_side_margin" />
+
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginRight="@dimen/profile_list_item_right_side_margin"-->
+            <!--android:src="@drawable/arrow_right" />-->
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/my_grey" />
+
+</LinearLayout>
+

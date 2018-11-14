@@ -5,13 +5,12 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="initial_screen_username">Name</string>
     <string name="initial_screen_username_hint">Enter your username</string>
     <string name="initial_screen_gender">Gender</string>
     <string name="initial_screen_gender_male">Male</string>
     <string name="initial_screen_gender_female">Female</string>
-    <string name="initial_screen_next">finish</string>
+    <string name="initial_screen_next">next</string>
     <string name="first_log_in_button">submit</string>
     <string name="title_activity_dashboard">DashboardActivity</string>
     <string name="current_co2e">Current Plan Produces\nApprox. %1$s Tonnes CO2e Yearly</string>
@@ -38,4 +37,5 @@
         <item>male</item>
         <item>female</item>
     </string-array>
+    <string name="title_activity_user_account">UserAccountActivity</string>
 </resources>
