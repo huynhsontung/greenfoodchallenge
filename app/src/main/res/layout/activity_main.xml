@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/main_toolbar"
-        layout="@layout/app_bar"
+        layout="@layout/component_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
@@ -36,7 +36,8 @@
             app:menu="@menu/activity_main_drawer"
             app:itemIconTint="@color/bottom_nav_color_selector"
             app:itemTextColor="@color/bottom_nav_color_selector"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:elevation="4dp">
         </android.support.design.widget.BottomNavigationView>
     </android.support.constraint.ConstraintLayout>
 

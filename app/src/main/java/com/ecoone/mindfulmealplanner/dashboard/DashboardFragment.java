@@ -40,7 +40,7 @@ public class DashboardFragment extends Fragment {
         ViewPager viewPager = rootView.findViewById(R.id.dashboard_viewpager);
         setupViewPager(viewPager);
 
-        TabLayout myTabs = rootView.findViewById(R.id.dashboard_result_tabs);
+        TabLayout myTabs = rootView.findViewById(R.id.tab_bar);
         myTabs.setupWithViewPager(viewPager);
 
         return rootView;

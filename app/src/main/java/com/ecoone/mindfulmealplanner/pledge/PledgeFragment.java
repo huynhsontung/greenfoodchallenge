@@ -37,7 +37,7 @@ public class PledgeFragment extends Fragment {
         ViewPager viewPager = rootView.findViewById(R.id.pledge_viewpager);
         setupViewPager(viewPager);
 
-        TabLayout myTabs = rootView.findViewById(R.id.pledge_result_tabs);
+        TabLayout myTabs = rootView.findViewById(R.id.tab_bar);
         myTabs.setupWithViewPager(viewPager);
 
         ViewGroup vg = (ViewGroup) myTabs.getChildAt(0);

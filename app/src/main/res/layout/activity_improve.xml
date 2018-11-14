@@ -10,7 +10,7 @@
 
     <include
         android:id="@+id/activity_improve_toolbar"
-        layout="@layout/app_bar"
+        layout="@layout/component_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent" />
@@ -77,7 +77,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_1"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -89,7 +89,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_2"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -100,7 +100,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_3"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -111,7 +111,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_4"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -122,7 +122,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_5"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -133,7 +133,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_6"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
@@ -144,7 +144,7 @@
 
     <include
         android:id="@+id/improve_seekbar_component_7"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"

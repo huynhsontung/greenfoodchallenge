@@ -9,7 +9,7 @@
 
     <include
         android:id="@+id/activity_user_account_toolbar"
-        layout="@layout/app_bar"/>
+        layout="@layout/component_app_bar"/>
 
     <LinearLayout
         android:id="@+id/user_account_icon_layout"

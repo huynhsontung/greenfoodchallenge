@@ -36,7 +36,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_1"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -50,7 +50,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_2"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -63,7 +63,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_3"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -76,7 +76,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_4"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -89,7 +89,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_5"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -102,7 +102,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_6"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -115,7 +115,7 @@
 
     <include
         android:id="@+id/initial_screen_seekbar_component_7"
-        layout="@layout/seekbar_component"
+        layout="@layout/component_seekbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
