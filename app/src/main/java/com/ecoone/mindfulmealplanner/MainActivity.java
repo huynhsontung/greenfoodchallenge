@@ -266,6 +266,11 @@ public class MainActivity extends AppCompatActivity
             fragment = new PledgeFragment();
         }
 
+        else if (id == R.id.fragment_green_meal) {
+            Intent intent = new Intent(this, AddGreenMealActivity.class);
+            startActivity(intent);
+        }
+
         else if (id == R.id.fragment_settings) {
             //..
             Intent intent =new  Intent(this,SettingsActivity.class);

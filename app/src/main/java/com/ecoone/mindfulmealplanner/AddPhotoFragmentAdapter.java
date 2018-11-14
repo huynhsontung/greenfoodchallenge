@@ -13,10 +13,6 @@ public class AddPhotoFragmentAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int i) {
         AddPhotoFragment addPhotoFragment = new AddPhotoFragment();
-        Bundle bundle = new Bundle();
-        i = i+1;
-        bundle.putString("message", "Hello from page :" + i);
-        addPhotoFragment.setArguments(bundle);
         return addPhotoFragment;
     }
 

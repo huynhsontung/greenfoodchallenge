@@ -39,9 +39,7 @@ public class AddPhotoFragment extends Fragment {
         imageToUpload = (ImageView)view.findViewById(R.id.uploadImage);
         mealImage = (ImageView)view.findViewById(R.id.meal_image_view);
         imageFromCamera = (ImageView)view.findViewById(R.id.camera_image_view);
-        textView = view.findViewById(R.id.test_text_view);
-        String message = getArguments().getString("message");
-        textView.setText(message);
+
 
         imageToUpload.setOnClickListener(new View.OnClickListener() {
             @Override
