@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,15 +11,17 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
+import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 
 
 public class MainActivity extends AppCompatActivity implements
-        ProfileFragment.OnDataPassingListener {
+        ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener {
 
 //    private String userDisplayName;
 //    private String userEmail;
@@ -58,37 +61,7 @@ public class MainActivity extends AppCompatActivity implements
         setTitle(menuItem.getTitle());
         mDashboardFragment = new DashboardFragment();
         switchFragment(mDashboardFragment);
-
-        mBottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                setTitle(menuItem.getTitle());
-                switch (menuItem.getItemId()) {
-                    case R.id.nav_dashboard :
-                        mDashboardFragment = new DashboardFragment();
-                        switchFragment(mDashboardFragment);
-                        return true;
-
-                    case R.id.nav_pledge :
-                        mPledgeFragment = new PledgeFragment();
-                        switchFragment(mPledgeFragment);
-                        return true;
-
-                    case R.id.nav_profile :
-                        mProfileFragment = new ProfileFragment();
-                        switchFragment(mProfileFragment);
-                        return true;
-
-                    case R.id.nav_meal_tracker :
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-        });
-
-
+        mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
     private void switchFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -96,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements
         ft.replace(R.id.main_content, fragment);
         ft.commit();
     }
-
 
     @Override
     public void passDataFromProfileToMain(int input) {
@@ -170,32 +142,61 @@ public class MainActivity extends AppCompatActivity implements
 //                .addValueEventListener(valueEventListener);
 //    }
 //
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.share, menu);
-//        return super.onCreateOptionsMenu(menu);
-//    }
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        switch (item.getItemId()) {
-//            case R.id.mShare:
-//                Intent i = new Intent(
-//                        android.content.Intent.ACTION_SEND);
-//                i.setType("text/plain");
-//                String shareText = "I have pledged ";
-//                shareText = shareText + String.valueOf(MyPledgeFragment.pledgeAmount) +"kg of CO2e in this app. Come and take a look!";
-//                i.putExtra(
-//
-//                        android.content.Intent.EXTRA_TEXT, shareText+"     Download this app here https://play.google.com/store/search?q=greenfoodchallenge");
-//
-//                startActivity(Intent.createChooser(
-//                        i,
-//                        "Share Via"));
-//                break;
-//        }
-////        Toast.makeText(getApplicationContext(), "You click on menu share", Toast.LENGTH_SHORT).show();
-//        return super.onOptionsItemSelected(item);
-//    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        setTitle(menuItem.getTitle());
+        switch (menuItem.getItemId()) {
+            case R.id.nav_dashboard :
+                mDashboardFragment = new DashboardFragment();
+                switchFragment(mDashboardFragment);
+                break;
+
+            case R.id.nav_pledge :
+                mPledgeFragment = new PledgeFragment();
+                switchFragment(mPledgeFragment);
+                break;
+
+            case R.id.nav_profile :
+                mProfileFragment = new ProfileFragment();
+                switchFragment(mProfileFragment);
+                break;
+
+            case R.id.nav_meal_tracker :
+                break;
+
+            default:
+                return false;
+        }
+        invalidateOptionsMenu();
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.share, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.action_share:
+                Intent intent = new Intent(
+                        android.content.Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                String shareText = "I have pledged ";
+                shareText = shareText + String.valueOf(MyPledgeFragment.pledgeAmount) +"kg of CO2e in this app. Come and take a look!";
+                intent.putExtra(
+
+                        android.content.Intent.EXTRA_TEXT, shareText+"     Download this app here https://play.google.com/store/search?q=greenfoodchallenge");
+
+                startActivity(Intent.createChooser(
+                        intent,
+                        "Share Via"));
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 //
 //    private void setupNavigationDrawer() {
 //        setSupportActionBar(mToolbar);
@@ -365,4 +366,6 @@ public class MainActivity extends AppCompatActivity implements
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
     }
+
+
 }
