@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
+
 public class AddGreenMealActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
@@ -20,6 +23,11 @@ public class AddGreenMealActivity extends AppCompatActivity {
     EditText getMealName;
     private ViewPager viewPager;
     private AddPhotoFragmentAdapter adapter;
+
+    public static Intent newIntent(Context packageContext) {
+        Intent intent = new Intent(packageContext, AddGreenMealActivity.class);
+        return intent;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

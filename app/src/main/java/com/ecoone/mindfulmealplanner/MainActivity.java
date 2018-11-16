@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.database.Pledge;
@@ -75,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements
         fragmentPageList.put("Dashboard", DashboardFragment.newInstance());
         fragmentPageList.put("Pledge", PledgeFragment.newInstance());
         fragmentPageList.put("Profile", ProfileFragment.newInstance());
+        fragmentPageList.put("Meal Tracker", MealTrackerFragment.newInstance());
     }
 
     private void switchFragment(Fragment fragment) {
@@ -173,8 +176,9 @@ public class MainActivity extends AppCompatActivity implements
                 switchFragment(fragmentPageList.get("Profile"));
                 break;
 
-//            case R.id.nav_meal_tracker :
-//                break;
+            case R.id.nav_meal_tracker :
+                switchFragment(fragmentPageList.get("Meal Tracker"));
+                break;
 
             default:
                 return false;
