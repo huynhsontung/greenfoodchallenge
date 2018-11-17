@@ -19,15 +19,16 @@
         android:id="@+id/nav_dashboard"
         android:icon="@drawable/ic_nav_dashboard"
         android:title="Dashboard" />
-    <!--<item-->
-        <!--android:id="@+id/nav_meal_tracker"-->
-        <!--android:icon="@drawable/ic_nav_explore"-->
-        <!--android:title="Meal Tracker" />-->
-
     <item
         android:id="@+id/nav_pledge"
         android:icon="@drawable/ic_nav_pledge"
         android:title="Pledge" />
+    <item
+        android:id="@+id/nav_meal_tracker"
+        android:icon="@drawable/ic_nav_explore"
+        android:title="Meal Tracker" />
+
+
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_nav_profile"

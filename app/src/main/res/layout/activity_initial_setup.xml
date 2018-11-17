@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".setup.InitialSetupActivity">
 
-    <com.ecoone.mindfulmealplanner.setup.NonSwipeableViewPager
+    <com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager
         android:id="@+id/initial_setup_view_pager"
         android:layout_width="match_parent"
         android:layout_height="0dp"

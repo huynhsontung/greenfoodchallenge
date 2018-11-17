@@ -224,7 +224,8 @@ public class DashboardPlanFragment extends Fragment {
         mChartPager.setAdapter(mChartPagerAdapter);
         mChartPager.setCurrentItem(0);
         mChartPager.setClipToPadding(false);
-        mChartPager.setPadding(150,0,150,0);
+        mChartPager.setPadding(100,20,100,20);
+        mChartPager.setPageMargin(24);
     }
 
     private void setupImproveButton(){

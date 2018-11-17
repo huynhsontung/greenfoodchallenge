@@ -62,7 +62,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        return inflater.inflate(R.layout.fragment_pledge_discover, container, false);
     }
 
     @Override
@@ -185,7 +185,7 @@ public class DiscoverFragment extends Fragment {
         private ImageView myPeoplePledgeIcon;
 
         public PeoplePledgeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.view_discover_list, parent, false));
+            super(inflater.inflate(R.layout.component_view_discover_list, parent, false));
             //itemView.setOnClickListener(this);
 
             myPeoplePledgeName = itemView.findViewById(R.id.discover_list_name);

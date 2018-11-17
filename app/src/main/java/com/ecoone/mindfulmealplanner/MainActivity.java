@@ -7,23 +7,19 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
-import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
+import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -42,47 +38,57 @@ public class MainActivity extends AppCompatActivity implements
 //
 //    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
 //    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
+    private NonSwipeableViewPager mViewPager;
     private BottomNavigationView mBottomNavigationView;
     private android.support.v7.widget.Toolbar mToolbar;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
-    private HashMap<String,Fragment> fragmentPageList = new HashMap<>();
-    private DashboardFragment mDashboardFragment;
-    private ProfileFragment mProfileFragment;
-    private PledgeFragment mPledgeFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mBottomNavigationView = findViewById(R.id.main_bottom_nav);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-
         MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.nav_dashboard);
         setTitle(menuItem.getTitle());
-        mDashboardFragment = DashboardFragment.newInstance();
-        switchFragment(mDashboardFragment);
         setupFragmentListForNav();
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
     private void setupFragmentListForNav() {
-        fragmentPageList.put("Dashboard", DashboardFragment.newInstance());
-        fragmentPageList.put("Pledge", PledgeFragment.newInstance());
-        fragmentPageList.put("Profile", ProfileFragment.newInstance());
+        mViewPager = findViewById(R.id.main_content);
+        FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
+            @Override
+            public Fragment getItem(int i) {
+                switch (i) {
+                    case 0: return DashboardFragment.newInstance();
+
+                    case 1: return PledgeFragment.newInstance();
+
+//                    case 2: return null; // meal tracker fragment
+
+                    default: return ProfileFragment.newInstance();
+                }
+            }
+            @Override
+            public int getCount() {
+                return mBottomNavigationView.getMenu().size();
+            }
+        };
+        mViewPager.setAdapter(pagerAdapter);
+        mViewPager.setCurrentItem(0);
     }
 
-    private void switchFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.replace(R.id.main_content, fragment);
-        ft.commit();
-    }
+//    private void switchFragment(Fragment fragment) {
+//        FragmentManager fragmentManager = getSupportFragmentManager();
+//        FragmentTransaction ft = fragmentManager.beginTransaction();
+//        ft.replace(R.id.main_content, fragment);
+//        ft.commit();
+//    }
 
     @Override
     public void passDataFromProfileToMain(int input) {
@@ -162,15 +168,15 @@ public class MainActivity extends AppCompatActivity implements
         setTitle(menuItem.getTitle());
         switch (menuItem.getItemId()) {
             case R.id.nav_dashboard :
-                switchFragment(fragmentPageList.get("Dashboard"));
+                mViewPager.setCurrentItem(0);
                 break;
 
             case R.id.nav_pledge :
-                switchFragment(fragmentPageList.get("Pledge"));
+                mViewPager.setCurrentItem(1);
                 break;
 
             case R.id.nav_profile :
-                switchFragment(fragmentPageList.get("Profile"));
+                mViewPager.setCurrentItem(3);
                 break;
 
 //            case R.id.nav_meal_tracker :

@@ -1,43 +1,25 @@
 package com.ecoone.mindfulmealplanner.setup;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.SeekBar;
-import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.database.Pledge;
-import com.ecoone.mindfulmealplanner.tools.ChartValueFormatter;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
+import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 import com.firebase.ui.auth.AuthUI;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -46,11 +28,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 
 public class InitialSetupActivity extends AppCompatActivity implements Button.OnClickListener{
@@ -217,187 +195,6 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             mViewPager.setCurrentItem(position+1);
         }
     }
-
-    // Fragments declarations
-    public static class GreetingFragment extends Fragment {
-        public static GreetingFragment newInstance() {
-            return new GreetingFragment();
-        }
-
-        private static final String CLASSTAG = "(GreetingFragment)";
-        private static final String TAG = "testActivity";
-
-        InitialSetupViewModel mViewModel;
-        TextView greetingText;
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                                 @Nullable Bundle savedInstanceState) {
-            mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(InitialSetupViewModel.class);
-            View view = inflater.inflate(R.layout.fragment_initial_setup_greeting, container, false);
-            greetingText = view.findViewById(R.id.greeting_text);
-            greetingText.setText("Greetings!");
-            mViewModel.getDisplayName().observe(this, new Observer<String>() {
-                @Override
-                public void onChanged(String newDisplayName) {
-                    mViewModel.localUser.displayName = newDisplayName;
-                    greetingText.setText(getString(R.string.greeting_user,newDisplayName));
-                }
-            });
-            return view;
-        }
-
-        @Override
-        public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-            super.onActivityCreated(savedInstanceState);
-        }
-
-    }
-
-    public static class AskGenderFragment extends Fragment implements AdapterView.OnItemSelectedListener {
-        InitialSetupViewModel mViewModel;
-        private static final String CLASSTAG = "( AskGenderFragment)";
-        private static final String TAG = "testActivity";
-        public static AskGenderFragment newInstance() {
-            return new AskGenderFragment();
-        }
-
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_initial_setup_ask_gender, container, false);
-            mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(InitialSetupViewModel.class);
-            Spinner spinner = view.findViewById(R.id.ask_gender_spinner);
-            ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(Objects.requireNonNull(getContext()),R.array.gender_array,android.R.layout.simple_spinner_item);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            spinner.setAdapter(adapter);
-            spinner.setSelection(0);
-            spinner.setOnItemSelectedListener(this);
-            return view;
-        }
-
-        @Override
-        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            mViewModel.localUser.gender = (String) parent.getItemAtPosition(position);
-        }
-
-        @Override
-        public void onNothingSelected(AdapterView<?> parent) {
-
-        }
-    }
-
-    public static class PlanSetterFragment extends Fragment{
-
-        private static final String CLASSTAG = "(PlanSetterFragment)";
-        private static final String TAG = "testActivity";
-
-        public static PlanSetterFragment newInstance(){
-            return new PlanSetterFragment();
-        }
-
-        InitialSetupViewModel mViewModel;
-        private PieChart mPieChart;
-        private String[] foodName;
-        private int foodLen;
-        private ConstraintLayout[] mFoodSeekBarView;
-        private TextView[] mFoodSeekBarTextView;
-        private SeekBar[] mFoodSeekBarAction;
-        private TextView[] mFoodSeekBarValueView;
-        @Override
-        public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_initial_setup_set_plan, container, false);
-            mViewModel = ViewModelProviders.of(getActivity()).get(InitialSetupViewModel.class);
-            mPieChart = view.findViewById(R.id.initial_screen_pie_chart);
-            initializeSeekBarView(view);
-            setPieChartView(mViewModel.foodAmount);
-            return view;
-        }
-
-
-        private void initializeSeekBarView(View view) {
-            foodName = findStringArrayRes("food_name");
-            foodLen = foodName.length;
-            mFoodSeekBarView = new ConstraintLayout[foodLen];
-            mFoodSeekBarTextView = new TextView[foodLen];
-            mFoodSeekBarAction = new SeekBar[foodLen];
-            mFoodSeekBarValueView = new TextView[foodLen];
-
-            mFoodSeekBarView[0] = view.findViewById(R.id.initial_screen_seekbar_component_1);
-            mFoodSeekBarView[1] = view.findViewById(R.id.initial_screen_seekbar_component_2);
-            mFoodSeekBarView[2] = view.findViewById(R.id.initial_screen_seekbar_component_3);
-            mFoodSeekBarView[3] = view.findViewById(R.id.initial_screen_seekbar_component_4);
-            mFoodSeekBarView[4] = view.findViewById(R.id.initial_screen_seekbar_component_5);
-            mFoodSeekBarView[5] = view.findViewById(R.id.initial_screen_seekbar_component_6);
-            mFoodSeekBarView[6] = view.findViewById(R.id.initial_screen_seekbar_component_7);
-
-            for (int i = 0; i < foodLen; i++) {
-                mFoodSeekBarTextView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_text);
-                mFoodSeekBarAction[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_action);
-                mFoodSeekBarValueView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_value);
-                mFoodSeekBarTextView[i].setText(foodName[i]);
-                mFoodSeekBarAction[i].setProgress(randInt(0, mFoodSeekBarAction[i].getMax()));
-                int amount = mFoodSeekBarAction[i].getProgress();
-                mFoodSeekBarValueView[i].setText(getString(R.string.amount_gram,amount));
-                mViewModel.foodAmount[i] = amount;
-            }
-            setSeekBarChangeListener();
-        }
-
-        private void setSeekBarChangeListener() {
-            for (int i = 0; i < foodLen; i++) {
-                final int finalI = i;
-                mFoodSeekBarAction[i].setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                    @Override
-                    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                        mFoodSeekBarValueView[finalI].setText(getString(R.string.amount_gram,progress));
-                        mViewModel.foodAmount[finalI] = progress;
-                        setPieChartView(mViewModel.foodAmount);
-                    }
-
-                    @Override
-                    public void onStartTrackingTouch(SeekBar seekBar) {
-
-                    }
-
-                    @Override
-                    public void onStopTrackingTouch(SeekBar seekBar) {
-
-                    }
-                });
-            }
-        }
-
-        private void setPieChartView(float[] data) {
-            List<PieEntry> entries = new ArrayList<>();
-            for (int i = 0; i < foodLen; i++) {
-                // filter out 0 values
-                if(data[i] > 0)
-                    entries.add(new PieEntry(data[i], foodName[i]));
-            }
-            PieDataSet pieDataSet = new PieDataSet(entries, null);
-            pieDataSet.setValueFormatter(new ChartValueFormatter());
-            pieDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-            PieData piedata = new PieData(pieDataSet);
-            Legend legend = mPieChart.getLegend();
-            legend.setEnabled(false);
-            mPieChart.getDescription().setEnabled(false);
-            mPieChart.setData(piedata);
-            mPieChart.setUsePercentValues(true);
-            mPieChart.invalidate();
-        }
-
-        private String[] findStringArrayRes(String resName) {
-            int resId = getResources().getIdentifier(resName,
-                    "array", Objects.requireNonNull(getActivity()).getPackageName());
-            return getResources().getStringArray(resId);
-        }
-
-        private static int randInt(int min, int max) {
-            Random rand = new Random();
-            return rand.nextInt(max- min + 1) + min;
-        }
-
-    }
-
 
 
     @Override
