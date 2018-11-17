@@ -10,12 +10,17 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.database.Pledge;
+import com.ecoone.mindfulmealplanner.explore.ExploreFragment;
+import com.ecoone.mindfulmealplanner.explore.RecyclerViewAdapter;
+import com.ecoone.mindfulmealplanner.pledge.DiscoverFragment;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
@@ -49,8 +54,10 @@ public class MainActivity extends AppCompatActivity implements
     private static final String CLASSTAG = "(MainActivity)";
     private HashMap<String,Fragment> fragmentPageList = new HashMap<>();
     private DashboardFragment mDashboardFragment;
+    private ExploreFragment mExploreFragment;
     private ProfileFragment mProfileFragment;
     private PledgeFragment mPledgeFragment;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -69,10 +76,12 @@ public class MainActivity extends AppCompatActivity implements
         switchFragment(mDashboardFragment);
         setupFragmentListForNav();
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+
     }
 
     private void setupFragmentListForNav() {
         fragmentPageList.put("Dashboard", DashboardFragment.newInstance());
+        fragmentPageList.put("Explore",ExploreFragment.newInstance());
         fragmentPageList.put("Pledge", PledgeFragment.newInstance());
         fragmentPageList.put("Profile", ProfileFragment.newInstance());
     }
@@ -163,6 +172,10 @@ public class MainActivity extends AppCompatActivity implements
         switch (menuItem.getItemId()) {
             case R.id.nav_dashboard :
                 switchFragment(fragmentPageList.get("Dashboard"));
+                break;
+
+            case R.id.nav_explorepage :
+                switchFragment(fragmentPageList.get("Explore"));
                 break;
 
             case R.id.nav_pledge :
