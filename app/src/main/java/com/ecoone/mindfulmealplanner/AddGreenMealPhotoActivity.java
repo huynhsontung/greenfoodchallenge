@@ -2,20 +2,12 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.annotation.Nullable;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
-
-public class AddGreenMealActivity extends AppCompatActivity {
+public class AddGreenMealPhotoActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CAMERA_IMAGE = 2;
@@ -25,14 +17,14 @@ public class AddGreenMealActivity extends AppCompatActivity {
     private AddPhotoFragmentAdapter adapter;
 
     public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, AddGreenMealActivity.class);
+        Intent intent = new Intent(packageContext, AddGreenMealPhotoActivity.class);
         return intent;
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_green_meal);
+        setContentView(R.layout.activity_add_green_meal_photo);
 
 
         viewPager = findViewById(R.id.image_pager);
