@@ -10,7 +10,7 @@ import android.widget.Button;
 public class AddGreenMealActivity extends AppCompatActivity {
 
     private static final String[] restaurantSuggestions = {
-            "A&W", "Tim Hortons", "Pizza Hut", "Liquor Store", "Subway", "SFU Dining Hall"
+            "A&W", "Tim Hortons", "Pizza Hut", "Liquor Store", "Subway", "SFU Dining Hall", "Togo Sushi"
     };
 
     public static Intent newIntent(Context packageContext) {
