@@ -34,7 +34,7 @@ import java.util.Arrays;
 public class InitialSetupActivity extends AppCompatActivity implements Button.OnClickListener{
 
     private static final int RC_SIGN_IN = 123;
-    private static final int NUMBER_OF_PAGES = 3;
+    private static final int NUMBER_OF_PAGES = 4;
 
     private static final String CLASSTAG = "(InitialSetupActivity)";
     private static final String TAG = "testActivity";
@@ -138,9 +138,14 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             @Override
             public Fragment getItem(int i) {
                 switch (i){
-                    case 0: return GreetingFragment.newInstance();
-                    case 1: return AskGenderFragment.newInstance();
-                    default: return PlanSetterFragment.newInstance();
+                    case 0:
+                        return GreetingFragment.newInstance();
+                    case 1:
+                        return AskGenderFragment.newInstance();
+                    case 2:
+                        return PresetPlansFragment.newInstance();
+                    default:
+                        return PlanSetterFragment.newInstance();
                 }
             }
 
@@ -152,13 +157,17 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(0);
 
+
         nextButton.setOnClickListener(this);
     }
 
         @Override
     public void onClick(View v) {
+            Log.i(TAG, CLASSTAG + mViewPager.getCurrentItem());
+            Log.i(TAG, CLASSTAG + "initial button clicked");
         int position = mViewPager.getCurrentItem();
-        if(position == 2){
+        if(position == 3){
+            Log.i(TAG, CLASSTAG + "inside");
             Plan plan = new Plan();
             plan.planName = "Plan1";
             plan.beef = mViewModel.foodAmount[0];
