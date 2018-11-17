@@ -17,6 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
 import static android.app.Activity.RESULT_OK;
 
 
@@ -27,6 +30,9 @@ public class AddPhotoFragment extends Fragment {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CAMERA_IMAGE = 2;
+    private static final int GALLERY = 5;
+    private static final int CAMERA = 6;
+
     ImageView imageToUpload, mealImage, imageFromCamera;
     private TextView textView;
     public AddPhotoFragment() {
@@ -39,9 +45,9 @@ public class AddPhotoFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_photo, container, false);
-        imageToUpload = (ImageView)view.findViewById(R.id.uploadImage);
+        //imageToUpload = (ImageView)view.findViewById(R.id.uploadImage);
         mealImage = (ImageView)view.findViewById(R.id.meal_image_view);
-        imageFromCamera = (ImageView)view.findViewById(R.id.camera_image_view);
+        /*imageFromCamera = (ImageView)view.findViewById(R.id.camera_image_view);
 
 
         imageToUpload.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +64,7 @@ public class AddPhotoFragment extends Fragment {
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 startActivityForResult(cameraIntent, RESULT_CAMERA_IMAGE);
             }
-        });
+        });*/
 
         mealImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,8 +79,16 @@ public class AddPhotoFragment extends Fragment {
     private void showPictureDialog() {
         //Context mContext = getContext();
         AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getActivity());
-        pictureDialog.setTitle("Select Action");
-        String[] pictureDialogItems = {"Select from gallery", "Take photo from camera"};
+        pictureDialog.setTitle("Upload photo");
+        pictureDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+
+        String[] pictureDialogItems = {"Select from gallery", "Take photo"};
         pictureDialog.setItems(pictureDialogItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -93,18 +107,18 @@ public class AddPhotoFragment extends Fragment {
 
     private void takePhotoFromCamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 6);
+        startActivityForResult(intent, CAMERA);
     }
 
     private void choosePhotoFromGallery() {
         Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        startActivityForResult(galleryIntent, 5);
+        startActivityForResult(galleryIntent, GALLERY);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == RESULT_LOAD_IMAGE  && data != null){
+        /*if(requestCode == RESULT_LOAD_IMAGE  && data != null){
             Uri selectedImage = data.getData(); // uniform resource indicator
             mealImage.setImageURI(selectedImage);
         }
@@ -112,6 +126,24 @@ public class AddPhotoFragment extends Fragment {
         if(requestCode == RESULT_CAMERA_IMAGE && resultCode == RESULT_OK && data != null){
             Bitmap bitmap = (Bitmap)data.getExtras().get("data");
             mealImage.setImageBitmap(bitmap);
+        }*/
+
+        if(requestCode == GALLERY){
+            if(data != null){
+                Uri contentURI = data.getData();
+                try {
+                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
+                    mealImage.setImageBitmap(mBitmap);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if(requestCode == CAMERA){
+            Bitmap cameraBitmap = (Bitmap)data.getExtras().get("data");
+            mealImage.setImageBitmap(cameraBitmap);
         }
     }
 }
