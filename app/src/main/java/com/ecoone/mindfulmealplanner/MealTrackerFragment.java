@@ -45,7 +45,7 @@ public class MealTrackerFragment extends Fragment {
         mButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent mIntent = AddGreenMealPhotoActivity.newIntent(getContext());
+                Intent mIntent = AddGreenMealActivity.newIntent(getContext());
                 startActivityForResult(mIntent,0);
             }
         });

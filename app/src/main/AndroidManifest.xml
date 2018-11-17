@@ -28,7 +28,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".dashboard.improve.ImproveActivity"
             tools:ignore="InnerclassSeparator" />
@@ -68,6 +68,7 @@
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddGreenMealPhotoActivity" />
+        <activity android:name=".AddGreenMealActivity"></activity>
     </application>
 
 </manifest>
