@@ -51,7 +51,7 @@ public class MyPledgeFragment extends Fragment {
     private LinearLayout mLinearLayout;
     private ImageView mImageView;
     private TextView planCO2TextView;
-
+    private ValueEventListener listener;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MyPledgeFragment)";
 
@@ -101,8 +101,7 @@ public class MyPledgeFragment extends Fragment {
     }
 
     private void setFirebaseValueListener() {
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).child("pledgeInfo").addValueEventListener(new ValueEventListener() {
+        listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 Log.i(TAG, CLASSTAG + "firebase listener call");
@@ -121,7 +120,9 @@ public class MyPledgeFragment extends Fragment {
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
-        });
+        };
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).child("pledgeInfo").addValueEventListener(listener);
     }
 
     private void setEditTextView(int amount) {
@@ -187,12 +188,12 @@ public class MyPledgeFragment extends Fragment {
         return getContext().getResources().getStringArray(resId);
     }
 
-
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add("Withdraw my pledge");
-        super.onCreateOptionsMenu(menu, inflater);
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -203,5 +204,10 @@ public class MyPledgeFragment extends Fragment {
         return true;
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).child("pledgeInfo").removeEventListener(listener);
+    }
 }

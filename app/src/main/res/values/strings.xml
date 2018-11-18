@@ -41,4 +41,17 @@
     <string name="skip_the_tutorial"><u>Skip the tutorial</u></string>
     <string name="skip">skip</string>
     <string name="before_we_begin_let_s_go_over_some_features">Before we begin, let\'s go over some features</string>
+
+    <string-array name="preset_names">
+        <item>Meat Lover</item>
+        <item>Heavy Veggie</item>
+        <item>Average Joe</item>
+        <item>None of the above</item>
+    </string-array>
+    <string-array name="preset_descriptions">
+        <item>For people who only eat meat</item>
+        <item>For people that rarely eat meat/vegetarians</item>
+        <item>For people eat a bit of everything</item>
+        <item>Choose this if you don\'t belong to any preset listed above</item>
+    </string-array>
 </resources>

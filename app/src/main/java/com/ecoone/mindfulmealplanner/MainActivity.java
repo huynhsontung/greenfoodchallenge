@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity implements
-        ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener {
+        ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener{
 
 //    private String userDisplayName;
 //    private String userEmail;
@@ -81,6 +82,22 @@ public class MainActivity extends AppCompatActivity implements
         };
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(0);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
+                invalidateOptionsMenu();
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
 //    private void switchFragment(Fragment fragment) {
@@ -185,14 +202,13 @@ public class MainActivity extends AppCompatActivity implements
             default:
                 return false;
         }
-        invalidateOptionsMenu();
         return true;
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share, menu);
-        return super.onCreateOptionsMenu(menu);
+        return true;
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
@@ -214,7 +230,15 @@ public class MainActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-//
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.removeItem(1);
+        return true;
+    }
+
+    //
 //    private void setupNavigationDrawer() {
 //        setSupportActionBar(mToolbar);
 //        mToggle = new ActionBarDrawerToggle(
