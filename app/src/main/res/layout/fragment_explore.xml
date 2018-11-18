@@ -11,7 +11,7 @@
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
-        android:layout_height="27dp"
+        android:layout_height="25dp"
         android:iconifiedByDefault="false"
         android:queryHint="city, mealname" />
 
@@ -33,7 +33,8 @@
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_below="@+id/recycler_view"
+        android:layout_height="360dp"
         android:columnWidth="110dp"
         android:numColumns="auto_fit"
         android:verticalSpacing="3dp"
