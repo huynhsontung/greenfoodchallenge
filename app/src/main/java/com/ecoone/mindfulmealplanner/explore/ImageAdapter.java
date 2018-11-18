@@ -1,6 +1,9 @@
 package com.ecoone.mindfulmealplanner.explore;
 
+import android.app.Activity;
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +23,6 @@ public class ImageAdapter extends BaseAdapter {
     Context ctx;
     ImageAdapter(Context ctx){
         this.ctx = ctx;
-
     }
     @Override
     public int getCount() {
@@ -47,6 +49,9 @@ public class ImageAdapter extends BaseAdapter {
 
         ImageView i1=(ImageView)gridView.findViewById(R.id.myImage);
         i1.setImageResource(images_id[position]);
+
+
+
         return gridView;
     }
 }

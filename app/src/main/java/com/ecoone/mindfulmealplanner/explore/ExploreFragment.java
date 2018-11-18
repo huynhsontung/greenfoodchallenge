@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -27,6 +29,7 @@ import android.widget.Toast;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.User;
+import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.profile.account.UserAccountActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -86,11 +89,48 @@ public class ExploreFragment extends Fragment {
         gridview =(GridView)view.findViewById(R.id.gridview1);
         ImageAdapter imageAdapter = new ImageAdapter(getActivity());
         gridview.setAdapter(imageAdapter);
+        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                 ExploreDetail exploreDetail= new ExploreDetail();
+                 FragmentTransaction ft = getFragmentManager().beginTransaction();
+                 ft.replace(R.id.main_content,exploreDetail);
+                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                 ft.commit();
+                 /* *
+
+                ExploreDetail nextFrag= new ExploreDetail();
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.main_content, nextFrag,"findThisFragment")
+                        .addToBackStack(null)
+                        .commit();
+                        **/
+
+            }
+        });
+
+
 
 
         return view;
 
     }
+
+    /**
+
+    private void switchFragment(Fragment fragment) {
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.main_content, fragment);
+        ft.commit();
+    }
+     **/
+
+
+
+
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
