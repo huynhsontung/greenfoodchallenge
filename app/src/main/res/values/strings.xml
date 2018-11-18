@@ -51,7 +51,7 @@
     <string-array name="preset_descriptions">
         <item>For people who only eat meat</item>
         <item>For people that rarely eat meat/vegetarians</item>
-        <item>For people eat a bit of everything</item>
-        <item>Choose this if you don\'t belong to any preset listed above</item>
+        <item>For people that eat a bit of everything</item>
+        <item>For people with unique diets</item>
     </string-array>
 </resources>

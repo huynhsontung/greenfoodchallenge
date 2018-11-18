@@ -144,10 +144,10 @@ public class PresetPlansFragment extends Fragment {
                     Log.i(TAG, CLASSTAG + 2);
                     mViewModel.foodAmount[0] = 0;
                     mViewModel.foodAmount[1] = 0;
-                    mViewModel.foodAmount[2] = 25;
+                    mViewModel.foodAmount[2] = 0;
                     mViewModel.foodAmount[3] = 25;
                     mViewModel.foodAmount[4] = 25;
-                    mViewModel.foodAmount[5] = 75;
+                    mViewModel.foodAmount[5] = 100;
                     mViewModel.foodAmount[6] = 200;
                     break;
                 case 3:
@@ -187,10 +187,10 @@ public class PresetPlansFragment extends Fragment {
                 case 2:
                     mViewModel.foodAmount[0] = 0;
                     mViewModel.foodAmount[1] = 0;
-                    mViewModel.foodAmount[2] = 30;
+                    mViewModel.foodAmount[2] = 0;
                     mViewModel.foodAmount[3] = 10;
                     mViewModel.foodAmount[4] = 20;
-                    mViewModel.foodAmount[5] = 40;
+                    mViewModel.foodAmount[5] = 70;
                     mViewModel.foodAmount[6] = 150;
                     break;
                 case 3:
