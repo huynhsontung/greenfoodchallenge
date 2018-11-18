@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
@@ -43,6 +45,8 @@ public class ExploreFragment extends Fragment {
 
     private SearchView mSearchView;
     private ListView lListView;
+
+    GridView gridview;
 
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
@@ -78,9 +82,11 @@ public class ExploreFragment extends Fragment {
         recyclerView.setAdapter(recyclerViewAdapter);
         RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutmanager);
-        GridView gridview =(GridView)view.findViewById(R.id.gridview1);
+
+        gridview =(GridView)view.findViewById(R.id.gridview1);
         ImageAdapter imageAdapter = new ImageAdapter(getActivity());
         gridview.setAdapter(imageAdapter);
+
 
         return view;
 

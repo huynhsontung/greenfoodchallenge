@@ -24,24 +24,27 @@
     <android.support.v7.widget.RecyclerView
         android:background="#f2f2f2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="59dp"
         android:id="@+id/recycler_view"
         android:orientation="horizontal">
 
     </android.support.v7.widget.RecyclerView>
 
-    <GridView
+    <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:columnWidth="90dp"
+        android:columnWidth="110dp"
         android:numColumns="auto_fit"
-        android:verticalSpacing="10dp"
-        android:horizontalSpacing="10dp"
+        android:verticalSpacing="3dp"
+        android:horizontalSpacing="3dp"
         android:stretchMode="columnWidth"
-        android:gravity="center">
+        android:gravity="center"
+        />
 
-    </GridView>
+
+
+
 
 
 </LinearLayout>

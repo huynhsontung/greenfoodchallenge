@@ -14,7 +14,8 @@ import com.ecoone.mindfulmealplanner.R;
 
 public class ImageAdapter extends BaseAdapter {
 
-    private int[] images_id={R.drawable.vancouver,R.drawable.vancouver};
+
+    private int[] images_id={R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver};
 
     Context ctx;
     ImageAdapter(Context ctx){
@@ -23,17 +24,17 @@ public class ImageAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-        return 0;
+        return images_id.length;
     }
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return images_id[position];
     }
 
     @Override
     public long getItemId(int position) {
-        return images_id[position];
+        return position;
     }
 
     @Override
