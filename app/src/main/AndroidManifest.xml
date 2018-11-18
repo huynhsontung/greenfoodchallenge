@@ -26,6 +26,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".tutorial.TutorialActivity"
+            />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan"/>

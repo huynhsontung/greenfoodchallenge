@@ -19,6 +19,7 @@ import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
+import com.ecoone.mindfulmealplanner.tutorial.TutorialActivity;
 import com.firebase.ui.auth.AuthUI;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -248,7 +249,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     }
 
     private void startActivityAndFinish() {
-        Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
+        Intent intent = new Intent(InitialSetupActivity.this, TutorialActivity.class);
         startActivity(intent);
         finish();
     }

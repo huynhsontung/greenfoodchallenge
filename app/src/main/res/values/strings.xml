@@ -38,4 +38,7 @@
         <item>female</item>
     </string-array>
     <string name="title_activity_user_account">UserAccountActivity</string>
+    <string name="skip_the_tutorial"><u>Skip the tutorial</u></string>
+    <string name="skip">skip</string>
+    <string name="before_we_begin_let_s_go_over_some_features">Before we begin, let\'s go over some features</string>
 </resources>
