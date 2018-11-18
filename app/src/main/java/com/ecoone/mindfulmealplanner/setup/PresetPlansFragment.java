@@ -171,6 +171,7 @@ public class PresetPlansFragment extends Fragment {
                     mViewModel.foodAmount[4] = 15;
                     mViewModel.foodAmount[5] = 15;
                     mViewModel.foodAmount[6] = 25;
+                    break;
                 case 2:
                     mViewModel.foodAmount[0] = 0;
                     mViewModel.foodAmount[1] = 0;
@@ -179,6 +180,7 @@ public class PresetPlansFragment extends Fragment {
                     mViewModel.foodAmount[4] = 20;
                     mViewModel.foodAmount[5] = 40;
                     mViewModel.foodAmount[6] = 150;
+                    break;
                 case 3:
                     mViewModel.foodAmount[0] = 25;
                     mViewModel.foodAmount[1] = 25;
@@ -187,6 +189,7 @@ public class PresetPlansFragment extends Fragment {
                     mViewModel.foodAmount[4] = 20;
                     mViewModel.foodAmount[5] = 30;
                     mViewModel.foodAmount[6] = 75;
+                    break;
                 default:
                     mViewModel.foodAmount[0] = 0;
                     mViewModel.foodAmount[1] = 0;
@@ -195,6 +198,7 @@ public class PresetPlansFragment extends Fragment {
                     mViewModel.foodAmount[4] = 0;
                     mViewModel.foodAmount[5] = 0;
                     mViewModel.foodAmount[6] = 0;
+                    break;
             }
         }
 

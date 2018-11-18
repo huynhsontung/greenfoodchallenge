@@ -27,7 +27,7 @@
             android:layout_gravity="center"
             android:layout_weight="0.25"
             android:text="Which kind of eater are you?"
-            android:textSize="19sp"
+            android:textSize="20sp"
             android:textStyle="italic"
             tools:layout_editor_absoluteX="25dp"
             tools:layout_editor_absoluteY="6dp" />
