@@ -18,8 +18,10 @@ import com.ecoone.mindfulmealplanner.R;
 public class ImageAdapter extends BaseAdapter {
 
 
-    private int[] images_id={R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver,R.drawable.vancouver};
 
+
+    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,};
+    private String[] image_name={"s","v","v","v","v","v","v","v","v","v","v","v","v","v"};
     Context ctx;
     ImageAdapter(Context ctx){
         this.ctx = ctx;
@@ -49,9 +51,6 @@ public class ImageAdapter extends BaseAdapter {
 
         ImageView i1=(ImageView)gridView.findViewById(R.id.myImage);
         i1.setImageResource(images_id[position]);
-
-
-
         return gridView;
     }
 }

@@ -12,16 +12,19 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,36 +47,9 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ExploreFragment extends Fragment {
-
+public class ExploreDetail extends Fragment {
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,};
     private String[] image_name={"s","v","v","v","v","v","v","v","v","v","v","v","v","v"};
-
-    private SearchView mSearchView;
-    private ListView lListView;
-
-    GridView gridview;
-
-    private ArrayList<String> mNames = new ArrayList<>();
-    private ArrayList<String> mImageUrls = new ArrayList<>();
-
-
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-
-
-    private static final String TAG = "testActivity";
-    private static final String CLASSTAG = "(ExploreFragment)";
-
-
-    public static ExploreFragment newInstance() {
-
-        Bundle args = new Bundle();
-
-        ExploreFragment fragment = new ExploreFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
 
 
     @Nullable
@@ -82,31 +58,40 @@ public class ExploreFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_explore, container, false);
-        RecyclerView recyclerView =(RecyclerView) view.findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter();
-        recyclerView.setAdapter(recyclerViewAdapter);
-        RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutmanager);
-
-        gridview =(GridView)view.findViewById(R.id.gridview1);
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-        gridview.setAdapter(imageAdapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        int pos = getArguments().getInt("image_position");
+        View view = inflater.inflate(R.layout.fragment_explore_detail, container, false);
+        ImageView imageView = (ImageView) view.findViewById(R.id.detail_image);
+        imageView.setImageResource(images_id[pos]);
+        TextView textView = (TextView) view.findViewById(R.id.detail_text);
+        textView.setText(image_name[pos]);
+        TextView des = (TextView) view.findViewById(R.id.scroll_text);
+        des.setText("sdfgsdhfgsfghsdf\n shafgasgfuisgfuisdgfjksdghfjhdsgfjsdhgfuisdgfuisdfguisdfgsiuf\ndsfghjdshgfhjsdfghjsfg\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\n");
+        des.setMovementMethod(new ScrollingMovementMethod());
+        Button btn = (Button) view.findViewById(R.id.detail_back);
+        btn.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ExploreDetail exploreDetail= new ExploreDetail();
-                Bundle args = new Bundle();
-                args.putInt("image_position",position);
-                args.putString("image_name",image_name[position]);
-                exploreDetail.setArguments(args);
+            public void onClick(View v)
+            {
+                ExploreFragment exploreFragment= new ExploreFragment();
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
-                ft.replace(R.id.main_content,exploreDetail);
+                ft.replace(R.id.main_content,exploreFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
             }
         });
-        return view;
+        return  view;
+    }
+
+
+
+    public static ExploreDetail newInstance() {
+
+        Bundle args = new Bundle();
+
+        ExploreDetail fragment = new ExploreDetail();
+        fragment.setArguments(args);
+        return fragment;
     }
 
 
@@ -118,25 +103,24 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        Log.d(TAG, CLASSTAG + " onStart");
+
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Log.d(TAG, CLASSTAG + " onResume");
+
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        Log.d(TAG, CLASSTAG + " onPause");
+
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.d(TAG, CLASSTAG + " onStop");
     }
 
     @Override
@@ -144,6 +128,8 @@ public class ExploreFragment extends Fragment {
         super.onDestroy();
 
     }
+
+
 
 
 

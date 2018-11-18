@@ -32,7 +32,6 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
     }
 
 
