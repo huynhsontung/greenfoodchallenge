@@ -44,7 +44,7 @@ public class PresetPlansFragment extends Fragment {
         mVeggieCard = view.findViewById(R.id.veggie_card);
         mAverageCard = view.findViewById(R.id.average_card);
         mOtherCard = view.findViewById(R.id.other_card);
-        mOtherCard.setCardBackgroundColor(Color.parseColor("#40e0d0"));
+        mOtherCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
         flag = 4;
         setOnCardClickListener();
 
@@ -56,7 +56,7 @@ public class PresetPlansFragment extends Fragment {
             public void onClick(View v) {
                 removeColorFromPreviousCard();
                 flag = 1;
-                mMeatCard.setCardBackgroundColor(Color.parseColor("#40e0d0"));
+                mMeatCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
             }
         });
 
@@ -65,7 +65,7 @@ public class PresetPlansFragment extends Fragment {
             public void onClick(View v) {
                 removeColorFromPreviousCard();
                 flag = 2;
-                mVeggieCard.setCardBackgroundColor(Color.parseColor("#40e0d0"));
+                mVeggieCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
             }
         });
 
@@ -74,7 +74,7 @@ public class PresetPlansFragment extends Fragment {
             public void onClick(View v) {
                 removeColorFromPreviousCard();
                 flag = 3;
-                mAverageCard.setCardBackgroundColor(Color.parseColor("#40e0d0"));
+                mAverageCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
             }
         });
 
@@ -83,7 +83,7 @@ public class PresetPlansFragment extends Fragment {
             public void onClick(View v) {
                 removeColorFromPreviousCard();
                 flag = 4;
-                mOtherCard.setCardBackgroundColor(Color.parseColor("#40e0d0"));
+                mOtherCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
             }
         });
     }
@@ -108,9 +108,96 @@ public class PresetPlansFragment extends Fragment {
             Log.i(TAG, CLASSTAG + "vis");
             if (!isVisibleToUser) {
                 Log.i(TAG, CLASSTAG + "not vis");
-
+                setFoodAmount();
             }
         }
+    }
+
+    public void setFoodAmount() {
+        String gender = mViewModel.localUser.gender;
+        // 350g daily
+        if(gender.equals("male")) {
+            switch(flag) {
+                case 1:
+                    Log.i(TAG, CLASSTAG + 1);
+                    mViewModel.foodAmount[0] = 50;
+                    mViewModel.foodAmount[1] = 50;
+                    mViewModel.foodAmount[2] = 125;
+                    mViewModel.foodAmount[3] = 50;
+                    mViewModel.foodAmount[4] = 25;
+                    mViewModel.foodAmount[5] = 25;
+                    mViewModel.foodAmount[6] = 25;
+                    break;
+                case 2:
+                    Log.i(TAG, CLASSTAG + 2);
+                    mViewModel.foodAmount[0] = 0;
+                    mViewModel.foodAmount[1] = 0;
+                    mViewModel.foodAmount[2] = 25;
+                    mViewModel.foodAmount[3] = 25;
+                    mViewModel.foodAmount[4] = 25;
+                    mViewModel.foodAmount[5] = 75;
+                    mViewModel.foodAmount[6] = 200;
+                    break;
+                case 3:
+                    Log.i(TAG, CLASSTAG + 3);
+                    mViewModel.foodAmount[0] = 50;
+                    mViewModel.foodAmount[1] = 50;
+                    mViewModel.foodAmount[2] = 75;
+                    mViewModel.foodAmount[3] = 25;
+                    mViewModel.foodAmount[4] = 25;
+                    mViewModel.foodAmount[5] = 50;
+                    mViewModel.foodAmount[6] = 75;
+                    break;
+                default:
+                    Log.i(TAG, CLASSTAG + 4);
+                    mViewModel.foodAmount[0] = 0;
+                    mViewModel.foodAmount[1] = 0;
+                    mViewModel.foodAmount[2] = 0;
+                    mViewModel.foodAmount[3] = 0;
+                    mViewModel.foodAmount[4] = 0;
+                    mViewModel.foodAmount[5] = 0;
+                    mViewModel.foodAmount[6] = 0;
+                    break;
+            }
+        }
+        else {
+            //250g daily
+            switch(flag) {
+                case 1:
+                    mViewModel.foodAmount[0] = 25;
+                    mViewModel.foodAmount[1] = 25;
+                    mViewModel.foodAmount[2] = 125;
+                    mViewModel.foodAmount[3] = 20;
+                    mViewModel.foodAmount[4] = 15;
+                    mViewModel.foodAmount[5] = 15;
+                    mViewModel.foodAmount[6] = 25;
+                case 2:
+                    mViewModel.foodAmount[0] = 0;
+                    mViewModel.foodAmount[1] = 0;
+                    mViewModel.foodAmount[2] = 30;
+                    mViewModel.foodAmount[3] = 10;
+                    mViewModel.foodAmount[4] = 20;
+                    mViewModel.foodAmount[5] = 40;
+                    mViewModel.foodAmount[6] = 150;
+                case 3:
+                    mViewModel.foodAmount[0] = 25;
+                    mViewModel.foodAmount[1] = 25;
+                    mViewModel.foodAmount[2] = 75;
+                    mViewModel.foodAmount[3] = 25;
+                    mViewModel.foodAmount[4] = 20;
+                    mViewModel.foodAmount[5] = 30;
+                    mViewModel.foodAmount[6] = 75;
+                default:
+                    mViewModel.foodAmount[0] = 0;
+                    mViewModel.foodAmount[1] = 0;
+                    mViewModel.foodAmount[2] = 0;
+                    mViewModel.foodAmount[3] = 0;
+                    mViewModel.foodAmount[4] = 0;
+                    mViewModel.foodAmount[5] = 0;
+                    mViewModel.foodAmount[6] = 0;
+            }
+        }
+
     }
 
     @Override

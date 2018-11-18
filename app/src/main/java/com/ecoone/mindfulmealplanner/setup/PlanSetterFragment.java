@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,9 +44,11 @@ public class PlanSetterFragment extends Fragment {
     private TextView[] mFoodSeekBarTextView;
     private SeekBar[] mFoodSeekBarAction;
     private TextView[] mFoodSeekBarValueView;
+    private View view;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_initial_setup_set_plan, container, false);
+        Log.i(TAG,CLASSTAG + "create view plan setter");
+        view = inflater.inflate(R.layout.fragment_initial_setup_set_plan, container, false);
         mViewModel = ViewModelProviders.of(getActivity()).get(InitialSetupViewModel.class);
         mPieChart = view.findViewById(R.id.initial_screen_pie_chart);
         initializeSeekBarView(view);
@@ -53,6 +56,17 @@ public class PlanSetterFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (this.isVisible()) {
+            Log.i(TAG, CLASSTAG + "vis");
+            initializeSeekBarView(view);
+            if (!isVisibleToUser) {
+                Log.i(TAG, CLASSTAG + "not vis");
+            }
+        }
+    }
 
     private void initializeSeekBarView(View view) {
         foodName = findStringArrayRes("food_name");
@@ -75,10 +89,10 @@ public class PlanSetterFragment extends Fragment {
             mFoodSeekBarAction[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_action);
             mFoodSeekBarValueView[i] = mFoodSeekBarView[i].findViewById(R.id.seekbar_value);
             mFoodSeekBarTextView[i].setText(foodName[i]);
-            mFoodSeekBarAction[i].setProgress(randInt(0, mFoodSeekBarAction[i].getMax()));
+            mFoodSeekBarAction[i].setProgress((int)mViewModel.foodAmount[i]);
             int amount = mFoodSeekBarAction[i].getProgress();
+            Log.i(TAG,CLASSTAG + mFoodSeekBarAction[i].getProgress());
             mFoodSeekBarValueView[i].setText(getString(R.string.amount_gram,amount));
-            mViewModel.foodAmount[i] = amount;
         }
         setSeekBarChangeListener();
     }
