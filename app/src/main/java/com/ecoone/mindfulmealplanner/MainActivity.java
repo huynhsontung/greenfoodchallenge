@@ -20,8 +20,6 @@ import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 
-import java.util.HashMap;
-
 
 public class MainActivity extends AppCompatActivity implements
         ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener{
@@ -37,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements
 //    private ImageView navUserIcon;
 //    private View headerView;
 //
-//    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+//    final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
 //    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private NonSwipeableViewPager mViewPager;
     private BottomNavigationView mBottomNavigationView;

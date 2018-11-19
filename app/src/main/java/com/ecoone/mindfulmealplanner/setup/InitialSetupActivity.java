@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 
 import com.ecoone.mindfulmealplanner.database.Pledge;
-import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
@@ -26,7 +25,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
@@ -41,7 +39,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     private static final String TAG = "testActivity";
     private NonSwipeableViewPager mViewPager;
     private InitialSetupViewModel mViewModel;
-    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     FirebaseUser user;
 
     @Override
@@ -182,9 +180,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             mViewModel.localPlan = plan;
 
             if (mDatabase == null) {
-                com.google.firebase.database.FirebaseDatabase database = com.google.firebase.database.FirebaseDatabase.getInstance();
-                database.setPersistenceEnabled(true);
-                mDatabase = database.getReference();
+                mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
             }
 
 

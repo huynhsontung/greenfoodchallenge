@@ -46,12 +46,7 @@ public class DailyPledgeService extends IntentService {
 
         if (flagToCheckServiceStatus == 0) {
             flagToCheckServiceStatus = 1;
-            mHandler.post(new Runnable() {
-                @Override
-                public void run() {
-                    Toast.makeText(DailyPledgeService.this, "service is running in the background", Toast.LENGTH_LONG).show();
-                }
-            });
+            mHandler.post(() -> Toast.makeText(DailyPledgeService.this, "service is running in the background", Toast.LENGTH_LONG).show());
             Map<Integer, Integer> daysUntilWeekPassed = new HashMap<>();
             // Week starts on monday
         /*daysUntilWeekPassed.put(Calendar.MONDAY, 7);

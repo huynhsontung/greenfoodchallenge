@@ -24,7 +24,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
@@ -44,7 +43,7 @@ public class ProfileFragment extends Fragment {
 
     private ValueEventListener mValueEventListener;
 
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private static final String TAG = "testActivity";

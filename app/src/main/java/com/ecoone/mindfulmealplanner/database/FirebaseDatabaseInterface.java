@@ -9,17 +9,33 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.concurrent.Semaphore;
 
-public abstract class FirebaseDatabaseInterface {
+public class FirebaseDatabaseInterface {
     public static final String ALLUSERSUID_NODE = "uids";
     public static final String USERINFO_NODE = "userInfo";
     public static final String PLANINFO_NODE = "planInfo";
     public static final String PLEDGEINFO_NODE = "pledgeInfo";
-    private static final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    private static final DatabaseReference mDatabase = getDatabaseInstance();
+    private static boolean alreadySetPersistence;
+    private static Semaphore mutex;
 //    private static final FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
 //    private static String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private static final String TAG = "testActivity";
-    private static final String CLASSTAG = "(FirebaseDatabaseInterface)";
+    private static final String CLASSTAG = "FirebaseDatabaseInterface";
+
+    public static DatabaseReference getDatabaseInstance(){
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        if(!alreadySetPersistence) {
+            try {
+                database.setPersistenceEnabled(true);
+            } catch (Exception e){
+                Log.e(TAG,CLASSTAG, e );
+            }
+            alreadySetPersistence = true;
+        }
+        return database.getReference();
+    }
 
     public static void deleteUserData() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();

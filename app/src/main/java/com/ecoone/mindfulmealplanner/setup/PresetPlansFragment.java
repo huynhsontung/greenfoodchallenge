@@ -2,7 +2,6 @@ package com.ecoone.mindfulmealplanner.setup;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -11,14 +10,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.ecoone.mindfulmealplanner.R;
 
 import java.util.Objects;
-import java.util.Observer;
 
 public class PresetPlansFragment extends Fragment {
     public static PresetPlansFragment newInstance() { return new PresetPlansFragment(); }

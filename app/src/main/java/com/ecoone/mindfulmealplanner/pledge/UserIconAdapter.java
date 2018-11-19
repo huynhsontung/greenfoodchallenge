@@ -45,7 +45,7 @@ public class UserIconAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
-            mUserIconGridView = inflater.inflate(R.layout.list_item_user_icon, null);
+            mUserIconGridView = inflater.inflate(R.layout.list_item_user_icon, parent, false);
             TextView mIconTextView = mUserIconGridView.findViewById(R.id.user_icon_text);
             ImageView mIconImageView = mUserIconGridView.findViewById(R.id.user_icon_image);
             mIconTextView.setText(mIconTextList[position]);
