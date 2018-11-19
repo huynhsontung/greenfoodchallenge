@@ -82,22 +82,6 @@ public class PledgeFragment extends Fragment {
         myAdapter.addFragment(new MyPledgeFragment(), "My Pledge");
         myAdapter.addFragment(new DiscoverFragment(), "Discover");
         viewPager.setAdapter(myAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
 
     static class Adapter extends FragmentPagerAdapter {

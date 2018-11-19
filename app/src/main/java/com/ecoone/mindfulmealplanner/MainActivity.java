@@ -231,13 +231,6 @@ public class MainActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        menu.removeItem(1);
-        return true;
-    }
-
     //
 //    private void setupNavigationDrawer() {
 //        setSupportActionBar(mToolbar);
