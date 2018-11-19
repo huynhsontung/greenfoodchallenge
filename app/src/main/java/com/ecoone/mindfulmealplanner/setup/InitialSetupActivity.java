@@ -103,7 +103,9 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     Log.i(TAG, CLASSTAG + "exist");
-                    startActivityAndFinish();
+                    Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
                 else {
                     Log.i(TAG, CLASSTAG + "not exist");
