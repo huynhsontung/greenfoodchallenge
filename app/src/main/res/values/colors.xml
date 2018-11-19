@@ -3,7 +3,6 @@
     <!--<color name="colorPrimary">#008577</color>-->
     <!--<color name="colorPrimaryDark">#00574B</color>-->
     <!--<color name="colorAccent">#D81B60</color>-->
-
     <color name="colorPrimary">#496bbf</color>
     <color name="colorPrimaryLight">#7e99f2</color>
     <color name="colorPrimaryDark">#00418e</color>
@@ -17,12 +16,12 @@
     <color name="my_grey">#EFF0F1</color>
     <color name="white">#FFFFFF</color>
 
-    <color name="chartRed1">#f42e1c</color>
+    <color name="chartRed1">#b71e1b</color>
     <color name="chartRed2">#c62a27</color>
     <color name="chartRed3">#d3312e</color>
     <color name="chartRed4">#e53b34</color>
     <color name="chartRed5">#f34434</color>
-    <color name="chartRed6">#32f932</color>
+    <color name="chartRed6">#ef544f</color>
     <color name="chartRed7">#e57472</color>
 
     <color name="chartBlue1">#3f4d9f</color>
