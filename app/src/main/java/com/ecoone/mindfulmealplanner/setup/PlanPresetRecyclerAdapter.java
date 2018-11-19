@@ -59,6 +59,8 @@ class PlanPresetRecyclerAdapter extends RecyclerView.Adapter<PlanPresetRecyclerA
         cardViewHolder.radioButton.setTag(i);
         cardViewHolder.radioButton.setChecked(i == selectedPosition.getValue());
         cardViewHolder.radioButton.setOnClickListener(this);
+        cardViewHolder.itemView.setTag(i);
+        cardViewHolder.itemView.setOnClickListener(this);
     }
 
     @Override
