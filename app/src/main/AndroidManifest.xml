@@ -52,15 +52,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".profile.settings.LogoutActivity"
-            tools:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="openLogout" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- <activity -->
         <!-- android:name=".PlanList.PlanPagerActivity" -->

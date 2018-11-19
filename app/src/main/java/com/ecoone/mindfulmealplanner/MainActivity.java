@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void passDataFromProfileToMain(int input) {
-//        Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
+//        Log.i(TAG, CLASSTAG + "onLogout: got the input " + input);
 //
 //        if (input == 1) {
 //            FirebaseDatabaseInterface.deleteUserData();
@@ -370,8 +370,8 @@ public class MainActivity extends AppCompatActivity implements
 
 //
 //    @Override
-//    public void passDataFromLogoutDialogToSetting(int input) {
-//        Log.i(TAG, "passDataFromLogoutDialogToSetting: got the input: " + input + CLASSTAG);
+//    public void onLogout(int input) {
+//        Log.i(TAG, "onLogout: got the input: " + input + CLASSTAG);
 //        navUserIcon.setImageResource(input);
 //
 //        String iconName = getResources().getResourceEntryName(input);

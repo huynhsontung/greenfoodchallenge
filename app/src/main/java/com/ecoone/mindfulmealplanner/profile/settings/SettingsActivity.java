@@ -16,7 +16,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
-public class SettingsActivity extends AppCompatActivity implements LogoutDialogPreference.OnDataPassingListener {
+public class SettingsActivity extends AppCompatActivity implements LogoutDialogPreference.OnLogoutListener {
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(SettingsActivity)";
@@ -48,8 +48,8 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
 
     // input: 0 logout, 1 logout with cleaning data
     @Override
-    public void passDataFromLogoutDialogToSetting(int input) {
-        Log.i(TAG, CLASSTAG + "passDataFromLogoutDialogToSetting: got the input " + input);
+    public void onLogout(int input) {
+        Log.i(TAG, CLASSTAG + "onLogout: got the input " + input);
         if (input == 1) {
             FirebaseDatabaseInterface.deleteUserData();
         }

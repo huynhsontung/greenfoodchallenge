@@ -27,6 +27,7 @@ import android.widget.TextView;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.profile.settings.LogoutDialogPreference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -48,8 +49,6 @@ public class MyPledgeFragment extends Fragment {
     private Spinner mSpinner;
     private ArrayAdapter<CharSequence> mAdapter;
     private ArrayList<String> locationList;
-    private LinearLayout mLinearLayout;
-    private ImageView mImageView;
     private TextView planCO2TextView;
     private ValueEventListener listener;
     private static final String TAG = "testActivity";
@@ -112,8 +111,9 @@ public class MyPledgeFragment extends Fragment {
                     String location = pledge.location;
                     setEditTextView(amount);
                     setSpinnerView(location);
+                    pledgeAmount = pledge.amount;
                 }
-                pledgeAmount = pledge.amount;
+
             }
 
             @Override
@@ -202,12 +202,5 @@ public class MyPledgeFragment extends Fragment {
             FirebaseDatabaseInterface.updatePledgeAmount(0);
         } else super.onOptionsItemSelected(item);
         return true;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).child("pledgeInfo").removeEventListener(listener);
     }
 }

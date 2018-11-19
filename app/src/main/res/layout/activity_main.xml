@@ -29,7 +29,7 @@
             app:itemIconTint="@color/bottom_nav_color_selector"
             app:itemTextColor="@color/bottom_nav_color_selector"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior">
         </android.support.design.widget.BottomNavigationView>
         <com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager
             android:id="@+id/main_content"

@@ -360,7 +360,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
     @Override
     public void sendInput(String input) {
-        Log.i(TAG, "passDataFromLogoutDialogToSetting: got the input: " + input + CLASSTAG);
+        Log.i(TAG, "onLogout: got the input: " + input + CLASSTAG);
         saveAsDbAction(input);
     }
 
