@@ -1,104 +1,170 @@
-<?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddGreenMealActivity">
 
-    <TextView
-        android:id="@+id/add_green_meal_title_textview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Add Green Meal"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/add_green_meal_description_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Share your green meal with your friends!"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_title_textview" />
+    <include
+        android:id="@+id/profile_setting_about_toolbar"
+        layout="@layout/component_app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
-    <EditText
-        android:id="@+id/add_green_meal_name_editview"
-        android:layout_width="282dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
-        android:ems="10"
-        android:hint="Add a meal name..."
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_description_text_view" />
 
-    <Button
-        android:id="@+id/add_green_meal_startphoto_button"
-        android:layout_width="wrap_content"
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="292dp"
-        android:layout_marginEnd="28dp"
-        android:text="Next"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Eating out? Check to see if you are in a green restaurant."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.514"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />
 
-    <Button
-        android:id="@+id/add_green_meal_cancel_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="184dp"
-        android:layout_marginEnd="156dp"
-        android:text="Cancel"
-        app:layout_constraintEnd_toStartOf="@+id/add_green_meal_startphoto_button"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView"
-        android:layout_width="283dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:completionHint="Add a restaurant..."
-        android:completionThreshold="1"
-        android:hint="Add a restaurant..."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/my_grey"/>
 
-    <EditText
-        android:id="@+id/add_green_meal_description_editText"
-        android:layout_width="286dp"
-        android:layout_height="146dp"
-        android:layout_marginTop="24dp"
-        android:ems="10"
-        android:hint="Add a description..."
-        android:inputType="textMultiLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />
-</android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                android:layout_gravity="top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:text="Meal Name"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <EditText
+                    android:id="@+id/add_green_meal_name_editview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:maxLines="1"
+                    android:layout_marginRight="@dimen/profile_list_item_right_side_margin"
+                    android:hint="Add a meal name..."
+                    android:textSize="15sp"
+                    android:inputType="none" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/my_grey"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                android:layout_gravity="top"
+                android:gravity="center_vertical" >
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/my_grey" />
+
+        </LinearLayout>
+
+
+    </android.support.v4.widget.NestedScrollView>
+
+
+
+
+    <!--<TextView-->
+        <!--android:id="@+id/add_green_meal_description_text_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:text="Share your green meal with your friends!"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_title_textview" />-->
+
+
+
+    <!--<Button-->
+        <!--android:id="@+id/add_green_meal_startphoto_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="292dp"-->
+        <!--android:layout_marginEnd="28dp"-->
+        <!--android:text="Next"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />-->
+
+    <!--<TextView-->
+        <!--android:id="@+id/textView6"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:text="Eating out? Check to see if you are in a green restaurant."-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.514"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/add_green_meal_cancel_button"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginStart="8dp"-->
+        <!--android:layout_marginTop="184dp"-->
+        <!--android:layout_marginEnd="156dp"-->
+        <!--android:text="Cancel"-->
+        <!--app:layout_constraintEnd_toStartOf="@+id/add_green_meal_startphoto_button"-->
+        <!--app:layout_constraintHorizontal_bias="1.0"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />-->
+
+    <!--<AutoCompleteTextView-->
+        <!--android:id="@+id/autoCompleteTextView"-->
+        <!--android:layout_width="283dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="20dp"-->
+        <!--android:completionHint="Add a restaurant..."-->
+        <!--android:completionThreshold="1"-->
+        <!--android:hint="Add a restaurant..."-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintHorizontal_bias="0.502"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
+
+    <!--<EditText-->
+        <!--android:id="@+id/add_green_meal_description_editText"-->
+        <!--android:layout_width="286dp"-->
+        <!--android:layout_height="146dp"-->
+        <!--android:layout_marginTop="24dp"-->
+        <!--android:ems="10"-->
+        <!--android:hint="Add a description..."-->
+        <!--android:inputType="textMultiLine"-->
+        <!--app:layout_constraintEnd_toEndOf="parent"-->
+        <!--app:layout_constraintStart_toStartOf="parent"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />-->
+</android.support.design.widget.CoordinatorLayout>

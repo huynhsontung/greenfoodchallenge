@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setupFragmentListForNav() {
         mViewPager = findViewById(R.id.main_content);
+        mViewPager.setOffscreenPageLimit(3);
         FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
@@ -74,7 +75,9 @@ public class MainActivity extends AppCompatActivity implements
 
                     case 2: return PledgeFragment.newInstance();
 
-                    default: return ProfileFragment.newInstance();
+                    case 3: return ProfileFragment.newInstance();
+
+                    default: return null;
                 }
             }
             @Override
@@ -201,7 +204,6 @@ public class MainActivity extends AppCompatActivity implements
             case R.id.nav_profile :
                 mViewPager.setCurrentItem(3);
                 break;
-
 
             default:
                 return false;

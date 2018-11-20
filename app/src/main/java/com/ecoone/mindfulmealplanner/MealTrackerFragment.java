@@ -6,10 +6,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 
 
 /**
@@ -17,6 +20,8 @@ import android.widget.Button;
  */
 public class MealTrackerFragment extends Fragment {
 
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(MealTrackerFragment)";
 
     public MealTrackerFragment() {
         // Required empty public constructor
@@ -49,5 +54,36 @@ public class MealTrackerFragment extends Fragment {
                 startActivityForResult(mIntent,0);
             }
         });
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
     }
 }

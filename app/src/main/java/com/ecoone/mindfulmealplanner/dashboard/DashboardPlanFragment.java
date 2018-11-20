@@ -3,6 +3,10 @@ package com.ecoone.mindfulmealplanner.dashboard;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -68,14 +72,12 @@ public class DashboardPlanFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
         return inflater.inflate(R.layout.fragment_dashboard_plan, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // write your code here
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
@@ -268,8 +270,8 @@ public class DashboardPlanFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).removeEventListener(mValueEventListener);
+//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+//                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 

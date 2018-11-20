@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -30,18 +31,19 @@ public class AddGreenMealActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_green_meal);
 
-        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealActivity.this,
-                android.R.layout.simple_list_item_1, RESTAURANT_SUGGESTIONS);
-        autoCompleteTextView.setAdapter(adapter);
 
-        goToPhoto = (Button)findViewById(R.id.add_green_meal_startphoto_button);
-        goToPhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent myIntent = new Intent(AddGreenMealActivity.this, AddGreenMealPhotoActivity.class);
-                startActivity(myIntent);
-            }
-        });
+//        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
+//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealActivity.this,
+//                android.R.layout.simple_list_item_1, RESTAURANT_SUGGESTIONS);
+//        autoCompleteTextView.setAdapter(adapter);
+//
+//        goToPhoto = (Button)findViewById(R.id.add_green_meal_startphoto_button);
+//        goToPhoto.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent myIntent = new Intent(AddGreenMealActivity.this, AddGreenMealPhotoActivity.class);
+//                startActivity(myIntent);
+//            }
+//        });
     }
 }

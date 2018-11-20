@@ -277,13 +277,44 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
 // });
 
 // exports.adminCheckAndModifyTotalPledgeNumber = functions.https.onRequest((req, resp) => {
-//     var log = "";
-//     if(req.method !== "GET") {
-//         resp.status(400).send("Not GET request");
-//         console.log("Not GET request");
-//     }
-//
-//     var oldAmount =
-//
-//
-// });
+// //     var log = "";
+// //     if(req.method !== "GET") {
+// //         resp.status(400).send("Not GET request");
+// //         console.log("Not GET request");
+// //     }
+// //
+// //     var oldAmount =
+// //
+// //
+// // });
+
+exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp) => {
+    var logText = "";
+    if(req.method !== "GET") {
+        resp.status(400).send("Not GET request");
+        console.log("Not GET request");
+    }
+
+    logText += "Start to set all users pledge amount to zero.\n";
+
+    admin.database().ref("/uids").once("value").then((snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+
+            var amountPath = childSnapshot.child('pledgeInfo').child('amount');
+
+            logText += childSnapshot.key + ": " +
+                amountPath.val() + "\n";
+
+            if (amountPath.val() !== 0) {
+                amountPath.ref.set(0);
+            }
+        });
+
+        logText += "Finished.\n";
+        console.log(logText);
+        resp.status(200).send(logText);
+        return null;
+    });
+
+
+});
