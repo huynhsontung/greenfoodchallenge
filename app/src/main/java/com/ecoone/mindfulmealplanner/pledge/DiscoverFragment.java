@@ -173,7 +173,7 @@ public class DiscoverFragment extends Fragment {
                 myRecyclerView.setAdapter(myAdapter);
             }
         });
-        myAdapter = new PeoplePledgeAdapter(new ArrayList<>());
+        myAdapter = new PeoplePledgeAdapter(new ArrayList<PeoplePledging>());
         myRecyclerView.setAdapter(myAdapter);
     }
 
