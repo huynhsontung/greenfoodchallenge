@@ -40,7 +40,18 @@
     <string name="title_activity_user_account">UserAccountActivity</string>
     <string name="skip_the_tutorial"><u>Skip the tutorial</u></string>
     <string name="skip">skip</string>
-    <string name="before_we_begin_let_s_go_over_some_features">Before we begin, let\'s go over some features</string>
+    <string name="before_we_begin_let_s_go_over_some_features">Before we begin, let\'s go quickly over some features</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="pledge">Pledge</string>
+    <string name="what_meal_plan_fits_you_the_best">What meal plan fits you the best?</string>
+    <string name="meal_tracker">Meal Tracker</string>
+    <string name="profile">Profile</string>
+    <string name="edit_your_profile_picture_and_more">Edit your profile picture and more!</string>
+    <string name="add_browse_and_discover_different_green_meals">Add, Browse and Discover different green meals!</string>
+    <string name="submit_a_saving_pledge_and_view_other_pledgers">Submit a saving pledge and view other pledgers!</string>
+    <string name="view_improve_and_contrast_plans">View, Improve, and Contrast Plans!</string>
+    <string name="ready_to_go_green">Ready To Go Green?</string>
+    <string name="i_was_born_ready">I was born ready</string>
 
     <string-array name="preset_names">
         <item>Meat Lover</item>

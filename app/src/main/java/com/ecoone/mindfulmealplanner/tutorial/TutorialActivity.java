@@ -16,7 +16,7 @@ import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 
 public class TutorialActivity extends AppCompatActivity implements View.OnClickListener {
-    private static final int NUMBER_OF_PAGES = 5;
+    private static final int NUMBER_OF_PAGES = 3;
 
     private static final String CLASSTAG = "(TutorialActivity)";
     private static final String TAG = "testActivity";
@@ -69,15 +69,9 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
                 case 1:
                     Log.i(TAG,CLASSTAG + 1);
                     return DashboardTutorialFragment.newInstance();
-                case 2:
-                    Log.i(TAG,CLASSTAG + 2);
-                    return PledgeTutorialFragment.newInstance();
-                case 3:
-                    Log.i(TAG,CLASSTAG + 3);
-                    return MealTutorialFragment.newInstance();
                 default:
                     Log.i(TAG,CLASSTAG + 4);
-                    return ProfileTutorialFragment.newInstance();
+                    return FinishTutorialFragment.newInstance();
             }
         }
         @Override
