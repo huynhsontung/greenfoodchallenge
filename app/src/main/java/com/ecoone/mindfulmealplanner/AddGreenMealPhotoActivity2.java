@@ -10,8 +10,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -22,8 +25,14 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
     GridView myGridView;
     ArrayList<Bitmap> photos;
     Button takePhoto;
+    private static final String[] GREEN_FOODS = {
+            "Beyond Meat Burger", "California Roll", "Vodka", "Cheese Pizza", "Cold Cut Combo",
+            "Burger", "Coffee", "Strawberry Smoothie"
+    };
     private static final int GALLERY = 5;
     private static final int CAMERA = 6;
+
+    private AutoCompleteTextView autoCompleteTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,9 +40,15 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
         setContentView(R.layout.activity_add_green_meal_photo2);
         photos = new ArrayList<Bitmap>();
 
+        autoCompleteTextView = findViewById(R.id.autocomplete_add_photo);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealPhotoActivity2.this,
+                android.R.layout.simple_list_item_1, GREEN_FOODS);
+        autoCompleteTextView.setAdapter(adapter);
+
+
         myGridView = (GridView)findViewById(R.id.add_green_meal_photo_grid);
         takePhoto = (Button)findViewById(R.id.test_button);
-
+        myGridView.setHorizontalSpacing(8);
         takePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

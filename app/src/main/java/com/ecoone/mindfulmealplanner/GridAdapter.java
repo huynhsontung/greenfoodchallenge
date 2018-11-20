@@ -3,11 +3,13 @@ package com.ecoone.mindfulmealplanner;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 
 import java.util.ArrayList;
 
@@ -38,18 +40,37 @@ public class GridAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int i, View convertView, ViewGroup viewGroup) {
-        ImageView mImageView;
-
+    public View getView(final int i, View convertView, ViewGroup viewGroup) {
+        final ImageView mImageView;
         if (convertView == null) {
             mImageView = new ImageView(context);
-            mImageView.setLayoutParams(new GridView.LayoutParams(200, 300));
+            mImageView.setLayoutParams(new GridView.LayoutParams(300, 300));
             mImageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            mImageView.setPadding(8, 8, 8, 8);
+            mImageView.setPadding(20, 100, 8, 100);
         } else {
             mImageView = (ImageView) convertView;
         }
         mImageView.setImageBitmap(images.get(i));
+
+        mImageView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                PopupMenu popupMenu = new PopupMenu(context, mImageView);
+                popupMenu.getMenuInflater().inflate(R.menu.add_green_meal_delete_photo, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem menuItem) {
+                        images.remove(i);
+                        notifyDataSetChanged();
+                        return true;
+                    }
+                });
+                popupMenu.show();
+                //images.remove(i);
+                //notifyDataSetChanged();
+                return true;
+            }
+        });
         // mImageView.setImageResource(imageIDs[position]);
         return mImageView;
     }

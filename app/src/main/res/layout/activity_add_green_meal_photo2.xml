@@ -9,7 +9,7 @@
     <GridView
         android:id="@+id/add_green_meal_photo_grid"
         android:layout_width="368dp"
-        android:layout_height="342dp"
+        android:layout_height="206dp"
         android:numColumns="3"
         android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -22,30 +22,53 @@
         android:id="@+id/button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="32dp"
         android:text="Add item"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.902"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView2" />
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_add_photo" />
 
     <AutoCompleteTextView
-        android:id="@+id/autoCompleteTextView2"
-        android:layout_width="wrap_content"
+        android:id="@+id/autocomplete_add_photo"
+        android:layout_width="295dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:text="AutoCompleteTextView"
+        android:layout_marginTop="36dp"
+        android:hint="Add the item name..."
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_photo_grid" />
+        app:layout_constraintTop_toBottomOf="@+id/test_button" />
 
     <Button
         android:id="@+id/test_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="28dp"
+        android:layout_marginTop="8dp"
         android:text="Take photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/add_green_meal_photo_grid" />
+
+    <TextView
+        android:id="@+id/add_green_meal_photo_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Add an item to your green meal!"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/add_green_meal_photo_cancel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="152dp"
+        android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/button"
-        app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView2" />
+        app:layout_constraintTop_toBottomOf="@+id/autocomplete_add_photo" />
 </android.support.constraint.ConstraintLayout>
