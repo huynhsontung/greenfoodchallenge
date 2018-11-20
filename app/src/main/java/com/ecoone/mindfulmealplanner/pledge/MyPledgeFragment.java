@@ -23,7 +23,9 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,7 +38,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 
-public class MyPledgeFragment extends Fragment {
+public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
 
     final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -50,6 +52,7 @@ public class MyPledgeFragment extends Fragment {
     private ValueEventListener listener;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MyPledgeFragment)";
+    private PledgeLogic mPledgeLogic;
 
 
     public static Intent newIntent(Context mContext) {
@@ -87,11 +90,10 @@ public class MyPledgeFragment extends Fragment {
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
         planCO2TextView = view.findViewById(R.id.user_tip);
-        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
         locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
-
+        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
         setFirebaseValueListener();
-
+        mPledgeLogic = new PledgeLogic(this);
         setEditDoneIconAction(view);
         setSpinnerListener();
     }
@@ -184,6 +186,24 @@ public class MyPledgeFragment extends Fragment {
                 "array", getContext().getPackageName());
         return getContext().getResources().getStringArray(resId);
     }
+
+    @Override
+    public void updatePledgeTip() {
+        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.i(TAG,CLASSTAG + "resumed");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.i(TAG,CLASSTAG + "paused");
+    }
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,8 +48,6 @@ public class DiscoverFragment extends Fragment {
     private Spinner filterSpinner;
     private PledgeViewModel mViewModel;
     ValueEventListener totalPledgeListener;
-
-
     public DiscoverFragment() {
         // Required empty public constructor
     }

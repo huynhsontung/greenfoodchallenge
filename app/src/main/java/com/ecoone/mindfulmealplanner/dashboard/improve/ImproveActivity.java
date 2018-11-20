@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
 import com.ecoone.mindfulmealplanner.tools.ChartValueFormatter;
@@ -41,7 +42,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImproveActivity extends AppCompatActivity implements OnInputListener {
+public class ImproveActivity extends AppCompatActivity implements OnInputListener{
 
     private TextView mImprovedPlanCo2ePerYearTextView;
     private TextView mPlanDifferenceCo2ePerYearTextView;
@@ -89,7 +90,6 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
-
         setFirebaseValueListener();
 
     }
