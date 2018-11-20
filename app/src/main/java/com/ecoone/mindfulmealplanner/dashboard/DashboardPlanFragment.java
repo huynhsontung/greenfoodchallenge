@@ -41,6 +41,9 @@ import com.google.firebase.functions.FirebaseFunctions;
 import java.text.DecimalFormat;
 import java.util.Objects;
 
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+
 public class DashboardPlanFragment extends Fragment {
 
 
@@ -93,6 +96,14 @@ public class DashboardPlanFragment extends Fragment {
         setOnPlanSelectListener();
         setupImproveButton();
         setEditDoneIconAction(view);
+        /*final FancyShowCaseView fancyShowCaseView1 = new FancyShowCaseView.Builder(getActivity())
+                .title("First Queue Item")
+                .focusOn(improveButton)
+                .build();
+        
+        FancyShowCaseQueue mQueue = new FancyShowCaseQueue()
+                .add(fancyShowCaseView1);
+        mQueue.show();*/
     }
 
     private void setOnPlanSelectListener() {

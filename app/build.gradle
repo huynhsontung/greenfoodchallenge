@@ -54,6 +54,7 @@ dependencies {
     implementation 'com.android.support:customtabs:28.0.0'
     implementation 'com.android.support:exifinterface:28.0.0'
     implementation 'com.android.support:percent:28.0.0'
+
 }
 
 dependencies {
@@ -92,6 +93,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-database:16.0.5'
     implementation 'com.google.firebase:firebase-functions:16.1.3'
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
+}
+
+dependencies {
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.1.0'
 }
 
 apply plugin: 'com.google.gms.google-services'

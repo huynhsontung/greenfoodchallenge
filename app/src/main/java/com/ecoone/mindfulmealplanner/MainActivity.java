@@ -20,6 +20,9 @@ import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 
+import me.toptas.fancyshowcase.FancyShowCaseQueue;
+import me.toptas.fancyshowcase.FancyShowCaseView;
+
 
 public class MainActivity extends AppCompatActivity implements
         ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener{

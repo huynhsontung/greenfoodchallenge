@@ -23,6 +23,7 @@ public class FinishTutorialFragment extends Fragment implements View.OnClickList
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_tutorial_finished,container,false);
+        Button skipButton = view.findViewById(R.id.enter_dashboard_button);
         mFinishTutorialButton = view.findViewById(R.id.finish_tutorial_button);
         mFinishTutorialButton.setOnClickListener(this);
         return view;

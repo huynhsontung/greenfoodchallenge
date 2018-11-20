@@ -1,6 +1,9 @@
 package com.ecoone.mindfulmealplanner.tutorial;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -15,25 +18,45 @@ import android.widget.Button;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.setup.InitialSetupActivity;
 
-public class TutorialActivity extends AppCompatActivity implements View.OnClickListener {
+public class TutorialActivity extends AppCompatActivity implements Button.OnClickListener {
     private static final int NUMBER_OF_PAGES = 3;
 
     private static final String CLASSTAG = "(TutorialActivity)";
     private static final String TAG = "testActivity";
+    private static final String SKIP_TUTORIAL = "key";
+
     private ViewPager mViewPager;
     private Button mSkipTutorial;
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = mSharedPreferences.edit();
+        checkIfInDashboard();
         setUpViewPager();
         mSkipTutorial = findViewById(R.id.enter_dashboard_button);
         mSkipTutorial.setOnClickListener(this);
     }
 
+    public void checkIfInDashboard() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        int flag = mSharedPreferences.getInt(SKIP_TUTORIAL,0);
+        if(flag == 0) {
+
+        }
+        else if (flag == 1) {
+            skipTutorial();
+        }
+    }
+
     public void setUpViewPager() {
         setContentView(R.layout.activity_tutorial);
+        Log.i(TAG,CLASSTAG + "view[age");
         mViewPager = findViewById(R.id.tutorial_view_pager);
         PagerAdapter pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         TabLayout mTabLayout = findViewById(R.id.dots);
@@ -109,6 +132,37 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
         } else {
             mViewPager.setCurrentItem(position - 1);
         }
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        editor.putInt("key",1);
+        editor.apply();
+        Log.d(TAG, CLASSTAG + " onDestroy");
     }
 
 

@@ -2,6 +2,8 @@ package com.ecoone.mindfulmealplanner.setup;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -37,8 +39,12 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
 
     private static final String CLASSTAG = "(InitialSetupActivity)";
     private static final String TAG = "testActivity";
+    private static final int flag = 1;
     private NonSwipeableViewPager mViewPager;
     private InitialSetupViewModel mViewModel;
+    private SharedPreferences mShared;
+    SharedPreferences.Editor editor;
+
     DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     FirebaseUser user;
 
@@ -46,6 +52,8 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mViewModel = ViewModelProviders.of(this).get(InitialSetupViewModel.class);
+        mShared = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = mShared.edit();
         checkIfGoToDashboard();
     }
 
@@ -196,6 +204,8 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             pledge.location = "Vancouver";
             FirebaseDatabaseInterface.writePledge(pledge);
 
+            editor.putInt("key",0);
+            editor.apply();
             startActivityAndFinish();
         } else {
             mViewPager.setCurrentItem(position+1);
