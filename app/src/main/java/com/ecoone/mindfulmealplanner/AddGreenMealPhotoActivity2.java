@@ -42,7 +42,11 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_green_meal_photo2);
 
-        myToolBar = findViewById(R.id.toolbar);
+        /*myToolBar = findViewById(R.id.toolbar);
+        setSupportActionBar(myToolBar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("Add green meal item");*/
 
         photos = new ArrayList<Bitmap>();
 
