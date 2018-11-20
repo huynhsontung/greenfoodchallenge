@@ -27,6 +27,7 @@
         android:background="@android:color/transparent"
         android:inputType="none"
         android:maxLines="1"
+        android:maxLength="4"
         android:text="0"
         android:textColor="@color/colorAccent"
         android:textSize="48sp"
