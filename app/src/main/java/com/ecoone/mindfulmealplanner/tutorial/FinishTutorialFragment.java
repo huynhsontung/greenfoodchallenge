@@ -18,7 +18,7 @@ public class FinishTutorialFragment extends Fragment implements View.OnClickList
         return new FinishTutorialFragment();
     }
 
-    private static Button mFinishTutorialButton;
+    private Button mFinishTutorialButton;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,6 +32,7 @@ public class FinishTutorialFragment extends Fragment implements View.OnClickList
     public void onClick(View v) {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
+        getActivity().finish();
     }
 
 }

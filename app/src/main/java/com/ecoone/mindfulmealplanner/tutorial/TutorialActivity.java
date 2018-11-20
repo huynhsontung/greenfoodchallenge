@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -21,14 +22,14 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
     private static final String CLASSTAG = "(TutorialActivity)";
     private static final String TAG = "testActivity";
     private ViewPager mViewPager;
-    private View mSkipTutorial;
+    private Button mSkipTutorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setUpViewPager();
-        View testButton = findViewById(R.id.enter_dashboard_button);
-        testButton.setOnClickListener(this);
+        mSkipTutorial = findViewById(R.id.enter_dashboard_button);
+        mSkipTutorial.setOnClickListener(this);
     }
 
     public void setUpViewPager() {
@@ -39,7 +40,26 @@ public class TutorialActivity extends AppCompatActivity implements View.OnClickL
         mTabLayout.setupWithViewPager(mViewPager, true);
         mViewPager.setAdapter(pagerAdapter);
         mViewPager.setCurrentItem(0);
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i1) {
 
+            }
+
+            @Override
+            public void onPageSelected(int i) {
+                if (i == 2){
+                    mSkipTutorial.setVisibility(View.INVISIBLE);
+                } else {
+                    mSkipTutorial.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
     }
 
     @Override
