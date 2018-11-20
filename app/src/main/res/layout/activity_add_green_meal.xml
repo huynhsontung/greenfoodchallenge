@@ -150,11 +150,11 @@
 
                 <AutoCompleteTextView
                     android:id="@+id/add_meal_autoCompleteTextView"
-                    android:layout_width="wrap_content"
+                    android:layout_width="200dp"
                     android:layout_height="wrap_content"
-                    android:completionHint="Add a restaurant..."
                     android:maxLines="1"
                     android:completionThreshold="1"
+                    android:layout_marginRight="@dimen/profile_list_item_right_side_margin"
                     android:textSize="15sp"
                     android:background="@android:color/transparent"
                     android:hint="Add a restaurant..." />

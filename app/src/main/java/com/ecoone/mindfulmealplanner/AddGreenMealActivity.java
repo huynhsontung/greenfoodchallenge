@@ -2,9 +2,11 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -18,13 +20,20 @@ import android.widget.TextView;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class AddGreenMealActivity extends AppCompatActivity {
@@ -33,6 +42,9 @@ public class AddGreenMealActivity extends AppCompatActivity {
     private EditText addGreenMealNameEditView;
     private AutoCompleteTextView autoCompleteTextView;
     private EditText addGreenMealDescription;
+
+    private HashMap<String, Boolean> allRestaurantName;
+    private AutoCompleteRestaurantAdapter mAdapter;
 
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -63,6 +75,23 @@ public class AddGreenMealActivity extends AppCompatActivity {
         autoCompleteTextView = findViewById(R.id.add_meal_autoCompleteTextView);
         addGreenMealDescription = findViewById(R.id.add_meal_description);
 
+        allRestaurantName = new HashMap<>();
+
+        getAllRestaurantName().addOnCompleteListener(new OnCompleteListener<HashMap<String, Boolean>>() {
+            @Override
+            public void onComplete(@NonNull Task<HashMap<String, Boolean>> task) {
+                allRestaurantName = task.getResult();
+
+                if (allRestaurantName != null) {
+                    List<Map.Entry<String, Boolean>> list = new ArrayList<>(allRestaurantName.entrySet());
+                    mAdapter = new AutoCompleteRestaurantAdapter(getApplicationContext(), list);
+                    autoCompleteTextView.setAdapter(mAdapter);
+                }
+            }
+        });
+
+
+
 //        Meal meal = new Meal();
 //        meal.mealName = "testMeal";
 //        Set<String> s = new HashSet<>();
@@ -83,10 +112,6 @@ public class AddGreenMealActivity extends AppCompatActivity {
 //                .child("mealInfo").setValue(meal);
 
 
-//        autoCompleteTextView = findViewById(R.id.autoCompleteTextView);
-//        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealActivity.this,
-//                android.R.layout.simple_list_item_1, RESTAURANT_SUGGESTIONS);
-//        autoCompleteTextView.setAdapter(adapter);
 //
 //        goToPhoto = (Button)findViewById(R.id.add_green_meal_startphoto_button);
 //        goToPhoto.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +121,17 @@ public class AddGreenMealActivity extends AppCompatActivity {
 //                startActivity(myIntent);
 //            }
 //        });
+    }
+
+    private Task<HashMap<String, Boolean>> getAllRestaurantName() {
+        return FirebaseFunctions.getInstance().getHttpsCallable("getAllRestaurantName")
+                .call().continueWith(new Continuation<HttpsCallableResult, HashMap<String, Boolean>>() {
+                    @Override
+                    public HashMap<String, Boolean> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        HashMap<String, Boolean> result = (HashMap<String, Boolean>) task.getResult().getData();
+                        return result;
+                    }
+                });
     }
 
 

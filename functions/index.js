@@ -199,6 +199,19 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
     });
 });
 
+exports.getAllRestaurantName = functions.https.onCall((data) => {
+    return admin.database().ref("/RestaurantMenu").once("value").then((snapshot) => {
+        var allRestaurant = {};
+        snapshot.forEach((childSnapshot) => {
+            allRestaurant[childSnapshot.key] = childSnapshot.child("isGreen").val();
+        });
+        console.log("Check all restaurant: ", JSON.stringify(allRestaurant));
+        return allRestaurant;
+    });
+});
+
+
+
 // exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
 //     var genderList = ['male', 'female'];
 //     var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
@@ -315,6 +328,6 @@ exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp)
         resp.status(200).send(logText);
         return null;
     });
-
-
 });
+
+
