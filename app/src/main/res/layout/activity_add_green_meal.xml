@@ -16,20 +16,21 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/my_grey"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
                 android:background="@color/my_grey"/>
-
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -54,15 +55,14 @@
                     android:layout_weight="1" />
 
                 <EditText
-                    android:id="@+id/add_green_meal_name_editview"
+                    android:id="@+id/add_meal_name_editview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
                     android:maxLines="1"
                     android:layout_marginRight="@dimen/profile_list_item_right_side_margin"
                     android:hint="Add a meal name..."
-                    android:textSize="15sp"
-                    android:inputType="none" />
+                    android:textSize="15sp" />
 
             </LinearLayout>
 
@@ -80,91 +80,271 @@
                 android:layout_gravity="top"
                 android:gravity="center_vertical" >
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:text="Meal Type"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <RadioGroup
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin">
+
+
+                    <RadioButton
+                        android:id="@+id/radio_pirates"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"
+                        android:text="Breakfast"/>
+                    <RadioButton
+                        android:id="@+id/radio_ninjas"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"
+                        android:text="Lunch"/>
+                    <RadioButton
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dinner"/>
+
+                </RadioGroup>
+
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/my_grey"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                android:layout_gravity="top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:text="Restaurant Name"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <AutoCompleteTextView
+                    android:id="@+id/add_meal_autoCompleteTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:completionHint="Add a restaurant..."
+                    android:maxLines="1"
+                    android:completionThreshold="1"
+                    android:textSize="15sp"
+                    android:background="@android:color/transparent"
+                    android:hint="Add a restaurant..." />
+
+
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/my_grey" />
+                android:layout_height="1dp"
+                android:background="@color/my_grey"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                android:layout_gravity="top"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:text="Description"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"/>
+
+
+                <EditText
+                    android:id="@+id/add_meal_description"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:maxLines="10"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:hint="Add a meal name..."
+                    android:textSize="15sp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/my_grey"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                android:layout_gravity="top"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:text="Visible to All Users"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_weight="1" />
+
+                <android.support.v7.widget.AppCompatCheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"/>
+
+            </LinearLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp">
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/button2"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Reset"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/button"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/button"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="Next"
+                    android:textColor="@color/button_grey"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/button2"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </android.support.constraint.ConstraintLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:background="@color/my_grey"/>
+
+            <!--<TextView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="Lunch"-->
+                <!--android:textSize="@dimen/add_meal_list_item_title_name_size"-->
+                <!--android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"-->
+                <!--android:paddingTop="@dimen/add_meal_list_item_layout_padding" />-->
+
+            <!--<LinearLayout-->
+                <!--android:id="@+id/profile_user_data_detail"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:paddingTop="@dimen/add_meal_list_item_layout_padding"-->
+                <!--android:paddingBottom="@dimen/add_meal_list_item_layout_padding"-->
+                <!--android:clickable="true"-->
+                <!--android:layout_gravity="top"-->
+                <!--android:gravity="center_vertical">-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="100px"-->
+                <!--android:layout_height="100px"-->
+                <!--android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"-->
+                <!--android:src="@drawable/red_add_icon"/>-->
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"-->
+                <!--android:text="add"/>-->
+
+            <!--<LinearLayout-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginStart="20dp"-->
+                <!--android:orientation="vertical">-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/profile_user_display_name"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="@dimen/profile_list_item_title_name_size" />-->
+
+                <!--<TextView-->
+                    <!--android:id="@+id/profile_user_email"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:textSize="13sp" />-->
+
+            <!--</LinearLayout>-->
+
+
+            <!--<View-->
+                <!--android:layout_width="0dp"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:layout_weight="1" />-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginEnd="@dimen/profile_list_item_right_side_margin"-->
+                <!--android:src="@drawable/arrow_right"-->
+                <!--android:visibility="gone"/>-->
+
+        <!--</LinearLayout>-->
+
+
+
 
         </LinearLayout>
 
-
     </android.support.v4.widget.NestedScrollView>
 
-
-
-
-    <!--<TextView-->
-        <!--android:id="@+id/add_green_meal_description_text_view"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:text="Share your green meal with your friends!"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_title_textview" />-->
-
-
-
-    <!--<Button-->
-        <!--android:id="@+id/add_green_meal_startphoto_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="292dp"-->
-        <!--android:layout_marginEnd="28dp"-->
-        <!--android:text="Next"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />-->
-
-    <!--<TextView-->
-        <!--android:id="@+id/textView6"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:text="Eating out? Check to see if you are in a green restaurant."-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.514"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/add_green_meal_name_editview" />-->
-
-    <!--<Button-->
-        <!--android:id="@+id/add_green_meal_cancel_button"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginStart="8dp"-->
-        <!--android:layout_marginTop="184dp"-->
-        <!--android:layout_marginEnd="156dp"-->
-        <!--android:text="Cancel"-->
-        <!--app:layout_constraintEnd_toStartOf="@+id/add_green_meal_startphoto_button"-->
-        <!--app:layout_constraintHorizontal_bias="1.0"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />-->
-
-    <!--<AutoCompleteTextView-->
-        <!--android:id="@+id/autoCompleteTextView"-->
-        <!--android:layout_width="283dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:completionHint="Add a restaurant..."-->
-        <!--android:completionThreshold="1"-->
-        <!--android:hint="Add a restaurant..."-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintHorizontal_bias="0.502"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/textView6" />-->
-
-    <!--<EditText-->
-        <!--android:id="@+id/add_green_meal_description_editText"-->
-        <!--android:layout_width="286dp"-->
-        <!--android:layout_height="146dp"-->
-        <!--android:layout_marginTop="24dp"-->
-        <!--android:ems="10"-->
-        <!--android:hint="Add a description..."-->
-        <!--android:inputType="textMultiLine"-->
-        <!--app:layout_constraintEnd_toEndOf="parent"-->
-        <!--app:layout_constraintStart_toStartOf="parent"-->
-        <!--app:layout_constraintTop_toBottomOf="@+id/autoCompleteTextView" />-->
 </android.support.design.widget.CoordinatorLayout>
