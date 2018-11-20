@@ -15,12 +15,15 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toolbar;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
+
+    Toolbar myToolBar;
 
     GridView myGridView;
     ArrayList<Bitmap> photos;
@@ -38,6 +41,9 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_green_meal_photo2);
+
+        myToolBar = findViewById(R.id.toolbar);
+
         photos = new ArrayList<Bitmap>();
 
         autoCompleteTextView = findViewById(R.id.autocomplete_add_photo);
