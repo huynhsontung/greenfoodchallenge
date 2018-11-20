@@ -39,7 +39,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
         goToPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent myIntent = new Intent(AddGreenMealActivity.this, AddGreenMealPhotoActivity.class);
+                Intent myIntent = new Intent(AddGreenMealActivity.this, AddGreenMealPhotoActivity2.class);
                 startActivity(myIntent);
             }
         });
