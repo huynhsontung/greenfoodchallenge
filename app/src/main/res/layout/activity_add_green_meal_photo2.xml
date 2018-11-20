@@ -32,7 +32,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/autocomplete_add_photo"
-        android:layout_width="295dp"
+        android:layout_width="323dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
         android:hint="Add the item name..."
