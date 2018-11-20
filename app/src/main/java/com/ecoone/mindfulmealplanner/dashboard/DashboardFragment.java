@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.dashboard;
 
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,8 +14,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.ecoone.mindfulmealplanner.dashboard.planlist.PlanListFragment;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.dashboard.planlist.PlanListFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,21 +39,33 @@ public class DashboardFragment extends Fragment {
         return fragment;
     }
 
+    DashboardViewModel mViewModel;
+    ViewPager viewPager;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(this).get(DashboardViewModel.class);
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_dashboard, container,false);
 
-        ViewPager viewPager = rootView.findViewById(R.id.dashboard_viewpager);
+        viewPager = rootView.findViewById(R.id.dashboard_viewpager);
         setupViewPager(viewPager);
 
         TabLayout myTabs = rootView.findViewById(R.id.tab_bar);
         myTabs.setupWithViewPager(viewPager);
-
+        setOnPlanSelectListener();
         return rootView;
+    }
+
+    private void setOnPlanSelectListener() {
+        mViewModel.getCurrentPlan().observe(this, planName -> {
+            if(planName!=null) {
+                viewPager.setCurrentItem(0);
+            }
+        });
     }
 
     private void setupViewPager(ViewPager viewPager) {

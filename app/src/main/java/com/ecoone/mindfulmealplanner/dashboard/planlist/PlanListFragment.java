@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.dashboard.planlist;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,8 +15,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.dashboard.DashboardViewModel;
+import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -25,6 +27,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PlanListFragment extends Fragment {
 
@@ -33,7 +36,7 @@ public class PlanListFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
     private PlanAdapter mAdapter;
-
+    private DashboardViewModel mViewModel;
     private ValueEventListener mValueEventListener;
 
     private static final String TAG = "testActivity";
@@ -44,6 +47,7 @@ public class PlanListFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        mViewModel = ViewModelProviders.of(Objects.requireNonNull(getParentFragment())).get(DashboardViewModel.class);
         return inflater.inflate(R.layout.fragment_plan_list, container, false );
     }
 
@@ -90,25 +94,15 @@ public class PlanListFragment extends Fragment {
 
     }
 
-    private class PlanHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-
-        private Plan mPlan;
-
+    private class PlanHolder extends RecyclerView.ViewHolder {
         private TextView mPlanNameTextView;
         private TextView mPlanFoodAmountTextView;
 
         public PlanHolder(LayoutInflater inflater, ViewGroup parent) {
             super(inflater.inflate(R.layout.list_item_plan, parent, false));
-            itemView.setOnClickListener(this);
 
             mPlanNameTextView = itemView.findViewById(R.id.recyclerview_plan_name);
             mPlanFoodAmountTextView = itemView.findViewById(R.id.plan_food_amount);
-        }
-
-        @Override
-        public void onClick(View view) {
-//            Intent intent = PlanPagerActivity.newIntent(getActivity(), mUsername, mPlan.planName);
-//            startActivity(intent);
         }
 
         public void bind(Plan plan) {
@@ -118,7 +112,7 @@ public class PlanListFragment extends Fragment {
         }
     }
 
-    private class PlanAdapter extends RecyclerView.Adapter<PlanHolder> {
+    private class PlanAdapter extends RecyclerView.Adapter<PlanHolder> implements View.OnClickListener{
 
         private List<Plan> mPlans;
 
@@ -137,11 +131,19 @@ public class PlanListFragment extends Fragment {
         public void onBindViewHolder(@NonNull PlanHolder planHolder, int position) {
             Plan plan = mPlans.get(position);
             planHolder.bind(plan);
+            planHolder.itemView.setTag(plan);
+            planHolder.itemView.setOnClickListener(this);
         }
 
         @Override
         public int getItemCount() {
             return mPlans.size();
+        }
+
+        @Override
+        public void onClick(View v) {
+            Plan selectedPlan = (Plan) v.getTag();
+            mViewModel.getCurrentPlan().setValue(selectedPlan.planName);
         }
     }
 

@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.dashboard;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -21,14 +22,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
-import com.ecoone.mindfulmealplanner.tools.Calculator;
-import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
+import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.User;
+import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
+import com.ecoone.mindfulmealplanner.tools.Calculator;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,6 +39,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 
 import java.text.DecimalFormat;
+import java.util.Objects;
 
 public class DashboardPlanFragment extends Fragment {
 
@@ -53,10 +56,9 @@ public class DashboardPlanFragment extends Fragment {
     private TextView currentCo2eTextView;
     private TextView relevantInfo;
     private EditText editPlanName;
-    private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
-
+    private DashboardViewModel mViewModel;
     private ViewPager mChartPager;
     private PagerAdapter mChartPagerAdapter;
     private static final String TAG = "testActivity";
@@ -67,7 +69,7 @@ public class DashboardPlanFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
+        mViewModel = ViewModelProviders.of(Objects.requireNonNull(getParentFragment())).get(DashboardViewModel.class);
         return inflater.inflate(R.layout.fragment_dashboard_plan, container, false);
     }
 
@@ -88,9 +90,19 @@ public class DashboardPlanFragment extends Fragment {
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setFirebaseValueListener();
+        setOnPlanSelectListener();
         setupImproveButton();
         setEditDoneIconAction(view);
     }
+
+    private void setOnPlanSelectListener() {
+        mViewModel.getCurrentPlan().observe(this, planName -> {
+            if(planName!=null){
+                FirebaseDatabaseInterface.updateCurrentPlanName(planName);
+            }
+        });
+    }
+
     private void setFirebaseValueListener() {
         mValueEventListener = new ValueEventListener() {
             @Override
@@ -161,32 +173,44 @@ public class DashboardPlanFragment extends Fragment {
 
     private void setEditDoneIconAction(final View view) {
 
-        mEditDoneIcon.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i(TAG, CLASSTAG + "inpute type: " + editPlanName.getInputType());
-                if (editPlanName.getInputType() == 0) {
-                    editPlanName.requestFocus();
-                    editPlanName.setInputType(1);
-                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
-                    editPlanName.setSelection(editPlanName.getText().length());
-                    editPlanName.selectAll();
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    boolean test = imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
-                    Log.i(TAG, CLASSTAG + "showsoftInput return: " + test);
-                    Log.i(TAG, CLASSTAG + "keyboard open");
-                }
-                else {
-                    editPlanName.setInputType(0);
-                    String newPlanName = editPlanName.getText().toString();
-                    editPlanName.setText(newPlanName);
-                    mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit, 0, 0, 0);
-                    InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-                    boolean test = imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    Log.i(TAG, CLASSTAG + "hidesoftInput return: " + test);
-                    Log.i(TAG, CLASSTAG + "keyboard close");
+        mEditDoneIcon.setOnClickListener(v -> {
+            Log.i(TAG, CLASSTAG + "inpute type: " + editPlanName.getInputType());
+            if (editPlanName.getInputType() == 0) {
+                editPlanName.requestFocus();
+                editPlanName.setInputType(1);
+                mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_done, 0, 0, 0);
+                editPlanName.setSelection(editPlanName.getText().length());
+                editPlanName.selectAll();
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean test = imm.showSoftInput(editPlanName, InputMethodManager.SHOW_IMPLICIT);
+                Log.i(TAG, CLASSTAG + "showsoftInput return: " + test);
+                Log.i(TAG, CLASSTAG + "keyboard open");
+            }
+            else {
+                String newPlanName = editPlanName.getText().toString();
+                if(!newPlanName.isEmpty()) {
+                    while(newPlanName.startsWith(" ")){
+                        if(newPlanName.length()>1) {
+                            newPlanName = newPlanName.substring(1);
+                        } else {
+                            Toast.makeText(getContext(),"New name cannot be all space",Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                    }
                     FirebaseDatabaseInterface.updateCurrentPlanNameAndPlan(mCurrentPlan, mCurrentPlanName, newPlanName);
+                } else {
+                    Toast.makeText(getContext(),"New name cannot be empty",Toast.LENGTH_LONG).show();
+                    return;
                 }
+
+                editPlanName.setInputType(0);
+                editPlanName.setText(newPlanName);
+                mEditDoneIcon.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_edit, 0, 0, 0);
+                InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+                boolean test = imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+                Log.i(TAG, CLASSTAG + "hidesoftInput return: " + test);
+                Log.i(TAG, CLASSTAG + "keyboard close");
+
             }
         });
 
