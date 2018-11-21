@@ -1,8 +1,11 @@
 package com.ecoone.mindfulmealplanner.dashboard.planlist;
 
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -19,6 +22,8 @@ import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.dashboard.DashboardViewModel;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -41,6 +46,12 @@ public class PlanListFragment extends Fragment {
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(PlanListFragment)";
+
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor editor;
+    private static final String SKIP_TUTORIAL_DASHBOARD_PLAN = "dashboardplan";
+    private static final String SKIP_TUTORIAL_PLAN_LIST = "planlist";
+
 
     @Nullable
     @Override
@@ -65,6 +76,9 @@ public class PlanListFragment extends Fragment {
 
         updateUI();
     }
+
+
+
 
     private void updateUI() {
 

@@ -2,6 +2,7 @@ package com.ecoone.mindfulmealplanner.pledge;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,9 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -46,6 +50,7 @@ public class DiscoverFragment extends Fragment {
     private TextView totalPledgeAverageText;
     private TextView relevantInfoText;
     private Spinner filterSpinner;
+    private ImageView helpIconDiscover;
     private PledgeViewModel mViewModel;
     ValueEventListener totalPledgeListener;
     public DiscoverFragment() {
@@ -79,7 +84,32 @@ public class DiscoverFragment extends Fragment {
         setupDatabaseTransaction(view);
         setupMunicipalityFilter(view);
         updateRecycler();
+        helpIconDiscover = view.findViewById(R.id.help_icon_discover);
+        discoverTutorialListener();
 
+    }
+
+    public void discoverTutorialListener() {
+        helpIconDiscover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDiscoverTutorial();
+            }
+        });
+    }
+
+    public void startDiscoverTutorial() {
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+        final BubbleShowCase bubble1 = new BubbleShowCaseBuilder(getActivity())
+                .title("Explore pledges from people all over the Lower Mainland!")
+                .titleTextSize(18)
+                .image(d)
+                .targetView(filterSpinner)
+                .show();
+
+        /*new BubbleShowCaseSequence()
+                .addShowCase(bubble1)
+                .show();*/
     }
 
     private void setupMunicipalityFilter(View view) {

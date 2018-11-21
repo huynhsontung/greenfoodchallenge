@@ -21,6 +21,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import me.toptas.fancyshowcase.FancyShowCaseView;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -42,6 +44,7 @@ public class DashboardFragment extends Fragment {
     DashboardViewModel mViewModel;
     ViewPager viewPager;
 
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -53,7 +56,6 @@ public class DashboardFragment extends Fragment {
 
         viewPager = rootView.findViewById(R.id.dashboard_viewpager);
         setupViewPager(viewPager);
-
         TabLayout myTabs = rootView.findViewById(R.id.tab_bar);
         myTabs.setupWithViewPager(viewPager);
         setOnPlanSelectListener();

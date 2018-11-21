@@ -3,8 +3,11 @@ package com.ecoone.mindfulmealplanner.dashboard;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +34,9 @@ import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.User;
 import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -43,6 +49,9 @@ import java.util.Objects;
 
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
+import me.toptas.fancyshowcase.listener.DismissListener;
+
+import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class DashboardPlanFragment extends Fragment {
 
@@ -66,6 +75,9 @@ public class DashboardPlanFragment extends Fragment {
     private PagerAdapter mChartPagerAdapter;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(DashboardPlanFragment)";
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor editor;
+    private static final String SKIP_TUTORIAL_DASHBOARD_PLAN = "dashboardplan";
 
     @Nullable
     @Override
@@ -73,6 +85,7 @@ public class DashboardPlanFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         mViewModel = ViewModelProviders.of(Objects.requireNonNull(getParentFragment())).get(DashboardViewModel.class);
+
         return inflater.inflate(R.layout.fragment_dashboard_plan, container, false);
     }
 
@@ -88,22 +101,16 @@ public class DashboardPlanFragment extends Fragment {
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
-
         mFunctions = FirebaseFunctions.getInstance();
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        editor = mSharedPreferences.edit();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         setFirebaseValueListener();
         setOnPlanSelectListener();
         setupImproveButton();
         setEditDoneIconAction(view);
-        /*final FancyShowCaseView fancyShowCaseView1 = new FancyShowCaseView.Builder(getActivity())
-                .title("First Queue Item")
-                .focusOn(improveButton)
-                .build();
-        
-        FancyShowCaseQueue mQueue = new FancyShowCaseQueue()
-                .add(fancyShowCaseView1);
-        mQueue.show();*/
     }
 
     private void setOnPlanSelectListener() {

@@ -2,8 +2,11 @@ package com.ecoone.mindfulmealplanner.pledge;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -28,6 +31,8 @@ import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.R;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,8 +58,7 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MyPledgeFragment)";
     private PledgeLogic mPledgeLogic;
-
-
+    private ImageView helpIcon;
     public static Intent newIntent(Context mContext) {
         Intent intent = new Intent(mContext, DailyPledgeService.class);
         return intent;
@@ -96,7 +100,41 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
         mPledgeLogic = new PledgeLogic(this);
         setEditDoneIconAction(view);
         setSpinnerListener();
+        helpIcon = view.findViewById(R.id.help_icon_pledge);
+        pledgeTutorialListener();
     }
+
+    public void pledgeTutorialListener() {
+        helpIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startPledgeTutorial();
+            }
+        });
+    }
+
+    public void startPledgeTutorial() {
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+        final BubbleShowCaseBuilder bubble1 = new BubbleShowCaseBuilder(getActivity())
+                .title("Compared to your plan, how much CO2e do you think you can save per week?")
+                .titleTextSize(18)
+                .image(d)
+                .targetView(mEditDoneIcon);
+
+
+        final BubbleShowCaseBuilder bubble2 = new BubbleShowCaseBuilder(getActivity())
+                .title("City with the highest savings gets bragging rights!")
+                .titleTextSize(18)
+                .targetView(mSpinner)
+                .image(d);
+
+
+        new BubbleShowCaseSequence()
+                .addShowCase(bubble1)
+                .addShowCase(bubble2)
+                .show();
+    }
+
 
     private void setFirebaseValueListener() {
         listener = new ValueEventListener() {

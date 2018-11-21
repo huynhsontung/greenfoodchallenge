@@ -2,7 +2,10 @@ package com.ecoone.mindfulmealplanner;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
@@ -19,6 +22,8 @@ import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 
 import me.toptas.fancyshowcase.FancyShowCaseQueue;
 import me.toptas.fancyshowcase.FancyShowCaseView;
@@ -45,6 +50,9 @@ public class MainActivity extends AppCompatActivity implements
     private android.support.v7.widget.Toolbar mToolbar;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(MainActivity)";
+    private static final String SKIP_MAIN_ACTIVITY_TUTORIAL = "mainactivity";
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,7 +66,61 @@ public class MainActivity extends AppCompatActivity implements
         MenuItem menuItem = mBottomNavigationView.getMenu().findItem(R.id.nav_dashboard);
         setTitle(menuItem.getTitle());
         setupFragmentListForNav();
+
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = mSharedPreferences.edit();
+        checkForTutorial();
+    }
+
+    private void checkForTutorial() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        int flag = mSharedPreferences.getInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+
+        if(flag == 0) {
+            final BubbleShowCaseBuilder bubble1 = new BubbleShowCaseBuilder(this)
+                    .title("Understand and Improve your current plan!")
+                    .titleTextSize(18)
+                    .description("Compare previous plans ")
+                    .image(d)
+                    .targetView(findViewById(R.id.nav_dashboard));
+
+
+            final BubbleShowCaseBuilder bubble2 = new BubbleShowCaseBuilder(this)
+                    .title("Make a Pledge to save CO2e!")
+                    .titleTextSize(18)
+                    .description("Browse other pledgers and pledge statistics")
+                    .targetView(findViewById(R.id.nav_pledge))
+                    .image(d);
+
+            final BubbleShowCaseBuilder bubble3 = new BubbleShowCaseBuilder(this)
+                    .title("Post your Green Meals here!")
+                    .titleTextSize(18)
+                    .description("Discover other Green Meals")
+                    .targetView(findViewById(R.id.nav_meal_tracker))
+                    .image(d);
+
+            final BubbleShowCaseBuilder bubble4 = new BubbleShowCaseBuilder(this)
+                    .title("View account details!")
+                    .titleTextSize(18)
+                    .description("Read about the goal of this app!")
+                    .targetView(findViewById(R.id.nav_profile))
+                    .image(d);
+
+            new BubbleShowCaseSequence()
+                    .addShowCase(bubble1)
+                    .addShowCase(bubble2)
+                    .addShowCase(bubble3)
+                    .addShowCase(bubble4)
+                    .show();
+
+            editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL, 1);
+            editor.apply();
+            Log.i(TAG,CLASSTAG + "dashplan done");
+        }
+
     }
 
     private void setupFragmentListForNav() {

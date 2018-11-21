@@ -160,7 +160,7 @@ public class TutorialActivity extends AppCompatActivity implements Button.OnClic
     @Override
     public void onDestroy() {
         super.onDestroy();
-        editor.putInt("key",1);
+        editor.putInt(SKIP_TUTORIAL,1);
         editor.apply();
         Log.d(TAG, CLASSTAG + " onDestroy");
     }

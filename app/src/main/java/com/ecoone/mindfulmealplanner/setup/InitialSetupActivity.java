@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
@@ -47,6 +48,10 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
 
     DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     FirebaseUser user;
+
+    private static final String SKIP_TUTORIAL = "key";
+    private static final String SKIP_MAIN_ACTIVITY_TUTORIAL = "mainactivity";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -204,7 +209,8 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             pledge.location = "Vancouver";
             FirebaseDatabaseInterface.writePledge(pledge);
 
-            editor.putInt("key",0);
+            editor.putInt(SKIP_TUTORIAL,0);
+            editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
             editor.apply();
             startActivityAndFinish();
         } else {
@@ -255,7 +261,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     }
 
     private void startActivityAndFinish() {
-        Intent intent = new Intent(InitialSetupActivity.this, TutorialActivity.class);
+        Intent intent = new Intent(InitialSetupActivity.this, MainActivity.class);
         startActivity(intent);
         finish();
     }
