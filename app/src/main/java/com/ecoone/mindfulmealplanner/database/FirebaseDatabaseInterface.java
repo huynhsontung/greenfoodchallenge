@@ -152,4 +152,12 @@ public abstract class FirebaseDatabaseInterface {
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(PLEDGEINFO_NODE).child("location").setValue(location);
     }
 
+    public static void writeMeal(Meal meal) {
+        String mealName = meal.mealName;
+        meal.mealName = null;
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
+                .child("mealInfo").child(mealName).setValue(meal);
+    }
+
 }

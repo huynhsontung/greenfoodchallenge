@@ -8,7 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -16,8 +18,10 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.android.gms.tasks.Continuation;
@@ -30,6 +34,7 @@ import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -45,7 +50,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
     private Button resetButton;
 
     private LinearLayout addFoodLayout;
-
+    private TextView addFoodLayoutMealTypeTextView;
 
     private HashMap<String, Boolean> allRestaurantMenu;
     private AutoCompleteRestaurantAdapter mAdapter;
@@ -84,34 +89,22 @@ public class AddGreenMealActivity extends AppCompatActivity {
         mealTypeRadioGroup = findViewById(R.id.add_meal_rasio_group);
 
         addFoodLayout = findViewById(R.id.add_food_layout);
+        addFoodLayoutMealTypeTextView = findViewById(R.id.add_food_layout_meal_type);
+
+        Button test = findViewById(R.id.test);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View child = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_detail_component, addFoodLayout, false);
+                addFoodLayout.addView(child);
+            }
+        });
 
         allRestaurantMenu = new HashMap<>();
 
         mMeal = new Meal();
 
         initializeActivity();
-
-
-
-
-//        Meal meal = new Meal();
-//        meal.mealName = "testMeal";
-//        Set<String> s = new HashSet<>();
-//        s.add("lunch");
-//        s.add("test");
-//        meal.tags.addAll(s);
-//        meal.isGreen = true;
-////
-//        Food food = new Food();
-//        food.foodName = "testFood";
-//        food.co2eAmount = 100;
-//
-//        food.ingredient.put("beef", 10);
-//        food.ingredient.put("pork", 10);
-//        meal.foodInfo.put("testFood", food);
-//
-//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
-//                .child("mealInfo").setValue(meal);
 
     }
 
@@ -134,10 +127,12 @@ public class AddGreenMealActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (isMealBasicInfoComplete() ) {
                     setMealBasicInfoEditableStatus(0);
-                    nextButton.setTextColor(Color.WHITE);
-
-
+                    setMealInfo();
+//                    nextButton.setTextColor(Color.WHITE);
+                    addFoodLayoutMealTypeTextView.setText(mMeal.mealType);
                     addFoodLayout.setVisibility(View.VISIBLE);
+                    setAddFoodDetailLayout();
+//                    sendMealToFirebase();
 
                 }
                 else {
@@ -151,7 +146,8 @@ public class AddGreenMealActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setMealBasicInfoEditableStatus(1);
-                nextButton.setTextColor(getResources().getColor(R.color.button_grey));
+//                nextButton.setTextColor(getResources().getColor(R.color.button_grey));
+                mMeal.clear();
                 addFoodLayout.setVisibility(View.GONE);
 
             }
@@ -167,7 +163,9 @@ public class AddGreenMealActivity extends AppCompatActivity {
         if (mealDescriptionEditView.getText().toString().equals("")) {
             mMeal.mealDescription = "No Description.";
         }
-        mMeal.mealDescription = mealDescriptionEditView.getText().toString();
+        else {
+            mMeal.mealDescription = mealDescriptionEditView.getText().toString();
+        }
 
         if (visibleCheckBox.isChecked()) {
             mMeal.isPrivate = false;
@@ -175,6 +173,22 @@ public class AddGreenMealActivity extends AppCompatActivity {
         else {
             mMeal.isPrivate = true;
         }
+
+        String restaurantName = restaurantNameAutoCompleteTextView.getText().toString();
+
+        if (allRestaurantMenu.containsKey(restaurantName)) {
+            if (allRestaurantMenu.get(restaurantName)) {
+                mMeal.isGreen = true;
+            }
+            else {
+                mMeal.isGreen = false;
+            }
+        }
+        else {
+            mMeal.isGreen = false;
+        }
+
+        mMeal.tags.addAll(Arrays.asList(mMeal.mealName, mMeal.mealType, mMeal.restaurantName));
 
     }
 
@@ -186,6 +200,11 @@ public class AddGreenMealActivity extends AppCompatActivity {
             return true;
         }
         return false;
+    }
+
+
+    private void setAddFoodDetailLayout() {
+
     }
 
     // sign: 0 uneditable, 1 editable
@@ -211,6 +230,25 @@ public class AddGreenMealActivity extends AppCompatActivity {
 
     }
 
+    private void sendMealToFirebase() {
+        Food food1 = new Food();
+        food1.foodName = "testFood1";
+        food1.co2eAmount = 100;
+        food1.ingredient.put("beef", 100);
+        food1.ingredient.put("pork", 10);
+
+
+        Food food2 = new Food();
+        food2.foodName = "testFood2";
+        food2.co2eAmount = 200;
+        food2.ingredient.put("beef", 20);
+        food2.ingredient.put("fish", 120);
+        addFoodToMeal(food1);
+        addFoodToMeal(food2);
+
+        FirebaseDatabaseInterface.writeMeal(mMeal);
+    }
+
     private void showCustomToast(String message) {
         Toast mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
@@ -218,13 +256,13 @@ public class AddGreenMealActivity extends AppCompatActivity {
         mToast.show();
     }
 
-    private void addFoodtoMeal(Meal meal, Food food){
+    private void addFoodToMeal(Food food){
         String foodName = food.foodName;
-        if (meal.isGreen) {
-            meal.totalCo2eAmount += food.co2eAmount;
+        if (mMeal.isGreen) {
+            mMeal.totalCo2eAmount += food.co2eAmount;
         }
         food.foodName = null;
-        meal.foodInfo.put(foodName, food);
+        mMeal.foodInfo.put(foodName, food);
     }
 
     private Task<HashMap<String, Boolean>> getAllRestaurantMenu() {

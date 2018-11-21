@@ -253,7 +253,8 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toStartOf="@+id/add_meal_next_button"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <android.support.design.button.MaterialButton
                     android:id="@+id/add_meal_next_button"
@@ -263,11 +264,25 @@
                     android:layout_marginStart="8dp"
                     android:layout_marginEnd="8dp"
                     android:text="Next"
-                    android:textColor="@color/button_grey"
+                    app:cornerRadius="20dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/test"
+                    app:layout_constraintStart_toEndOf="@+id/add_meal_reset_button"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_bias="0.0" />
+
+                <android.support.design.button.MaterialButton
+                    android:id="@+id/test"
+                    style="@style/Widget.AppCompat.Button.Colored"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="test"
                     app:cornerRadius="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/add_meal_reset_button"
+                    app:layout_constraintStart_toEndOf="@+id/add_meal_next_button"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
@@ -287,79 +302,20 @@
                     android:background="@color/my_grey"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:id="@+id/add_food_layout_meal_type"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lunch"
-                    android:textSize="@dimen/add_meal_list_item_title_name_size"
                     android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
-                    android:paddingTop="@dimen/add_meal_list_item_layout_padding" />
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+                    android:text="Lunch"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="@color/my_grey"/>
-
-                <LinearLayout
-                    android:id="@+id/profile_user_data_detail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingTop="@dimen/add_meal_list_item_layout_padding"
-                    android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
-                    android:clickable="true"
-                    android:layout_gravity="top"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="100px"
-                        android:layout_height="100px"
-                        android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
-                        android:src="@drawable/red_add_icon"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
-                        android:text="add"/>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/profile_user_display_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="@dimen/profile_list_item_title_name_size" />
-
-                        <TextView
-                            android:id="@+id/profile_user_email"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:textSize="13sp" />
-
-                    </LinearLayout>
-
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_weight="1" />
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/profile_list_item_right_side_margin"
-                        android:src="@drawable/arrow_right"
-                        android:visibility="gone"/>
-
-                </LinearLayout>
-
             </LinearLayout>
-
-
 
 
         </LinearLayout>

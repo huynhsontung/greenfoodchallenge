@@ -11,9 +11,9 @@ public class Meal {
     public String mealType;
     public String restaurantName;
     public String mealDescription;
-    public List<String> tags;
     public boolean isGreen;
     public boolean isPrivate;
+    public List<String> tags;
     public int totalCo2eAmount;
     public HashMap<String, Object> foodInfo;
 
@@ -27,8 +27,8 @@ public class Meal {
         mealType = null;
         restaurantName = null;
         mealDescription = null;
-        tags = null;
-        foodInfo = null;
+        tags = new ArrayList<>();
+        foodInfo = new HashMap<>();
         totalCo2eAmount = 0;
         isGreen = false;
         isPrivate = true;
