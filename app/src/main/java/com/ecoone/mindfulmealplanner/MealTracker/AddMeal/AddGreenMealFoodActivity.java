@@ -455,9 +455,9 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
             Bitmap mBitmap = (Bitmap)data.getExtras().get("data");
             foodPhotoImageView.setImageBitmap(mBitmap);
 
-//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//            photoByteArray = stream.toByteArray();
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            photoByteArray = stream.toByteArray();
 
 //            galleryAddPic();
         }
