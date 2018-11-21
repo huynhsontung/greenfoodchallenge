@@ -32,6 +32,9 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
     GridView myGridView;
     ArrayList<Bitmap> photos;
     Button takePhoto;
+
+    ArrayList<Bitmap> foodPhotos;
+
     private static final String[] GREEN_FOODS = {
             "Beyond Meat Burger", "California Roll", "Vodka", "Cheese Pizza", "Cold Cut Combo",
             "Burger", "Coffee", "Strawberry Smoothie"

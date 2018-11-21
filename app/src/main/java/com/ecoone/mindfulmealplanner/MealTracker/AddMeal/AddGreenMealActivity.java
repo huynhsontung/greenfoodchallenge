@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -7,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -57,6 +60,9 @@ public class AddGreenMealActivity extends AppCompatActivity {
 
     private Meal mMeal;
 
+    private ArrayList<byte[]> photoList;
+    private ArrayList<View> mViewList;
+
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -69,7 +75,6 @@ public class AddGreenMealActivity extends AppCompatActivity {
         return intent;
     }
 
-    Button goToPhoto;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,19 +97,20 @@ public class AddGreenMealActivity extends AppCompatActivity {
         addFoodLayout = findViewById(R.id.add_food_layout);
         addFoodLayoutMealTypeTextView = findViewById(R.id.add_food_layout_meal_type);
 
+        allRestaurantMenu = new HashMap<>();
+        mMeal = new Meal();
+//        photoList
+        initializeActivity();
+
         Button test = findViewById(R.id.test);
         test.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = AddGreenMealFoodActivity.newIntent(getApplicationContext(), mMeal.restaurantName);
+                Intent intent = AddGreenMealFoodActivity.newIntent(AddGreenMealActivity.this,
+                                                                    mMeal.restaurantName, mMeal.isGreen);
                 startActivityForResult(intent, REQUEST_FOOD_INFO);
             }
         });
-
-        allRestaurantMenu = new HashMap<>();
-        mMeal = new Meal();
-
-        initializeActivity();
 
     }
 
@@ -131,7 +137,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
 //                    nextButton.setTextColor(Color.WHITE);
                     addFoodLayoutMealTypeTextView.setText(mMeal.mealType);
                     addFoodLayout.setVisibility(View.VISIBLE);
-                    setAddFoodDetailLayout();
+                    addNewFoodView();
 //                    sendMealToFirebase();
 
                 }
@@ -278,6 +284,13 @@ public class AddGreenMealActivity extends AppCompatActivity {
 
     private void addNewFoodView() {
         View child = LayoutInflater.from(getApplicationContext()).inflate(R.layout.add_food_detail_component, addFoodLayout, false);
+        ImageView test = child.findViewById(R.id.red_add_icon_image_view);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showCustomToast("test");
+            }
+        });
         addFoodLayout.addView(child);
     }
 
@@ -289,6 +302,22 @@ public class AddGreenMealActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        addNewFoodView();
+
+        if (resultCode != Activity.RESULT_OK) {
+            return;
+        }
+
+        if (requestCode == REQUEST_FOOD_INFO) {
+            if (data == null) {
+                return;
+            }
+
+            byte[] test1 = AddGreenMealFoodActivity.getPhotoArraybyte(data);
+            Food food = AddGreenMealFoodActivity.getFoodInfo(data);
+            addFoodToMeal(food);
+            Log.i(TAG, "");
+
+        }
+
     }
 }

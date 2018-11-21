@@ -1,9 +1,9 @@
 package com.ecoone.mindfulmealplanner.database;
 
+import java.io.Serializable;
 import java.util.HashMap;
-import java.util.Map;
 
-public class Food {
+public class Food implements Serializable {
     public String foodName;
     public int co2eAmount;
     public HashMap<String, Integer> ingredient;

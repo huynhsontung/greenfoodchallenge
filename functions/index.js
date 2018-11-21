@@ -211,6 +211,21 @@ exports.getAllRestaurantMenu = functions.https.onCall((data) => {
 });
 
 
+exports.getRestaurantFoodMenu = functions.https.onCall((data) => {
+    const restaurantName = data.restaurantName;
+    console.log("Check : restaurantName", restaurantName);
+    return admin.database().ref("/RestaurantMenu/" + restaurantName + "/foodInfo")
+        .once("value").then((snapshot) => {
+            var restaurantFoodMenu = {};
+            snapshot.forEach((childSnapshot) => {
+                restaurantFoodMenu[childSnapshot.key] = childSnapshot.val();
+                console.log("check key and value", childSnapshot.key, childSnapshot.val());
+            });
+            console.log("Check all food menu: ", JSON.stringify(restaurantFoodMenu));
+            return restaurantFoodMenu;
+    });
+});
+
 
 // exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
 //     var genderList = ['male', 'female'];
