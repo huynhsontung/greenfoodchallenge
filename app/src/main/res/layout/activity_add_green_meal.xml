@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"/>
 
 
-    <android.support.v4.widget.NestedScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/my_grey"
@@ -287,8 +287,6 @@
 
             </android.support.constraint.ConstraintLayout>
 
-
-
             <LinearLayout
                 android:id="@+id/add_food_layout"
                 android:layout_width="match_parent"
@@ -320,6 +318,6 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </ScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

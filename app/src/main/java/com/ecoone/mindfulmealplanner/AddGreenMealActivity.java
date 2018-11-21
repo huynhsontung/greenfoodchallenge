@@ -132,7 +132,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
                     addFoodLayoutMealTypeTextView.setText(mMeal.mealType);
                     addFoodLayout.setVisibility(View.VISIBLE);
                     setAddFoodDetailLayout();
-//                    sendMealToFirebase();
+                    sendMealToFirebase();
 
                 }
                 else {

@@ -12,6 +12,7 @@
     android:gravity="center_vertical">
 
     <ImageView
+        android:scaleType="fitXY"
         android:layout_width="100px"
         android:layout_height="100px"
         android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"

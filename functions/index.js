@@ -263,31 +263,31 @@ exports.getAllRestaurantMenu = functions.https.onCall((data) => {
 //     return 0;
 // });
 
-//
-// exports.test = functions.https.onRequest((req, resp) => {
-//     if(req.method !== "POST") {
-//         resp.status(400).send("not POST request");
-//         console.log("test", "not POST request");
-//     }
-//
-//     console.log("check type" , typeof req.body);
-//     var data = req.body;
-//
-//     if (typeof data === "string") {
-//         console.log("string")
-//         data = JSON.parse(data);
-//     }
-//     else if (typeof data === "object") {
-//         console.log("object")
-//     }
-//     //
-//     console.log("test req body", data);
-//     console.log("test name", data.user.name);
-//     console.log("test age", data.user.age);
-//
-//     resp.status(200).send("OK");
-//
-// });
+
+ exports.test = functions.https.onRequest((req, resp) => {
+     if(req.method !== "POST") {
+         resp.status(400).send("not POST request");
+         console.log("test", "not POST request");
+     }
+
+     console.log("check type" , typeof req.body);
+     var data = req.body;
+
+     if (typeof data === "string") {
+         console.log("string")
+         data = JSON.parse(data);
+     }
+     else if (typeof data === "object") {
+         console.log("object")
+     }
+     //
+     console.log("test req body", data);
+     console.log("test name", data.user.name);
+     console.log("test age", data.user.age);
+
+     resp.status(200).send("OK");
+
+ });
 
 // exports.adminCheckAndModifyTotalPledgeNumber = functions.https.onRequest((req, resp) => {
 // //     var log = "";
