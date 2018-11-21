@@ -1,0 +1,15 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@color/bottomNavGrey"
+        android:width="50dp"
+        android:height="50dp"
+        />
+
+    <item>
+        <bitmap
+            android:gravity="center"
+            android:src="@drawable/cabbage_icon"/>
+    </item>
+
+</layer-list>
