@@ -37,8 +37,6 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
 
     private ChipGroup myChipGroup;
 
-
-
     EditText getMealName;
     private ViewPager viewPager;
     private AddPhotoFragmentAdapter adapter;
@@ -72,14 +70,6 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         ChipClickListener(chipPork);
         ChipClickListener(chipVeggies);
 
-        /*chipBeans.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                chipBeans.setChipBackgroundColorResource(R.color.colorAccent);
-                Toast.makeText(getApplicationContext(), "Lalala", Toast.LENGTH_SHORT).show();
-            }
-        });*/
-
         listOfAutoCompletes = new ArrayList<AutoCompleteTextView>();
 
         viewPager = findViewById(R.id.add_green_meal_photo_pager);
@@ -100,7 +90,6 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //myChip.setChipBackgroundColorResource(R.color.colorAccent);
-
             }
         });
     }
