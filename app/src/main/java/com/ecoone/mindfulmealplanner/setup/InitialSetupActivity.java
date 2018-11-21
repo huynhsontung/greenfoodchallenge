@@ -51,7 +51,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
 
     private static final String SKIP_TUTORIAL = "key";
     private static final String SKIP_MAIN_ACTIVITY_TUTORIAL = "mainactivity";
-
+    private static final String SKIP_TUTORIAL_PLAN_LIST = "planlist";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -209,8 +209,11 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             pledge.location = "Vancouver";
             FirebaseDatabaseInterface.writePledge(pledge);
 
+            // reset sharedpreferences to enable tutorials
             editor.putInt(SKIP_TUTORIAL,0);
             editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
+            editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
+            editor.putInt(SKIP_TUTORIAL_PLAN_LIST,0);
             editor.apply();
             startActivityAndFinish();
         } else {

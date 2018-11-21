@@ -24,6 +24,7 @@ import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.elconfidencial.bubbleshowcase.BubbleShowCase;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,7 +50,7 @@ public class PlanListFragment extends Fragment {
 
     SharedPreferences mSharedPreferences;
     SharedPreferences.Editor editor;
-    private static final String SKIP_TUTORIAL_DASHBOARD_PLAN = "dashboardplan";
+    View planView;
     private static final String SKIP_TUTORIAL_PLAN_LIST = "planlist";
 
 
@@ -74,10 +75,43 @@ public class PlanListFragment extends Fragment {
                 ((LinearLayoutManager) layoutManager).getOrientation());
         mRecyclerView.addItemDecoration(dividerItemDecoration);
 
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
+        editor = mSharedPreferences.edit();
         updateUI();
     }
 
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        // Make sure that we are currently visible
+        if (this.isVisible()) {
+            Log.i(TAG,CLASSTAG + "vis in planlist");
+            checkForTutorial();
+            if (!isVisibleToUser) {
+                Log.i(TAG,CLASSTAG + "not vis in planlist");
+            }
+        }
+    }
 
+    private void checkForTutorial() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        int flag = mSharedPreferences.getInt(SKIP_TUTORIAL_PLAN_LIST,0);
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+
+        if(flag == 0) {
+            final BubbleShowCase bubble1 = new BubbleShowCaseBuilder(getActivity())
+                    .title("Simply click on any of your existing plans to make it your current!")
+                    .titleTextSize(18)
+                    .image(d)
+                    .targetView(planView)
+                    .show();
+
+            editor.putInt(SKIP_TUTORIAL_PLAN_LIST, 1);
+            editor.apply();
+            Log.i(TAG,CLASSTAG + "dashplan done");
+        }
+
+    }
 
 
     private void updateUI() {
@@ -144,6 +178,7 @@ public class PlanListFragment extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull PlanHolder planHolder, int position) {
             Plan plan = mPlans.get(position);
+            planView = planHolder.itemView;
             planHolder.bind(plan);
             planHolder.itemView.setTag(plan);
             planHolder.itemView.setOnClickListener(this);
