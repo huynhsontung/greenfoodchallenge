@@ -14,6 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:layout_marginRight="5dp"
+        android:textAppearance="?android:attr/textAppearanceListItemSmall"
         android:text="Restaurant title"/>
 
     <ImageView

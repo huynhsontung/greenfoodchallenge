@@ -93,6 +93,7 @@
                     android:layout_weight="1" />
 
                 <RadioGroup
+                    android:id="@+id/add_meal_rasio_group"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -100,18 +101,19 @@
 
 
                     <RadioButton
-                        android:id="@+id/radio_pirates"
+                        android:id="@+id/radio_breakfast"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"
                         android:text="Breakfast"/>
                     <RadioButton
-                        android:id="@+id/radio_ninjas"
+                        android:id="@+id/radio_lunch"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"
                         android:text="Lunch"/>
                     <RadioButton
+                        android:id="@+id/radio_dinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Dinner"/>
@@ -227,6 +229,7 @@
                     android:layout_weight="1" />
 
                 <android.support.v7.widget.AppCompatCheckBox
+                    android:id="@+id/add_meal_checkbox"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/add_meal_list_item_right_side_margin"/>
@@ -239,7 +242,7 @@
                 android:layout_marginBottom="5dp">
 
                 <android.support.design.button.MaterialButton
-                    android:id="@+id/button2"
+                    android:id="@+id/add_meal_reset_button"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -248,12 +251,12 @@
                     android:text="Reset"
                     app:cornerRadius="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toStartOf="@+id/button"
+                    app:layout_constraintEnd_toStartOf="@+id/add_meal_next_button"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <android.support.design.button.MaterialButton
-                    android:id="@+id/button"
+                    android:id="@+id/add_meal_next_button"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -264,81 +267,97 @@
                     app:cornerRadius="20dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/button2"
+                    app:layout_constraintStart_toEndOf="@+id/add_meal_reset_button"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
 
-            <TextView
+
+
+            <LinearLayout
+                android:id="@+id/add_food_layout"
                 android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:background="@color/my_grey"/>
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
 
-            <!--<TextView-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:text="Lunch"-->
-                <!--android:textSize="@dimen/add_meal_list_item_title_name_size"-->
-                <!--android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"-->
-                <!--android:paddingTop="@dimen/add_meal_list_item_layout_padding" />-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/my_grey"/>
 
-            <!--<LinearLayout-->
-                <!--android:id="@+id/profile_user_data_detail"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:orientation="horizontal"-->
-                <!--android:paddingTop="@dimen/add_meal_list_item_layout_padding"-->
-                <!--android:paddingBottom="@dimen/add_meal_list_item_layout_padding"-->
-                <!--android:clickable="true"-->
-                <!--android:layout_gravity="top"-->
-                <!--android:gravity="center_vertical">-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Lunch"
+                    android:textSize="@dimen/add_meal_list_item_title_name_size"
+                    android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                    android:paddingTop="@dimen/add_meal_list_item_layout_padding" />
 
-            <!--<ImageView-->
-                <!--android:layout_width="100px"-->
-                <!--android:layout_height="100px"-->
-                <!--android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"-->
-                <!--android:src="@drawable/red_add_icon"/>-->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/my_grey"/>
 
-            <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"-->
-                <!--android:text="add"/>-->
+                <LinearLayout
+                    android:id="@+id/profile_user_data_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="@dimen/add_meal_list_item_layout_padding"
+                    android:paddingBottom="@dimen/add_meal_list_item_layout_padding"
+                    android:clickable="true"
+                    android:layout_gravity="top"
+                    android:gravity="center_vertical">
 
-            <!--<LinearLayout-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginStart="20dp"-->
-                <!--android:orientation="vertical">-->
+                    <ImageView
+                        android:layout_width="100px"
+                        android:layout_height="100px"
+                        android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
+                        android:src="@drawable/red_add_icon"/>
 
-                <!--<TextView-->
-                    <!--android:id="@+id/profile_user_display_name"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textSize="@dimen/profile_list_item_title_name_size" />-->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/add_meal_list_item_left_side_margin"
+                        android:text="add"/>
 
-                <!--<TextView-->
-                    <!--android:id="@+id/profile_user_email"-->
-                    <!--android:layout_width="wrap_content"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:textSize="13sp" />-->
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="vertical">
 
-            <!--</LinearLayout>-->
+                        <TextView
+                            android:id="@+id/profile_user_display_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/profile_list_item_title_name_size" />
+
+                        <TextView
+                            android:id="@+id/profile_user_email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="13sp" />
+
+                    </LinearLayout>
 
 
-            <!--<View-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="0dp"-->
-                <!--android:layout_weight="1" />-->
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-            <!--<ImageView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginEnd="@dimen/profile_list_item_right_side_margin"-->
-                <!--android:src="@drawable/arrow_right"-->
-                <!--android:visibility="gone"/>-->
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/profile_list_item_right_side_margin"
+                        android:src="@drawable/arrow_right"
+                        android:visibility="gone"/>
 
-        <!--</LinearLayout>-->
+                </LinearLayout>
+
+            </LinearLayout>
 
 
 

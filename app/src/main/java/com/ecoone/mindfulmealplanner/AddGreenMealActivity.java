@@ -2,22 +2,22 @@ package com.ecoone.mindfulmealplanner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.KeyEvent;
+import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.SearchView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Toast;
 
-import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.android.gms.tasks.Continuation;
@@ -31,28 +31,32 @@ import com.google.firebase.functions.HttpsCallableResult;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public class AddGreenMealActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private EditText addGreenMealNameEditView;
-    private AutoCompleteTextView autoCompleteTextView;
-    private EditText addGreenMealDescription;
+    private EditText mealNameEditView;
+    private AutoCompleteTextView restaurantNameAutoCompleteTextView;
+    private EditText mealDescriptionEditView;
+    private RadioGroup mealTypeRadioGroup;
+    private CheckBox visibleCheckBox;
+    private Button nextButton;
+    private Button resetButton;
 
-    private HashMap<String, Boolean> allRestaurantName;
+    private LinearLayout addFoodLayout;
+
+
+    private HashMap<String, Boolean> allRestaurantMenu;
     private AutoCompleteRestaurantAdapter mAdapter;
+
+    private Meal mMeal;
 
     final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-    private static final String[] RESTAURANT_SUGGESTIONS = {
-            "A&W", "Tim Hortons", "Pizza Hut", "Liquor Store",
-            "Subway", "SFU Dining Hall", "Togo Sushi", "Nester's Market", "Starbucks"
-    };
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(AddGreenMealActivity)";
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, AddGreenMealActivity.class);
@@ -71,24 +75,22 @@ public class AddGreenMealActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("Add Meal");
 
-        addGreenMealNameEditView = findViewById(R.id.add_meal_name_editview);
-        autoCompleteTextView = findViewById(R.id.add_meal_autoCompleteTextView);
-        addGreenMealDescription = findViewById(R.id.add_meal_description);
+        mealNameEditView = findViewById(R.id.add_meal_name_editview);
+        restaurantNameAutoCompleteTextView = findViewById(R.id.add_meal_autoCompleteTextView);
+        mealDescriptionEditView = findViewById(R.id.add_meal_description);
+        nextButton = findViewById(R.id.add_meal_next_button);
+        resetButton = findViewById(R.id.add_meal_reset_button);
+        visibleCheckBox = findViewById(R.id.add_meal_checkbox);
+        mealTypeRadioGroup = findViewById(R.id.add_meal_rasio_group);
 
-        allRestaurantName = new HashMap<>();
+        addFoodLayout = findViewById(R.id.add_food_layout);
 
-        getAllRestaurantName().addOnCompleteListener(new OnCompleteListener<HashMap<String, Boolean>>() {
-            @Override
-            public void onComplete(@NonNull Task<HashMap<String, Boolean>> task) {
-                allRestaurantName = task.getResult();
+        allRestaurantMenu = new HashMap<>();
 
-                if (allRestaurantName != null) {
-                    List<Map.Entry<String, Boolean>> list = new ArrayList<>(allRestaurantName.entrySet());
-                    mAdapter = new AutoCompleteRestaurantAdapter(getApplicationContext(), list);
-                    autoCompleteTextView.setAdapter(mAdapter);
-                }
-            }
-        });
+        mMeal = new Meal();
+
+        initializeActivity();
+
 
 
 
@@ -111,20 +113,122 @@ public class AddGreenMealActivity extends AppCompatActivity {
 //        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
 //                .child("mealInfo").setValue(meal);
 
-
-//
-//        goToPhoto = (Button)findViewById(R.id.add_green_meal_startphoto_button);
-//        goToPhoto.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent myIntent = new Intent(AddGreenMealActivity.this, AddGreenMealPhotoActivity.class);
-//                startActivity(myIntent);
-//            }
-//        });
     }
 
-    private Task<HashMap<String, Boolean>> getAllRestaurantName() {
-        return FirebaseFunctions.getInstance().getHttpsCallable("getAllRestaurantName")
+    private void initializeActivity() {
+        getAllRestaurantMenu().addOnCompleteListener(new OnCompleteListener<HashMap<String, Boolean>>() {
+            @Override
+            public void onComplete(@NonNull Task<HashMap<String, Boolean>> task) {
+                allRestaurantMenu = task.getResult();
+
+                if (allRestaurantMenu != null) {
+                    ArrayList<Map.Entry<String, Boolean>> list = new ArrayList<>(allRestaurantMenu.entrySet());
+                    mAdapter = new AutoCompleteRestaurantAdapter(getApplicationContext(), list);
+                    restaurantNameAutoCompleteTextView.setAdapter(mAdapter);
+                }
+            }
+        });
+
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isMealBasicInfoComplete() ) {
+                    setMealBasicInfoEditableStatus(0);
+                    nextButton.setTextColor(Color.WHITE);
+
+
+                    addFoodLayout.setVisibility(View.VISIBLE);
+
+                }
+                else {
+                    showCustomToast("Please enter the meal information.");
+                }
+
+            }
+        });
+
+        resetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setMealBasicInfoEditableStatus(1);
+                nextButton.setTextColor(getResources().getColor(R.color.button_grey));
+                addFoodLayout.setVisibility(View.GONE);
+
+            }
+        });
+
+    }
+
+    private void setMealInfo() {
+        mMeal.mealName = mealNameEditView.getText().toString();
+        RadioButton mealTypeButton = findViewById(mealTypeRadioGroup.getCheckedRadioButtonId());
+        mMeal.mealType = mealTypeButton.getText().toString();
+        mMeal.restaurantName = restaurantNameAutoCompleteTextView.getText().toString();
+        if (mealDescriptionEditView.getText().toString().equals("")) {
+            mMeal.mealDescription = "No Description.";
+        }
+        mMeal.mealDescription = mealDescriptionEditView.getText().toString();
+
+        if (visibleCheckBox.isChecked()) {
+            mMeal.isPrivate = false;
+        }
+        else {
+            mMeal.isPrivate = true;
+        }
+
+    }
+
+    private boolean isMealBasicInfoComplete() {
+//        Log.i(TAG, CLASSTAG + mealTypeRadioGroup.getCheckedRadioButtonId());
+        if (!mealNameEditView.getText().toString().equals("") &&
+                !restaurantNameAutoCompleteTextView.getText().toString().equals("") &&
+                mealTypeRadioGroup.getCheckedRadioButtonId() != -1) {
+            return true;
+        }
+        return false;
+    }
+
+    // sign: 0 uneditable, 1 editable
+    private void setMealBasicInfoEditableStatus(int sign) {
+        if (sign == 0) {
+            mealNameEditView.setEnabled(false);
+            restaurantNameAutoCompleteTextView.setEnabled(false);
+            mealDescriptionEditView.setEnabled(false);
+            for (int i = 0; i < mealTypeRadioGroup.getChildCount(); i++) {
+                mealTypeRadioGroup.getChildAt(i).setEnabled(false);
+            }
+            visibleCheckBox.setEnabled(false);
+        }
+        else {
+            mealNameEditView.setEnabled(true);
+            restaurantNameAutoCompleteTextView.setEnabled(true);
+            mealDescriptionEditView.setEnabled(true);
+            for (int i = 0; i < mealTypeRadioGroup.getChildCount(); i++) {
+                mealTypeRadioGroup.getChildAt(i).setEnabled(true);
+            }
+            visibleCheckBox.setEnabled(true);
+        }
+
+    }
+
+    private void showCustomToast(String message) {
+        Toast mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
+                0, 0);
+        mToast.show();
+    }
+
+    private void addFoodtoMeal(Meal meal, Food food){
+        String foodName = food.foodName;
+        if (meal.isGreen) {
+            meal.totalCo2eAmount += food.co2eAmount;
+        }
+        food.foodName = null;
+        meal.foodInfo.put(foodName, food);
+    }
+
+    private Task<HashMap<String, Boolean>> getAllRestaurantMenu() {
+        return FirebaseFunctions.getInstance().getHttpsCallable("getAllRestaurantMenu")
                 .call().continueWith(new Continuation<HttpsCallableResult, HashMap<String, Boolean>>() {
                     @Override
                     public HashMap<String, Boolean> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
@@ -133,7 +237,6 @@ public class AddGreenMealActivity extends AppCompatActivity {
                     }
                 });
     }
-
 
     @Override
     public boolean onSupportNavigateUp() {

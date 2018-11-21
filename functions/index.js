@@ -199,7 +199,7 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
     });
 });
 
-exports.getAllRestaurantName = functions.https.onCall((data) => {
+exports.getAllRestaurantMenu = functions.https.onCall((data) => {
     return admin.database().ref("/RestaurantMenu").once("value").then((snapshot) => {
         var allRestaurant = {};
         snapshot.forEach((childSnapshot) => {
