@@ -1,8 +1,6 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.drawable.PaintDrawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -10,14 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.R;
+
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

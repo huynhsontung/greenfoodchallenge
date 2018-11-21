@@ -13,16 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 
+import com.ecoone.mindfulmealplanner.MealTracker.MealTrackerFragment;
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
 import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
-
-import java.util.HashMap;
 
 
 public class MainActivity extends AppCompatActivity implements
@@ -326,7 +323,7 @@ public class MainActivity extends AppCompatActivity implements
 //    @SuppressWarnings("StatementWithEmptyBody")
 //    @Override
 //    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-////        Log.i("test", "Item:" +item);
+////        Log.i("add_photo", "Item:" +item);
 //        invalidateOptionsMenu();
 //        Fragment fragment = null;
 //        // Handle navigation view item clicks here..

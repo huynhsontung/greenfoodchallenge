@@ -60,8 +60,8 @@ public class PledgeFragment extends Fragment {
 //            for (int i = 0; i < tabChildsCount; i++) {
 //                View tabViewChild = vgTab.getChildAt(i);
 //                if (tabViewChild instanceof TextView) {
-//                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTextSize());
-//                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTypeface());
+//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTextSize());
+//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTypeface());
 //                }
 //            }
 //        }

@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.Deprecated;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -18,6 +18,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toolbar;
+
+import com.ecoone.mindfulmealplanner.R;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.Deprecated;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
+
+import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
 

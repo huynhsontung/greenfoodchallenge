@@ -13,8 +13,8 @@
 
     <ImageView
         android:scaleType="fitXY"
-        android:layout_width="100px"
-        android:layout_height="100px"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_marginLeft="@dimen/profile_list_item_left_side_margin"
         android:src="@drawable/red_add_icon"/>
 

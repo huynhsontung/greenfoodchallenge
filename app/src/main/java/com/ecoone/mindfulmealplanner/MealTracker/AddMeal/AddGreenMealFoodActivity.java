@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,20 +6,20 @@ import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
-import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
+
+import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
 
-public class AddGreenMealPhotoActivity extends AppCompatActivity {
+public class AddGreenMealFoodActivity extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CAMERA_IMAGE = 2;
@@ -28,7 +28,9 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
             "Beyond Meat Burger", "California Roll", "Vodka", "Cheese Pizza", "Cold Cut Combo",
             "Burger", "Coffee", "Strawberry Smoothie"
     };
-    ArrayList<AutoCompleteTextView> listOfAutoCompletes;
+
+
+    private Toolbar mToolbar;
     private AutoCompleteTextView autoCompleteTextView;
     private ImageView plusFoodItem;
     private int test = 0;
@@ -36,13 +38,14 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
     private ConstraintSet constraintSet;
 
     private ChipGroup myChipGroup;
-
+    ArrayList<AutoCompleteTextView> listOfAutoCompletes;
     EditText getMealName;
-    private ViewPager viewPager;
-    private AddPhotoFragmentAdapter adapter;
 
-    public static Intent newIntent(Context packageContext) {
-        Intent intent = new Intent(packageContext, AddGreenMealPhotoActivity.class);
+    private ImageView foodPhoto;
+
+    public static Intent newIntent(Context packageContext, String restaurantName) {
+        Intent intent = new Intent(packageContext, AddGreenMealFoodActivity.class);
+        intent.putExtra("restaurantName", restaurantName);
         return intent;
     }
 
@@ -50,6 +53,12 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_green_meal_photo);
+
+        mToolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        setTitle("Add Meal Food");
 
         constraintLayout = findViewById(R.id.add_green_meal_photo_constraintlayout);
 
@@ -59,7 +68,7 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         Chip chipChicken = findViewById(R.id.chip_chicken);
         Chip chipFish = findViewById(R.id.chip_fish);
         Chip chipEggs = findViewById(R.id.chip_eggs);
-        Chip chipBeans = (Chip)findViewById(R.id.chip_beans);
+        Chip chipBeans = findViewById(R.id.chip_beans);
         Chip chipVeggies = findViewById(R.id.chip_veggies);
 
         ChipClickListener(chipBeans);
@@ -72,13 +81,10 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
 
         listOfAutoCompletes = new ArrayList<AutoCompleteTextView>();
 
-        viewPager = findViewById(R.id.add_green_meal_photo_pager);
-        viewPager.setOffscreenPageLimit(1);
-        adapter = new AddPhotoFragmentAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
+        foodPhoto = findViewById(R.id.add_green_meal_photo_image);
 
-        autoCompleteTextView = findViewById(R.id.add_greal_meal_photo_auto);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealPhotoActivity.this,
+        autoCompleteTextView = findViewById(R.id.add_green_meal_photo_auto);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealFoodActivity.this,
                 android.R.layout.simple_list_item_1, GREEN_MEALS);
         autoCompleteTextView.setAdapter(adapter);
 
@@ -89,11 +95,17 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         myChip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //myChip.setChipBackgroundColorResource(R.color.colorAccent);
+//                myChip.setChipBackgroundColorResource(R.color.colorAccent);
             }
         });
     }
 
     // When user selects image from gallery
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        return true;
+    }
 
 }

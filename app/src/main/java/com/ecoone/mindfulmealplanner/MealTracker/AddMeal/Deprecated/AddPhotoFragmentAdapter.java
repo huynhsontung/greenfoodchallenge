@@ -1,9 +1,10 @@
-package com.ecoone.mindfulmealplanner;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.Deprecated;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import com.ecoone.mindfulmealplanner.MealTracker.AddMeal.Deprecated.AddPhotoFragment;
 
 public class AddPhotoFragmentAdapter extends FragmentPagerAdapter {
     public AddPhotoFragmentAdapter(FragmentManager fm) {
