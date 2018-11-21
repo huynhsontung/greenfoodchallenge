@@ -61,7 +61,8 @@
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddGreenMealPhotoActivity" />
-        <activity android:name=".AddGreenMealActivity"></activity>
+        <activity android:name=".AddGreenMealActivity" />
+        <activity android:name=".AddGreenMealPhotoActivity2"></activity>
     </application>
 
 </manifest>
