@@ -16,8 +16,8 @@
             android:id="@+id/submit_meal"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="116dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginTop="112dp"
+            android:layout_marginEnd="148dp"
             android:text="Submit"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_green_meal_photo_pager" />
@@ -42,24 +42,14 @@
 
         <AutoCompleteTextView
             android:id="@+id/add_greal_meal_photo_auto"
-            android:layout_width="289dp"
+            android:layout_width="337dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="12dp"
             android:hint="Add an item to your meal..."
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.505"
+            app:layout_constraintHorizontal_bias="0.51"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/add_green_meal_photo_textview" />
-
-        <ImageView
-            android:id="@+id/add_green_meal_photo_addtextview"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="32dp"
-            app:layout_constraintStart_toEndOf="@+id/add_greal_meal_photo_auto"
-            app:layout_constraintTop_toBottomOf="@+id/add_green_meal_photo_textview"
-            app:srcCompat="@android:drawable/ic_input_add" />
 
     </android.support.constraint.ConstraintLayout>
 </ScrollView>

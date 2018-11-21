@@ -18,6 +18,6 @@ public class AddPhotoFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 6;
+        return 1;
     }
 }

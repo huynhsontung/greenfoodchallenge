@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,7 +22,8 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
     private static final int RESULT_CAMERA_IMAGE = 2;
 
     private static final String[] GREEN_MEALS = {
-            "Pizza", "Beyond Meat Burger", "California Roll", "Vodka"
+            "Beyond Meat Burger", "California Roll", "Vodka", "Cheese Pizza", "Cold Cut Combo",
+            "Burger", "Coffee", "Strawberry Smoothie"
     };
     ArrayList<AutoCompleteTextView> listOfAutoCompletes;
     private AutoCompleteTextView autoCompleteTextView;
@@ -50,12 +52,15 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         listOfAutoCompletes = new ArrayList<AutoCompleteTextView>();
 
         viewPager = findViewById(R.id.add_green_meal_photo_pager);
-        viewPager.setOffscreenPageLimit(6);
+        viewPager.setOffscreenPageLimit(1);
         adapter = new AddPhotoFragmentAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapter);
 
         autoCompleteTextView = findViewById(R.id.add_greal_meal_photo_auto);
-        listOfAutoCompletes.add(autoCompleteTextView);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealPhotoActivity.this,
+                android.R.layout.simple_list_item_1, GREEN_MEALS);
+        autoCompleteTextView.setAdapter(adapter);
+       /* listOfAutoCompletes.add(autoCompleteTextView);
 
         plusFoodItem = findViewById(R.id.add_green_meal_photo_addtextview);
 
@@ -64,11 +69,11 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 addLine();
             }
-        });
+        });*/
 
     }
 
-    private void addLine() {
+    /*private void addLine() {
         //ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.add_green_meal_photo_constraintlayout);
         constraintSet = new ConstraintSet();
         constraintSet.clone(constraintLayout);
@@ -79,21 +84,21 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         constraintLayout.addView(addNewAutoComplete);
         int testing = View.generateViewId();
         addNewAutoComplete.setId(testing);
-        /*ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(cl);*/
+        *//*ConstraintSet constraintSet = new ConstraintSet();
+        constraintSet.clone(cl);*//*
         //constraintSet.clone(this, R.id.add_green_meal_photo_constraintlayout);
         constraintSet.connect(addNewAutoComplete.getId(), ConstraintSet.START,
                 ConstraintSet.PARENT_ID, ConstraintSet.START, 60);
         constraintSet.connect(addNewAutoComplete.getId(), ConstraintSet.TOP,
                 ConstraintSet.PARENT_ID, ConstraintSet.TOP, 60);
         constraintSet.applyTo(constraintLayout);
-        /*ConstraintLayout.LayoutParams p = new ConstraintLayout.LayoutParams(
+        *//*ConstraintLayout.LayoutParams p = new ConstraintLayout.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         addNewAutoComplete.setLayoutParams(p);
-        cl.addView(addNewAutoComplete);*/
+        cl.addView(addNewAutoComplete);*//*
 
     }
-
+*/
     // When user selects image from gallery
 
 }

@@ -1,9 +1,11 @@
 package com.ecoone.mindfulmealplanner;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
 
     Toolbar myToolBar;
-
+    ImageView addPhotoImageView;
     GridView myGridView;
     ArrayList<Bitmap> photos;
     Button takePhoto;
@@ -47,14 +49,16 @@ public class AddGreenMealPhotoActivity2 extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         setTitle("Add green meal item");*/
-
+        Context context = AddGreenMealPhotoActivity2.this;
         photos = new ArrayList<Bitmap>();
+        Bitmap icon = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_add_photo);
+        //addPhotoImageView = new ImageView(AddGreenMealPhotoActivity2.this);
 
         autoCompleteTextView = findViewById(R.id.autocomplete_add_photo);
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealPhotoActivity2.this,
                 android.R.layout.simple_list_item_1, GREEN_FOODS);
         autoCompleteTextView.setAdapter(adapter);
-
+        photos.add(icon);
 
         myGridView = (GridView)findViewById(R.id.add_green_meal_photo_grid);
         takePhoto = (Button)findViewById(R.id.test_button);
