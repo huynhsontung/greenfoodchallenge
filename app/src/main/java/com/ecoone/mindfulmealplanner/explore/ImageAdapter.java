@@ -2,6 +2,7 @@ package com.ecoone.mindfulmealplanner.explore;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
@@ -17,11 +18,7 @@ import com.ecoone.mindfulmealplanner.R;
 
 public class ImageAdapter extends BaseAdapter {
 
-
-
-
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,};
-    private String[] image_name={"s","v","v","v","v","v","v","v","v","v","v","v","v","v"};
+    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
     Context ctx;
     ImageAdapter(Context ctx){
         this.ctx = ctx;
@@ -29,6 +26,15 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return images_id.length;
+    }
+
+    public static ExploreFragment newInstance() {
+
+        Bundle args = new Bundle();
+
+        ExploreFragment fragment = new ExploreFragment();
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override

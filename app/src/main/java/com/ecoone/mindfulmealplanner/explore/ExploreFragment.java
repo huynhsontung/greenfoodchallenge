@@ -42,12 +42,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class ExploreFragment extends Fragment {
 
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,};
-    private String[] image_name={"s","v","v","v","v","v","v","v","v","v","v","v","v","v"};
+    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
+    RecyclerView recyclerView;
+    RecyclerViewAdapter recyclerViewAdapter;
 
     private SearchView mSearchView;
     private ListView lListView;
@@ -83,8 +85,8 @@ public class ExploreFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
-        RecyclerView recyclerView =(RecyclerView) view.findViewById(R.id.recycler_view);
-        RecyclerViewAdapter recyclerViewAdapter = new RecyclerViewAdapter();
+        recyclerView =(RecyclerView) view.findViewById(R.id.recycler_view);
+        recyclerViewAdapter = new RecyclerViewAdapter(getActivity(),getData(),communication);
         recyclerView.setAdapter(recyclerViewAdapter);
         RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutmanager);
@@ -98,7 +100,6 @@ public class ExploreFragment extends Fragment {
                 ExploreDetail exploreDetail= new ExploreDetail();
                 Bundle args = new Bundle();
                 args.putInt("image_position",position);
-                args.putString("image_name",image_name[position]);
                 exploreDetail.setArguments(args);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_content,exploreDetail);
@@ -108,6 +109,36 @@ public class ExploreFragment extends Fragment {
         });
         return view;
     }
+
+    public static List<scroll_item_data> getData() {
+        List<scroll_item_data>data=new ArrayList<>();
+        String[] city_names = scroll_item_data.title;
+        int[] city_pics = scroll_item_data.picturePath;
+
+        for (int i=0;i<city_names.length;i++){
+            scroll_item_data current=new scroll_item_data();
+            current.title[i]=(city_names[i]);
+            current.picturePath[i]=(city_pics[i]);
+            data.add(current);
+        }
+        return data;
+    }
+
+    FragmentCommunication communication=new FragmentCommunication() {
+        @Override
+        public void respond(int position, String city_name, int citypics) {
+            ExploreDetail exploreDetail = new ExploreDetail();
+            Bundle bundle = new Bundle();
+            bundle.putString("hahaha123", city_name);
+            exploreDetail.setArguments(bundle);
+            FragmentManager manager=getFragmentManager();
+            FragmentTransaction transaction=manager.beginTransaction();
+            transaction.replace(R.id.main_content,exploreDetail).commit();
+            }
+
+    };
+
+
 
 
 

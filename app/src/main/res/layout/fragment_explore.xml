@@ -8,12 +8,7 @@
     android:orientation="vertical"
     tools:context="com.ecoone.mindfulmealplanner.explore.ExploreFragment">
 
-    <SearchView
-        android:id="@+id/searchView"
-        android:layout_width="match_parent"
-        android:layout_height="28dp"
-        android:iconifiedByDefault="false"
-        android:queryHint="city, mealname" />
+
 
 
 

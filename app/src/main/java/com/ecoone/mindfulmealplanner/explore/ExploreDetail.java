@@ -48,8 +48,17 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class ExploreDetail extends Fragment {
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,R.drawable.vancouver,R.drawable.surrey,R.drawable.anmore,R.drawable.burnaby,R.drawable.belcarra,R.drawable.langleycity,};
-    private String[] image_name={"s","v","v","v","v","v","v","v","v","v","v","v","v","v"};
+    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
+    private String[] image_name = {"iww","iww","iww"};
+
+    public static ExploreDetail newInstance() {
+
+        Bundle args = new Bundle();
+
+        ExploreDetail fragment = new ExploreDetail();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
 
     @Nullable
@@ -59,6 +68,9 @@ public class ExploreDetail extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         int pos = getArguments().getInt("image_position");
+        String i = getArguments().getString("hahaha123");
+        Toast.makeText( getActivity(), i , Toast.LENGTH_SHORT).show();
+        image_name = new String[]{i,i,i};
         View view = inflater.inflate(R.layout.fragment_explore_detail, container, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.detail_image);
         imageView.setImageResource(images_id[pos]);
@@ -85,20 +97,10 @@ public class ExploreDetail extends Fragment {
 
 
 
-    public static ExploreDetail newInstance() {
-
-        Bundle args = new Bundle();
-
-        ExploreDetail fragment = new ExploreDetail();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
     @Override
     public void onStart() {

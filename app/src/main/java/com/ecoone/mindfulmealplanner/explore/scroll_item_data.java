@@ -3,10 +3,11 @@ package com.ecoone.mindfulmealplanner.explore;
 import com.ecoone.mindfulmealplanner.R;
 
 public class scroll_item_data {
+
     public static String[] title = new String[]{
             "Most popular",
             "Most Recent",
-            "Vancouver",
+            "vancouver",
             "Surrey",
             "Burnaby",
             "Richmond",
