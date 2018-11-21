@@ -49,7 +49,7 @@ import java.util.Objects;
 
 public class ExploreDetail extends Fragment {
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
-    private String[] image_name = {"iww","iww","iww"};
+    private String[] image_name = {"surrey","anmore","vancouver"};
 
     public static ExploreDetail newInstance() {
 
@@ -70,7 +70,6 @@ public class ExploreDetail extends Fragment {
         int pos = getArguments().getInt("image_position");
         String i = getArguments().getString("hahaha123");
         Toast.makeText( getActivity(), i , Toast.LENGTH_SHORT).show();
-        image_name = new String[]{i,i,i};
         View view = inflater.inflate(R.layout.fragment_explore_detail, container, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.detail_image);
         imageView.setImageResource(images_id[pos]);
