@@ -55,28 +55,30 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.add_green_meal_photo_constraintlayout);
 
-        final Chip testChip = (Chip)findViewById(R.id.chip_beans);
-        testChip.setOnClickListener(new View.OnClickListener() {
+
+        Chip chipBeef = findViewById(R.id.chip_beef);
+        Chip chipPork = findViewById(R.id.chip_pork);
+        Chip chipChicken = findViewById(R.id.chip_chicken);
+        Chip chipFish = findViewById(R.id.chip_fish);
+        Chip chipEggs = findViewById(R.id.chip_eggs);
+        Chip chipBeans = (Chip)findViewById(R.id.chip_beans);
+        Chip chipVeggies = findViewById(R.id.chip_veggies);
+
+        ChipClickListener(chipBeans);
+        ChipClickListener(chipBeef);
+        ChipClickListener(chipChicken);
+        ChipClickListener(chipEggs);
+        ChipClickListener(chipFish);
+        ChipClickListener(chipPork);
+        ChipClickListener(chipVeggies);
+
+        /*chipBeans.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //testChip.setBackgroundColor(getResources().getColor(R.color.chartBlue7));
+                chipBeans.setChipBackgroundColorResource(R.color.colorAccent);
                 Toast.makeText(getApplicationContext(), "Lalala", Toast.LENGTH_SHORT).show();
             }
-        });
-
-
-        myChipGroup = (ChipGroup)findViewById(R.id.add_green_meal_photo_chipgroup);
-        myChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(ChipGroup chipGroup, int i) {
-                Chip myChip = chipGroup.findViewById(i);
-
-                if(myChip != null){
-                    myChip.setBackgroundColor(getResources().getColor(R.color.chartBlue7));
-                    Toast.makeText(getApplicationContext(), "Lalala", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+        });*/
 
         listOfAutoCompletes = new ArrayList<AutoCompleteTextView>();
 
@@ -91,6 +93,16 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         autoCompleteTextView.setAdapter(adapter);
 
 
+    }
+
+    private void ChipClickListener(final Chip myChip) {
+        myChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //myChip.setChipBackgroundColorResource(R.color.colorAccent);
+
+            }
+        });
     }
 
     // When user selects image from gallery
