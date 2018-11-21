@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
+import android.support.design.chip.Chip;
+import android.support.design.chip.ChipGroup;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -32,6 +35,10 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
     private ConstraintLayout constraintLayout;
     private ConstraintSet constraintSet;
 
+    private ChipGroup myChipGroup;
+
+
+
     EditText getMealName;
     private ViewPager viewPager;
     private AddPhotoFragmentAdapter adapter;
@@ -48,6 +55,28 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.add_green_meal_photo_constraintlayout);
 
+        final Chip testChip = (Chip)findViewById(R.id.chip_beans);
+        testChip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //testChip.setBackgroundColor(getResources().getColor(R.color.chartBlue7));
+                Toast.makeText(getApplicationContext(), "Lalala", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        myChipGroup = (ChipGroup)findViewById(R.id.add_green_meal_photo_chipgroup);
+        myChipGroup.setOnCheckedChangeListener(new ChipGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(ChipGroup chipGroup, int i) {
+                Chip myChip = chipGroup.findViewById(i);
+
+                if(myChip != null){
+                    myChip.setBackgroundColor(getResources().getColor(R.color.chartBlue7));
+                    Toast.makeText(getApplicationContext(), "Lalala", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         listOfAutoCompletes = new ArrayList<AutoCompleteTextView>();
 
@@ -60,45 +89,10 @@ public class AddGreenMealPhotoActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(AddGreenMealPhotoActivity.this,
                 android.R.layout.simple_list_item_1, GREEN_MEALS);
         autoCompleteTextView.setAdapter(adapter);
-       /* listOfAutoCompletes.add(autoCompleteTextView);
 
-        plusFoodItem = findViewById(R.id.add_green_meal_photo_addtextview);
-
-        plusFoodItem.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addLine();
-            }
-        });*/
 
     }
 
-    /*private void addLine() {
-        //ConstraintLayout cl = (ConstraintLayout)findViewById(R.id.add_green_meal_photo_constraintlayout);
-        constraintSet = new ConstraintSet();
-        constraintSet.clone(constraintLayout);
-
-        AutoCompleteTextView addNewAutoComplete = new AutoCompleteTextView(this);
-        //addNewAutoComplete.setLayoutParams(new ConstraintLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-        //        ViewGroup.LayoutParams.WRAP_CONTENT));
-        constraintLayout.addView(addNewAutoComplete);
-        int testing = View.generateViewId();
-        addNewAutoComplete.setId(testing);
-        *//*ConstraintSet constraintSet = new ConstraintSet();
-        constraintSet.clone(cl);*//*
-        //constraintSet.clone(this, R.id.add_green_meal_photo_constraintlayout);
-        constraintSet.connect(addNewAutoComplete.getId(), ConstraintSet.START,
-                ConstraintSet.PARENT_ID, ConstraintSet.START, 60);
-        constraintSet.connect(addNewAutoComplete.getId(), ConstraintSet.TOP,
-                ConstraintSet.PARENT_ID, ConstraintSet.TOP, 60);
-        constraintSet.applyTo(constraintLayout);
-        *//*ConstraintLayout.LayoutParams p = new ConstraintLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        addNewAutoComplete.setLayoutParams(p);
-        cl.addView(addNewAutoComplete);*//*
-
-    }
-*/
     // When user selects image from gallery
 
 }
