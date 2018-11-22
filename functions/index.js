@@ -345,6 +345,117 @@ exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp)
     });
 });
 
-exports.adminScan
+exports.adminScanAllUsersPublicMeal = functions.https.onRequest((req, resp) => {
+
+    if(req.method !== "GET") {
+        resp.status(400).send("Not GET request");
+        console.log("Not GET request");
+    }
+
+    console.log("Start to scan.\n");
+
+    admin.database().ref("/publicMeals").remove();
+
+    admin.database().ref("/uids").once("value").then((snapshot) =>{
+
+        var userUidList = [];
+        var usersPublicMeal = {};
+        snapshot.forEach((childSnapshot) => {
+
+            if (childSnapshot.child("mealInfo").exists()) {
+
+                var userUid = childSnapshot.key;
+                userUidList.push(userUid);
+
+                usersPublicMeal[userUid] = {
+                    "userUid" : userUid,
+                    "displayName" : childSnapshot.child("userInfo").child("displayName").val(),
+                    "iconName" : childSnapshot.child("userInfo").child("iconName").val(),
+                    "location" : childSnapshot.child("pledgeInfo").child("location").val()
+                }
+            }
+        });
+        // console.log(usersPublicMeal);
+        return [userUidList, usersPublicMeal];
+    }).then((data) => {
+
+       const userUidList = data[0];
+       const usersPublicMeal = data[1];
+
+        userUidList.forEach((userUid) => {
+            // console.log("start to scan user: ", userUid);
+            admin.database().ref("/uids/" + userUid + "/mealInfo").once("value").then((snapshot) => {
+               snapshot.forEach((childSnapshot) => {
+                    if (!childSnapshot.child("isPrivate").val()) {
+                       var mealData = usersPublicMeal[userUid];
+                       mealData["mealName"] = childSnapshot.key;
+                       mealData["totalCo2eAmount"] = childSnapshot.child("totalCo2eAmount").val();
+                       mealData["isGreen"] = childSnapshot.child("isGreen").val();
+                       mealData["tags"] = childSnapshot.child("tags").val();
+                       mealData["restaurantName"] = childSnapshot.child("restaurantName").val();
+                       mealData["foodList"] = childSnapshot.child("foodList").val();
+                       console.log(mealData);
+                       admin.database().ref("/publicMeals").push().set(mealData);
+                    }
+                });
+
+                return null;
+            });
+        });
+        return null;
+    });
+
+    resp.status(200).send("Ok.");
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

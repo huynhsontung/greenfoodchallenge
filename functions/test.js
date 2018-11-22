@@ -1,6 +1,6 @@
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 const Http = new XMLHttpRequest();
-const url = 'http://localhost:5000/mindfulmealplanner/us-central1/getAllRestaurantName';
+const url = 'http://localhost:5000/mindfulmealplanner/us-central1/adminScanAllUsersPublicMeal';
 
 // var data = JSON.stringify(
 //     {"user" : {
