@@ -37,7 +37,7 @@ public class MealDiscoverFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         mRecyclerView = view.findViewById(R.id.meal_discover_recyclerview);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 3);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         mRecyclerView.setLayoutManager(gridLayoutManager);
 
         String[] strings = new String[15];
