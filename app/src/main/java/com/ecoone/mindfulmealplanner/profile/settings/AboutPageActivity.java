@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.profile.settings;
 
+import android.content.res.Resources;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,29 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import com.ecoone.mindfulmealplanner.R;
+import com.firebase.ui.auth.data.model.Resource;
 
 //...
 public class AboutPageActivity extends AppCompatActivity {
 
-    private String[] titles = {"What is a Foodprint?", "The Green Food Challenge", "Working as a Community"};
-    private String[] descriptions = {"Food’s carbon footprint, or footprint, is the greenhouse gas " +
-            "emissions produced by growing, rearing, farming, processing, transporting, storing, " +
-            "cooking and disposing of the food you eat. In the US, each household produces 48 tons of greenhouse gases. Transport, housing and food have the three largest carbon footprints. Food produces about 8 tons " +
-            "of emissions per household, or about 17% of the total. " +
-            "Worldwide, new reports suggest that livestock agriculture produces " +
-            "around a half of all man-made emissions.",
-
-            "We wish to raise awareness and promote behaviour change. Through this application, " +
-                    "participants will learn how much their diet produces in terms of CO2e, and " +
-                    "discover how much CO2e they could save by making dietary adjustments.",
-
-            "Over the course of the challenge, participants will track their Green Meals. They will " +
-                    "be able to see how many tonnes of CO2e they save as a community, as well as share" +
-                    "meals and restaurants that offer low carbon meals." +
-                    " By incentivizing these meals," +
-                    "it is hoped that participants learn to sustainably change their eating habits" +
-                    "towards a lighter footprint."
-            };
+    private String[] titles;
+    private String[] descriptions;
     private int[] images = {R.drawable.foodprint, R.drawable.veggiesandstuff, R.drawable.forest};
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -42,6 +27,10 @@ public class AboutPageActivity extends AppCompatActivity {
 
         setContentView(R.layout.about2);
         mToolbar = findViewById(R.id.toolbar2);
+
+        Resources resources = getResources();
+        titles = resources.getStringArray(R.array.titles_for_about);
+        descriptions = resources.getStringArray(R.array.descriptions_about);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
