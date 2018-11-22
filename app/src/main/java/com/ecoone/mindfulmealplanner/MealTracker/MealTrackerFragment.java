@@ -13,11 +13,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MealTracker.AddMeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -142,6 +144,13 @@ public class MealTrackerFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             return mFragmentTitleList.get(position);
         }
+    }
+
+    private void showCustomToast(String message) {
+        Toast mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
+        mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
+                0, 0);
+        mToast.show();
     }
 
 
