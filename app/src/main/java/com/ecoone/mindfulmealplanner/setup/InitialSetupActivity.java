@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.database.Pledge;
@@ -197,6 +198,8 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
                 mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
             }
 
+            // checks for zero inputs
+            if(greaterThanZero(plan)) {
 
             Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localUser);
             Log.i(TAG, CLASSTAG + "check view model local user" + mViewModel.localPlan);
@@ -210,16 +213,33 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             pledge.location = "Vancouver";
             FirebaseDatabaseInterface.writePledge(pledge);
 
-            // reset sharedpreferences to enable tutorials
-            editor.putInt(SKIP_TUTORIAL,0);
-            editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
-            editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
-            editor.putInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL,0);
-            editor.putInt(SKIP_TUTORIAL_PLAN_LIST,0);
-            editor.apply();
-            startActivityAndFinish();
-        } else {
+                // reset sharedpreferences to enable tutorials and enter main activity
+                editor.putInt(SKIP_TUTORIAL,0);
+                editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
+                editor.putInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL,0);
+                editor.putInt(SKIP_TUTORIAL_PLAN_LIST,0);
+                editor.apply();
+                startActivityAndFinish();
+            }
+            else {
+                Toast.makeText(this, "Please enter your estimated meal plan",Toast.LENGTH_SHORT)
+                    .show();
+            }
+        }
+        else {
             mViewPager.setCurrentItem(position+1);
+        }
+    }
+
+    public boolean greaterThanZero(Plan plan) {
+
+        float totalFoodInGrams = plan.beef + plan.beans + plan.chicken + plan.pork
+                + plan.eggs + plan.vegetables + plan.fish;
+        if(totalFoodInGrams > 0) {
+            return true;
+        }
+        else {
+            return false;
         }
     }
 
