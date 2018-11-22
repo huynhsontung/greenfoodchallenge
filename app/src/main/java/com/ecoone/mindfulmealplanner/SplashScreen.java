@@ -8,6 +8,7 @@ import com.ecoone.mindfulmealplanner.setup.InitialSetupActivity;
 
 public class SplashScreen extends AppCompatActivity {
 
+    // Shows splash screen until app is loaded
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

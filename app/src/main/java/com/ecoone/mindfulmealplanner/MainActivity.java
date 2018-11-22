@@ -75,6 +75,9 @@ public class MainActivity extends AppCompatActivity implements
         checkForTutorial();
     }
 
+    // Checks if its the users first time on the app
+    // If flag == 0, it is the users first time -> show tutorial
+    // otherwise, dont show tutorial
     private void checkForTutorial() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         int flag = mSharedPreferences.getInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
@@ -124,6 +127,8 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    // Creates new instances for the fragments on the bottomnavigationview
+    // Sets up the view pager for the bottomnavigationview
     private void setupFragmentListForNav() {
         mViewPager = findViewById(R.id.main_content);
         mViewPager.setOffscreenPageLimit(3);
@@ -247,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements
 //    }
 //
 
+    // Switches to the fragment that is clicked on
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         setTitle(menuItem.getTitle());
@@ -273,11 +279,14 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    // Creates the action bar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.share, menu);
         return true;
     }
+
+    // onclick event for sharing peldge
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {

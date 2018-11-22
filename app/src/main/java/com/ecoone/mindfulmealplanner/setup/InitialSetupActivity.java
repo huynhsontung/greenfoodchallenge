@@ -34,6 +34,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.Arrays;
 
 
+// **** AS OF NOW, TUTORIAL PACKAGE IS NOT USED IN THE APP ****
+
 public class InitialSetupActivity extends AppCompatActivity implements Button.OnClickListener{
 
     private static final int RC_SIGN_IN = 123;
@@ -64,6 +66,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
         checkIfGoToDashboard();
     }
 
+    //If user doesn't exist, go to signup page
     private void checkIfGoToDashboard() {
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -234,7 +237,6 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     }
 
     public boolean greaterThanZero(Plan plan) {
-
         float totalFoodInGrams = plan.beef + plan.beans + plan.chicken + plan.pork
                 + plan.eggs + plan.vegetables + plan.fish;
         if(totalFoodInGrams > 0) {

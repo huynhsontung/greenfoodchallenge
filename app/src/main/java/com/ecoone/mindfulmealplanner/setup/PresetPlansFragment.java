@@ -37,14 +37,7 @@ public class PresetPlansFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         presetList = view.findViewById(R.id.presets_recycler_view);
         setupRecyclerView();
-//        mMeatCard = view.findViewById(R.id.meat_eater_card);
-//        mVeggieCard = view.findViewById(R.id.veggie_card);
-//        mAverageCard = view.findViewById(R.id.average_card);
-//        mOtherCard = view.findViewById(R.id.other_card);
-//        mOtherCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
         flag = 4;
-//        setOnCardClickListener();
-
     }
 
     private void setupRecyclerView() {
@@ -121,7 +114,7 @@ public class PresetPlansFragment extends Fragment {
 //    }
 
 
-
+    // updates the viewmodels food amount according to users selected preset plan
     public void setFoodAmount() {
         String gender = mViewModel.localUser.gender;
         // 350g daily

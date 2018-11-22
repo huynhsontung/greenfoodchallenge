@@ -157,6 +157,7 @@ public class TutorialActivity extends AppCompatActivity implements Button.OnClic
         super.onStop();
         Log.d(TAG, CLASSTAG + " onStop");
     }
+    //
     @Override
     public void onDestroy() {
         super.onDestroy();
