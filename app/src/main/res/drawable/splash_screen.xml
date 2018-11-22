@@ -2,14 +2,11 @@
 
     <item
         android:drawable="@color/bottomNavGrey"
-        android:width="50dp"
-        android:height="50dp"
         />
 
     <item>
         <bitmap
             android:gravity="center"
-            android:src="@drawable/cabbage_icon"/>
+            android:src="@drawable/ic_splash"/>
     </item>
-
 </layer-list>
