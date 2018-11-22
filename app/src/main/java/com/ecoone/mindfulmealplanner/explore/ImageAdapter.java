@@ -19,7 +19,7 @@ import com.ecoone.mindfulmealplanner.R;
 
 public class ImageAdapter extends BaseAdapter {
     String ioi;
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
+    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver,R.drawable.burnaby,R.drawable.westvancouver,R.drawable.whiterock,R.drawable.richmond,R.drawable.districtlangley,R.drawable.citynvan,R.drawable.districtnvan,R.drawable.anmore,R.drawable.vancouver,R.drawable.surrey};
     Context ctx;
     ImageAdapter(Context ctx){
         this.ctx = ctx;
@@ -55,6 +55,7 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         View gridView = convertView;
         if(gridView==null){
             LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -10,8 +10,6 @@
 
 
 
-
-
     <android.support.v7.widget.RecyclerView
         android:background="#f2f2f2"
         android:layout_width="match_parent"
@@ -23,6 +21,7 @@
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/gridview1"
+        android:background="#f2f2f2"
         android:layout_width="match_parent"
         android:layout_below="@+id/recycler_view"
         android:layout_height="match_parent"

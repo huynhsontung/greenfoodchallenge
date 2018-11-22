@@ -54,6 +54,8 @@ public class ExploreDetail extends Fragment implements GestureDetector.OnGesture
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
     private String[] image_name = {"surrey","anmore","vancouver"};
     private GestureDetectorCompat detector;
+    GridView gridview;
+
 
     public static ExploreDetail newInstance() {
 
@@ -87,11 +89,10 @@ public class ExploreDetail extends Fragment implements GestureDetector.OnGesture
             @Override
             public void onClick(View v)
             {
+
                 int i = getArguments().getInt("image_position");
+
                 ExploreFragment exploreFragment= new ExploreFragment();
-                Bundle args = new Bundle();
-                args.putString("haha123",image_name[i]);
-                exploreFragment.setArguments(args);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_content,exploreFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
