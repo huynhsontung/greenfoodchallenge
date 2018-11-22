@@ -52,6 +52,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
     private static final String SKIP_TUTORIAL = "key";
     private static final String SKIP_MAIN_ACTIVITY_TUTORIAL = "mainactivity";
     private static final String SKIP_TUTORIAL_PLAN_LIST = "planlist";
+    private static final String SKIP_IMPROVE_ACTIVITY_TUTORIAL = "improve";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -213,6 +214,7 @@ public class InitialSetupActivity extends AppCompatActivity implements Button.On
             editor.putInt(SKIP_TUTORIAL,0);
             editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
             editor.putInt(SKIP_MAIN_ACTIVITY_TUTORIAL,0);
+            editor.putInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL,0);
             editor.putInt(SKIP_TUTORIAL_PLAN_LIST,0);
             editor.apply();
             startActivityAndFinish();
