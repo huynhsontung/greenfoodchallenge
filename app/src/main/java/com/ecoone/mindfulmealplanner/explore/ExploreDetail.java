@@ -9,12 +9,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GestureDetectorCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -47,14 +50,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ExploreDetail extends Fragment {
+public class ExploreDetail extends Fragment implements GestureDetector.OnGestureListener{
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
     private String[] image_name = {"surrey","anmore","vancouver"};
+    private GestureDetectorCompat detector;
 
     public static ExploreDetail newInstance() {
 
         Bundle args = new Bundle();
-
         ExploreDetail fragment = new ExploreDetail();
         fragment.setArguments(args);
         return fragment;
@@ -68,8 +71,6 @@ public class ExploreDetail extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         int pos = getArguments().getInt("image_position");
-        String i = getArguments().getString("hahaha123");
-        Toast.makeText( getActivity(), i , Toast.LENGTH_SHORT).show();
         View view = inflater.inflate(R.layout.fragment_explore_detail, container, false);
         ImageView imageView = (ImageView) view.findViewById(R.id.detail_image);
         imageView.setImageResource(images_id[pos]);
@@ -84,13 +85,20 @@ public class ExploreDetail extends Fragment {
             @Override
             public void onClick(View v)
             {
+                int i = getArguments().getInt("image_position");
                 ExploreFragment exploreFragment= new ExploreFragment();
+                Bundle args = new Bundle();
+                args.putString("hahaha123",image_name[i]);
+                exploreFragment.setArguments(args);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_content,exploreFragment);
                 ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
                 ft.commit();
+
+
             }
         });
+        detector = new GestureDetectorCompat(getActivity(),this);
         return  view;
     }
 
@@ -131,6 +139,35 @@ public class ExploreDetail extends Fragment {
     }
 
 
+    @Override
+    public boolean onDown(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public void onShowPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onSingleTapUp(MotionEvent e) {
+        return false;
+    }
+
+    @Override
+    public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+        return false;
+    }
+
+    @Override
+    public void onLongPress(MotionEvent e) {
+
+    }
+
+    @Override
+    public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+        return false;
+    }
 
 
 

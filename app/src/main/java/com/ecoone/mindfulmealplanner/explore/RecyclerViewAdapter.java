@@ -76,7 +76,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
         }
 
         public void onClick(View view){
-            Toast.makeText(view.getContext(),scroll_item_data.title[getPosition()],Toast.LENGTH_SHORT).show();
             mComminication.respond(getPosition(),scroll_item_data.title[getPosition()],scroll_item_data.picturePath[getPosition()]);
         }
 

@@ -51,6 +51,9 @@ public class ExploreFragment extends Fragment {
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
 
+
+
+
     private SearchView mSearchView;
     private ListView lListView;
 
@@ -91,6 +94,10 @@ public class ExploreFragment extends Fragment {
         RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutmanager);
 
+        String ioi = getArguments().getString("hahaha123");
+        Toast.makeText(getContext(),ioi,Toast.LENGTH_SHORT).show();
+
+
         gridview =(GridView)view.findViewById(R.id.gridview1);
         ImageAdapter imageAdapter = new ImageAdapter(getActivity());
         gridview.setAdapter(imageAdapter);
@@ -127,13 +134,14 @@ public class ExploreFragment extends Fragment {
     FragmentCommunication communication=new FragmentCommunication() {
         @Override
         public void respond(int position, String city_name, int citypics) {
-            ExploreDetail exploreDetail = new ExploreDetail();
-            Bundle bundle = new Bundle();
-            bundle.putString("hahaha123", city_name);
-            exploreDetail.setArguments(bundle);
-            FragmentManager manager=getFragmentManager();
-            FragmentTransaction transaction=manager.beginTransaction();
-            transaction.replace(R.id.main_content,exploreDetail).commit();
+            ExploreFragment exploreFragment = new ExploreFragment();
+            Bundle bundle2 = new Bundle();
+            bundle2.putString("hahaha123", city_name);
+            exploreFragment.setArguments(bundle2);
+            FragmentManager manager2=getFragmentManager();
+            FragmentTransaction transaction2=manager2.beginTransaction();
+            transaction2.replace(R.id.main_content,exploreFragment).commit();
+
             }
 
     };
@@ -145,6 +153,7 @@ public class ExploreFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
     @Override
     public void onStart() {
