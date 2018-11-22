@@ -204,11 +204,11 @@ public class DashboardPlanFragment extends Fragment {
             @Override
             public Fragment getItem(int i) {
                 if (i == 0) {
-                    Log.i("testing", "zerp");
+                    Log.i("card_layout_about", "zerp");
                     return DashboardChartFragment.newInstance(i, foodAmount);
                 }
                 else {
-                    Log.i("testing", "1");
+                    Log.i("card_layout_about", "1");
                     return DashboardChartFragment.newInstance(i, co2Amount);
                 }
             }

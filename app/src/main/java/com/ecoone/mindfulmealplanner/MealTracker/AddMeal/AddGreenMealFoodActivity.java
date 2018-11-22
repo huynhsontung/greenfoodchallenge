@@ -368,7 +368,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
                 photoFile = createImageFile();
             } catch (IOException ex) {
                 // Error occurred while creating the File
-                Log.e(TAG, CLASSTAG + " can not create file");
+                Log.e(TAG, CLASSTAG + " cannot create file");
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
@@ -451,7 +451,6 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
 //            } catch (IOException e) {
 //
 //            }
-
             Bitmap mBitmap = (Bitmap)data.getExtras().get("data");
             foodPhotoImageView.setImageBitmap(mBitmap);
 
@@ -461,17 +460,12 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
 
 //            galleryAddPic();
         }
-
-
-
     }
 
 //    private void saveImageToGallery(Bitmap bitmap) {
 //        String root = Environment.getExternalStorageDirectory().toString();
 //        File myDir = new File(root);
 //    }
-
-
 
     // copy from Android Programming: The Big Nerd Ranch Guide (3rd Edition)
     public static Bitmap getScaledBitmap(String path, int destWidth, int destHeight) {
