@@ -59,11 +59,13 @@
         <item>What is a Foodprint?</item>
         <item>The Green Food Challenge</item>
         <item>Working as a Community</item>
+        <item>Greenest City Action Plan</item>
     </string-array>
 
     <string-array name="descriptions_about">
         <item>Food’s carbon footprint, or footprint, is the greenhouse gas emissions produced by growing, rearing, farming, processing, transporting, storing, cooking and disposing of the food you eat. In the US, each household produces 48 tons of greenhouse gases. Transport, housing and food have the three largest carbon footprints. Food produces about 8 tons of emissions per household, or about 17% of the total. Worldwide, new reports suggest that livestock agriculture produces around a half of all man-made emissions.</item>
         <item>We wish to raise awareness and promote behaviour change. Through this application, participants will learn how much their diet produces in terms of CO2e, and discover how much CO2e they could save by making dietary adjustments.</item>
         <item>Over the course of the challenge, participants will track their Green Meals. They will be able to see how many tonnes of CO2e they save as a community, as well as share meals and restaurants that offer low carbon meals. By incentivizing these meals, it is hoped that participants learn to sustainably change their eating habits towards a lighter footprint.</item>
+        <item>Vancouver has spearheaded the Greenest City Action Plan since 2011, with the goal of becoming the greenest city by 2020. One of the goals is a lighter footprint, reducing Vancouver\'s carbon footprint by 33% over 2006 levels. Have a browse through our application for ideas of how you can take action to make our beautiful city greener!</item>
     </string-array>
 </resources>

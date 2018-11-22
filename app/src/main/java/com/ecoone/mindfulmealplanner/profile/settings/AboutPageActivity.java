@@ -15,7 +15,7 @@ public class AboutPageActivity extends AppCompatActivity {
 
     private String[] titles;
     private String[] descriptions;
-    private int[] images = {R.drawable.foodprint, R.drawable.veggiesandstuff, R.drawable.forest};
+    private int[] images = {R.drawable.foodprint, R.drawable.veggiesandstuff, R.drawable.forest, R.drawable.stanley_park};
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RecyclerView.Adapter adapter;
