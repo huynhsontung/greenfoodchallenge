@@ -7,7 +7,7 @@ import java.util.List;
 
 public abstract class Calculator {
 
-    // CO2e per kilo of food consumed.
+    // CO2e per kilo of Food consumed.
     private static final float co2Beef = (float) 27.0;
     private static final float co2Pork = (float) 12.1;
     private static final float co2Chicken = (float) 6.9;
@@ -123,7 +123,7 @@ public abstract class Calculator {
     }
 
     // Parameters: User's plan.
-    // Post: Sums up all the serving sizes of all food types. Returns total daily serving.
+    // Post: Sums up all the serving sizes of all Food types. Returns total daily serving.
     public static float sumServings(Plan myPlan){
 
         return (myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +

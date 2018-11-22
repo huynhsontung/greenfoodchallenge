@@ -5,6 +5,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.PaintDrawable;
+import android.graphics.drawable.StateListDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -27,6 +31,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
+import com.ecoone.mindfulmealplanner.tools.Calculator;
+import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.dashboard.improve.ImproveActivity;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
@@ -41,6 +48,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 
@@ -59,7 +67,7 @@ public class DashboardPlanFragment extends Fragment {
     private String mCurrentPlanName;
     private Plan mCurrentPlan;
 
-    final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private Button improveButton;
@@ -68,6 +76,7 @@ public class DashboardPlanFragment extends Fragment {
     private TextView currentCo2eTextView;
     private TextView relevantInfo;
     private EditText editPlanName;
+    private ImageView rightArrow;
     private FirebaseFunctions mFunctions;
     private ValueEventListener mValueEventListener;
     private DashboardViewModel mViewModel;
@@ -92,7 +101,6 @@ public class DashboardPlanFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         // write your code here
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
         editPlanName = view.findViewById(R.id.fragment_dashboard_edit_plan_name);
@@ -101,6 +109,7 @@ public class DashboardPlanFragment extends Fragment {
         currentCo2eTextView = view.findViewById(R.id.CurrentCo2eView);
         relevantInfo = view.findViewById(R.id.relevantInfo);
         improveButton = view.findViewById(R.id.fragment_dashboard_improve);
+
         mFunctions = FirebaseFunctions.getInstance();
 
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity().getApplicationContext());
@@ -309,8 +318,8 @@ public class DashboardPlanFragment extends Fragment {
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-                .child(userUid).removeEventListener(mValueEventListener);
+//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+//                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 

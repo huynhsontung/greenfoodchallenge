@@ -4,6 +4,14 @@
     package="com.ecoone.mindfulmealplanner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -16,6 +24,17 @@
         <service
             android:name=".pledge.DailyPledgeService"
             tools:ignore="InnerclassSeparator" />
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.ecoone.mindfulmealplanner"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
 
         <activity
             android:name=".SplashScreen"
@@ -40,7 +59,7 @@
             />
         <activity
             android:name=".MainActivity"
-            android:windowSoftInputMode="adjustPan"/>
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".dashboard.improve.ImproveActivity"
             tools:ignore="InnerclassSeparator" />
@@ -70,6 +89,9 @@
             android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MealTracker.AddMeal.AddGreenMealFoodActivity" />
+        <activity android:name=".MealTracker.AddMeal.AddGreenMealActivity" />
+        <activity android:name=".MealTracker.AddMeal.Deprecated.AddGreenMealPhotoActivity2"></activity>
     </application>
 
 </manifest>

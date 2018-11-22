@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.ecoone.mindfulmealplanner.MealTracker.MealTrackerFragment;
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
 import com.ecoone.mindfulmealplanner.pledge.PledgeFragment;
@@ -125,17 +126,20 @@ public class MainActivity extends AppCompatActivity implements
 
     private void setupFragmentListForNav() {
         mViewPager = findViewById(R.id.main_content);
+        mViewPager.setOffscreenPageLimit(3);
         FragmentPagerAdapter pagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
             public Fragment getItem(int i) {
                 switch (i) {
                     case 0: return DashboardFragment.newInstance();
 
-                    case 1: return PledgeFragment.newInstance();
+                    case 1: return MealTrackerFragment.newInstance();
 
-//                    case 2: return null; // meal tracker fragment
+                    case 2: return PledgeFragment.newInstance();
 
-                    default: return ProfileFragment.newInstance();
+                    case 3: return ProfileFragment.newInstance();
+
+                    default: return null;
                 }
             }
             @Override
@@ -251,16 +255,17 @@ public class MainActivity extends AppCompatActivity implements
                 mViewPager.setCurrentItem(0);
                 break;
 
-            case R.id.nav_pledge :
+            case R.id.nav_meal_tracker :
                 mViewPager.setCurrentItem(1);
+                break;
+
+            case R.id.nav_pledge :
+                mViewPager.setCurrentItem(2);
                 break;
 
             case R.id.nav_profile :
                 mViewPager.setCurrentItem(3);
                 break;
-
-//            case R.id.nav_meal_tracker :
-//                break;
 
             default:
                 return false;
@@ -383,7 +388,7 @@ public class MainActivity extends AppCompatActivity implements
 //    @SuppressWarnings("StatementWithEmptyBody")
 //    @Override
 //    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-////        Log.i("test", "Item:" +item);
+////        Log.i("add_photo", "Item:" +item);
 //        invalidateOptionsMenu();
 //        Fragment fragment = null;
 //        // Handle navigation view item clicks here..

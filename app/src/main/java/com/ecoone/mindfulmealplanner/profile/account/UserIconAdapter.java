@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.pledge;
+package com.ecoone.mindfulmealplanner.profile.account;
 
 import android.content.Context;
 import android.view.LayoutInflater;

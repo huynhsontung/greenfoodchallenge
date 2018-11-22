@@ -23,6 +23,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -33,10 +34,12 @@ import com.ecoone.mindfulmealplanner.database.Pledge;
 import com.ecoone.mindfulmealplanner.R;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
+import com.ecoone.mindfulmealplanner.profile.settings.LogoutDialogPreference;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -45,7 +48,7 @@ import java.util.Arrays;
 
 public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
 
-    final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
+    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     public static int pledgeAmount;
     private ImageView mEditDoneIcon;
@@ -94,8 +97,9 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
         mAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mSpinner.setAdapter(mAdapter);
         planCO2TextView = view.findViewById(R.id.user_tip);
-        locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
         planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
+        locationList = new ArrayList<>(Arrays.asList(findStringArrayRes("location")));
+
         setFirebaseValueListener();
         mPledgeLogic = new PledgeLogic(this);
         setEditDoneIconAction(view);
@@ -225,36 +229,18 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
         return getContext().getResources().getStringArray(resId);
     }
 
-    @Override
-    public void updatePledgeTip() {
-        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.i(TAG,CLASSTAG + "resumed");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.i(TAG,CLASSTAG + "paused");
-    }
-
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getTitle() == "Withdraw my pledge" ){
-            setEditTextView(0);
-            FirebaseDatabaseInterface.updatePledgeAmount(0);
-        } else super.onOptionsItemSelected(item);
-        return true;
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if(item.getTitle() == "Withdraw my pledge" ){
+//            setEditTextView(0);
+//            FirebaseDatabaseInterface.updatePledgeAmount(0);
+//        } else super.onOptionsItemSelected(item);
+//        return true;
+//    }
 }

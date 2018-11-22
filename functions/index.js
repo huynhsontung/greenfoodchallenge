@@ -199,6 +199,34 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
     });
 });
 
+exports.getAllRestaurantMenu = functions.https.onCall((data) => {
+    return admin.database().ref("/RestaurantMenu").once("value").then((snapshot) => {
+        var allRestaurant = {};
+        snapshot.forEach((childSnapshot) => {
+            allRestaurant[childSnapshot.key] = childSnapshot.child("isGreen").val();
+        });
+        console.log("Check all restaurant: ", JSON.stringify(allRestaurant));
+        return allRestaurant;
+    });
+});
+
+
+exports.getRestaurantFoodMenu = functions.https.onCall((data) => {
+    const restaurantName = data.restaurantName;
+    console.log("Check : restaurantName", restaurantName);
+    return admin.database().ref("/RestaurantMenu/" + restaurantName + "/foodInfo")
+        .once("value").then((snapshot) => {
+            var restaurantFoodMenu = {};
+            snapshot.forEach((childSnapshot) => {
+                restaurantFoodMenu[childSnapshot.key] = childSnapshot.val();
+                console.log("check key and value", childSnapshot.key, childSnapshot.val());
+            });
+            console.log("Check all food menu: ", JSON.stringify(restaurantFoodMenu));
+            return restaurantFoodMenu;
+    });
+});
+
+
 // exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
 //     var genderList = ['male', 'female'];
 //     var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
@@ -250,40 +278,71 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
 //     return 0;
 // });
 
-//
-// exports.test = functions.https.onRequest((req, resp) => {
-//     if(req.method !== "POST") {
-//         resp.status(400).send("not POST request");
-//         console.log("test", "not POST request");
-//     }
-//
-//     console.log("check type" , typeof req.body);
-//     var data = req.body;
-//
-//     if (typeof data === "string") {
-//         console.log("string")
-//         data = JSON.parse(data);
-//     }
-//     else if (typeof data === "object") {
-//         console.log("object")
-//     }
-//     //
-//     console.log("test req body", data);
-//     console.log("test name", data.user.name);
-//     console.log("test age", data.user.age);
-//
-//     resp.status(200).send("OK");
-//
-// });
+
+ exports.test = functions.https.onRequest((req, resp) => {
+     if(req.method !== "POST") {
+         resp.status(400).send("not POST request");
+         console.log("test", "not POST request");
+     }
+
+     console.log("check type" , typeof req.body);
+     var data = req.body;
+
+     if (typeof data === "string") {
+         console.log("string")
+         data = JSON.parse(data);
+     }
+     else if (typeof data === "object") {
+         console.log("object")
+     }
+     //
+     console.log("test req body", data);
+     console.log("test name", data.user.name);
+     console.log("test age", data.user.age);
+
+     resp.status(200).send("OK");
+
+ });
 
 // exports.adminCheckAndModifyTotalPledgeNumber = functions.https.onRequest((req, resp) => {
-//     var log = "";
-//     if(req.method !== "GET") {
-//         resp.status(400).send("Not GET request");
-//         console.log("Not GET request");
-//     }
-//
-//     var oldAmount =
-//
-//
-// });
+// //     var log = "";
+// //     if(req.method !== "GET") {
+// //         resp.status(400).send("Not GET request");
+// //         console.log("Not GET request");
+// //     }
+// //
+// //     var oldAmount =
+// //
+// //
+// // });
+
+exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp) => {
+    var logText = "";
+    if(req.method !== "GET") {
+        resp.status(400).send("Not GET request");
+        console.log("Not GET request");
+    }
+
+    logText += "Start to set all users pledge amount to zero.\n";
+
+    admin.database().ref("/uids").once("value").then((snapshot) => {
+        snapshot.forEach((childSnapshot) => {
+
+            var amountPath = childSnapshot.child('pledgeInfo').child('amount');
+
+            logText += childSnapshot.key + ": " +
+                amountPath.val() + "\n";
+
+            if (amountPath.val() !== 0) {
+                amountPath.ref.set(0);
+            }
+        });
+
+        logText += "Finished.\n";
+        console.log(logText);
+        resp.status(200).send(logText);
+        return null;
+    });
+});
+
+
