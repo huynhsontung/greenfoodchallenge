@@ -34,6 +34,7 @@ public class AutoCompleteRestaurantAdapter extends ArrayAdapter<Map.Entry<String
     }
 
 
+
     @Nullable
     @Override
     public Map.Entry<String, Boolean> getItem(int position) {

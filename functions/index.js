@@ -345,4 +345,6 @@ exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp)
     });
 });
 
+exports.adminScan
+
 

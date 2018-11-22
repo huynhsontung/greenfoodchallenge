@@ -12,3 +12,4 @@ public class AddGreenMealViewModel extends ViewModel {
     public MutableLiveData<Meal> meal = new MutableLiveData<>();
     public ArrayList<View> addedFoodViewList;
 }
+

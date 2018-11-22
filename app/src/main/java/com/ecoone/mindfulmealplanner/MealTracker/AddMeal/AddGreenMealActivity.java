@@ -48,6 +48,7 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
         mViewPager.setCurrentItem(0);
     }
 
+
     @Override
     public void onAttachFragment(Fragment fragment) {
         if(fragment instanceof AddDetailFragment){

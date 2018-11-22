@@ -214,6 +214,7 @@ public class AddGeneralFragment extends Fragment {
                 });
             }
 
+
             FirebaseDatabaseInterface.writeMeal(mMeal);
 
             mOnDataPassingListener.finishAddMeal(1);

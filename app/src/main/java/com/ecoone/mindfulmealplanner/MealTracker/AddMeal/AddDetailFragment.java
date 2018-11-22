@@ -142,6 +142,7 @@ public class AddDetailFragment extends Fragment {
        });
     }
 
+
     private void initialAutoCompleteTextView() {
         if (foodMenu == null) {
             getRestaurantFoodMenu(restaurantName).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
