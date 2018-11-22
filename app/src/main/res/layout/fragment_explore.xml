@@ -1,37 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="2dp"
     android:orientation="vertical"
     tools:context="com.ecoone.mindfulmealplanner.explore.ExploreFragment">
 
-
-
-
-
-    <android.support.v7.widget.RecyclerView
-        android:background="#f2f2f2"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="59dp"
-        android:id="@+id/recycler_view"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/explore_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    </android.support.v7.widget.RecyclerView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/tab_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#f2f2f2"
+            android:orientation="horizontal" />
+    </android.support.design.widget.AppBarLayout>
+
 
     <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/gridview1"
+        android:id="@+id/explore_content"
         android:layout_width="match_parent"
-        android:layout_below="@+id/recycler_view"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:columnWidth="110dp"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="3dp"
-        android:horizontalSpacing="3dp"
-        android:stretchMode="columnWidth"
         android:gravity="center"
-        />
+        android:horizontalSpacing="4dp"
+        android:numColumns="auto_fit"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="4dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

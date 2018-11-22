@@ -1,10 +1,7 @@
 package com.ecoone.mindfulmealplanner.explore;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,20 +15,20 @@ import com.ecoone.mindfulmealplanner.R;
 
 
 public class ImageAdapter extends BaseAdapter {
-    String ioi;
+    String cityName;
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
-    Context ctx;
+    Context context;
     ImageAdapter(Context ctx){
-        this.ctx = ctx;
+        this.context = ctx;
     }
     @Override
     public int getCount() {
         return images_id.length;
     }
 
-    public ImageAdapter(Context c,String argu){
-        ioi = argu;
-        ctx = c;
+    public ImageAdapter(Context context,String cityName){
+        this.cityName = cityName;
+        this.context = context;
     }
 
     public static ExploreFragment newInstance() {
@@ -55,16 +52,18 @@ public class ImageAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        View gridView = convertView;
-        if(gridView==null){
-            LayoutInflater inflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            gridView = inflater.inflate(R.layout.discover_pics,null);
+        ImageView imageView;
+        if (convertView == null) {
+            // if it's not recycled, initialize some attributes
+            imageView = new ImageView(context);
+            imageView.setLayoutParams(new GridView.LayoutParams(370, 370));
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        } else {
+            imageView = (ImageView) convertView;
         }
-
-        ImageView i1=(ImageView)gridView.findViewById(R.id.myImage);
-        i1.setImageResource(images_id[position]);
-        Toast.makeText(ctx, ioi, Toast.LENGTH_SHORT).show();
-        return gridView;
+        imageView.setImageResource(images_id[position]);
+        Toast.makeText(context, cityName, Toast.LENGTH_SHORT).show();
+        return imageView;
     }
 }
 

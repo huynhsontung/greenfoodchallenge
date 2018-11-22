@@ -7,7 +7,7 @@ public class scroll_item_data {
     public static String[] title = new String[]{
             "Most popular",
             "Most Recent",
-            "vancouver",
+            "Vancouver",
             "Surrey",
             "Burnaby",
             "Richmond",

@@ -67,8 +67,7 @@
             android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".discoverpage.DiscoverPage" />
-        <activity android:name=".explore.ExploreDetail"></activity>
+        <activity android:name=".explore.ExploreDetailActivity" />
     </application>
 
 </manifest>

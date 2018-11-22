@@ -38,4 +38,5 @@
         <item>female</item>
     </string-array>
     <string name="title_activity_user_account">UserAccountActivity</string>
+    <string name="lorem">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed tempus maximus elit, sed cursus odio efficitur sit amet. Donec maximus sapien sed scelerisque mollis. Nam quis ante sollicitudin diam accumsan pretium. Donec pulvinar neque orci, facilisis consequat tellus auctor id.</string>
 </resources>
