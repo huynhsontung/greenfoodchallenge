@@ -2,32 +2,13 @@ package com.ecoone.mindfulmealplanner.database;
 
 import android.graphics.Bitmap;
 
-import java.io.Serializable;
 import java.util.HashMap;
 
-//public class Food {
-//    public String foodName;
-//    public int co2eAmount;
-//    public HashMap<String, Integer> ingredient;
-//    public Bitmap photoBitmap;
-//
-//    public Food() {
-//        ingredient = new HashMap<>();
-//        ingredient.put("beef", 0);
-//        ingredient.put("pork", 0);
-//        ingredient.put("chicken", 0);
-//        ingredient.put("fish", 0);
-//        ingredient.put("eggs", 0);
-//        ingredient.put("beans", 0);
-//        ingredient.put("vegetables", 0);
-//    }
-//}
-
-
-public class Food implements Serializable {
+public class Food {
     public String foodName;
     public int co2eAmount;
     public HashMap<String, Integer> ingredient;
+    public Bitmap photoBitmap;
 
     public Food() {
         ingredient = new HashMap<>();
@@ -40,4 +21,3 @@ public class Food implements Serializable {
         ingredient.put("vegetables", 0);
     }
 }
-

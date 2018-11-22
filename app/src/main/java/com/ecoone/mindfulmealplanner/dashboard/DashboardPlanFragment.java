@@ -90,7 +90,6 @@ public class DashboardPlanFragment extends Fragment {
         mFunctions = FirebaseFunctions.getInstance();
 
         getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        setFirebaseValueListener();
         setupImproveButton();
         setEditDoneIconAction(view);
     }
@@ -244,6 +243,7 @@ public class DashboardPlanFragment extends Fragment {
 
     @Override
     public void onStart() {
+        setFirebaseValueListener();
         super.onStart();
         Log.d(TAG, CLASSTAG + " onStart");
     }
@@ -264,14 +264,15 @@ public class DashboardPlanFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.d(TAG, CLASSTAG + " onStop");
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).removeEventListener(mValueEventListener);
+        Log.i(TAG, CLASSTAG + "firebase listener remove");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-//                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 
