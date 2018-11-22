@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.FragmentType;
 
 import android.app.Activity;
 import android.arch.lifecycle.Observer;
@@ -28,7 +28,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.android.gms.tasks.Continuation;
@@ -58,7 +57,6 @@ public class AddGeneralFragment extends Fragment {
         return fragment;
     }
     private AddGreenMealActivity mCallback;
-    private View mainView;
     private Toolbar mToolbar;
     private EditText mealNameEditView;
     private AutoCompleteTextView restaurantNameAutoCompleteTextView;
@@ -97,7 +95,7 @@ public class AddGeneralFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.fragment_add_meal_add_general, container, false);
+        View mainView = inflater.inflate(R.layout.fragment_add_meal_add_general, container, false);
         setHasOptionsMenu(true);
         mViewModel = ViewModelProviders.of(getActivity()).get(AddGreenMealViewModel.class);
         mToolbar = mainView.findViewById(R.id.toolbar);
@@ -105,24 +103,30 @@ public class AddGeneralFragment extends Fragment {
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((AppCompatActivity)getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         getActivity().setTitle("Add Meal");
+        return mainView;
+    }
 
-        mealNameEditView = mainView.findViewById(R.id.add_meal_name_editview);
-        restaurantNameAutoCompleteTextView = mainView.findViewById(R.id.add_meal_autoCompleteTextView);
-        mealDescriptionEditView = mainView.findViewById(R.id.add_meal_description);
-        resetButton = mainView.findViewById(R.id.add_meal_reset_button);
-        addPhotoButton = mainView.findViewById(R.id.add_photo);
-        visibleCheckBox = mainView.findViewById(R.id.add_meal_checkbox);
-        mealTypeRadioGroup = mainView.findViewById(R.id.add_meal_rasio_group);
 
-        addFoodLayout = mainView.findViewById(R.id.add_food_layout);
-        addFoodLayoutMealTypeTextView = mainView.findViewById(R.id.add_food_layout_meal_type);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mealNameEditView = view.findViewById(R.id.add_meal_name_editview);
+        restaurantNameAutoCompleteTextView = view.findViewById(R.id.add_meal_autoCompleteTextView);
+        mealDescriptionEditView = view.findViewById(R.id.add_meal_description);
+        resetButton = view.findViewById(R.id.add_meal_reset_button);
+        addPhotoButton = view.findViewById(R.id.add_photo);
+        visibleCheckBox = view.findViewById(R.id.add_meal_checkbox);
+        mealTypeRadioGroup = view.findViewById(R.id.add_meal_rasio_group);
+
+        addFoodLayout = view.findViewById(R.id.add_food_layout);
+        addFoodLayoutMealTypeTextView = view.findViewById(R.id.add_food_layout_meal_type);
         mViewModel.addedFoodViewList = new ArrayList<>();
         allRestaurantMenu = new HashMap<>();
         mMeal = new Meal();
-//        photoList
         initializeFragment();
         setupMealObserver();
-        return mainView;
+
     }
 
     private void setupMealObserver() {
@@ -138,7 +142,7 @@ public class AddGeneralFragment extends Fragment {
                             ImageView thumbnailImage = view.findViewById(R.id.add_food_thumbnail);
                             TextView foodNameTextView = view.findViewById(R.id.add_food_title);
                             Food food = (Food) meal.foodList.get(foodName);
-                            thumbnailImage.setImageBitmap(food.photoBitmap);
+//                            thumbnailImage.setImageBitmap(food.photoBitmap);
                             foodNameTextView.setText(foodName);
                             index++;
                         }
@@ -235,10 +239,9 @@ public class AddGeneralFragment extends Fragment {
         }
     }
 
-
     private void setMealInfo() {
         mMeal.mealName = mealNameEditView.getText().toString();
-        RadioButton mealTypeButton = mainView.findViewById(mealTypeRadioGroup.getCheckedRadioButtonId());
+        RadioButton mealTypeButton = getActivity().findViewById(mealTypeRadioGroup.getCheckedRadioButtonId());
         mMeal.mealType = mealTypeButton.getText().toString();
         mMeal.restaurantName = restaurantNameAutoCompleteTextView.getText().toString();
         if (mealDescriptionEditView.getText().toString().equals("")) {

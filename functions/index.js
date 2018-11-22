@@ -214,7 +214,7 @@ exports.getAllRestaurantMenu = functions.https.onCall((data) => {
 exports.getRestaurantFoodMenu = functions.https.onCall((data) => {
     const restaurantName = data.restaurantName;
     console.log("Check : restaurantName", restaurantName);
-    return admin.database().ref("/RestaurantMenu/" + restaurantName + "/foodInfo")
+    return admin.database().ref("/RestaurantMenu/" + restaurantName + "/foodList")
         .once("value").then((snapshot) => {
             var restaurantFoodMenu = {};
             snapshot.forEach((childSnapshot) => {

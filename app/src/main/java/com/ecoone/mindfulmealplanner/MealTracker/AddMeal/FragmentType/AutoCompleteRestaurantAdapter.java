@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.FragmentType;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

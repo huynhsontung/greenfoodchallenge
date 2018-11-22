@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.FragmentType;
 
 import android.content.Context;
 import android.content.Intent;
@@ -23,7 +23,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_green_meal);
+        setContentView(R.layout.activity_add_green_meal_frag);
         mViewPager = findViewById(R.id.add_food_main_content);
 
         setupViewPager();

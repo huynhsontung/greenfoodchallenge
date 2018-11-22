@@ -45,14 +45,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".tutorial.TutorialActivity"
-            />
+
+        <activity android:name=".tutorial.TutorialActivity" />
+
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".dashboard.improve.ImproveActivity"
             tools:ignore="InnerclassSeparator" />
+
         <activity
             android:name=".profile.settings.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -62,6 +65,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.ecoone.mindfulmealplanner.MainActivity" />
         </activity>
+
         <activity
             android:name=".profile.settings.AboutPageActivity"
             tools:ignore="InnerclassSeparator">
@@ -79,8 +83,10 @@
             android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MealTracker.AddMeal.AddGreenMealActivity" />
-        <activity android:name=".MealTracker.AddMeal.Deprecated.AddGreenMealPhotoActivity2"></activity>
+        <activity android:name=".MealTracker.AddMeal.ActivityType.AddGreenMealActivity" />
+        <activity android:name=".MealTracker.AddMeal.ActivityType.AddGreenMealFoodActivity" />
+        <activity android:name=".MealTracker.AddMeal.FragmentType.AddGreenMealActivity" />
+        <activity android:name=".MealTracker.AddMeal.Deprecated.AddGreenMealPhotoActivity2" />
     </application>
 
 </manifest>
