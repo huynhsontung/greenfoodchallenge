@@ -4,6 +4,14 @@
     package="com.ecoone.mindfulmealplanner">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera.any"
+        android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera.autofocus"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +25,27 @@
             android:name=".pledge.DailyPledgeService"
             tools:ignore="InnerclassSeparator" />
 
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.ecoone.mindfulmealplanner"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+
+        <activity
+            android:name=".SplashScreen"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
         <activity
             android:name=".setup.InitialSetupActivity"
             tools:ignore="InnerclassSeparator">
@@ -26,6 +55,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".tutorial.TutorialActivity"
+            />
         <activity
             android:name=".MainActivity"
             android:windowSoftInputMode="adjustPan" />
@@ -50,15 +81,6 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".profile.settings.LogoutActivity"
-            tools:ignore="InnerclassSeparator">
-            <intent-filter>
-                <action android:name="openLogout" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
 
         <!-- <activity -->
         <!-- android:name=".PlanList.PlanPagerActivity" -->
@@ -67,6 +89,9 @@
             android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MealTracker.AddMeal.AddGreenMealFoodActivity" />
+        <activity android:name=".MealTracker.AddMeal.AddGreenMealActivity" />
+        <activity android:name=".MealTracker.AddMeal.Deprecated.AddGreenMealPhotoActivity2"></activity>
         <activity android:name=".explore.ExploreDetailActivity" />
     </application>
 

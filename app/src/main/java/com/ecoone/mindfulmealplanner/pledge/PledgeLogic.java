@@ -1,5 +1,8 @@
 package com.ecoone.mindfulmealplanner.pledge;
 
+import android.util.Log;
+
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
 import com.ecoone.mindfulmealplanner.database.Plan;
 
@@ -10,13 +13,18 @@ public class PledgeLogic {
     private static float currentPledgePerDay;
     private static float currentPlanCO2PerDay;
     private static float currentPlanCO2PerWeek;
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(PledgeLogic)";
+    private static PlanPledgeInterface mInterface;
 
-    public PledgeLogic(Plan plan, float pledgeAmount) {
-        usersCurrentPlan = plan;
+    public PledgeLogic(PlanPledgeInterface mNewInterface) {
+        Log.i(TAG,CLASSTAG + "created");
+        /*usersCurrentPlan = plan;
         currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
         currentPledgePerWeek = pledgeAmount;
         currentPledgePerDay = currentPledgePerWeek/7;
-        currentPlanCO2PerWeek = (currentPlanCO2PerDay*7)/1000;
+        currentPlanCO2PerWeek = (currentPlanCO2PerDay*7)/1000;*/
+        mInterface = mNewInterface;
     }
 
     public static Plan getUsersCurrentPlan() {
@@ -42,10 +50,13 @@ public class PledgeLogic {
     public static String getUsersCurrentPlanName() {
         return usersCurrentPlanName;
     }
+
     public static void updateCurrentPlan(Plan newPlan) {
+        Log.i(TAG,CLASSTAG + "update plan ");
         usersCurrentPlan = newPlan;
         currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
         currentPlanCO2PerWeek = (currentPlanCO2PerDay*7)/1000;
+        mInterface.updatePledgeTip();
     }
 
     public static void updateCurrentPlanName(String name) {

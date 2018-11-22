@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
-import com.ecoone.mindfulmealplanner.pledge.UserIconAdapter;
 import com.ecoone.mindfulmealplanner.R;
 
 

@@ -2,7 +2,10 @@ package com.ecoone.mindfulmealplanner.dashboard.improve;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.Snackbar;
@@ -13,9 +16,12 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
 import com.ecoone.mindfulmealplanner.tools.ChartValueFormatter;
@@ -25,6 +31,9 @@ import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.User;
 import com.ecoone.mindfulmealplanner.dashboard.improve.InputTextDialogFragment.OnInputListener;
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -35,14 +44,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ImproveActivity extends AppCompatActivity implements OnInputListener {
+public class ImproveActivity extends AppCompatActivity implements OnInputListener{
 
     private TextView mImprovedPlanCo2ePerYearTextView;
     private TextView mPlanDifferenceCo2ePerYearTextView;
@@ -58,13 +66,17 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
     private int foodLen;
     private Plan improvedPlan;
 
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    final DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
     private PieChart mPieChart;
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ImproveActivity)";
+    private static final String SKIP_IMPROVE_ACTIVITY_TUTORIAL = "improve";
+    SharedPreferences mSharedPreferences;
+    SharedPreferences.Editor editor;
+    private ImageView helpIcon;
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, ImproveActivity.class);
@@ -90,9 +102,75 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
         foodName = findStringArrayRes("food_name");
         foodLen = foodName.length;
-
         setFirebaseValueListener();
 
+        mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        editor = mSharedPreferences.edit();
+        checkForTutorial();
+
+        helpIcon = findViewById(R.id.help_icon_improve);
+        improveTutorialListener();
+
+    }
+
+    private void checkForTutorial() {
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
+        int flag = mSharedPreferences.getInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL,0);
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+
+        if(flag == 0) {
+            final BubbleShowCaseBuilder bubble1 = new BubbleShowCaseBuilder(this)
+                    .title("Here's how much your new plan saves in CO2e per year!")
+                    .titleTextSize(18)
+                    .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                    .image(d)
+                    .targetView(mImprovedPlanCo2ePerYearTextView);
+
+
+            final BubbleShowCaseBuilder bubble2 = new BubbleShowCaseBuilder(this)
+                    .title("If needed, adjust the ingredients as you wish")
+                    .titleTextSize(18)
+                    .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                    .targetView(findViewById(R.id.improve_seekbar_component_1))
+                    .image(d);
+
+            final BubbleShowCaseBuilder bubble3 = new BubbleShowCaseBuilder(this)
+                    .title("Use this when saving to your current plan")
+                    .titleTextSize(18)
+                    .targetView(saveButton)
+                    .image(d);
+
+            final BubbleShowCaseBuilder bubble4 = new BubbleShowCaseBuilder(this)
+                    .title("Use this to add this plan to your Plan List")
+                    .titleTextSize(18)
+                    .description("You can return to previous plans under the Plan List tab!")
+                    .targetView(saveAsButton)
+                    .image(d);
+
+            new BubbleShowCaseSequence()
+                    .addShowCase(bubble1)
+                    .addShowCase(bubble2)
+                    .addShowCase(bubble3)
+                    .addShowCase(bubble4)
+                    .show();
+
+            editor.putInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL, 1);
+            editor.apply();
+            Log.i(TAG,CLASSTAG + "improve tutorial done");
+        }
+
+    }
+
+    public void improveTutorialListener() {
+        helpIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences.Editor editor = mSharedPreferences.edit();
+                editor.putInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL, 0);
+                editor.commit();
+                checkForTutorial();
+            }
+        });
     }
 
     private void setFirebaseValueListener() {
@@ -266,17 +344,41 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabaseInterface.updatePlan(improvedPlan);
-                finish();
+                if(greaterThanZero()) {
+                    FirebaseDatabaseInterface.updatePlan(improvedPlan);
+                    finish();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Your plan has no ingredients!",Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
         saveAsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog();
+                if(greaterThanZero()) {
+                    showAlertDialog();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Your plan has no ingredients!",Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
+    }
+
+    public boolean greaterThanZero() {
+
+        float totalFoodInGrams = improvedPlan.beef + improvedPlan.beans + improvedPlan.chicken + improvedPlan.pork
+                + improvedPlan.eggs + improvedPlan.vegetables + improvedPlan.fish;
+        if(totalFoodInGrams > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private void setSeekBarValueView(Plan currentPlan, Plan improvedPlan) {
@@ -360,7 +462,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
     @Override
     public void sendInput(String input) {
-        Log.i(TAG, "passDataFromLogoutDialogToSetting: got the input: " + input + CLASSTAG);
+        Log.i(TAG, "onLogout: got the input: " + input + CLASSTAG);
         saveAsDbAction(input);
     }
 

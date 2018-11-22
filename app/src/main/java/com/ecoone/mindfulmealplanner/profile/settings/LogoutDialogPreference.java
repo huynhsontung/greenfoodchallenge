@@ -18,11 +18,11 @@ public class LogoutDialogPreference extends DialogPreference {
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(LogoutDialogPreference)";
 
-    public interface OnDataPassingListener {
-        void passDataFromLogoutDialogToSetting(int input);
+    public interface OnLogoutListener {
+        void onLogout(int input);
     }
 
-    public OnDataPassingListener mOnDataPassingListener;
+    public OnLogoutListener mOnLogoutListener;
 
     public LogoutDialogPreference(Context context, AttributeSet attributeSet) {
         super(context, attributeSet);
@@ -48,10 +48,10 @@ public class LogoutDialogPreference extends DialogPreference {
         // When the user selects "OK", persist the new value
         if (positiveResult) {
             if (isCheckboxChecked) {
-                mOnDataPassingListener.passDataFromLogoutDialogToSetting(1);
+                mOnLogoutListener.onLogout(1);
             }
             else {
-                mOnDataPassingListener.passDataFromLogoutDialogToSetting(0);
+                mOnLogoutListener.onLogout(0);
             }
         }
     }
@@ -60,7 +60,7 @@ public class LogoutDialogPreference extends DialogPreference {
     protected void onAttachedToActivity() {
         super.onAttachedToActivity();
         try {
-            mOnDataPassingListener = (OnDataPassingListener) getContext();
+            mOnLogoutListener = (OnLogoutListener) getContext();
         }catch (ClassCastException e) {
             Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
         }

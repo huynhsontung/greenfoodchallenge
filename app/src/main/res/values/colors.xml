@@ -11,9 +11,10 @@
     <color name="colorAccentColor">#a00037</color>
     <color name="colorText">#ffffff</color>
 
-    <color name="bottomNavGrey">#FAFAFA</color>
+    <color name="bottomNavGrey">#fafafa</color>
     <color name="greyDeselected">#8c8c8c</color>
     <color name="my_grey">#EFF0F1</color>
+    <color name="button_grey">#d5d5d5</color>
     <color name="white">#FFFFFF</color>
 
     <color name="chartRed1">#b71e1b</color>

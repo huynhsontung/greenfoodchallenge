@@ -181,4 +181,23 @@ public class CalculatorTest {
 
         assertEquals(0, testZeroCase, 0);
     }
+
+
+    @Test
+    public void toPercentage() {
+        float sum = 0;
+        float[] testArr = new float[7];
+        testArr[0] = 50;
+        testArr[1] = 75;
+        testArr[2] = 50;
+        testArr[3] = 50;
+        testArr[4] = 50;
+        testArr[5] = 50;
+        testArr[6] = 50;
+        assertNotEquals(Calculator.toPercentage(testArr), testArr);
+
+
+    }
+
+
 }

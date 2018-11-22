@@ -12,16 +12,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 
 public class PledgeFragment extends Fragment {
+
+    private static final String TAG = "testActivity";
+    private static final String CLASSTAG = "(PledgeFragment)";
 
     public PledgeFragment() {
         // Required empty public constructor
@@ -57,8 +59,8 @@ public class PledgeFragment extends Fragment {
 //            for (int i = 0; i < tabChildsCount; i++) {
 //                View tabViewChild = vgTab.getChildAt(i);
 //                if (tabViewChild instanceof TextView) {
-//                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTextSize());
-//                    Log.i("testActivity", "test: " + ((TextView) tabViewChild).getTypeface());
+//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTextSize());
+//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTypeface());
 //                }
 //            }
 //        }
@@ -82,22 +84,6 @@ public class PledgeFragment extends Fragment {
         myAdapter.addFragment(new MyPledgeFragment(), "My Pledge");
         myAdapter.addFragment(new DiscoverFragment(), "Discover");
         viewPager.setAdapter(myAdapter);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i1) {
-                Objects.requireNonNull(getActivity()).invalidateOptionsMenu();
-            }
-
-            @Override
-            public void onPageSelected(int i) {
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
     }
 
     static class Adapter extends FragmentPagerAdapter {
@@ -129,5 +115,35 @@ public class PledgeFragment extends Fragment {
         }
     }
 
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
+    }
 
 }

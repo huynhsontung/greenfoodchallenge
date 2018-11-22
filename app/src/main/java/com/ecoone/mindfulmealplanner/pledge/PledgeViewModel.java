@@ -3,10 +3,10 @@ package com.ecoone.mindfulmealplanner.pledge;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class PledgeViewModel extends ViewModel {
     MutableLiveData<String> cityFilter = new MutableLiveData<>();
     MutableLiveData<Map<String,Object>> userList = new MutableLiveData<>();
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
+    DatabaseReference mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
     DatabaseReference personalPledgeReference = mDatabase.child("uids").child(user.getUid()).child("pledgeInfo");
     DatabaseReference totalPledgeReference = mDatabase.child("pledgeResult");
     DatabaseReference totalPledgeLocationReference = mDatabase.child("pledgeResult/pledgeLocation");

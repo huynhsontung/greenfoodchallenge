@@ -8,6 +8,10 @@ android {
     buildToolsVersion '28.0.3'
     productFlavors {
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 // Up to here 
 android {
@@ -34,6 +38,13 @@ android {
     }
 }
 
+android {
+    // ...
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -55,6 +66,9 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:2.2.0'
 
 
+    implementation 'com.elconfidencial.bubbleshowcase:bubbleshowcase:1.3.1'
+    implementation 'com.github.yshrsmz:KeyboardVisibilityEvent:v2.1.0'
+    implementation 'com.github.chrisbanes:Android-PullToRefresh:v2.1.1'
 }
 
 dependencies {
@@ -63,14 +77,14 @@ dependencies {
     implementation "android.arch.persistence.room:runtime:$room_version"
     annotationProcessor "android.arch.persistence.room:compiler:$room_version"
 
-    // optional - RxJava support for Room
-    implementation "android.arch.persistence.room:rxjava2:$room_version"
-
-    // optional - Guava support for Room, including Optional and ListenableFuture
-    implementation "android.arch.persistence.room:guava:$room_version"
-
-    // Test helpers
-    testImplementation "android.arch.persistence.room:testing:$room_version"
+//    // optional - RxJava support for Room
+//    implementation "android.arch.persistence.room:rxjava2:$room_version"
+//
+//    // optional - Guava support for Room, including Optional and ListenableFuture
+//    implementation "android.arch.persistence.room:guava:$room_version"
+//
+//    // Test helpers
+//    testImplementation "android.arch.persistence.room:testing:$room_version"
 }
 
 dependencies {
@@ -82,7 +96,7 @@ dependencies {
 
 dependencies {
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
-    implementation 'com.squareup.picasso:picasso:2.71828'
+//    implementation 'com.squareup.picasso:picasso:2.71828'
 }
 
 
@@ -95,16 +109,18 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
 }
 
+dependencies {
+    implementation 'com.github.faruktoptas:FancyShowCaseView:1.1.0'
+}
+
+
+
 apply plugin: 'com.google.gms.google-services'
 
 dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
-    implementation 'com.android.support.constraint:constraint-layout:+'
-}
-
-dependencies {
     implementation 'com.android.support:support-v4:28.+'
+}
+
+dependencies {
+    implementation 'com.android.support.constraint:constraint-layout:+'
 }

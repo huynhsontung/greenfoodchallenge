@@ -2,6 +2,7 @@ package com.ecoone.mindfulmealplanner.pledge;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +22,9 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
+import com.elconfidencial.bubbleshowcase.BubbleShowCase;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
+import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -45,10 +50,9 @@ public class DiscoverFragment extends Fragment {
     private TextView totalPledgeAverageText;
     private TextView relevantInfoText;
     private Spinner filterSpinner;
+    private ImageView helpIconDiscover;
     private PledgeViewModel mViewModel;
     ValueEventListener totalPledgeListener;
-
-
     public DiscoverFragment() {
         // Required empty public constructor
     }
@@ -62,7 +66,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        return inflater.inflate(R.layout.fragment_pledge_discover, container, false);
     }
 
     @Override
@@ -80,7 +84,33 @@ public class DiscoverFragment extends Fragment {
         setupDatabaseTransaction(view);
         setupMunicipalityFilter(view);
         updateRecycler();
+        helpIconDiscover = view.findViewById(R.id.help_icon_discover);
+        discoverTutorialListener();
 
+    }
+
+    public void discoverTutorialListener() {
+        helpIconDiscover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDiscoverTutorial();
+            }
+        });
+    }
+
+    public void startDiscoverTutorial() {
+        Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
+        final BubbleShowCase bubble1 = new BubbleShowCaseBuilder(getActivity())
+                .title("Explore pledges from people all over the Lower Mainland!")
+                .titleTextSize(18)
+                .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
+                .image(d)
+                .targetView(filterSpinner)
+                .show();
+
+        /*new BubbleShowCaseSequence()
+                .addShowCase(bubble1)
+                .show();*/
     }
 
     private void setupMunicipalityFilter(View view) {
@@ -185,7 +215,7 @@ public class DiscoverFragment extends Fragment {
         private ImageView myPeoplePledgeIcon;
 
         public PeoplePledgeHolder(LayoutInflater inflater, ViewGroup parent) {
-            super(inflater.inflate(R.layout.view_discover_list, parent, false));
+            super(inflater.inflate(R.layout.component_view_discover_list, parent, false));
             //itemView.setOnClickListener(this);
 
             myPeoplePledgeName = itemView.findViewById(R.id.discover_list_name);
