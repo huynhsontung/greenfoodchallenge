@@ -79,6 +79,8 @@ public class ExploreDetail extends Fragment implements GestureDetector.OnGesture
         TextView des = (TextView) view.findViewById(R.id.scroll_text);
         des.setText("sdfgsdhfgsfghsdf\n shafgasgfuisgfuisdgfjksdghfjhdsgfjsdhgfuisdgfuisdfguisdfgsiuf\ndsfghjdshgfhjsdfghjsfg\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\nd\n");
         des.setMovementMethod(new ScrollingMovementMethod());
+        TextView restaurant_name = (TextView) view.findViewById(R.id.restaurant_name);
+        restaurant_name.setText("banboo");
         Button btn = (Button) view.findViewById(R.id.detail_back);
         btn.setOnClickListener(new View.OnClickListener()
         {
