@@ -9,6 +9,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -83,7 +84,7 @@ public class ProfileFragment extends Fragment {
         usericonImageView = view.findViewById(R.id.profile_user_icon);
         userDisplayNameTextView = view.findViewById(R.id.profile_user_display_name);
         userEmailTextView = view.findViewById(R.id.profile_user_email);
-
+        setHasOptionsMenu(true);
 
         settingLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,6 +128,12 @@ public class ProfileFragment extends Fragment {
         mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
                 .child(FirebaseDatabaseInterface.USERINFO_NODE)
                 .addValueEventListener(mValueEventListener);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_share).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 
     private int getDrawableIdbyName(String name) {
