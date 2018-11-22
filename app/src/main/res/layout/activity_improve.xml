@@ -172,13 +172,13 @@
 
     <ImageView
         android:id="@+id/help_icon_improve"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:clickable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/improve_piechart"
-        app:srcCompat="@drawable/help_icon" />
+        app:srcCompat="@drawable/ic_shortcut_help" />
 
 </android.support.constraint.ConstraintLayout>

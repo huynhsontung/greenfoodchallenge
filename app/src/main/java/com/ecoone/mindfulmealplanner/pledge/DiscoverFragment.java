@@ -103,6 +103,7 @@ public class DiscoverFragment extends Fragment {
         final BubbleShowCase bubble1 = new BubbleShowCaseBuilder(getActivity())
                 .title("Explore pledges from people all over the Lower Mainland!")
                 .titleTextSize(18)
+                .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
                 .image(d)
                 .targetView(filterSpinner)
                 .show();
