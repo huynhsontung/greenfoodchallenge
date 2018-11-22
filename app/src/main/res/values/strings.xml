@@ -41,6 +41,11 @@
     <string name="skip_the_tutorial"><u>Skip the tutorial</u></string>
     <string name="skip">skip</string>
     <string name="before_we_begin_let_s_go_over_some_features">Before we begin, let\'s go over some features</string>
+    <string name="submit">Submit</string>
+    <string name="add_a_restaurant">Add a restaurant...</string>
+    <string name="description">Description</string>
+    <string name="say_something_about_the_meal">Say something about the meal...</string>
+    <string name="add_a_meal_name">Add a meal name...</string>
 
     <string-array name="preset_names">
         <item>Meat Lover</item>
@@ -53,5 +58,9 @@
         <item>For people that rarely eat meat/vegetarians</item>
         <item>For people that eat a bit of everything</item>
         <item>For people with unique diets</item>
+    </string-array>
+    <string-array name="add_photo_options">
+        <item>Select from gallery</item>
+        <item>Take a photo</item>
     </string-array>
 </resources>

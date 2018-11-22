@@ -1,12 +1,14 @@
 package com.ecoone.mindfulmealplanner.database;
 
-import java.io.Serializable;
+import android.graphics.Bitmap;
+
 import java.util.HashMap;
 
-public class Food implements Serializable {
+public class Food {
     public String foodName;
     public int co2eAmount;
     public HashMap<String, Integer> ingredient;
+    public Bitmap photoBitmap;
 
     public Food() {
         ingredient = new HashMap<>();
