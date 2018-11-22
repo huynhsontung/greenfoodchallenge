@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.pledge;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
 
@@ -33,30 +34,49 @@ public class PledgeLogicTest {
         }
     };
 
-    PledgeLogic testLogic = new PledgeLogic(testPlan,50);
+    PlanPledgeInterface mInterface = new PlanPledgeInterface() {
+        @Override
+        public void updatePledgeTip() {
+
+        }
+    };
+
+    PledgeLogic testLogic = new PledgeLogic(mInterface);
+
+    @Test
+    public void updateCurrentPlan() {
+        testLogic.updateCurrentPlan(newPlan);
+        assertNotEquals(testLogic.getUsersCurrentPlan().beans, testPlan.beans,0.001);
+        assertEquals(testLogic.getCurrentPlanCO2PerDay(), Calculator.calculateCO2ePerDay(newPlan),0.001);
+    }
 
     @Test
     public void getUsersCurrentPlan() {
-        assertEquals(testLogic.getUsersCurrentPlan().beef, testPlan.beef, 0.01);
-        assertEquals(testLogic.getUsersCurrentPlan().eggs, testPlan.eggs, 0.01);
-        assertEquals(testLogic.getUsersCurrentPlan().vegetables, testPlan.vegetables, 0.01);
+        assertEquals(testLogic.getUsersCurrentPlan().beef, newPlan.beef, 0.01);
+        assertNotEquals(testLogic.getUsersCurrentPlan().eggs, testPlan.eggs, 0.01);
+        assertEquals(testLogic.getUsersCurrentPlan().vegetables, newPlan.vegetables, 0.01);
+    }
+
+    @Test
+    public void updatePledgeAmount() {
+        testLogic.updatePledgeAmount(123);
+        assertEquals(testLogic.getCurrentPledgePerWeek(), 123, 0.01);
     }
 
     @Test
     public void getCurrentPledgePerWeek() {
-        float testCo2perweek = Calculator.calculateCO2ePerDay(testPlan);
-        testCo2perweek = (testCo2perweek*7)/1000;
-        assertEquals(testLogic.getCurrentPledgePerWeek(), 50, 0.01);
+        assertEquals(testLogic.getCurrentPledgePerWeek(), 123, 0.01);
     }
 
     @Test
     public void getCurrentPledgePerDay() {
-        assertEquals(testLogic.getCurrentPledgePerDay(), (float)50/7, 0.01);
+        assertEquals(testLogic.getCurrentPledgePerDay(), (float)123/7, 0.01);
     }
 
     @Test
     public void getCurrentPlanCO2PerDay() {
-        float currentCo2 = Calculator.calculateCO2ePerDay(testPlan);
+        testLogic.updateCurrentPlan(newPlan);
+        float currentCo2 = Calculator.calculateCO2ePerDay(newPlan);
         assertEquals(testLogic.getCurrentPlanCO2PerDay(), currentCo2,0.01);
     }
 
@@ -64,15 +84,9 @@ public class PledgeLogicTest {
     public void getCurrentPlanCO2PerWeek() {
         float currentCo2 = Calculator.calculateCO2ePerDay(testPlan);
         currentCo2 = currentCo2*7/1000;
-        assertEquals(testLogic.getCurrentPlanCO2PerWeek(), currentCo2,0.01);
+        assertNotEquals(testLogic.getCurrentPlanCO2PerWeek(), currentCo2,0.01);
     }
 
-    @Test
-    public void updateCurrentPlan() {
-        testLogic.updateCurrentPlan(newPlan);
-        assertNotEquals(testLogic.getUsersCurrentPlan().beans, testPlan.beans);
-        assertNotEquals(testLogic.getCurrentPlanCO2PerDay(), Calculator.calculateCO2ePerDay(testPlan));
-    }
 
     @Test
     public void updateCurrentPlanName() {
@@ -86,9 +100,5 @@ public class PledgeLogicTest {
         assertEquals(testLogic.getUsersCurrentPlanName(), "AAAA");
     }
 
-    @Test
-    public void updatePledgeAmount() {
-        testLogic.updatePledgeAmount(123);
-        assertEquals(testLogic.getCurrentPledgePerWeek(), 123, 0.01);
-    }
+
 }

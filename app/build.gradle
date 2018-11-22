@@ -38,6 +38,13 @@ android {
     }
 }
 
+android {
+    // ...
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
@@ -98,5 +105,7 @@ dependencies {
 dependencies {
     implementation 'com.github.faruktoptas:FancyShowCaseView:1.1.0'
 }
+
+
 
 apply plugin: 'com.google.gms.google-services'

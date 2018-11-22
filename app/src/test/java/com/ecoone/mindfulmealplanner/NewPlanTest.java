@@ -88,7 +88,7 @@ public class NewPlanTest {
             beef = 0;
             pork = 0;
             chicken = 0;
-            fish = 300;
+            fish = 500;
             eggs = 0;
             beans = 0;
             vegetables = 0;
@@ -210,7 +210,7 @@ public class NewPlanTest {
         Plan newEdge4 = edge4.suggestPlan();
         assertNotEquals((newEdge4.pork), edgeCasePlan4.pork);
 
-        NewPlan edge5 = new NewPlan(edgeCasePlan5,"female");
+        NewPlan edge5 = new NewPlan(edgeCasePlan5,"male");
         Plan newEdge5 = edge5.suggestPlan();
         assertNotEquals((newEdge5.fish), edgeCasePlan5.fish);
 
