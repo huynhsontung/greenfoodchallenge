@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
@@ -343,17 +344,41 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FirebaseDatabaseInterface.updatePlan(improvedPlan);
-                finish();
+                if(greaterThanZero()) {
+                    FirebaseDatabaseInterface.updatePlan(improvedPlan);
+                    finish();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Your plan has no ingredients!",Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
 
         saveAsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showAlertDialog();
+                if(greaterThanZero()) {
+                    showAlertDialog();
+                }
+                else {
+                    Toast.makeText(getApplicationContext(), "Your plan has no ingredients!",Toast.LENGTH_SHORT)
+                            .show();
+                }
             }
         });
+    }
+
+    public boolean greaterThanZero() {
+
+        float totalFoodInGrams = improvedPlan.beef + improvedPlan.beans + improvedPlan.chicken + improvedPlan.pork
+                + improvedPlan.eggs + improvedPlan.vegetables + improvedPlan.fish;
+        if(totalFoodInGrams > 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     private void setSeekBarValueView(Plan currentPlan, Plan improvedPlan) {
