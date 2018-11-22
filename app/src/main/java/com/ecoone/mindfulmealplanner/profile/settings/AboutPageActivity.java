@@ -25,7 +25,8 @@ public class AboutPageActivity extends AppCompatActivity {
 
             "Over the course of the challenge, participants will track their Green Meals. They will " +
                     "be able to see how many tonnes of CO2e they save as a community, as well as share" +
-                    "meals and restaurants that offer low carbon meals. By incentivizing these meals," +
+                    "meals and restaurants that offer low carbon meals." +
+                    " By incentivizing these meals," +
                     "it is hoped that participants learn to sustainably change their eating habits" +
                     "towards a lighter footprint."
             };
