@@ -120,7 +120,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
         if(flag == 0) {
             final BubbleShowCaseBuilder bubble1 = new BubbleShowCaseBuilder(this)
-                    .title("Here's how much your plan saves in CO2e per year!")
+                    .title("Here's how much your new plan saves in CO2e per year!")
                     .titleTextSize(18)
                     .arrowPosition(BubbleShowCase.ArrowPosition.BOTTOM)
                     .image(d)

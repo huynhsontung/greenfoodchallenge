@@ -166,6 +166,12 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
                 .child(userUid).child("pledgeInfo").addValueEventListener(listener);
     }
 
+    @Override
+    public void updatePledgeTip() {
+        planCO2TextView.setText(String.format("Note: Your current plan produces %.2f kg of CO2e per week",PledgeLogic.getCurrentPlanCO2PerWeek()));
+    }
+
+
     private void setEditTextView(int amount) {
         editPledgeName.setText(String.valueOf(amount));
         editPledgeName.setInputType(0);

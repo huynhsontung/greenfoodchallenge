@@ -133,9 +133,9 @@ public class MainActivity extends AppCompatActivity implements
                 switch (i) {
                     case 0: return DashboardFragment.newInstance();
 
-                    case 1: return MealTrackerFragment.newInstance();
+                    case 1: return PledgeFragment.newInstance();
 
-                    case 2: return PledgeFragment.newInstance();
+                    case 2: return MealTrackerFragment.newInstance();
 
                     case 3: return ProfileFragment.newInstance();
 
@@ -255,11 +255,11 @@ public class MainActivity extends AppCompatActivity implements
                 mViewPager.setCurrentItem(0);
                 break;
 
-            case R.id.nav_meal_tracker :
+            case R.id.nav_pledge:
                 mViewPager.setCurrentItem(1);
                 break;
 
-            case R.id.nav_pledge :
+            case R.id.nav_meal_tracker :
                 mViewPager.setCurrentItem(2);
                 break;
 

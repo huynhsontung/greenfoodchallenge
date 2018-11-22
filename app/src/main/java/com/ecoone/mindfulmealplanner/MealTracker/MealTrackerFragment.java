@@ -14,6 +14,7 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -69,7 +70,7 @@ public class MealTrackerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
+        setHasOptionsMenu(true);
 
 
 //        Button mButton = view.findViewById(R.id.moveToAddMeal);
@@ -80,6 +81,12 @@ public class MealTrackerFragment extends Fragment {
 //                startActivityForResult(mIntent,0);
 //            }
 //        });
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_share).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 
 

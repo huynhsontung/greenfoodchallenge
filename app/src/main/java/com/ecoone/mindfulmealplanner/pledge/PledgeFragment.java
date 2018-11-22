@@ -8,10 +8,12 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.R;
 
 import java.util.ArrayList;
@@ -112,6 +114,7 @@ public class PledgeFragment extends Fragment {
             return mFragmentTitleList.get(position);
         }
     }
+
 
     @Override
     public void onStart() {
