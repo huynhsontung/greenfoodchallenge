@@ -299,6 +299,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
                 Intent intent = AddGreenMealFoodActivity.newIntent(AddGreenMealActivity.this,
                         mMeal.restaurantName, mMeal.isGreen);
                 startActivityForResult(intent, REQUEST_ADD_FOOD_INFO);
+                Log.d(TAG, CLASSTAG + " 1. Back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             }
         });
     }
@@ -311,7 +312,7 @@ public class AddGreenMealActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        Log.d(TAG, CLASSTAG + " 2. Back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if (resultCode != Activity.RESULT_OK) {
             return;
         }
@@ -321,10 +322,11 @@ public class AddGreenMealActivity extends AppCompatActivity {
                 return;
             }
 
-            byte[] photoArraybyte = AddGreenMealFoodActivity.getPhotoArraybyte(data);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(photoArraybyte, 0, photoArraybyte.length);
+            Log.d(TAG, CLASSTAG + " 3. Back!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+//            byte[] photoArraybyte = AddGreenMealFoodActivity.getPhotoArraybyte(data);
+//            Bitmap bitmap = BitmapFactory.decodeByteArray(photoArraybyte, 0, photoArraybyte.length);
 
-            Log.i(TAG, CLASSTAG + "bitmap size" + bitmap.getByteCount());
+//            Log.i(TAG, CLASSTAG + "bitmap size" + bitmap.getByteCount());
 
 //            ImageView photo_image = mViewList.get(mViewList.size()-1).findViewById(R.id.red_add_icon_image_view);
 //            photo_image.setOnClickListener(null);
@@ -333,10 +335,41 @@ public class AddGreenMealActivity extends AppCompatActivity {
             addNewFoodView();
 
 
-            Food food = AddGreenMealFoodActivity.getFoodInfo(data);
-            addFoodToMeal(food);
+//            Food food = AddGreenMealFoodActivity.getFoodInfo(data);
+//            addFoodToMeal(food);
         }
 
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.d(TAG, CLASSTAG + " onStart");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, CLASSTAG + " onResume");
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, CLASSTAG + " onPause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.d(TAG, CLASSTAG + " onStop");
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        Log.d(TAG, CLASSTAG + " onDestroy");
     }
 }
 

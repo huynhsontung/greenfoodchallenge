@@ -243,9 +243,10 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
     private void setFoodInfoResult(Food food) {
         Intent data = new Intent();
         data.putExtra("foodInfoResult", food);
-        data.putExtra("photoByteResult", photoByteArray);
+//        data.putExtra("photoByteResult", photoByteArray);
         setResult(RESULT_OK, data);
 
+        onBackPressed();
 //        finish();
         // for food photo
     }
