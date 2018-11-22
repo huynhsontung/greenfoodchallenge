@@ -11,13 +11,14 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 
 
 
 public class ImageAdapter extends BaseAdapter {
-
+    String ioi;
     private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
     Context ctx;
     ImageAdapter(Context ctx){
@@ -26,6 +27,11 @@ public class ImageAdapter extends BaseAdapter {
     @Override
     public int getCount() {
         return images_id.length;
+    }
+
+    public ImageAdapter(Context c,String argu){
+        ioi = argu;
+        ctx = c;
     }
 
     public static ExploreFragment newInstance() {
@@ -57,6 +63,7 @@ public class ImageAdapter extends BaseAdapter {
 
         ImageView i1=(ImageView)gridView.findViewById(R.id.myImage);
         i1.setImageResource(images_id[position]);
+        Toast.makeText(ctx, ioi, Toast.LENGTH_SHORT).show();
         return gridView;
     }
 }

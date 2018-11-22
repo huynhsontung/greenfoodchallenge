@@ -47,7 +47,7 @@ import java.util.Objects;
 
 public class ExploreFragment extends Fragment {
 
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
+
     RecyclerView recyclerView;
     RecyclerViewAdapter recyclerViewAdapter;
 
@@ -94,8 +94,9 @@ public class ExploreFragment extends Fragment {
         RecyclerView.LayoutManager layoutmanager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         recyclerView.setLayoutManager(layoutmanager);
 
-        String ioi = getArguments().getString("hahaha123");
-        Toast.makeText(getContext(),ioi,Toast.LENGTH_SHORT).show();
+
+        String io = getArguments().getString("haha123");
+        Toast.makeText(getContext(),io,Toast.LENGTH_SHORT).show();
 
 
         gridview =(GridView)view.findViewById(R.id.gridview1);
@@ -134,13 +135,19 @@ public class ExploreFragment extends Fragment {
     FragmentCommunication communication=new FragmentCommunication() {
         @Override
         public void respond(int position, String city_name, int citypics) {
+            /**
             ExploreFragment exploreFragment = new ExploreFragment();
+             **/
             Bundle bundle2 = new Bundle();
             bundle2.putString("hahaha123", city_name);
+            /**
             exploreFragment.setArguments(bundle2);
             FragmentManager manager2=getFragmentManager();
             FragmentTransaction transaction2=manager2.beginTransaction();
             transaction2.replace(R.id.main_content,exploreFragment).commit();
+             **/
+            ImageAdapter adapter = new ImageAdapter(getActivity(), city_name);
+            gridview.setAdapter(adapter);
 
             }
 

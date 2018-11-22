@@ -90,7 +90,7 @@ public class ExploreDetail extends Fragment implements GestureDetector.OnGesture
                 int i = getArguments().getInt("image_position");
                 ExploreFragment exploreFragment= new ExploreFragment();
                 Bundle args = new Bundle();
-                args.putString("hahaha123",image_name[i]);
+                args.putString("haha123",image_name[i]);
                 exploreFragment.setArguments(args);
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.replace(R.id.main_content,exploreFragment);
