@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_bar"
         android:layout_width="match_parent"
@@ -14,4 +15,5 @@
         app:tabMode="fixed"
         app:tabSelectedTextColor="@android:color/white"
         app:tabTextColor="@color/colorPrimaryLight"/>
+
 </android.support.design.widget.AppBarLayout>

@@ -51,6 +51,7 @@ dependencies {
     implementation 'com.android.support:exifinterface:28.0.0'
     implementation 'com.android.support:percent:28.0.0'
     implementation 'com.github.yshrsmz:KeyboardVisibilityEvent:v2.1.0'
+    implementation 'com.github.chrisbanes:Android-PullToRefresh:v2.1.1'
 }
 
 dependencies {
@@ -99,4 +100,8 @@ dependencies {
 
 dependencies {
     implementation 'com.android.support.constraint:constraint-layout:+'
+}
+
+dependencies {
+    implementation 'com.android.support:support-v4:28.+'
 }

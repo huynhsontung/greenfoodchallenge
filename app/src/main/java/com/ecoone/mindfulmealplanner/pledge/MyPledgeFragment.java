@@ -188,18 +188,18 @@ public class MyPledgeFragment extends Fragment {
         return getContext().getResources().getStringArray(resId);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(item.getTitle() == "Withdraw my pledge" ){
-            setEditTextView(0);
-            FirebaseDatabaseInterface.updatePledgeAmount(0);
-        } else super.onOptionsItemSelected(item);
-        return true;
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
+//        super.onCreateOptionsMenu(menu, inflater);
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        if(item.getTitle() == "Withdraw my pledge" ){
+//            setEditTextView(0);
+//            FirebaseDatabaseInterface.updatePledgeAmount(0);
+//        } else super.onOptionsItemSelected(item);
+//        return true;
+//    }
 }
