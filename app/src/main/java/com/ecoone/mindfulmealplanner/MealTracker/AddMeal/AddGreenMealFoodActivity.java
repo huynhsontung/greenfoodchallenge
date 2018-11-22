@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.explore.AddMeal;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,6 +43,7 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventList
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

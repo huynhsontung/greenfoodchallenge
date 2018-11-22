@@ -28,12 +28,6 @@
         android:id="@+id/nav_meal_tracker"
         android:icon="@drawable/ic_nav_explore"
         android:title="Meal Tracker" />
-
-
-    <item
-        android:id="@+id/nav_explore"
-        android:icon="@drawable/ic_nav_explore"
-        android:title="Explore" />
     <item
         android:id="@+id/nav_profile"
         android:icon="@drawable/ic_nav_profile"

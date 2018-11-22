@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.explore.AddMeal;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
 import android.app.Activity;
 import android.content.Context;

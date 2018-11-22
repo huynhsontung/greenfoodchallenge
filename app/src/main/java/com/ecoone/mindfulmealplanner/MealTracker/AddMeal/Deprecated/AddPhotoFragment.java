@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.explore.AddMeal.Deprecated;
+package com.ecoone.mindfulmealplanner.MealTracker.AddMeal.Deprecated;
 
 
 import android.app.AlertDialog;

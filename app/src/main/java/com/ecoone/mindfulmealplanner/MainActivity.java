@@ -142,7 +142,7 @@ public class MainActivity extends AppCompatActivity implements
 
                     case 1: return PledgeFragment.newInstance();
 
-                    case 2: return MealTrackerFragment.newInstance();
+                    case 2: return ExploreFragment.newInstance();
 
                     case 3: return ProfileFragment.newInstance();
 

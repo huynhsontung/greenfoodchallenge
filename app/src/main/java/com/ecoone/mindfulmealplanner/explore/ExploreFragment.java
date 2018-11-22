@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -19,7 +20,11 @@ import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,10 +38,10 @@ public class ExploreFragment extends Fragment {
     private ListView lListView;
 
     private GridView gridview;
-
+    private FloatingActionButton addMealAction;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
-    private FirebaseDatabase mDatabase;
+    private DatabaseReference mDatabase;
 
 
     private static final String TAG = "testActivity";
@@ -46,7 +51,6 @@ public class ExploreFragment extends Fragment {
     public static ExploreFragment newInstance() {
 
         Bundle args = new Bundle();
-
         ExploreFragment fragment = new ExploreFragment();
         fragment.setArguments(args);
         return fragment;
@@ -61,6 +65,7 @@ public class ExploreFragment extends Fragment {
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
+        addMealAction = view.findViewById(R.id.add_meal_floating_action);
         tabView =(RecyclerView) view.findViewById(R.id.tab_recycler_view);
         recyclerViewAdapter = new RecyclerViewAdapter(communication);
         tabView.setAdapter(recyclerViewAdapter);
@@ -78,11 +83,30 @@ public class ExploreFragment extends Fragment {
             }
         });
 
+        addMealAction.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+
         setupFirebaseCommunication();
         return view;
     }
 
     private void setupFirebaseCommunication() {
+        mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
+        mDatabase.child("publicMeals").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public static List<scroll_item_data> getData() {
