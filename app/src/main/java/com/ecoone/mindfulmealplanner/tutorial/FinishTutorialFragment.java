@@ -1,3 +1,4 @@
+
 package com.ecoone.mindfulmealplanner.tutorial;
 
 import android.content.Intent;
@@ -41,3 +42,4 @@ public class FinishTutorialFragment extends Fragment implements View.OnClickList
     }
 
 }
+
