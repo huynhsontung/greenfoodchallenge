@@ -54,7 +54,7 @@ This fragment allows users to explore different green meals posted by other Vanc
 
 ![alt text](ReadmePic/Sprint3/mealtrackerfeed.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddmeal.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddphoto.PNG)
 
-The database keeps record of green restaurants and their menus across Metro Vancouver.
+The database keeps record of green restaurants and their menus across Metro Vancouver. Upon selecting these items, tags will be set, so that the meals may be searched by other users.
 
 ## Profile
 Users may view their profile. Upon clicking on their information, they can enter a profile account information activity, where the profile picture may be edited.
