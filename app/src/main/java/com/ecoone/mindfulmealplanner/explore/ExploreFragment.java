@@ -32,8 +32,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class ExploreFragment extends Fragment {
 
@@ -82,16 +84,7 @@ public class ExploreFragment extends Fragment {
         tabView.setLayoutManager(layoutManager);
         gridview =(GridView)view.findViewById(R.id.explore_content);
 
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-        gridview.setAdapter(imageAdapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                prepareData(position);
-                Intent intent = new Intent(getActivity(),ExploreDetailActivity.class);
-                startActivity(intent);
-            }
-        });
+
 
         addMealAction.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,8 +109,11 @@ public class ExploreFragment extends Fragment {
     private void prepareData(int position) {
         ArrayList<String> userUidList = new ArrayList<>();
         ArrayList<String> mealNameList = new ArrayList<>();
-        for(String iter: mealsData.keySet()){
-            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
+
+
+
+        for(String item: mealsData.keySet()){
+            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(item);
             userUidList.add((String) singleMealData.get("userUid"));
             mealNameList.add((String) singleMealData.get("mealName"));
         }
@@ -126,7 +122,10 @@ public class ExploreFragment extends Fragment {
                 .child("mealInfo").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mealList = (HashMap<String, Object>) dataSnapshot.getValue();
+                if (dataSnapshot != null) {
+
+                    mealList = (HashMap<String, Object>) dataSnapshot.getValue();
+                }
             }
 
             @Override
@@ -134,6 +133,9 @@ public class ExploreFragment extends Fragment {
 
             }
         });
+        if (mealList == null) {
+            return;
+        }
         HashMap<String,Object> singleMeal = new HashMap<>();
         for(String iter : mealList.keySet())
             singleMeal = (HashMap<String, Object>) mealList.get(iter);
@@ -146,16 +148,38 @@ public class ExploreFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ArrayList<String> userUidList = new ArrayList<>();
                 ArrayList<String> mealNameList = new ArrayList<>();
-                mealsData = (HashMap<String, Object>) dataSnapshot.getValue();
-                for(String iter: mealsData.keySet()){
-                    HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
-                    userUidList.add((String) singleMealData.get("userUid"));
-                    mealNameList.add((String) singleMealData.get("mealName"));
+
+                ArrayList<String> imagePath = new ArrayList<>();
+
+                if (dataSnapshot != null){
+                    mealsData = (HashMap<String, Object>) dataSnapshot.getValue();
+                    for(String item: mealsData.keySet()){
+                        HashMap<String, Object> MealData = (HashMap<String, Object>) mealsData.get(item);
+                        String userUid = (String) MealData.get("userUid");
+                        String mealName = (String) MealData.get("mealName");
+                        HashMap<String, Object> foodList = (HashMap<String, Object>) MealData.get("foodList");
+                        List<String> list = new ArrayList<>();
+                        list.addAll(foodList.keySet());
+                        String foodName = list.get(0);
+                        imagePath.add("userImage/" + userUid + "/" + mealName + "/" + foodName + ".png");
+                    }
                 }
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                for(int i =0; i< userUidList.size(); i++) {
-                    StorageReference imagesFromMealRef = storageReference.child("publicImages").child(userUidList.get(i)).child(mealNameList.get(i));
-                }
+
+                ImageAdapter imageAdapter = new ImageAdapter(getContext(), imagePath);
+                gridview.setAdapter(imageAdapter);
+                gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        prepareData(position);
+                        Intent intent = new Intent(getActivity(),ExploreDetailActivity.class);
+                        startActivity(intent);
+                    }
+                });
+
+//                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+//                for(int i =0; i< userUidList.size(); i++) {
+//                    StorageReference imagesFromMealRef = storageReference.child("publicImages").child(userUidList.get(i)).child(mealNameList.get(i));
+//                }
             }
 
             @Override
@@ -189,8 +213,8 @@ public class ExploreFragment extends Fragment {
 //            FragmentManager manager2=getFragmentManager();
 //            FragmentTransaction transaction2=manager2.beginTransaction();
 //            transaction2.replace(R.id.main_content,exploreFragment).commit();
-            ImageAdapter adapter = new ImageAdapter(getActivity(), city_name);
-            gridview.setAdapter(adapter);
+//            ImageAdapter adapter = new ImageAdapter(getActivity(), city_name);
+//            gridview.setAdapter(adapter);
 
             }
 
