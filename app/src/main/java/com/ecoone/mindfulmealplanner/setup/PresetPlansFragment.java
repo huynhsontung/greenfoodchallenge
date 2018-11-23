@@ -18,7 +18,10 @@ import com.ecoone.mindfulmealplanner.R;
 import java.util.Objects;
 
 public class PresetPlansFragment extends Fragment {
-    public static PresetPlansFragment newInstance() { return new PresetPlansFragment(); }
+    public static PresetPlansFragment newInstance() {
+        return new PresetPlansFragment();
+    }
+
     private static final String CLASSTAG = "(PresetPlans)";
     private static final String TAG = "testActivity";
     InitialSetupViewModel mViewModel;
@@ -27,7 +30,7 @@ public class PresetPlansFragment extends Fragment {
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_initial_setup_preset_plans,container,false);
+        View view = inflater.inflate(R.layout.fragment_initial_setup_preset_plans, container, false);
         mViewModel = ViewModelProviders.of(Objects.requireNonNull(getActivity())).get(InitialSetupViewModel.class);
         return view;
     }
@@ -49,77 +52,25 @@ public class PresetPlansFragment extends Fragment {
         presetImages[1] = R.drawable.veggie_picture;
         presetImages[2] = R.drawable.average_picture;
         presetList.setHasFixedSize(true);
-        PlanPresetRecyclerAdapter adapter = new PlanPresetRecyclerAdapter(presetNames,presetDescs,presetImages);
+        PlanPresetRecyclerAdapter adapter = new PlanPresetRecyclerAdapter(presetNames, presetDescs, presetImages);
         presetList.setAdapter(adapter);
         presetList.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.getSelectedPosition().observe(this, new android.arch.lifecycle.Observer<Integer>() {
             @Override
             public void onChanged(Integer integer) {
-                flag = integer+1;
+                flag = integer + 1;
                 setFoodAmount();
             }
         });
 
     }
 
-//    public void setOnCardClickListener() {
-//        mMeatCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                removeColorFromPreviousCard();
-//                flag = 1;
-//                mMeatCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
-//            }
-//        });
-//
-//        mVeggieCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                removeColorFromPreviousCard();
-//                flag = 2;
-//                mVeggieCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
-//            }
-//        });
-//
-//        mAverageCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                removeColorFromPreviousCard();
-//                flag = 3;
-//                mAverageCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
-//            }
-//        });
-//
-//        mOtherCard.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                removeColorFromPreviousCard();
-//                flag = 4;
-//                mOtherCard.setCardBackgroundColor(Color.parseColor("#bc8f8f"));
-//            }
-//        });
-//    }
-//
-//    public void removeColorFromPreviousCard() {
-//        switch(flag) {
-//            case 1:
-//                mMeatCard.setCardBackgroundColor(Color.WHITE);
-//            case 2:
-//                mVeggieCard.setCardBackgroundColor(Color.WHITE);
-//            case 3:
-//                mAverageCard.setCardBackgroundColor(Color.WHITE);
-//            case 4:
-//                mOtherCard.setCardBackgroundColor(Color.WHITE);
-//        }
-//    }
-
-
     // updates the viewmodels food amount according to users selected preset plan
     public void setFoodAmount() {
         String gender = mViewModel.localUser.gender;
         // 350g daily
-        if(gender.equals("male")) {
-            switch(flag) {
+        if (gender.equals("male")) {
+            switch (flag) {
                 case 1:
                     Log.i(TAG, CLASSTAG + 1);
                     mViewModel.foodAmount[0] = 50;
@@ -161,10 +112,9 @@ public class PresetPlansFragment extends Fragment {
                     mViewModel.foodAmount[6] = 0;
                     break;
             }
-        }
-        else {
+        } else {
             //250g daily
-            switch(flag) {
+            switch (flag) {
                 case 1:
                     mViewModel.foodAmount[0] = 25;
                     mViewModel.foodAmount[1] = 25;
@@ -209,13 +159,13 @@ public class PresetPlansFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        Log.i(TAG,CLASSTAG + "paused");
+        Log.i(TAG, CLASSTAG + "paused");
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        Log.i(TAG,CLASSTAG + "stopped");
+        Log.i(TAG, CLASSTAG + "stopped");
     }
 
 

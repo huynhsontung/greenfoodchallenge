@@ -93,6 +93,7 @@ public class PlanListFragment extends Fragment {
         }
     }
 
+    // Starts tutorial when fragment first appears
     private void checkForTutorial() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         int flag = mSharedPreferences.getInt(SKIP_TUTORIAL_PLAN_LIST,0);

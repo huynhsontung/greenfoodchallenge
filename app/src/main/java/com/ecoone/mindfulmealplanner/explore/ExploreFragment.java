@@ -101,7 +101,6 @@ public class ExploreFragment extends Fragment {
             }
         });
 
-
         setupFirebaseCommunication();
         setHasOptionsMenu(true);
         return view;
@@ -114,29 +113,7 @@ public class ExploreFragment extends Fragment {
     }
 
     private void prepareData(int position) {
-//        ArrayList<String> userUidList = new ArrayList<>();
-//        ArrayList<String> mealNameList = new ArrayList<>();
-//        for(String iter: mealsData.keySet()){
-//            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
-//            userUidList.add((String) singleMealData.get("userUid"));
-//            mealNameList.add((String) singleMealData.get("mealName"));
-//        }
-//        String uid = userUidList.get(position);
-//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(uid)
-//                .child("mealInfo").addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                mealList = (HashMap<String, Object>) dataSnapshot.getValue();
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
-//        HashMap<String,Object> singleMeal = new HashMap<>();
-//        for(String iter : mealList.keySet())
-//            singleMeal = (HashMap<String, Object>) mealList.get(iter);
+
     }
 
     private void setupFirebaseCommunication() {
@@ -182,19 +159,9 @@ public class ExploreFragment extends Fragment {
     FragmentCommunication communication=new FragmentCommunication() {
         @Override
         public void respond(int position, String city_name, int citypics) {
-
-//            Bundle bundle2 = new Bundle();
-//            bundle2.putString("hahaha123", city_name);
-//            exploreFragment.setArguments(bundle2);
-//            FragmentManager manager2=getFragmentManager();
-//            FragmentTransaction transaction2=manager2.beginTransaction();
-//            transaction2.replace(R.id.main_content,exploreFragment).commit();
             ImageAdapter adapter = new ImageAdapter(getActivity(), city_name);
             gridview.setAdapter(adapter);
-
-            }
-
+        }
     };
-
 
 }

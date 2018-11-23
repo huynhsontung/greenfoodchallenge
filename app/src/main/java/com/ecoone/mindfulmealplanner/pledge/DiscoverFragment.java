@@ -98,6 +98,7 @@ public class DiscoverFragment extends Fragment {
         });
     }
 
+    // starts tutorial if its the first time being shown
     public void startDiscoverTutorial() {
         Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
         final BubbleShowCase bubble1 = new BubbleShowCaseBuilder(getActivity())
@@ -107,10 +108,6 @@ public class DiscoverFragment extends Fragment {
                 .image(d)
                 .targetView(filterSpinner)
                 .show();
-
-        /*new BubbleShowCaseSequence()
-                .addShowCase(bubble1)
-                .show();*/
     }
 
     private void setupMunicipalityFilter(View view) {

@@ -73,15 +73,6 @@ public class MealTrackerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setHasOptionsMenu(true);
 
-
-//        Button mButton = view.findViewById(R.id.moveToAddMeal);
-//        mButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent mIntent = AddGreenMealActivity.newIntent(getContext());
-//                startActivityForResult(mIntent,0);
-//            }
-//        });
     }
 
     @Override

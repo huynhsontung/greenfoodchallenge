@@ -13,6 +13,10 @@ import android.widget.Button;
 import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 
+// ** NOTE:
+// ** THIS TUTORIAL FOLDER IS NOT USED FOR SPRINT 3
+// ** KEPT IN PROJECT FOR FUTURE PURPOSES
+
 public class FinishTutorialFragment extends Fragment implements View.OnClickListener {
     public static FinishTutorialFragment newInstance() {
         return new FinishTutorialFragment();

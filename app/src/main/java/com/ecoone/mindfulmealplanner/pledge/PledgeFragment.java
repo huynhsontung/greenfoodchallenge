@@ -50,31 +50,6 @@ public class PledgeFragment extends Fragment {
         TabLayout myTabs = rootView.findViewById(R.id.tab_bar);
         myTabs.setupWithViewPager(viewPager);
 
-//        ViewGroup vg = (ViewGroup) myTabs.getChildAt(0);
-//
-//        int tabsCount = vg.getChildCount();
-//        for (int j = 0; j < tabsCount; j++) {
-//            ViewGroup vgTab = (ViewGroup) vg.getChildAt(j);
-//            int tabChildsCount = vgTab.getChildCount();
-//            for (int i = 0; i < tabChildsCount; i++) {
-//                View tabViewChild = vgTab.getChildAt(i);
-//                if (tabViewChild instanceof TextView) {
-//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTextSize());
-//                    Log.i("testActivity", "add_photo: " + ((TextView) tabViewChild).getTypeface());
-//                }
-//            }
-//        }
-
-
-        /*
-        mTabHost = (FragmentTabHost)rootView.findViewById(android.R.id.tabhost);
-        mTabHost.setup(getActivity(), getChildFragmentManager(), R.id.realtabcontent);
-
-        mTabHost.addTab(mTabHost.newTabSpec("mypledge").setIndicator("My Pledge"),
-                MyPledgeFragment.class, null);
-        mTabHost.addTab(mTabHost.newTabSpec("discover").setIndicator("Discover"),
-                DiscoverFragment.class, null);
-        */
         return rootView;
     }
 

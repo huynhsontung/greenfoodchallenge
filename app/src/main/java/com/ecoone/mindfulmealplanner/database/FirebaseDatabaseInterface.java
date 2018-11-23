@@ -55,45 +55,6 @@ public class FirebaseDatabaseInterface {
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(USERINFO_NODE).child("iconName").setValue(iconName);
     }
 
-
-//    public static Task<User> getUser() {
-//
-//        final TaskCompletionSource<User> dbSource = new TaskCompletionSource<>();
-//
-//        mDatabase.child(USERINFO_NODE).child(userUid).addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                User user = dataSnapshot.getValue(User.class);
-//                dbSource.setResult(user);
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                dbSource.setException(databaseError.toException());
-//            }
-//        });
-//        return dbSource.getTask();
-//    }
-
-//    public static Task<Plan> getPlan() {
-//        final TaskCompletionSource<Plan> dbSource = new TaskCompletionSource<>();
-//        mDatabase.child(USERINFO_NODE).child(userUid).child(PLANINFO_NODE)
-//                .addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                        Plan plan = dataSnapshot.getValue(Plan.class);
-//                        dbSource.setResult(plan);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//                        dbSource.setException(databaseError.toException());
-//                    }
-//                });
-//        return dbSource.getTask();
-//    }
-
     public static void writePlan(Plan plan){
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);

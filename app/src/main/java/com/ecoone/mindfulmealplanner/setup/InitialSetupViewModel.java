@@ -6,6 +6,8 @@ import android.arch.lifecycle.ViewModel;
 import com.ecoone.mindfulmealplanner.database.Plan;
 import com.ecoone.mindfulmealplanner.database.User;
 
+// Holds the users profile and plan data
+// Only used as a pre-stage before firebase push
 public class InitialSetupViewModel extends ViewModel {
     public User localUser = new User();
     public Plan localPlan = new Plan();

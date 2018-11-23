@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import com.ecoone.mindfulmealplanner.R;
 
+// ** NOTE:
+// ** THIS TUTORIAL FOLDER IS NOT USED FOR SPRINT 3
+// ** KEPT IN PROJECT FOR FUTURE PURPOSES
+
 public class ProfileTutorialFragment extends Fragment {
     public static ProfileTutorialFragment newInstance() {
         return new ProfileTutorialFragment();

@@ -29,6 +29,7 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.CardViewHolde
     private String[] title;
     private String[] desc;
     private int[] imageIds;
+
     public RecyclerAdapter( String[] title, String[] desc, int[] imageIds){
         this.title = title;
         this.desc = desc;
@@ -50,7 +51,6 @@ class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.CardViewHolde
             cardViewHolder.myImage.setVisibility(View.GONE);
         else
             cardViewHolder.myImage.setImageResource(imageIds[i]);
-
     }
 
     @Override

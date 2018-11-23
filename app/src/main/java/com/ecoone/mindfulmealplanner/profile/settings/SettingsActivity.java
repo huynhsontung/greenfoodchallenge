@@ -61,14 +61,9 @@ public class SettingsActivity extends AppCompatActivity implements LogoutDialogP
                         finishAffinity();
                     }
                 });
-        //        Intent data = new Intent();
-//        data.putExtra(LOGOUT_ACTION, input);
-//        setResult(RESULT_OK, data);
-//        finish();
     }
 
     public static class SettingsFragment extends PreferenceFragment{
-
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);

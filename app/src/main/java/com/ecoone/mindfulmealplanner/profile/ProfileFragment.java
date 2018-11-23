@@ -60,6 +60,7 @@ public class ProfileFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
+
     public interface OnDataPassingListener {
         void passDataFromProfileToMain(int input);
     }
@@ -130,6 +131,7 @@ public class ProfileFragment extends Fragment {
                 .addValueEventListener(mValueEventListener);
     }
 
+    // Hides the share button on actionbar
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         menu.findItem(R.id.action_share).setVisible(false);
@@ -145,14 +147,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == LOGOUT_SIGN) {
-//            if (data != null) {
-//                int logoutSign = SettingsActivity.getLogoutAction(data);
-//                Log.i(TAG, CLASSTAG + "logoutSign" + logoutSign);
-//                mOnDatPassingListener.passDataFromProfileToMain(logoutSign);
-//            }
-//
-//        }
     }
 
     @Override

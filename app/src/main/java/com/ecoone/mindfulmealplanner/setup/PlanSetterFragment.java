@@ -56,6 +56,7 @@ public class PlanSetterFragment extends Fragment {
         return view;
     }
 
+    // If fragment is visible, run the function
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
@@ -121,6 +122,7 @@ public class PlanSetterFragment extends Fragment {
         }
     }
 
+    // generates pie cart data
     private void setPieChartView(float[] data) {
         List<PieEntry> entries = new ArrayList<>();
         for (int i = 0; i < foodLen; i++) {
@@ -144,11 +146,6 @@ public class PlanSetterFragment extends Fragment {
         int resId = getResources().getIdentifier(resName,
                 "array", Objects.requireNonNull(getActivity()).getPackageName());
         return getResources().getStringArray(resId);
-    }
-
-    private static int randInt(int min, int max) {
-        Random rand = new Random();
-        return rand.nextInt(max- min + 1) + min;
     }
 
 }

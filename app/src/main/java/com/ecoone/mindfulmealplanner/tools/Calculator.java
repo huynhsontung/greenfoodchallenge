@@ -22,21 +22,21 @@ public abstract class Calculator {
 
     // Parameters: Array of float.
     // Post: Calculates and returns percentage of each entry in an array.
-    public static float[] toPercentage(float[] dataArray){
+    public static float[] toPercentage(float[] dataArray) {
         float sum = 0;
         for (float entry : dataArray) {
             sum += entry;
         }
         float result[] = new float[dataArray.length];
-        for (int i = 0; i< dataArray.length; i++ ){
-            result[i] = dataArray[i]/sum*100;
+        for (int i = 0; i < dataArray.length; i++) {
+            result[i] = dataArray[i] / sum * 100;
         }
         return result;
     }
 
     // Parameters: Plan, so that co2e can be calculated.
     // Post: Calculates and returns co2e.
-    public static float calculateCO2ePerYear(Plan myCurrentPlan){
+    public static float calculateCO2ePerYear(Plan myCurrentPlan) {
 
         float myCO2e = 0;
         float co2ePerYear;
@@ -61,7 +61,7 @@ public abstract class Calculator {
 
     // Param: Current plan.
     // Post: Calculates CO2e per day of given plan. *Note the answer is in grams*
-    public static float calculateCO2ePerDay(Plan myCurrentPlan){
+    public static float calculateCO2ePerDay(Plan myCurrentPlan) {
 
         float myCO2e = 0;
         float co2ePerDay;
@@ -84,11 +84,11 @@ public abstract class Calculator {
 
     // Parameters: A list of plans
     // Post: Sums up the CO2e per day of the plans in the list. *Note the answer is in grams*
-    public static float sumCO2ePerDayPlanList(List<Plan> myPlanList){
+    public static float sumCO2ePerDayPlanList(List<Plan> myPlanList) {
 
         float sumListPerDay = 0;
 
-        for (int i = 0; i < myPlanList.size(); i++){
+        for (int i = 0; i < myPlanList.size(); i++) {
             // Get from plan list, calculate its CO2e per day, add to running sum.
             sumListPerDay += calculateCO2ePerDay(myPlanList.get(i));
         }
@@ -98,7 +98,7 @@ public abstract class Calculator {
 
     // Parameters: Plan
     // Post: A array with CO2e amount for each field
-    public static float[] calculateCO2eEachFood(Plan myCurrentPlan){
+    public static float[] calculateCO2eEachFood(Plan myCurrentPlan) {
         float[] co2Amount = new float[7];
         co2Amount[0] = myCurrentPlan.beef * co2Beef;
         co2Amount[1] = myCurrentPlan.pork * co2Pork;
@@ -114,7 +114,7 @@ public abstract class Calculator {
     // Post: Calculates CO2e of the new plan, then finds the difference.
     //       Note that this difference might be negative. In this case, the new plan produces MORE
     //       CO2e than the old.
-    public static float comparePlan(float previousCO2e, Plan newPlan){
+    public static float comparePlan(float previousCO2e, Plan newPlan) {
 
         float getNewCO2e = calculateCO2ePerYear(newPlan);
 
@@ -124,7 +124,7 @@ public abstract class Calculator {
 
     // Parameters: User's plan.
     // Post: Sums up all the serving sizes of all Food types. Returns total daily serving.
-    public static float sumServings(Plan myPlan){
+    public static float sumServings(Plan myPlan) {
 
         return (myPlan.beef + myPlan.pork + myPlan.chicken + myPlan.fish +
                 myPlan.eggs + myPlan.beans + myPlan.vegetables);
@@ -132,17 +132,16 @@ public abstract class Calculator {
 
     // Parameters: The daily serving of the user, their gender in string.
     // Post: Calculates the scaling factor, used to come up with the plan suggestion.
-    public static float getScalingFactor(float currentDailyServing, String gender){
+    public static float getScalingFactor(float currentDailyServing, String gender) {
 
         final int recommendedServingMen = 350;
         final int recommendedServingWomen = 250;
 
         float scalingFactor = 0;
 
-        if(gender.equals("male")){
+        if (gender.equals("male")) {
             scalingFactor = currentDailyServing / recommendedServingMen;
-        }
-        else if(gender.equals("female")){
+        } else if (gender.equals("female")) {
             scalingFactor = currentDailyServing / recommendedServingWomen;
         }
         return scalingFactor;
@@ -150,7 +149,7 @@ public abstract class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates the grand total CO2e if everyone in Vancouver used user's plan
-    public static float calculateVancouver(Plan myPlan){
+    public static float calculateVancouver(Plan myPlan) {
 
         float getCO2e = calculateCO2ePerYear(myPlan);
         float grandTotalCO2e = getCO2e * populationVancouver;
@@ -160,14 +159,14 @@ public abstract class Calculator {
 
     // Parameters: User's current plan
     // Post: Calculates how many metric tonnes Vancouver would save if everyone used plan
-    public static float usePlanVancouver(Plan newPlan, Plan oldPlan){
+    public static float usePlanVancouver(Plan newPlan, Plan oldPlan) {
         float oldPlanCO2ForVancouver = calculateVancouver(oldPlan);
         float newPlanCO2ForVancouver = calculateVancouver(newPlan);
         // old co2 should be greater than new co2
         float savingsIfEveryoneSwitchedPlans = oldPlanCO2ForVancouver - newPlanCO2ForVancouver;
         return savingsIfEveryoneSwitchedPlans;
         //float getNewTotalCO2e = calculateVancouver(newPlan);
-       // float oldTotalVancouver = populationVancouver * tCO2ePerCapita;
+        // float oldTotalVancouver = populationVancouver * tCO2ePerCapita;
         //return (float) (oldTotalVancouver - getNewTotalCO2e);
 
     }
@@ -175,13 +174,13 @@ public abstract class Calculator {
     // Parameters: CO2eInTonnes
     // Post: Calculates how many km for driving saved.
     // Relevant information/ Sources:
-        // 1 litre of gas = 2.3 kg CO2
-        // Average Canadian vehicle = 2000L of gas per year
-        // CO2 emissions (g/km) of a 2018 Toyota Corolla: 178 (Note this is pretty decent)
-        // Source: https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/oee/pdf/transportation/tools/fuelratings/Model%20Year%202018%20Vehicle%20Tables.pdf
-    public static float calculateSavingsInKm(float CO2eInTonnes){
+    // 1 litre of gas = 2.3 kg CO2
+    // Average Canadian vehicle = 2000L of gas per year
+    // CO2 emissions (g/km) of a 2018 Toyota Corolla: 178 (Note this is pretty decent)
+    // Source: https://www.nrcan.gc.ca/sites/www.nrcan.gc.ca/files/oee/pdf/transportation/tools/fuelratings/Model%20Year%202018%20Vehicle%20Tables.pdf
+    public static float calculateSavingsInKm(float CO2eInTonnes) {
 
-        if(CO2eInTonnes <= 0){
+        if (CO2eInTonnes <= 0) {
             return 0;
         }
 
@@ -194,14 +193,14 @@ public abstract class Calculator {
     }
 
     // Relevant information/sources:
-        // Average mature tree consumes 48 pounds (approx 21772 grams) of CO2 per year.
-        // If tree exists for 40 years, it will consume approximately 870,880 grams of CO2
-        // Source: https://onetreeplanted.org/blogs/news/14245701-how-planting-trees-can-help-reduce-your-carbon-footprint
-    public static float calculateTreesPlanted(float CO2eInTonnes){
+    // Average mature tree consumes 48 pounds (approx 21772 grams) of CO2 per year.
+    // If tree exists for 40 years, it will consume approximately 870,880 grams of CO2
+    // Source: https://onetreeplanted.org/blogs/news/14245701-how-planting-trees-can-help-reduce-your-carbon-footprint
+    public static float calculateTreesPlanted(float CO2eInTonnes) {
 
         float numberOfTrees;
-        float co2ConsumedPerTree = (float)0.871;
-        numberOfTrees = CO2eInTonnes/co2ConsumedPerTree;
+        float co2ConsumedPerTree = (float) 0.871;
+        numberOfTrees = CO2eInTonnes / co2ConsumedPerTree;
 
         numberOfTrees = Math.round(numberOfTrees); // So you don't plant a fraction of a tree
         return numberOfTrees;

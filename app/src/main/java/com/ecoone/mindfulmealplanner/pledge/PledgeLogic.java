@@ -19,11 +19,6 @@ public class PledgeLogic {
 
     public PledgeLogic(PlanPledgeInterface mNewInterface) {
         Log.i(TAG,CLASSTAG + "created");
-        /*usersCurrentPlan = plan;
-        currentPlanCO2PerDay = Calculator.calculateCO2ePerDay(usersCurrentPlan);
-        currentPledgePerWeek = pledgeAmount;
-        currentPledgePerDay = currentPledgePerWeek/7;
-        currentPlanCO2PerWeek = (currentPlanCO2PerDay*7)/1000;*/
         mInterface = mNewInterface;
     }
 

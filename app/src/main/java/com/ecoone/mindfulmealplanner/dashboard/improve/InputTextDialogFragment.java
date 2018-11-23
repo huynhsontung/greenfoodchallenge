@@ -41,7 +41,6 @@ public class InputTextDialogFragment extends DialogFragment{
 
     public OnInputListener mOnInputListener;
 
-
     public InputTextDialogFragment() {
 
     }
@@ -50,7 +49,6 @@ public class InputTextDialogFragment extends DialogFragment{
         InputTextDialogFragment inputTextDialogFragment = new InputTextDialogFragment();
         return inputTextDialogFragment;
     }
-
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -67,7 +65,6 @@ public class InputTextDialogFragment extends DialogFragment{
                     planNameList.add(planName);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 

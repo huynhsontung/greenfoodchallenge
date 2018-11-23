@@ -16,6 +16,11 @@ import java.util.concurrent.TimeUnit;
 
 import android.os.Handler;
 
+// ** NOTE:
+// ** THIS FILE IS NOT USED
+// ** ORIGNALLY MEANT TO CALCULATE PLEDGE DETAILS IN THE BACKGROUND
+// ** KEPT IN PROJECT FOR FUTURE PURPOSES
+
 public class DailyPledgeService extends IntentService {
 
     // AppDatabase mDb = AppDatabase.getDatabase(getApplicationContext());

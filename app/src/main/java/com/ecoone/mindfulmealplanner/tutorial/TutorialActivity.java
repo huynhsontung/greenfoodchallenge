@@ -20,6 +20,10 @@ import com.ecoone.mindfulmealplanner.MainActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.setup.InitialSetupActivity;
 
+// ** NOTE:
+// ** THIS TUTORIAL FOLDER IS NOT USED FOR SPRINT 3
+// ** KEPT IN PROJECT FOR FUTURE PURPOSES
+
 public class TutorialActivity extends AppCompatActivity implements Button.OnClickListener {
     private static final int NUMBER_OF_PAGES = 3;
 

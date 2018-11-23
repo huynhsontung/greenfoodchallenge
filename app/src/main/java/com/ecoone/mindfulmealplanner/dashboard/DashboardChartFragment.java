@@ -146,7 +146,6 @@ public class DashboardChartFragment extends Fragment {
         chart.setUsePercentValues(true);
         chart.setHoleRadius(40);
         chart.setTransparentCircleRadius(50);
-//        chart.setDrawEntryLabels(false);
         chart.setTouchEnabled(false);
         chart.animateY(1000);
         chart.invalidate();

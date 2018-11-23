@@ -27,21 +27,17 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_horizontal_scroll_item, viewGroup,false);
         return new RecyclerViewHolder(view, mCommunicator);
-
     }
 
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder viewHolder, int i) {
         ((RecyclerViewHolder) viewHolder).bindView(i);
-
     }
 
     @Override
     public int getItemCount() {
         return scroll_item_data.title.length;
     }
-
-
 
     private class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
          private TextView tabTextView;
@@ -56,7 +52,6 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
             cardView = (CardView) itemView.findViewById(R.id.tab_cardview);
             mCommunication = Communicator;
             itemView.setOnClickListener(this);
-
         }
 
         public void bindView(int position){

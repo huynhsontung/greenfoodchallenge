@@ -117,6 +117,7 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
         });
     }
 
+    // starts tutorial when help icon clicked
     public void startPledgeTutorial() {
         Drawable d = getResources().getDrawable(R.drawable.cabbage_icon);
         final BubbleShowCaseBuilder bubble1 = new BubbleShowCaseBuilder(getActivity())
@@ -235,18 +236,4 @@ public class MyPledgeFragment extends Fragment implements PlanPledgeInterface {
         return getContext().getResources().getStringArray(resId);
     }
 
-//    @Override
-//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-//        menu.add(Menu.NONE,1,Menu.NONE,"Withdraw my pledge");
-//        super.onCreateOptionsMenu(menu, inflater);
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        if(item.getTitle() == "Withdraw my pledge" ){
-//            setEditTextView(0);
-//            FirebaseDatabaseInterface.updatePledgeAmount(0);
-//        } else super.onOptionsItemSelected(item);
-//        return true;
-//    }
 }

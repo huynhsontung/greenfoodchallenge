@@ -21,7 +21,6 @@ public class MealDiscoverAdapter extends RecyclerView.Adapter<MealDiscoverAdapte
         mStrings = strings;
     }
 
-
     @Override
     public MealItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_meal_discover, parent, false);

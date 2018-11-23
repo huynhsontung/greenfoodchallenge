@@ -26,6 +26,7 @@ public class GreetingFragment extends Fragment {
 
     InitialSetupViewModel mViewModel;
     TextView greetingText;
+
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class GreetingFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_initial_setup_greeting, container, false);
         greetingText = view.findViewById(R.id.greeting_text);
         greetingText.setText("Greetings!");
+
         mViewModel.getDisplayName().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String newDisplayName) {

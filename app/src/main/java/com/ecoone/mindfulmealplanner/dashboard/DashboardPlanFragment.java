@@ -155,19 +155,6 @@ public class DashboardPlanFragment extends Fragment {
 
     }
 
-//    private Task<Integer> getSumPledge() {
-//        return mFunctions
-//                .getHttpsCallable("getSumPledge")
-//                .call()
-//                .continueWith(new Continuation<HttpsCallableResult, Integer>() {
-//                    @Override
-//                    public Integer then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-//                        Integer result = (Integer) task.getResult().getData();
-//                        return result;
-//                    }
-//                });
-//    }
-
     private void calculateCurrentCo2e(Plan plan) {
         float sumCo2ePerYear = Calculator.calculateCO2ePerYear(plan);
         String message = getString(R.string.current_co2e, new DecimalFormat("###.###").format(sumCo2ePerYear));

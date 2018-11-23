@@ -113,6 +113,7 @@ public class ImproveActivity extends AppCompatActivity implements OnInputListene
 
     }
 
+    // Starts tutorial when fragment first appears or when help icon pressed
     private void checkForTutorial() {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         int flag = mSharedPreferences.getInt(SKIP_IMPROVE_ACTIVITY_TUTORIAL,0);
