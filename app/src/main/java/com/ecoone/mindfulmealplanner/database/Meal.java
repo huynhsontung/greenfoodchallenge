@@ -15,6 +15,12 @@ public class Meal {
     public int totalCo2eAmount;
     public HashMap<String, Object> foodList;
 
+    // extra fields for database communication
+    public String displayName;
+    public String iconName;
+    public String userUid;
+    public String location;
+
     public Meal() {
         tags = new ArrayList<>();
         foodList = new HashMap<>();

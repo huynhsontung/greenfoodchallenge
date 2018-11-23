@@ -62,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
             imageView = (ImageView) convertView;
         }
         imageView.setImageResource(images_id[position]);
-        Toast.makeText(context, cityName, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, cityName, Toast.LENGTH_SHORT).show();
         return imageView;
     }
 }

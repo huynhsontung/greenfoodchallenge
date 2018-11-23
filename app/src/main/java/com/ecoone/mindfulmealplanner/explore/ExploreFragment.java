@@ -19,15 +19,20 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.ecoone.mindfulmealplanner.MealTracker.AddMeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
+import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class ExploreFragment extends Fragment {
@@ -43,7 +48,10 @@ public class ExploreFragment extends Fragment {
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private DatabaseReference mDatabase;
+    private HashMap<String, Object> mealsData;
+    private HashMap<String, Object> mealList;
 
+    private Meal mealDataForPassing = new Meal();
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ExploreFragment)";
@@ -79,6 +87,7 @@ public class ExploreFragment extends Fragment {
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                prepareData(position);
                 Intent intent = new Intent(getActivity(),ExploreDetailActivity.class);
                 startActivity(intent);
             }
@@ -87,6 +96,8 @@ public class ExploreFragment extends Fragment {
         addMealAction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), AddGreenMealActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -102,12 +113,49 @@ public class ExploreFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
+    private void prepareData(int position) {
+        ArrayList<String> userUidList = new ArrayList<>();
+        ArrayList<String> mealNameList = new ArrayList<>();
+        for(String iter: mealsData.keySet()){
+            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
+            userUidList.add((String) singleMealData.get("userUid"));
+            mealNameList.add((String) singleMealData.get("mealName"));
+        }
+        String uid = userUidList.get(position);
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(uid)
+                .child("mealInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mealList = (HashMap<String, Object>) dataSnapshot.getValue();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        HashMap<String,Object> singleMeal = new HashMap<>();
+        for(String iter : mealList.keySet())
+            singleMeal = (HashMap<String, Object>) mealList.get(iter);
+    }
+
     private void setupFirebaseCommunication() {
         mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
         mDatabase.child("publicMeals").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                ArrayList<String> userUidList = new ArrayList<>();
+                ArrayList<String> mealNameList = new ArrayList<>();
+                mealsData = (HashMap<String, Object>) dataSnapshot.getValue();
+                for(String iter: mealsData.keySet()){
+                    HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
+                    userUidList.add((String) singleMealData.get("userUid"));
+                    mealNameList.add((String) singleMealData.get("mealName"));
+                }
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                for(int i =0; i< userUidList.size(); i++) {
+                    StorageReference imagesFromMealRef = storageReference.child("publicImages").child(userUidList.get(i)).child(mealNameList.get(i));
+                }
             }
 
             @Override
