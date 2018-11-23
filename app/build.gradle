@@ -84,7 +84,7 @@ dependencies {
 //    implementation "android.arch.persistence.room:guava:$room_version"
 //
 //    // Test helpers
-//    testImplementation "android.arch.persistence.room:testing:$room_version"
+//    testImplementation "android.arch.persistence.room:card_layout_about:$room_version"
 }
 
 dependencies {

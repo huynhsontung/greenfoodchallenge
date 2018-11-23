@@ -219,7 +219,7 @@ public class NewPlan {
         return (plan.beef + plan.pork + plan.chicken + plan.fish + plan.eggs + plan.beans + plan.vegetables);
     }
 
-    // For testing
+    // For card_layout_about
     public void printPlan(Plan plan) {
         System.out.println(plan.beef + " " + plan.pork + " " + plan.chicken + " " + plan.fish + " " + plan.eggs + " " + plan.beans + " " + plan.vegetables);
     }
