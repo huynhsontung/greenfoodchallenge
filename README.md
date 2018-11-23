@@ -49,6 +49,12 @@ The pledge activity has two fragments. The 'My Pledge' fragment allows the user 
 
 ![alt text](ReadmePic/Sprint3/pledgemypledge.PNG) ![alt text](ReadmePic/Sprint3/pledgediscover.PNG)
 
+## Meal Tracker
+This fragment allows users to explore different green meals posted by other Vancouverites. The user may also upload their own green meal. In doing so, the user is required to enter meal details, and upload a photo.
+
+![alt text](ReadmePic/Sprint3/mealtrackerfeed.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddmeal.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddphoto.PNG)
+
+The database keeps record of green restaurants and their menus across Metro Vancouver.
 
 ## Profile
 Users may view their profile. Upon clicking on their information, they can enter a profile account information activity, where the profile picture may be edited.
