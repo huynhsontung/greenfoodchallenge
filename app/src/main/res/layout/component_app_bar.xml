@@ -4,7 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:elevation="4dp"
     app:liftOnScroll="true"
     android:theme="@style/AppTheme.AppBarOverlay">
 
@@ -13,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize"
         android:background="@color/colorPrimary"
-        app:popupTheme="@style/AppTheme.PopupOverlay"/>
+        app:popupTheme="@style/AppTheme.PopupOverlay"
+        app:layout_scrollFlags="snap"/>
 
 </android.support.design.widget.AppBarLayout>

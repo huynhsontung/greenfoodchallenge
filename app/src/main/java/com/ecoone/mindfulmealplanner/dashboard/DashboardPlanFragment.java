@@ -5,11 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.PaintDrawable;
-import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -292,6 +287,7 @@ public class DashboardPlanFragment extends Fragment {
 
     @Override
     public void onStart() {
+        setFirebaseValueListener();
         super.onStart();
         Log.d(TAG, CLASSTAG + " onStart");
     }
@@ -312,14 +308,15 @@ public class DashboardPlanFragment extends Fragment {
     public void onStop() {
         super.onStop();
         Log.d(TAG, CLASSTAG + " onStop");
+        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
+                .child(userUid).removeEventListener(mValueEventListener);
+        Log.i(TAG, CLASSTAG + "firebase listener remove");
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         Log.d(TAG, CLASSTAG + " onDestroy");
-//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE)
-//                .child(userUid).removeEventListener(mValueEventListener);
 
     }
 

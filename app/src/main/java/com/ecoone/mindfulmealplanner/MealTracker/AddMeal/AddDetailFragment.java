@@ -2,35 +2,39 @@ package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.chip.Chip;
 import android.support.design.chip.ChipGroup;
-import android.support.v4.content.FileProvider;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.Food;
+import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -40,36 +44,39 @@ import com.google.firebase.functions.HttpsCallableResult;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent;
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEventListener;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
-public class AddGreenMealFoodActivity extends AppCompatActivity {
+public class AddDetailFragment extends Fragment {
+    public static AddDetailFragment newInstance() {
+        
+        Bundle args = new Bundle();
+        
+        AddDetailFragment fragment = new AddDetailFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_CAMERA_IMAGE = 2;
 
     private static final String TAG = "testActivity";
-    private static final String CLASSTAG = "(AddGreenMealFoodActivity)";
+    private static final String CLASSTAG = "(AddDetailFragment)";
     private static final int REQUEST_GALLERY = 0;
     private static final int REQUEST_CAMERA = 1;
-
-
+    private AddGreenMealActivity mCallback;
+    private AddGreenMealViewModel mViewModel;
     private Toolbar mToolbar;
-    private AutoCompleteTextView autoCompleteTextView;
+    private AutoCompleteTextView autoCompleteFoodNameTextView;
     private ImageView foodPhotoImageView;
+    private ImageView foodPhotoIcon;
+    private FrameLayout addPhotoLayout;
     private ChipGroup mChipGroup;
     private Chip[] chipList;
     private Button submitButton;
-
+    private View mainView;
     private ArrayAdapter mAdapter;
 
     private int chipNumber;
@@ -79,100 +86,113 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
     private HashMap<String, Object> foodMenu;
     private ArrayList<String> foodNameList;
     private String foodName;
-    private byte[] photoByteArray;
+    private Bitmap photo;
 
     private String mCurrentPhotoPath;
 
-    public static Intent newIntent(Context packageContext, String restaurantName, boolean isGreen) {
-        Intent intent = new Intent(packageContext, AddGreenMealFoodActivity.class);
-        intent.putExtra("restaurantName", restaurantName);
-        intent.putExtra("isGreen", isGreen);
-        return intent;
+    public void setCallback(Activity activity) {
+        this.mCallback = (AddGreenMealActivity) activity;
     }
 
+    @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_green_meal_photo);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        mainView = inflater.inflate(R.layout.fragment_add_meal_add_detail, container, false);
 
-        mToolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        setTitle("Add Meal Food");
+        mViewModel = ViewModelProviders.of(getActivity()).get(AddGreenMealViewModel.class);
+//        mToolbar = view.findViewById(R.id.toolbar);
+//        setSupportActionBar(mToolbar);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        setTitle("Add Meal Food");
+        foodPhotoIcon = mainView.findViewById(R.id.add_photo_icon);
+        foodPhotoImageView = mainView.findViewById(R.id.add_green_meal_photo_image);
+        addPhotoLayout = mainView.findViewById(R.id.add_photo_layout);
+        autoCompleteFoodNameTextView = mainView.findViewById(R.id.add_green_meal_photo_auto);
+        mChipGroup = mainView.findViewById(R.id.add_green_meal_photo_chipgroup);
+        submitButton = mainView.findViewById(R.id.submit_food_button);
 
-        foodPhotoImageView = findViewById(R.id.add_green_meal_photo_image);
-        autoCompleteTextView = findViewById(R.id.add_green_meal_photo_auto);
-        mChipGroup = findViewById(R.id.add_green_meal_photo_chipgroup);
-        submitButton = findViewById(R.id.submit_food_button);
-
-        restaurantName = getIntent().getStringExtra("restaurantName");
-        isGreen = getIntent().getBooleanExtra("isGreen", false);
         foodNameList = new ArrayList<>();
 
-        initialChipGroup();
-        initialAutoCompleteTextView();
+        setupMealObserver();
+        initialChipGroup(mainView);
         setSubmitButtonAction();
 
 
-        foodPhotoImageView.setOnClickListener(new View.OnClickListener() {
+        addPhotoLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPictureDialog();
             }
         });
-
+        return mainView;
     }
+
+    private void setupMealObserver() {
+       mViewModel.meal.observe(this, new Observer<Meal>() {
+           @Override
+           public void onChanged(Meal meal) {
+               if (meal != null){
+                   mainView.invalidate();
+                   restaurantName = meal.restaurantName;
+                   isGreen = meal.isGreen;
+                   initialAutoCompleteTextView();
+               }
+           }
+       });
+    }
+
 
     private void initialAutoCompleteTextView() {
-        getRestaurantFoodMenu(restaurantName).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
-            @Override
-            public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
-                foodMenu = task.getResult();
+        if (foodMenu == null) {
+            getRestaurantFoodMenu(restaurantName).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
+                @Override
+                public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
+                    foodMenu = task.getResult();
 
-                if (foodMenu != null) {
-                    foodNameList.addAll(foodMenu.keySet());
-                    mAdapter = new ArrayAdapter<>(AddGreenMealFoodActivity.this,
-                            android.R.layout.simple_list_item_1, foodNameList);
-                    autoCompleteTextView.setAdapter(mAdapter);
-                }
-            }
-        });
-
-        // For food in database
-        autoCompleteTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                foodName = (String) parent.getItemAtPosition(position);
-                Log.i(TAG, CLASSTAG + "click food name: " + foodName);
-                setChipGroupView();
-            }
-        });
-
-
-        // library from https://github.com/yshrsmz/KeyboardVisibilityEvent
-        KeyboardVisibilityEvent.setEventListener(this, new KeyboardVisibilityEventListener() {
-            @Override
-            public void onVisibilityChanged(boolean isOpen) {
-                Log.i(TAG, CLASSTAG + "isOpen: " + isOpen);
-                if (foodNameList.contains(autoCompleteTextView.getText().toString())) {
-                    setChipGroupView();
-                }
-                else {
-                    for (int i = 0; i < chipNumber; i++) {
-                        chipList[i].setChecked(false);
-                        setChipGroupEditableStatus(1);
+                    if (foodMenu != null) {
+                        foodNameList.addAll(foodMenu.keySet());
+                        mAdapter = new ArrayAdapter<>(getActivity(),
+                                android.R.layout.simple_list_item_1, foodNameList);
+                        autoCompleteFoodNameTextView.setAdapter(mAdapter);
                     }
                 }
-            }
-        });
+            });
+
+            // For food in database
+            autoCompleteFoodNameTextView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    foodName = (String) parent.getItemAtPosition(position);
+                    Log.i(TAG, CLASSTAG + "click food name: " + foodName);
+                    setChipGroupView();
+                }
+            });
+
+            // library from https://github.com/yshrsmz/KeyboardVisibilityEvent
+            KeyboardVisibilityEvent.setEventListener(getActivity(), new KeyboardVisibilityEventListener() {
+                @Override
+                public void onVisibilityChanged(boolean isOpen) {
+                    Log.i(TAG, CLASSTAG + "isOpen: " + isOpen);
+                    if (foodNameList.contains(autoCompleteFoodNameTextView.getText().toString())) {
+                        setChipGroupView();
+                    }
+                    else {
+                        for (int i = 0; i < chipNumber; i++) {
+                            chipList[i].setChecked(false);
+                            setChipGroupEditableStatus(1);
+                        }
+                    }
+                }
+            });
+        }
     }
 
-    private void initialChipGroup() {
+    private void initialChipGroup(View view) {
         chipNumber = mChipGroup.getChildCount();
         chipList = new Chip[chipNumber];
         for (int i = 0; i < chipNumber; i++) {
-            chipList[i] = findViewById(mChipGroup.getChildAt(i).getId()) ;
+            chipList[i] = view.findViewById(mChipGroup.getChildAt(i).getId()) ;
         }
     }
 
@@ -180,23 +200,24 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (photoByteArray == null) {
+                if (photo == null) {
                     showCustomToast("Please enter a food photo.");
                 }
-                else if (autoCompleteTextView.getText().toString().equals("")) {
+                else if (autoCompleteFoodNameTextView.getText().toString().equals("")) {
                     showCustomToast("Please enter a food name.");
                 }
                 else if (!isAtLeastOneChipChecked()) {
                     showCustomToast("Please check at least one chip.");
                 }
                 else {
+                    hideKeyboard();
                     if (isGreen) {
-                        if (foodNameList.contains(autoCompleteTextView.getText().toString()) ) {
+                        if (foodNameList.contains(autoCompleteFoodNameTextView.getText().toString()) ) {
                             sendFoodDataBack();
                         }
                         else {
                             showCustomToast("Can not add a food to green restaurant");
-                            autoCompleteTextView.setText("");
+                            autoCompleteFoodNameTextView.setText("");
                             for (int i = 0; i < chipNumber; i++) {
                                 chipList[i].setChecked(false);
                             }
@@ -205,9 +226,26 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
                     else {
                         sendFoodDataBack();
                     }
+                    resetViews();
                 }
             }
         });
+    }
+
+    public void hideKeyboard() {
+        // Check if no view has focus:
+        View view = getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager inputManager = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+        }
+    }
+
+    private void resetViews(){
+        foodPhotoImageView.setImageResource(android.R.color.transparent);
+        foodPhotoIcon.setVisibility(View.VISIBLE);
+        autoCompleteFoodNameTextView.setText("");
+        autoCompleteFoodNameTextView.clearListSelection();
     }
 
     private void sendFoodDataBack() {
@@ -223,7 +261,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
             food.co2eAmount = co2eAmount;
         }
         else {
-            food.foodName = autoCompleteTextView.getText().toString();
+            food.foodName = autoCompleteFoodNameTextView.getText().toString();
             food.co2eAmount = 0;
         }
 
@@ -237,23 +275,13 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
                 food.ingredient.put(chipName, (chipList[i].isChecked() ? -1 : 0));
             }
         }
-        setFoodInfoResult(food);
-    }
 
-    private void setFoodInfoResult(Food food) {
-        Intent data = new Intent();
-        data.putExtra("foodInfoResult", food);
-        data.putExtra("photoByteResult", photoByteArray);
-        setResult(RESULT_OK, data);
-        // for food photo
-    }
+        Meal meal = mViewModel.meal.getValue();
+        food.photoBitmap = photo;
+        meal.foodList.put(food.foodName,food);
+        mViewModel.meal.setValue(meal);
+        mCallback.switchPage();
 
-    public static Food getFoodInfo(Intent result) {
-        return (Food) result.getSerializableExtra("foodInfoResult");
-    }
-
-    public static byte[] getPhotoArraybyte(Intent result) {
-        return result.getByteArrayExtra("photoByteResult");
     }
 
     // set chip view (user can not change the view, different from the listener on chips)
@@ -318,7 +346,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
 
     private void showPictureDialog() {
         //Context mContext = getContext();
-        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(getContext());
         pictureDialog.setTitle("Upload photo");
         pictureDialog.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -328,7 +356,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
                     }
                 });
 
-        String[] pictureDialogItems = {"Select from gallery", "Take photo"};
+        String[] pictureDialogItems = getResources().getStringArray(R.array.add_photo_options);
         pictureDialog.setItems(pictureDialogItems, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
@@ -345,47 +373,47 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
         pictureDialog.show();
     }
 
-    // copy from https://developer.android.com/training/camera/photobasics
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getFilesDir();
-        File image = new File(storageDir, imageFileName);
-
-        // Save a file: path for use with ACTION_VIEW intents
-        mCurrentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-    private void dispatchTakePictureIntent() {
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                Log.e(TAG, CLASSTAG + " can not create file");
-            }
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                Uri photoURI = FileProvider.getUriForFile(this,
-                        "com.ecoone.mindfulmealplanner", photoFile);
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                List<ResolveInfo> cameraActivities = getPackageManager().queryIntentActivities(takePictureIntent,
-                        PackageManager.MATCH_DEFAULT_ONLY);
-                for (ResolveInfo activity : cameraActivities) {
-                    grantUriPermission(activity.activityInfo.packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
-                }
-
-                startActivityForResult(takePictureIntent, REQUEST_CAMERA);
-            }
-        }
-    }
+//    // copy from https://developer.android.com/training/camera/photobasics
+//    private File createImageFile() throws IOException {
+//        // Create an image file name
+//        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+//        String imageFileName = "JPEG_" + timeStamp + "_";
+//        File storageDir = getFilesDir();
+//        File image = new File(storageDir, imageFileName);
+//
+//        // Save a file: path for use with ACTION_VIEW intents
+//        mCurrentPhotoPath = image.getAbsolutePath();
+//        return image;
+//    }
+//
+//    private void dispatchTakePictureIntent() {
+//        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        // Ensure that there's a camera activity to handle the intent
+//        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+//            // Create the File where the photo should go
+//            File photoFile = null;
+//            try {
+//                photoFile = createImageFile();
+//            } catch (IOException ex) {
+//                // Error occurred while creating the File
+//                Log.e(TAG, CLASSTAG + " can not create file");
+//            }
+//            // Continue only if the File was successfully created
+//            if (photoFile != null) {
+//                Uri photoURI = FileProvider.getUriForFile(this,
+//                        "com.ecoone.mindfulmealplanner", photoFile);
+//
+//                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+//                List<ResolveInfo> cameraActivities = getPackageManager().queryIntentActivities(takePictureIntent,
+//                        PackageManager.MATCH_DEFAULT_ONLY);
+//                for (ResolveInfo activity : cameraActivities) {
+//                    grantUriPermission(activity.activityInfo.packageName, photoURI, Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
+//                }
+//
+//                startActivityForResult(takePictureIntent, REQUEST_CAMERA);
+//            }
+//        }
+//    }
 
     private void takePhotoFromCamera() {
         Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
@@ -398,7 +426,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
         File f = new File(mCurrentPhotoPath);
         Uri contentUri = Uri.fromFile(f);
         mediaScanIntent.setData(contentUri);
-        this.sendBroadcast(mediaScanIntent);
+        getActivity().sendBroadcast(mediaScanIntent);
     }
 
     private void choosePhotoFromGallery() {
@@ -418,7 +446,7 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
             if(data != null){
                 Uri contentURI = data.getData();
                 try {
-                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), contentURI);
+                    Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
                     Log.i(TAG, CLASSTAG + "photo before: " + mBitmap.getByteCount()+ " " + mBitmap.getHeight()+ " " + mBitmap.getWidth());
 
 //                    String[] filePathColumns = {MediaStore.Images.Media.DATA};
@@ -430,19 +458,16 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
 //                    mBitmap = getScaledBitmap(imagePath, 500, 500);
 //                    Log.i(TAG, CLASSTAG + "photo after: " + mBitmap.getByteCount()+ " " + mBitmap.getHeight()+ " " + mBitmap.getWidth());
                     foodPhotoImageView.setImageBitmap(mBitmap);
+                    photo = mBitmap;
+//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//                    photo = stream.toByteArray();
 
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                    photoByteArray = stream.toByteArray();
-
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-        }
-        else if(requestCode == REQUEST_CAMERA){
+        } else if(requestCode == REQUEST_CAMERA){
 //            File f = new File(mCurrentPhotoPath);
 //            Uri contentURI = Uri.fromFile(f);
 //            try{
@@ -453,16 +478,16 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
 //            }
 
             Bitmap mBitmap = (Bitmap)data.getExtras().get("data");
+            photo = mBitmap;
             foodPhotoImageView.setImageBitmap(mBitmap);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            photoByteArray = stream.toByteArray();
+//            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+//            mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+//            photo = stream.toByteArray();
 
 //            galleryAddPic();
         }
-
-
+        foodPhotoIcon.setVisibility(View.GONE);
 
     }
 
@@ -494,17 +519,10 @@ public class AddGreenMealFoodActivity extends AppCompatActivity {
         return BitmapFactory.decodeFile(path, options);
     }
 
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed();
-        return true;
-    }
-
     private void showCustomToast(String message) {
-        Toast mToast = Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT);
+        Toast mToast = Toast.makeText(getContext(), message, Toast.LENGTH_SHORT);
         mToast.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL,
                 0, 0);
         mToast.show();
     }
-
 }
