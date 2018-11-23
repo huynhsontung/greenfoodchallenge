@@ -65,7 +65,6 @@ public class MealTrackerFragment extends Fragment {
         TabLayout myTabs = rootView.findViewById(R.id.meal_discover_tabs);
         myTabs.setupWithViewPager(viewPager);
 
-
         return rootView;
     }
 

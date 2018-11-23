@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -44,5 +45,12 @@ public class MealDiscoverFragment extends Fragment {
 
         MealDiscoverAdapter mealDiscoverAdapter = new MealDiscoverAdapter(getContext(), strings);
         mRecyclerView.setAdapter(mealDiscoverAdapter);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_share).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
     }
 }
