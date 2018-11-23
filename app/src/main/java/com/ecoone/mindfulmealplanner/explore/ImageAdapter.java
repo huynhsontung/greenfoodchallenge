@@ -16,7 +16,7 @@ import com.ecoone.mindfulmealplanner.R;
 
 public class ImageAdapter extends BaseAdapter {
     String cityName;
-    private int[] images_id={R.drawable.surrey,R.drawable.anmore,R.drawable.vancouver};
+    private int[] images_id={R.drawable.a1,R.drawable.a2,R.drawable.a3,R.drawable.a4,R.drawable.a5,R.drawable.a6,R.drawable.a7,R.drawable.a8,R.drawable.a9};
     Context context;
     ImageAdapter(Context ctx){
         this.context = ctx;
