@@ -1,10 +1,10 @@
 # Mindful Meal Planner 
 ### Team members:
-1. Son Tung Huynh, tungh@sfu.ca
-2. Peter Tran, ttt13@sfu.ca
-3. Jacky Cao, jjc44@sfu.ca
-4. Jesse Zhou, zza112@sfu.ca
-5. Arlen Xu, arlenx@sfu.ca
+1. Son Tung Huynh, <tungh@sfu.ca>
+2. Peter Tran, <ttt13@sfu.ca>
+3. Jacky Cao, <jjc44@sfu.ca>
+4. Jesse Zhou, <zza112@sfu.ca>
+5. Arlen Xu, <arlenx@sfu.ca>
 
 
 ## Initialization
