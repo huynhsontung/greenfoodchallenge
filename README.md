@@ -26,7 +26,7 @@ Upon the first use, tutorial pop ups will occur in different fragments to help t
 ## Dashboard Activity
 This dashboard activity provides the user a visual as well as information about their current meal plan and its impact on the environment. Furthermore, the user may view a list of their different saved meal plans.
 
-![alt text](ReadmePic/Sprint3/dashboardblue.PNG) ![alt text](ReadmePic/Sprint3/dashboardred.PNG) ![alt text](ReadmePic/Sprint3/dashboardplanlist)
+![alt text](ReadmePic/Sprint3/dashboardblue.PNG) ![alt text](ReadmePic/Sprint3/dashboardred.PNG) ![alt text](ReadmePic/Sprint3/dashboardplanlist.PNG)
 
 
 The user can alternate between two pie charts by swiping right or left. The blue pie chart indicates the percentage of each portion in the user's diet. The red pie chart indicates how much each portion contributes to the production of CO2e.
