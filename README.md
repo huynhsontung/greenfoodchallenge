@@ -1,14 +1,10 @@
 # Mindful Meal Planner 
 ### Team members:
-Son Tung Huynh
-
-Peter Tran
-
-Jacky Cao
-
-Jesse Zhou
-
-Arlen Xu
+1. Son Tung Huynh
+2. Peter Tran
+3. Jacky Cao
+4. Jesse Zhou
+5. Arlen Xu
 
 
 ## Initialization
