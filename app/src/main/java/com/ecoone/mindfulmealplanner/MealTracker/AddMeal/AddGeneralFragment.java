@@ -206,7 +206,7 @@ public class AddGeneralFragment extends Fragment {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             for (int i = 0; i < foodNumber; i++) {
                 Bitmap bitmap = photoByteArray.get(i);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
                 byte[] data = baos.toByteArray();
 
                 UploadTask uploadTask = storagePath.child(foodName.get(i)).putBytes(data);
