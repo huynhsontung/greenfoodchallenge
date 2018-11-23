@@ -14,6 +14,7 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
 
     private NonSwipeableViewPager mViewPager;
     private AddGeneralFragment generalFragment;
+    private int unloadNum;
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, AddGreenMealActivity.class);
@@ -77,8 +78,15 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
 
     @Override
     public void finishAddMeal(int input) {
-        if (input == 1) {
+
+        unloadNum -= input;
+        if (unloadNum == 0) {
             finish();
         }
+    }
+
+    @Override
+    public void sendUpLoadMealsNum(int input) {
+        unloadNum = input;
     }
 }
