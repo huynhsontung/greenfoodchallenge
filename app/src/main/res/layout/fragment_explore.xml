@@ -30,7 +30,7 @@
         android:id="@+id/explore_content"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:columnWidth="110dp"
+        android:columnWidth="170dp"
         android:gravity="center"
         android:horizontalSpacing="4dp"
         android:numColumns="auto_fit"

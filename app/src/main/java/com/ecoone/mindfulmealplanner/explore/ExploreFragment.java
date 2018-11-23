@@ -114,29 +114,29 @@ public class ExploreFragment extends Fragment {
     }
 
     private void prepareData(int position) {
-        ArrayList<String> userUidList = new ArrayList<>();
-        ArrayList<String> mealNameList = new ArrayList<>();
-        for(String iter: mealsData.keySet()){
-            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
-            userUidList.add((String) singleMealData.get("userUid"));
-            mealNameList.add((String) singleMealData.get("mealName"));
-        }
-        String uid = userUidList.get(position);
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(uid)
-                .child("mealInfo").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                mealList = (HashMap<String, Object>) dataSnapshot.getValue();
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-        HashMap<String,Object> singleMeal = new HashMap<>();
-        for(String iter : mealList.keySet())
-            singleMeal = (HashMap<String, Object>) mealList.get(iter);
+//        ArrayList<String> userUidList = new ArrayList<>();
+//        ArrayList<String> mealNameList = new ArrayList<>();
+//        for(String iter: mealsData.keySet()){
+//            HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
+//            userUidList.add((String) singleMealData.get("userUid"));
+//            mealNameList.add((String) singleMealData.get("mealName"));
+//        }
+//        String uid = userUidList.get(position);
+//        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(uid)
+//                .child("mealInfo").addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                mealList = (HashMap<String, Object>) dataSnapshot.getValue();
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//            }
+//        });
+//        HashMap<String,Object> singleMeal = new HashMap<>();
+//        for(String iter : mealList.keySet())
+//            singleMeal = (HashMap<String, Object>) mealList.get(iter);
     }
 
     private void setupFirebaseCommunication() {
