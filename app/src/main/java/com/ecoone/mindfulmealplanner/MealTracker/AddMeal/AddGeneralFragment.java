@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
@@ -26,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -81,6 +83,7 @@ public class AddGeneralFragment extends Fragment {
     private AddGreenMealViewModel mViewModel;
     private LinearLayout addFoodLayout;
     private TextView addFoodLayoutMealTypeTextView;
+    private ProgressBar mProgressBar;
 
     private HashMap<String, Boolean> allRestaurantMenu;
     private AutoCompleteRestaurantAdapter mAdapter;
@@ -98,6 +101,8 @@ public class AddGeneralFragment extends Fragment {
 
     public interface OnDataPassingListener {
         void finishAddMeal(int input);
+
+        void sendUpLoadMealsNum(int input);
     }
 
     public OnDataPassingListener mOnDataPassingListener;
@@ -131,6 +136,7 @@ public class AddGeneralFragment extends Fragment {
         addPhotoButton = mainView.findViewById(R.id.add_photo);
         visibleCheckBox = mainView.findViewById(R.id.add_meal_checkbox);
         mealTypeRadioGroup = mainView.findViewById(R.id.add_meal_rasio_group);
+//        mProgressBar = mainView.findViewById(R.id.add_meal_progressbar);
 
         addFoodLayout = mainView.findViewById(R.id.add_food_layout);
         addFoodLayoutMealTypeTextView = mainView.findViewById(R.id.add_food_layout_meal_type);
@@ -194,10 +200,13 @@ public class AddGeneralFragment extends Fragment {
                 food.foodName = null;
             }
 
+            mOnDataPassingListener.sendUpLoadMealsNum(foodNumber + 1);
+//            mProgressBar.setVisibility(ProgressBar.VISIBLE);
+
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             for (int i = 0; i < foodNumber; i++) {
                 Bitmap bitmap = photoByteArray.get(i);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
+                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
                 byte[] data = baos.toByteArray();
 
                 UploadTask uploadTask = storagePath.child(foodName.get(i)).putBytes(data);
@@ -209,16 +218,15 @@ public class AddGeneralFragment extends Fragment {
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
+                        mOnDataPassingListener.finishAddMeal(1);
                     }
                 });
             }
 
 
             FirebaseDatabaseInterface.writeMeal(mMeal);
-
             mOnDataPassingListener.finishAddMeal(1);
-
+//            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
 //            setMealInfo();
 //                    nextButton.setTextColor(Color.WHITE);
 //            FirebaseDatabaseInterface.writeMeal(mMeal);

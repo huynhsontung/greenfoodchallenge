@@ -2,6 +2,8 @@ const functions = require('firebase-functions');
 
 const admin = require("firebase-admin");
 
+const {Storage} = require("@google-cloud/storage");
+
 admin.initializeApp();
 
 exports.CountTotalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
@@ -408,10 +410,115 @@ exports.adminScanAllUsersPublicMeal = functions.https.onRequest((req, resp) => {
     resp.status(200).send("Ok.");
 });
 
+exports.getRandomMeals = functions.https.onCall((data) =>{
+
+    var number = data.number;
+
+    return admin.database().ref("/publicMeals").once("value").then((snapshot) => {
+
+        var mealKeyList = [];
+        snapshot.forEach((childSnapshot) => {
+           mealKeyList.push(childSnapshot.key)
+        });
+
+        var resultList = getRandomItemsInList(mealKeyList, 5);
+        console.log(resultList);
+
+        var mealData = {};
+        resultList.forEach((key) => {
+           mealData[key] = snapshot.child(key).val();
+        });
+
+        console.log(mealData);
+
+        return mealData;
+    });
+});
 
 
+exports.getRandomMealsbyLocation = functions.https.onCall((data) => {
+    const number = data.location;
+    const location = data.location;
+
+    console.log(location);
+
+    return admin.database().ref("/publicMeals").once("value").then((snapshot) => {
+        var mealKeyList = [];
+        snapshot.forEach((childSnapshot) => {
+           if (childSnapshot.child("location").val() === location) {
+               mealKeyList.push(childSnapshot.key);
+           }
+        });
+       // console.log(mealKeyList);
+        var resultList = getRandomItemsInList(mealKeyList, 5);
+        console.log(resultList);
+
+        var mealData = {};
+        resultList.forEach((key) => {
+           mealData[key] = snapshot.child(key).val();
+        });
+
+        console.log(mealData);
+        return mealData;
+    });
+
+});
+
+function getRandomItemsInList(list, num) {
+    var tempSet = new Set();
+
+    while (tempSet.size !== num) {
+        var item = list[Math.floor(Math.random()*list.length)];
+        tempSet.add(item);
+    }
+
+    return Array.from(tempSet);
+}
+
+exports.testStorage = functions.https.onRequest((req, resp) => {
+    if (req.method !== "GET") {
+        resp.status(400).send("Not GET request");
+        console.log("Not GET request");
+    }
+
+    const projectId = "mindfulmealplanner";
+
+    const storage = new Storage({
+        projectId: projectId,
+        keyFilename : "MindfulMealPlanner-2aad7538b973.json"
+    });
+
+    const bucketName = "mindfulmealplanner.appspot.com/userImage/1FM2STB1PTRYBnrpdt4AwXboRAw2/happy meal";
+
+    storage.bucket(bucketName)
+        .file("hurger")
+        .copy(storage.bucket("mindfulmealplanner.appspot.com/publicImage").file("test.png"))
+        .then(() => {
+            console.log("finish");
+            return null;
+        })
+        .catch(err => {
+            console.error(err);
+        });
+    // var bucket = storage.bucket(bucketName);
+    // var file = bucket.file("hurger");
+    //
+    // console.log(file.name);
+
+    // file.copy("gs://mindfulmealplanner.appspot.com/publicImage/my-image-copy.png", function (err, copiedFile, apiResponse) {
+    //     // `my-bucket` still contains:
+    //     // - "my-image.png"
+    //     //
+    //     // `another-bucket` now contains:
+    //     // - "my-image-copy.png"
+    //
+    //     // `copiedFile` is an instance of a File object that refers to your new
+    //     // file.
+    // });
 
 
+    resp.status(200).send("Ok.");
+});
 
 
 
