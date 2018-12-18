@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.addmeal;
 
 import android.content.Context;
 import android.content.Intent;
@@ -86,7 +86,7 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
     }
 
     @Override
-    public void sendUpLoadMealsNum(int input) {
+    public void sendUploadMealsNum(int input) {
         unloadNum = input;
     }
 }

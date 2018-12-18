@@ -89,8 +89,7 @@
             android:name=".profile.account.UserAccountActivity"
             android:label="@string/title_activity_user_account"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".MealTracker.AddMeal.AddGreenMealActivity" />
-        <activity android:name=".MealTracker.AddMeal.Deprecated.AddGreenMealPhotoActivity2"></activity>
+        <activity android:name=".addmeal.AddGreenMealActivity" />
         <activity android:name=".explore.ExploreDetailActivity" />
     </application>
 

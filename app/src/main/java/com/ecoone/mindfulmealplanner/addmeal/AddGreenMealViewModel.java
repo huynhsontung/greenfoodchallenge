@@ -1,4 +1,4 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.addmeal;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;

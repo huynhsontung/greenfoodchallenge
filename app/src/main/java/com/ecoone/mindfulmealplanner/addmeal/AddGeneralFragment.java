@@ -1,12 +1,10 @@
-package com.ecoone.mindfulmealplanner.MealTracker.AddMeal;
+package com.ecoone.mindfulmealplanner.addmeal;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapRegionDecoder;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,7 +35,6 @@ import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
-import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,7 +99,7 @@ public class AddGeneralFragment extends Fragment {
     public interface OnDataPassingListener {
         void finishAddMeal(int input);
 
-        void sendUpLoadMealsNum(int input);
+        void sendUploadMealsNum(int input);
     }
 
     public OnDataPassingListener mOnDataPassingListener;
@@ -200,7 +197,7 @@ public class AddGeneralFragment extends Fragment {
                 food.foodName = null;
             }
 
-            mOnDataPassingListener.sendUpLoadMealsNum(foodNumber + 1);
+            mOnDataPassingListener.sendUploadMealsNum(foodNumber + 1);
 //            mProgressBar.setVisibility(ProgressBar.VISIBLE);
 
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

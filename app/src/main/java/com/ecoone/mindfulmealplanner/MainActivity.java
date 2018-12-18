@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.ecoone.mindfulmealplanner.MealTracker.MealTrackerFragment;
 import com.ecoone.mindfulmealplanner.dashboard.DashboardFragment;
 import com.ecoone.mindfulmealplanner.explore.ExploreFragment;
 import com.ecoone.mindfulmealplanner.pledge.MyPledgeFragment;
@@ -26,11 +25,6 @@ import com.ecoone.mindfulmealplanner.profile.ProfileFragment;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
-
-import java.util.HashMap;
-
-import me.toptas.fancyshowcase.FancyShowCaseQueue;
-import me.toptas.fancyshowcase.FancyShowCaseView;
 
 
 public class MainActivity extends AppCompatActivity implements

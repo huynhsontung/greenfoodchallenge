@@ -18,7 +18,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
-import com.ecoone.mindfulmealplanner.MealTracker.AddMeal.AddGreenMealActivity;
+import com.ecoone.mindfulmealplanner.addmeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Meal;
@@ -73,12 +73,12 @@ public class ExploreFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         addMealAction = view.findViewById(R.id.add_meal_floating_action);
-        tabView =(RecyclerView) view.findViewById(R.id.tab_recycler_view);
+        tabView = view.findViewById(R.id.tab_recycler_view);
         recyclerViewAdapter = new RecyclerViewAdapter(communication);
         tabView.setAdapter(recyclerViewAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         tabView.setLayoutManager(layoutManager);
-        gridview =(GridView)view.findViewById(R.id.explore_content);
+        gridview = view.findViewById(R.id.explore_content);
 
         MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity());
         gridview.setAdapter(mealImageAdapter);
