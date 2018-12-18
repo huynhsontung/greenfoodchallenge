@@ -1,4 +1,6 @@
-package com.ecoone.mindfulmealplanner.pledge;
+package com.ecoone.mindfulmealplanner;
+
+import com.ecoone.mindfulmealplanner.pledge.PeoplePledging;
 
 import org.junit.Test;
 

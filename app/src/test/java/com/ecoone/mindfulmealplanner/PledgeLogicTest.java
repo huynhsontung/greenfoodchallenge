@@ -1,12 +1,13 @@
-package com.ecoone.mindfulmealplanner.pledge;
+package com.ecoone.mindfulmealplanner;
 
-import com.ecoone.mindfulmealplanner.PlanPledgeInterface;
 import com.ecoone.mindfulmealplanner.database.Plan;
+import com.ecoone.mindfulmealplanner.pledge.PledgeLogic;
 import com.ecoone.mindfulmealplanner.tools.Calculator;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class PledgeLogicTest {
 

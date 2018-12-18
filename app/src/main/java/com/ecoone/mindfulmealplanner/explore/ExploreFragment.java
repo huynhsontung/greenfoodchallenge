@@ -17,7 +17,6 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.MealTracker.AddMeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
@@ -26,7 +25,6 @@ import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -82,8 +80,8 @@ public class ExploreFragment extends Fragment {
         tabView.setLayoutManager(layoutManager);
         gridview =(GridView)view.findViewById(R.id.explore_content);
 
-        ImageAdapter imageAdapter = new ImageAdapter(getActivity());
-        gridview.setAdapter(imageAdapter);
+        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity());
+        gridview.setAdapter(mealImageAdapter);
         gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -159,7 +157,7 @@ public class ExploreFragment extends Fragment {
     FragmentCommunication communication=new FragmentCommunication() {
         @Override
         public void respond(int position, String city_name, int citypics) {
-            ImageAdapter adapter = new ImageAdapter(getActivity(), city_name);
+            MealImageAdapter adapter = new MealImageAdapter(getActivity(), city_name);
             gridview.setAdapter(adapter);
         }
     };
