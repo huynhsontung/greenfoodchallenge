@@ -37,18 +37,22 @@ import com.ecoone.mindfulmealplanner.database.Food;
 import com.ecoone.mindfulmealplanner.database.Meal;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -87,17 +91,15 @@ public class AddGeneralFragment extends Fragment {
 
     private Meal mMeal;
 
-
-    final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference();
-    final String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-    final FirebaseStorage storage = FirebaseStorage.getInstance();
+    private String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(AddGreenMealActivity)";
     private static final int REQUEST_FOOD_INFO = 0;
 
     public interface OnDataPassingListener {
-        void finishAddMeal(int input);
+        void finishAddMeal();
 
         void sendUploadMealsNum(int input);
     }
@@ -180,58 +182,69 @@ public class AddGeneralFragment extends Fragment {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+
+            // When hit submit
         if (isMealBasicInfoCompleted() && mMeal.foodList != null) {
             setMealBasicInfoEditableStatus(0);
+            DatabaseReference timestampRef = FirebaseDatabaseInterface.getDatabaseInstance().child("timestamp");
+            timestampRef.setValue(ServerValue.TIMESTAMP).addOnCompleteListener(task -> timestampRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Long timestamp = (Long) dataSnapshot.getValue();
+                    String identifier = timestamp + "_" + mMeal.mealName.replaceAll(" ", "_").toLowerCase();
+                    StorageReference storageRef = storage.getReference();
+                    StorageReference storagePath = storageRef.child("userImage").child(userUid).child(identifier);
 
-            StorageReference storageRef = storage.getReference();
-            StorageReference storagePath = storageRef.child("userImage").child(userUid).child(mMeal.mealName);
-
-
-            ArrayList<Bitmap> photoByteArray = new ArrayList<>();
-            ArrayList<String> foodName = new ArrayList<>(mMeal.foodList.keySet());
-            int foodNumber = foodName.size();
-            for (int i = 0; i < foodNumber; i++) {
-                Food food = (Food) mMeal.foodList.get(foodName.get(i));
-                photoByteArray.add(food.photoBitmap);
-                food.photoBitmap = null;
-                food.foodName = null;
-            }
-
-            mOnDataPassingListener.sendUploadMealsNum(foodNumber + 1);
-//            mProgressBar.setVisibility(ProgressBar.VISIBLE);
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            for (int i = 0; i < foodNumber; i++) {
-                Bitmap bitmap = photoByteArray.get(i);
-                bitmap.compress(Bitmap.CompressFormat.PNG, 50, baos);
-                byte[] data = baos.toByteArray();
-
-                UploadTask uploadTask = storagePath.child(foodName.get(i)).putBytes(data);
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
+                    ArrayList<Bitmap> bitmapArrayList = new ArrayList<>();
+                    ArrayList<String> foodName = new ArrayList<>(mMeal.foodList.keySet());
+                    int foodNumber = foodName.size();
+                    for (int i = 0; i < foodNumber; i++) {
+                        Food food = mMeal.foodList.get(foodName.get(i));
+                        if (food != null) {
+                            bitmapArrayList.add(food.photoBitmap);
+                        } else {
+                            showCustomToast("Please add 1 photo per food.");
+                            return;
+                        }
+                        food.photoBitmap = null;
+                        food.foodName = null;
                     }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        mOnDataPassingListener.finishAddMeal(1);
+
+                    mOnDataPassingListener.sendUploadMealsNum(foodNumber + 1);
+
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    for (int i = 0; i < foodNumber; i++) {
+                        Bitmap bitmap = bitmapArrayList.get(i);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+                        ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
+                        UploadTask uploadTask = storagePath.child(foodName.get(i)).putStream(bais);
+                        int finalI = i;
+                        uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                String key = foodName.get(finalI);
+                                Food food = mMeal.foodList.get(key);
+                                food.storageReference = taskSnapshot.getMetadata().getReference().toString();
+                                mMeal.foodList.put(key, food);
+                                FirebaseDatabaseInterface.writeMeal(mMeal, identifier);
+                            }
+                        });
                     }
-                });
-            }
 
+                    timestampRef.removeValue(); // Remove temp timestamp in database
+                    getActivity().finish();     // Done with AddMealActivity
+                }
 
-            FirebaseDatabaseInterface.writeMeal(mMeal);
-            mOnDataPassingListener.finishAddMeal(1);
-//            mProgressBar.setVisibility(ProgressBar.INVISIBLE);
-//            setMealInfo();
-//                    nextButton.setTextColor(Color.WHITE);
-//            FirebaseDatabaseInterface.writeMeal(mMeal);
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                }
+            }));
         }
         else {
             showCustomToast("Please enter the meal information.");
         }
+
         return true;
     }
 

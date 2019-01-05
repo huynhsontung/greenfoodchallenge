@@ -12,18 +12,22 @@ public class Meal {
     public boolean isGreen;
     public boolean isPrivate;
     public List<String> tags;
-    public int totalCo2eAmount;
-    public HashMap<String, Object> foodList;
+    public HashMap<String, Food> foodList;
 
     // extra fields for database communication
     public String displayName;
     public String iconName;
     public String userUid;
     public String location;
+    public HashMap<String,Integer> metrics;
 
     public Meal() {
         tags = new ArrayList<>();
         foodList = new HashMap<>();
+        metrics = new HashMap<>();
+        metrics.put("views",0);
+        metrics.put("likes",0);
+        metrics.put("shares",0);
     }
 
     public void clear() {
@@ -33,7 +37,6 @@ public class Meal {
         mealDescription = null;
         tags = new ArrayList<>();
         foodList = new HashMap<>();
-        totalCo2eAmount = 0;
         isGreen = false;
         isPrivate = true;
     }

@@ -6,7 +6,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.Semaphore;
@@ -129,12 +128,9 @@ public class FirebaseDatabaseInterface {
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child(PLEDGEINFO_NODE).child("location").setValue(location);
     }
 
-    public static void writeMeal(Meal meal) {
-        String mealName = meal.mealName;
-        meal.mealName = null;
+    public static void writeMeal(Meal meal, String identifier) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabase.child(FirebaseDatabaseInterface.ALLUSERSUID_NODE).child(userUid)
-                .child("mealInfo").child(mealName).setValue(meal);
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).child("mealInfo").child(identifier).setValue(meal);
     }
 
 }

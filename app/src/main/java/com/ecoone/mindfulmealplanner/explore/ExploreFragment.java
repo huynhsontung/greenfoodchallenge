@@ -122,6 +122,8 @@ public class ExploreFragment extends Fragment {
                 ArrayList<String> userUidList = new ArrayList<>();
                 ArrayList<String> mealNameList = new ArrayList<>();
                 mealsData = (HashMap<String, Object>) dataSnapshot.getValue();
+                if (mealsData == null)
+                    return;
                 for(String iter: mealsData.keySet()){
                     HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
                     userUidList.add((String) singleMealData.get("userUid"));

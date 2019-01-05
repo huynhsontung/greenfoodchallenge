@@ -6,9 +6,10 @@ import java.util.HashMap;
 
 public class Food {
     public String foodName;
-    public int co2eAmount;
+    public Integer co2eAmount;
     public HashMap<String, Integer> ingredient;
     public Bitmap photoBitmap;
+    public String storageReference;
 
     public Food() {
         ingredient = new HashMap<>();
