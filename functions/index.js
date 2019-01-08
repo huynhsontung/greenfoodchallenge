@@ -92,7 +92,7 @@ exports.ModifyPledgeLocationWhenLocationChangedTrigger = functions.database.ref(
                     removeUserFromLocationList(originalLocation, userUid);
                 }
                 return 0;
-            });
+            }).return;
         return 0;
     });
 
@@ -120,7 +120,7 @@ exports.ModifyPledgeLocationWhenAmountChangedTrigger = functions.database.ref("/
                     addUserToLocationList(userLocation, userUid);
                 }
                 return 0;
-            });
+            }).return;
         return 0;
     });
 
@@ -141,7 +141,7 @@ function removeUserFromLocationList(location, userUid) {
                     }
                 });
                 return 0;
-            });
+            }).return;
     }
 }
 
@@ -174,7 +174,8 @@ exports.getUsersDataByLocation = functions.https.onCall((data) => {
 
     const location = data.location;
 
-    return admin.database().ref("/pledgeResult/pledgeLocation/" + location).once("value").then((snapshot) => {
+    return admin.database().ref("/pledgeResult/pledgeLocation/" + location)
+    .once("value").then((snapshot) => {
         var userUidList = [];
         snapshot.forEach((childSnapshot) => {
             userUidList.push(childSnapshot.val());
@@ -344,7 +345,7 @@ exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp)
         console.log(logText);
         resp.status(200).send(logText);
         return null;
-    });
+    }).return;
 });
 
 exports.adminScanAllUsersPublicMeal = functions.https.onRequest((req, resp) => {
@@ -402,10 +403,10 @@ exports.adminScanAllUsersPublicMeal = functions.https.onRequest((req, resp) => {
                 });
 
                 return null;
-            });
+            }).return;
         });
         return null;
-    });
+    }).return;
 
     resp.status(200).send("Ok.");
 });
@@ -521,48 +522,54 @@ exports.testStorage = functions.https.onRequest((req, resp) => {
 });
 
 
+exports.CollectPublicMealsTrigger = functions.database.ref("/uids/{userUid}/mealInfo/{mealName}")
+    .onWrite((change, context) => {
 
+        var userUid = context.params.userUid;
+        var mealName = context.params.mealName;
+        var mealObj = change.after.val();
 
+        console.log("original meal: ",mealObj);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        // copy meal from user's meal list to publicMeals directory
+        var publicMealsRef = admin.database().ref("/publicMeals/" + mealName);
+        if (mealObj !== null){
+            if(mealObj.isPrivate === false ){
+                admin.database().ref("/uids/" + userUid + "/userInfo/")
+                .once("value").then((snapshot) => {
+                    // introduce new fields when copying, these fields include:
+                    // user's display name; icon
+                    let data = snapshot.val();
+                    mealObj.userDisplayName = data.displayName;
+                    mealObj.iconName = data.iconName;
+                    console.log("meal with user info: ", mealObj);
+                    return mealObj;
+                }).then((mealObj) => {
+                    publicMealsRef.transaction((snapshot) => {
+                        // if meal not already exist in publicMeals, add metrics info to meal
+                        if (snapshot === null){
+                            mealObj.metrics = {views: 0, likes: 0, shares:0};
+                        }
+                        return mealObj;
+                    });
+                    return;
+                }).return;
+            } else {
+                mealObj = null;
+                publicMealsRef.transaction(() => {return mealObj;});
+            }
+        } else {
+            let mealObjBefore = change.before;
+            mealObjBefore.child("foodList").forEach((foodItem)=>{
+                let storageRef = foodItem.child("storageReference").val();
+                console.log("image to delete: ", storageRef);
+                try{
+                    admin.storage().refFromURL(storageRef).delete();
+                } catch(e) {
+                    console.log(e);
+                }
+            });
+            publicMealsRef.transaction(() => {return mealObj;});
+        }
+        return 0;
+    });

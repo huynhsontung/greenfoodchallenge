@@ -19,15 +19,10 @@ public class Meal {
     public String iconName;
     public String userUid;
     public String location;
-    public HashMap<String,Integer> metrics;
 
     public Meal() {
         tags = new ArrayList<>();
         foodList = new HashMap<>();
-        metrics = new HashMap<>();
-        metrics.put("views",0);
-        metrics.put("likes",0);
-        metrics.put("shares",0);
     }
 
     public void clear() {
