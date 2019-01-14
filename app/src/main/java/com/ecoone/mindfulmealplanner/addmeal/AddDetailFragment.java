@@ -82,7 +82,6 @@ public class AddDetailFragment extends Fragment {
     private int chipNumber;
     private String restaurantName;
     private boolean isGreen;
-    private int co2eAmount;
     private HashMap<String, Object> foodMenu;
     private ArrayList<String> foodNameList;
     private String foodName;
@@ -145,17 +144,14 @@ public class AddDetailFragment extends Fragment {
 
     private void initialAutoCompleteTextView() {
         if (foodMenu == null) {
-            getRestaurantFoodMenu(restaurantName).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
-                @Override
-                public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
-                    foodMenu = task.getResult();
+            getRestaurantFoodMenu(restaurantName).addOnSuccessListener( result -> {
+                foodMenu = result;
 
-                    if (foodMenu != null) {
-                        foodNameList.addAll(foodMenu.keySet());
-                        mAdapter = new ArrayAdapter<>(getActivity(),
-                                android.R.layout.simple_list_item_1, foodNameList);
-                        autoCompleteFoodNameTextView.setAdapter(mAdapter);
-                    }
+                if (foodMenu != null) {
+                    foodNameList.addAll(foodMenu.keySet());
+                    mAdapter = new ArrayAdapter<>(getActivity(),
+                            android.R.layout.simple_list_item_1, foodNameList);
+                    autoCompleteFoodNameTextView.setAdapter(mAdapter);
                 }
             });
 
@@ -256,13 +252,10 @@ public class AddDetailFragment extends Fragment {
         if (foodNameList.contains(foodName)) {
             HashMap<String, Object> foodDetail = (HashMap<String, Object>) foodMenu.get(foodName);
             ingredient = (HashMap<String, Integer>) foodDetail.get("ingredient");
-            co2eAmount = (Integer) foodDetail.get("co2eAmount");
             food.foodName = foodName;
-            food.co2eAmount = co2eAmount;
         }
         else {
             food.foodName = autoCompleteFoodNameTextView.getText().toString();
-            food.co2eAmount = 0;
         }
 
 
@@ -448,21 +441,8 @@ public class AddDetailFragment extends Fragment {
                 try {
                     Bitmap mBitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), contentURI);
                     Log.i(TAG, CLASSTAG + "photo before: " + mBitmap.getByteCount()+ " " + mBitmap.getHeight()+ " " + mBitmap.getWidth());
-
-//                    String[] filePathColumns = {MediaStore.Images.Media.DATA};
-//                    Cursor c = getContentResolver().query(contentURI, filePathColumns, null, null, null);
-//                    c.moveToFirst();
-//                    int columnIndex = c.getColumnIndex(filePathColumns[0]);
-//                    String imagePath = c.getString(columnIndex);
-//                    c.close();
-//                    mBitmap = getScaledBitmap(imagePath, 500, 500);
-//                    Log.i(TAG, CLASSTAG + "photo after: " + mBitmap.getByteCount()+ " " + mBitmap.getHeight()+ " " + mBitmap.getWidth());
                     foodPhotoImageView.setImageBitmap(mBitmap);
                     photo = mBitmap;
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    mBitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//                    photo = stream.toByteArray();
-
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

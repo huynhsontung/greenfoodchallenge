@@ -58,6 +58,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class AddGeneralFragment extends Fragment {
     public AddGeneralFragment(){}
@@ -93,18 +94,6 @@ public class AddGeneralFragment extends Fragment {
 
     private String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
     private FirebaseStorage storage = FirebaseStorage.getInstance();
-
-    private static final String TAG = "testActivity";
-    private static final String CLASSTAG = "(AddGreenMealActivity)";
-    private static final int REQUEST_FOOD_INFO = 0;
-
-    public interface OnDataPassingListener {
-        void finishAddMeal();
-
-        void sendUploadMealsNum(int input);
-    }
-
-    public OnDataPassingListener mOnDataPassingListener;
 
 
     public void notifyBackPressed(){
@@ -210,14 +199,15 @@ public class AddGeneralFragment extends Fragment {
                         food.foodName = null;
                     }
 
-                    mOnDataPassingListener.sendUploadMealsNum(foodNumber + 1);
-
-                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    ByteArrayOutputStream baos;
                     for (int i = 0; i < foodNumber; i++) {
                         Bitmap bitmap = bitmapArrayList.get(i);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, baos);
+                        baos = optimizeImage(bitmap);
                         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-                        UploadTask uploadTask = storagePath.child(foodName.get(i)).putStream(bais);
+                        String uniqueID = UUID.randomUUID().toString();
+                        String optimizedName = foodName.get(i).toLowerCase().replaceAll("[^a-zA-Z0-9\\s]","").replace(" ","_");
+                        optimizedName = uniqueID.substring(23) + "_" + optimizedName;
+                        UploadTask uploadTask = storagePath.child(optimizedName).putStream(bais);
                         int finalI = i;
                         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -233,6 +223,21 @@ public class AddGeneralFragment extends Fragment {
 
                     timestampRef.removeValue(); // Remove temp timestamp in database
                     getActivity().finish();     // Done with AddMealActivity
+                }
+
+                private ByteArrayOutputStream optimizeImage(Bitmap bitmap) {
+                    int height = bitmap.getHeight();
+                    int width = bitmap.getWidth();
+                    final float maxSize = 1024;
+                    if (height > maxSize || width > maxSize){
+                        float scaleRatio = height/maxSize > width/maxSize ? height/maxSize : width/maxSize;
+                        height /= scaleRatio;
+                        width /= scaleRatio;
+                        bitmap = Bitmap.createScaledBitmap(bitmap,width, height, true);
+                    }
+                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 60, baos);
+                    return baos;
                 }
 
                 @Override
@@ -421,17 +426,6 @@ public class AddGeneralFragment extends Fragment {
                         return result;
                     }
                 });
-    }
-
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mOnDataPassingListener = (AddGeneralFragment.OnDataPassingListener) getContext();
-        }catch (ClassCastException e) {
-            Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
-        }
     }
 
 

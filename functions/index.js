@@ -2,9 +2,11 @@ const functions = require('firebase-functions');
 
 const admin = require("firebase-admin");
 
-const {Storage} = require("@google-cloud/storage");
-
 admin.initializeApp();
+
+var bucket = admin.storage().bucket();
+
+const bucketName = "mindfulmealplanner.appspot.com";
 
 exports.CountTotalNumberOfUsersPledgedTrigger = functions.database.ref("/uids/{userUid}/pledgeInfo/amount")
     .onWrite((change, context) => {
@@ -229,96 +231,6 @@ exports.getRestaurantFoodMenu = functions.https.onCall((data) => {
     });
 });
 
-
-// exports.fakeUserCreateTrigger = functions.auth.user().onCreate(user => {
-//     var genderList = ['male', 'female'];
-//     var locationList = ['Vancouver', 'Burnaby', 'West Vancouver', 'North Vancouver', 'Richmond', 'Coquitlam', 'Surrey', 'Langley'];
-//     var iconNameList = ['android', 'chicken', 'egg', 'fish', 'meat', 'moon', 'star', 'sun', 'tree'];
-//
-//
-//     var gender = genderList[Math.floor(Math.random()*genderList.length)];
-//     var location = locationList[Math.floor(Math.random()*locationList.length)];
-//     var iconName = iconNameList[Math.floor(Math.random()*iconNameList.length)];
-//
-//     var random = require('./random-name');
-//     var displayname = random.first() + ' ' + random.last();
-//
-//     var amount = Math.ceil(Math.random() * 200);
-//
-//
-//     var uid = user.uid;
-//     var email = user.email;
-//     var userData =
-//         {
-//             "planInfo" : {
-//                 "Plan1": {
-//                     "beans": 74,
-//                     "beef": 105,
-//                     "chicken": 102,
-//                     "eggs": 41,
-//                     "fish": 120,
-//                     "pork": 40,
-//                     "vegetables": 185
-//                 }
-//             },
-//
-//             "pledgeInfo" : {
-//                 "amount" : amount,
-//                 "location" : location
-//             },
-//
-//             "userInfo" : {
-//                 "currentPlanName" : "Plan1",
-//                 "displayName" : displayname,
-//                 "email" : email,
-//                 "gender" : gender,
-//                 "iconName" : iconName
-//             }
-//         };
-//
-//     console.log("Check user data", userData);
-//     admin.database().ref('/uids/' + uid).set(userData);
-//     return 0;
-// });
-
-
- exports.test = functions.https.onRequest((req, resp) => {
-     if(req.method !== "POST") {
-         resp.status(400).send("not POST request");
-         console.log("test", "not POST request");
-     }
-
-     console.log("check type" , typeof req.body);
-     var data = req.body;
-
-     if (typeof data === "string") {
-         console.log("string")
-         data = JSON.parse(data);
-     }
-     else if (typeof data === "object") {
-         console.log("object")
-     }
-     //
-     console.log("test req body", data);
-     console.log("test name", data.user.name);
-     console.log("test age", data.user.age);
-
-     resp.status(200).send("OK");
-
- });
-
-// exports.adminCheckAndModifyTotalPledgeNumber = functions.https.onRequest((req, resp) => {
-// //     var log = "";
-// //     if(req.method !== "GET") {
-// //         resp.status(400).send("Not GET request");
-// //         console.log("Not GET request");
-// //     }
-// //
-// //     var oldAmount =
-// //
-// //
-// // });
-
 exports.adminSetAllUsersPledgeAmountZero = functions.https.onRequest((req, resp) => {
     var logText = "";
     if(req.method !== "GET") {
@@ -476,100 +388,103 @@ function getRandomItemsInList(list, num) {
     return Array.from(tempSet);
 }
 
-exports.testStorage = functions.https.onRequest((req, resp) => {
-    if (req.method !== "GET") {
-        resp.status(400).send("Not GET request");
-        console.log("Not GET request");
-    }
-
-    const projectId = "mindfulmealplanner";
-
-    const storage = new Storage({
-        projectId: projectId,
-        keyFilename : "MindfulMealPlanner-2aad7538b973.json"
-    });
-
-    const bucketName = "mindfulmealplanner.appspot.com/userImage/1FM2STB1PTRYBnrpdt4AwXboRAw2/happy meal";
-
-    storage.bucket(bucketName)
-        .file("hurger")
-        .copy(storage.bucket("mindfulmealplanner.appspot.com/publicImage").file("test.png"))
-        .then(() => {
-            console.log("finish");
-            return null;
-        })
-        .catch(err => {
-            console.error(err);
-        });
-    // var bucket = storage.bucket(bucketName);
-    // var file = bucket.file("hurger");
-    //
-    // console.log(file.name);
-
-    // file.copy("gs://mindfulmealplanner.appspot.com/publicImage/my-image-copy.png", function (err, copiedFile, apiResponse) {
-    //     // `my-bucket` still contains:
-    //     // - "my-image.png"
-    //     //
-    //     // `another-bucket` now contains:
-    //     // - "my-image-copy.png"
-    //
-    //     // `copiedFile` is an instance of a File object that refers to your new
-    //     // file.
-    // });
-
-
-    resp.status(200).send("Ok.");
-});
-
-
 exports.CollectPublicMealsTrigger = functions.database.ref("/uids/{userUid}/mealInfo/{mealName}")
     .onWrite((change, context) => {
 
-        var userUid = context.params.userUid;
-        var mealName = context.params.mealName;
-        var mealObj = change.after.val();
+    var userUid = context.params.userUid;
+    var mealName = context.params.mealName;
+    var mealObj = change.after.val();
 
-        console.log("original meal: ",mealObj);
+    console.log("original meal: ",mealObj);
 
-        // copy meal from user's meal list to publicMeals directory
-        var publicMealsRef = admin.database().ref("/publicMeals/" + mealName);
-        if (mealObj !== null){
-            if(mealObj.isPrivate === false ){
-                admin.database().ref("/uids/" + userUid + "/userInfo/")
-                .once("value").then((snapshot) => {
-                    // introduce new fields when copying, these fields include:
-                    // user's display name; icon
-                    let data = snapshot.val();
-                    mealObj.userDisplayName = data.displayName;
-                    mealObj.iconName = data.iconName;
-                    console.log("meal with user info: ", mealObj);
-                    return mealObj;
-                }).then((mealObj) => {
-                    publicMealsRef.transaction((snapshot) => {
-                        // if meal not already exist in publicMeals, add metrics info to meal
-                        if (snapshot === null){
-                            mealObj.metrics = {views: 0, likes: 0, shares:0};
-                        }
-                        return mealObj;
-                    });
-                    return;
-                }).return;
-            } else {
-                mealObj = null;
-                publicMealsRef.transaction(() => {return mealObj;});
-            }
-        } else {
-            let mealObjBefore = change.before;
-            mealObjBefore.child("foodList").forEach((foodItem)=>{
-                let storageRef = foodItem.child("storageReference").val();
-                console.log("image to delete: ", storageRef);
-                try{
-                    admin.storage().refFromURL(storageRef).delete();
-                } catch(e) {
-                    console.log(e);
+    // copy meal from user's meal list to publicMeals directory
+    var publicMealsRef = admin.database().ref("/publicMeals/" + mealName);
+    if (mealObj !== null){
+        if(mealObj.isPrivate === false ){
+            admin.database().ref("/uids/" + userUid + "/userInfo/")
+            .once("value").then((snapshot) => {
+                // introduce new fields when copying, these fields include:
+                // user's display name; icon
+                let data = snapshot.val();
+                mealObj.author = {
+                    displayName: data.displayName,
+                    iconName: data.iconName,
+                    userUid: userUid
                 }
-            });
+                console.log("meal with user info: ", mealObj);
+                return mealObj;
+            }).then((mealObj) => {
+                publicMealsRef.transaction((snapshot) => {
+                    // if meal not already exist in publicMeals, add metrics info to meal
+                    if (snapshot === null){
+                        mealObj.metrics = {views: 0, likes: 0, shares:0};
+                    } else {
+                        mealObj.metrics = snapshot.metrics;
+                    }
+                    return mealObj;
+                });
+                return;
+            }).return;
+        } else {
+            mealObj = null;
             publicMealsRef.transaction(() => {return mealObj;});
         }
-        return 0;
-    });
+    } else {
+        // mealObj === null -> it has been deleted -> need to delete images from Storage
+        let mealObjBefore = change.before;
+        mealObjBefore.child("foodList").forEach((foodItem)=>{
+            let storageRef = foodItem.child("storageReference").val();
+            console.log("image to delete: ", storageRef);
+            try{
+                // storageRef has form "gs://mindfulmealplanner.appspot.com/[FILE_PATH]"
+                // to extract FILE PATH ...
+                let toBeRemove = "gs://"+bucketName+"/";
+                bucket.file(storageRef.substring(toBeRemove.length)).delete();
+            } catch(e) {
+                console.log(e);
+            }
+        });
+        publicMealsRef.transaction(() => {return mealObj;});
+    }
+    return 0;
+});
+
+exports.getFilteredMealList = functions.https.onCall((data,context) => {
+    const filter = data.filter;
+    var end = data.last;
+    var range = data.range;
+    const uid = context.auth.uid;
+    console.log(filter, "; ", range, "; ", end, "; ", uid);
+
+    if (range === null){
+        range = 20;
+    }
+    var query;
+    switch(filter){
+        case "self": 
+            return admin.database().ref("/uids/"+uid+"/mealInfo/")
+                .orderByKey()
+                .once("value").then((snapshot)=> {return snapshot.val();});
+        case "recent": 
+            if (end !==null) {
+                query = admin.database().ref("/publicMeals/")
+                .orderByKey().endAt(end).limitToLast(range);
+            } else {
+                query = admin.database().ref("/publicMeals/")
+                .orderByKey().limitToLast(range);
+            }
+            return query.once("value").then((snapshot) => {return snapshot.val();});
+        default:
+            if (end !==null) {
+                query = admin.database().ref("/publicMeals/")
+                .orderByChild("metrics/likes").endAt(end).limitToLast(range)
+            } else {
+                query = admin.database().ref("/publicMeals/")
+                .orderByChild("metrics/likes").limitToLast(range)
+            }
+            return query.once("value").then((snapshot) => {
+                    console.log(snapshot.val());
+                    return snapshot.val();
+                });
+    }
+});

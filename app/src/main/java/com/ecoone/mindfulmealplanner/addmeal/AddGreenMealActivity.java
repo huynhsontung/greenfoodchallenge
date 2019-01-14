@@ -1,5 +1,6 @@
 package com.ecoone.mindfulmealplanner.addmeal;
 
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,11 +11,10 @@ import android.support.v7.app.AppCompatActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.tools.NonSwipeableViewPager;
 
-public class AddGreenMealActivity extends AppCompatActivity implements AddGeneralFragment.OnDataPassingListener {
+public class AddGreenMealActivity extends AppCompatActivity {
 
     private NonSwipeableViewPager mViewPager;
     private AddGeneralFragment generalFragment;
-    private int uploadNum;
 
     public static Intent newIntent(Context packageContext) {
         Intent intent = new Intent(packageContext, AddGreenMealActivity.class);
@@ -26,7 +26,6 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_green_meal);
         mViewPager = findViewById(R.id.add_food_main_content);
-
         setupViewPager();
     }
 
@@ -74,15 +73,5 @@ public class AddGreenMealActivity extends AppCompatActivity implements AddGenera
         }
         else
             super.onBackPressed();
-    }
-
-    @Override
-    public void finishAddMeal() {
-        finish();
-    }
-
-    @Override
-    public void sendUploadMealsNum(int input) {
-        uploadNum = input;
     }
 }
