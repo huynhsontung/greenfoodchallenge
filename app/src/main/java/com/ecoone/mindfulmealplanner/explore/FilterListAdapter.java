@@ -1,6 +1,5 @@
 package com.ecoone.mindfulmealplanner.explore;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -12,13 +11,16 @@ import android.widget.TextView;
 
 import com.ecoone.mindfulmealplanner.R;
 
-import java.util.List;
+public class FilterListAdapter extends RecyclerView.Adapter {
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter {
-    private FragmentCommunication mCommunicator;
+    public interface FilterListCallback {
+        void onFilterSelect(int position, String filter);
+    }
 
-    public RecyclerViewAdapter(FragmentCommunication communication) {
-        mCommunicator=communication;
+    private FilterListCallback handle;
+
+    public FilterListAdapter(FilterListCallback handle) {
+        this.handle = handle;
     }
 
 
@@ -26,7 +28,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.layout_horizontal_scroll_item, viewGroup,false);
-        return new RecyclerViewHolder(view, mCommunicator);
+        return new RecyclerViewHolder(view, handle);
     }
 
     @Override
@@ -36,38 +38,37 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return scroll_item_data.title.length;
+        return FilterOptions.title.length;
     }
 
     private class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
          private TextView tabTextView;
          private ImageView tabImageView;
          private CardView cardView;
-        FragmentCommunication mCommunication;
+        FilterListCallback handle;
 
-        public RecyclerViewHolder(View itemView, FragmentCommunication Communicator){
+        public RecyclerViewHolder(View itemView, FilterListCallback handle){
             super(itemView);
             tabTextView = (TextView) itemView.findViewById(R.id.tab_text);
             tabImageView = itemView.findViewById(R.id.tab_background);
             cardView = (CardView) itemView.findViewById(R.id.tab_cardview);
-            mCommunication = Communicator;
+            this.handle = handle;
             itemView.setOnClickListener(this);
         }
 
         public void bindView(int position){
-            tabTextView.setText(scroll_item_data.title[position]);
-            tabImageView.setImageResource(scroll_item_data.picturePath[position]);
+            tabTextView.setText(FilterOptions.title[position]);
+            tabImageView.setImageResource(FilterOptions.picturePath[position]);
             itemView.setTag(position);
         }
 
         public void onClick(View view){
             int position = (int) itemView.getTag();
-            mCommunication.respond(position,scroll_item_data.title[position],scroll_item_data.picturePath[position]);
+            handle.onFilterSelect(position,FilterOptions.title[position]);
         }
-
-
-
     }
+
+
 }
 
 

@@ -2,7 +2,7 @@ package com.ecoone.mindfulmealplanner.explore;
 
 import com.ecoone.mindfulmealplanner.R;
 
-public class scroll_item_data {
+public class FilterOptions {
 
     public static String[] title = new String[]{
             "Most popular",

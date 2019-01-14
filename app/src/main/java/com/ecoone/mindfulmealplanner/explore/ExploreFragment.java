@@ -9,6 +9,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -17,42 +18,44 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.ecoone.mindfulmealplanner.addmeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
-import com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface;
 import com.ecoone.mindfulmealplanner.database.Meal;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import com.google.firebase.functions.FirebaseFunctions;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ExploreFragment extends Fragment {
+public class ExploreFragment extends Fragment implements FilterListAdapter.FilterListCallback {
 
     private RecyclerView tabView;
-    private RecyclerViewAdapter recyclerViewAdapter;
+    private FilterListAdapter filterListAdapter;
 
     private SearchView mSearchView;
     private ListView lListView;
 
-    private GridView gridview;
+    private GridView mealGrid;
     private FloatingActionButton addMealAction;
     private ArrayList<String> mNames = new ArrayList<>();
     private ArrayList<String> mImageUrls = new ArrayList<>();
     private DatabaseReference mDatabase;
     private HashMap<String, Object> mealsData;
     private HashMap<String, Object> mealList;
-
+    private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     private Meal mealDataForPassing = new Meal();
 
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ExploreFragment)";
+    private final int defaultRange = 10;
 
 
     public static ExploreFragment newInstance() {
@@ -74,15 +77,15 @@ public class ExploreFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
         addMealAction = view.findViewById(R.id.add_meal_floating_action);
         tabView = view.findViewById(R.id.tab_recycler_view);
-        recyclerViewAdapter = new RecyclerViewAdapter(communication);
-        tabView.setAdapter(recyclerViewAdapter);
+        filterListAdapter = new FilterListAdapter(this);
+        tabView.setAdapter(filterListAdapter);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
         tabView.setLayoutManager(layoutManager);
-        gridview = view.findViewById(R.id.explore_content);
+        mealGrid = view.findViewById(R.id.explore_content);
 
-        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity());
-        gridview.setAdapter(mealImageAdapter);
-        gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity(),);
+//        mealGrid.setAdapter(mealImageAdapter);
+        mealGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 prepareData(position);
@@ -98,57 +101,41 @@ public class ExploreFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
-        setupFirebaseCommunication();
+        queryMeals("popular", defaultRange, null).addOnSuccessListener(updateMealGrid);
         setHasOptionsMenu(true);
         return view;
     }
 
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.action_share).setVisible(false);
-        super.onPrepareOptionsMenu(menu);
+    OnSuccessListener<HashMap<String, Object>> updateMealGrid = result -> {
+        if(result == null){
+            Toast.makeText(getContext(), "There's currently no meal to display. Try again later.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity(), result);
+        mealGrid.setAdapter(mealImageAdapter);
+    };
+
+    private Task<HashMap<String, Object>> queryMeals(String filter, int range, String lastQueryEndpoint) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("filter", filter);
+        data.put("range", range);
+        data.put("last", lastQueryEndpoint);
+        return mFunctions.getHttpsCallable("getFilteredMealList")
+                .call(data)
+                .continueWith(task -> (HashMap<String, Object>) task.getResult().getData());
     }
 
     private void prepareData(int position) {
 
     }
 
-    private void setupFirebaseCommunication() {
-        mDatabase = FirebaseDatabaseInterface.getDatabaseInstance();
-        mDatabase.child("publicMeals").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ArrayList<String> userUidList = new ArrayList<>();
-                ArrayList<String> mealNameList = new ArrayList<>();
-                mealsData = (HashMap<String, Object>) dataSnapshot.getValue();
-                if (mealsData == null)
-                    return;
-                for(String iter: mealsData.keySet()){
-                    HashMap<String, Object> singleMealData = (HashMap<String, Object>) mealsData.get(iter);
-                    userUidList.add((String) singleMealData.get("userUid"));
-                    mealNameList.add((String) singleMealData.get("mealName"));
-                }
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                for(int i =0; i< userUidList.size(); i++) {
-                    StorageReference imagesFromMealRef = storageReference.child("publicImages").child(userUidList.get(i)).child(mealNameList.get(i));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-    }
-
-    public static List<scroll_item_data> getData() {
-        List<scroll_item_data>data=new ArrayList<>();
-        String[] city_names = scroll_item_data.title;
-        int[] city_pics = scroll_item_data.picturePath;
+    public static List<FilterOptions> getData() {
+        List<FilterOptions>data=new ArrayList<>();
+        String[] city_names = FilterOptions.title;
+        int[] city_pics = FilterOptions.picturePath;
 
         for (int i=0;i<city_names.length;i++){
-            scroll_item_data current=new scroll_item_data();
+            FilterOptions current=new FilterOptions();
             current.title[i]=(city_names[i]);
             current.picturePath[i]=(city_pics[i]);
             data.add(current);
@@ -156,12 +143,15 @@ public class ExploreFragment extends Fragment {
         return data;
     }
 
-    FragmentCommunication communication=new FragmentCommunication() {
-        @Override
-        public void respond(int position, String city_name, int citypics) {
-            MealImageAdapter adapter = new MealImageAdapter(getActivity(), city_name);
-            gridview.setAdapter(adapter);
-        }
-    };
 
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.action_share).setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public void onFilterSelect(int position, String filter) {
+        queryMeals(filter, defaultRange, null).addOnSuccessListener(updateMealGrid);
+    }
 }

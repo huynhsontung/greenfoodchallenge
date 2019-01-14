@@ -2,37 +2,52 @@ package com.ecoone.mindfulmealplanner.explore;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.DisplayMetrics;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.ecoone.mindfulmealplanner.R;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 
 public class MealImageAdapter extends BaseAdapter {
-    String cityName;
-    private int[] images_id={R.drawable.meat_eater_picture,R.drawable.average_picture
-            ,R.drawable.vancouver,R.drawable.meat,R.drawable.moon,R.drawable.veggie_picture,R.drawable.green_leaf, R.drawable.egg,R.drawable.fish};
+
     Context context;
-    MealImageAdapter(Context ctx){
-        this.context = ctx;
-    }
+    HashMap<String, Object> mealList;
+    ArrayList<String> mealNameList;
+    String resumePoint;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
 
-    @Override
-    public int getCount() {
-        return images_id.length;
-    }
-
-    public MealImageAdapter(Context context, String cityName){
-        this.cityName = cityName;
+    MealImageAdapter(Context context, HashMap<String, Object> mealList){
         this.context = context;
+        this.mealList = mealList;
+        mealNameList = new ArrayList<>(mealList.keySet());
+        Collections.reverse(mealNameList);
+    }
+
+    MealImageAdapter(Context context, HashMap<String, Object> mealList, String resumePoint){
+        this.context = context;
+        HashMap<String, Object> newMealList = new HashMap<>();
+        newMealList.putAll(mealList);
+        newMealList.putAll(this.mealList);
+        mealList = newMealList;
+        mealNameList = new ArrayList<>(mealList.keySet());
+        Collections.reverse(mealNameList);
+        this.resumePoint = resumePoint;
     }
 
     public static ExploreFragment newInstance() {
@@ -45,8 +60,13 @@ public class MealImageAdapter extends BaseAdapter {
     }
 
     @Override
+    public int getCount() {
+        return mealNameList.size();
+    }
+
+    @Override
     public Object getItem(int position) {
-        return images_id[position];
+        return mealNameList.get(position);
     }
 
     @Override
@@ -66,11 +86,31 @@ public class MealImageAdapter extends BaseAdapter {
             imageView.setLayoutParams(new GridView.LayoutParams(imageSize, imageSize));
             imageView.setPadding(paddingSize,paddingSize,paddingSize,paddingSize);
             imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setTag(mealNameList.get(position));
+            try {
+                fetchImage(mealNameList.get(position), imageView);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             imageView = (ImageView) convertView;
         }
-        imageView.setImageResource(images_id[position]);
         return imageView;
     }
+
+    private void fetchImage(String mealName, ImageView update) throws IOException {
+        HashMap<String, Object> mealObj = (HashMap<String, Object>) mealList.get(mealName);
+        HashMap<String, Object> foodList = (HashMap<String, Object>) mealObj.get("foodList");
+        HashMap<String, Object> firstFood = (HashMap<String, Object>) foodList.get(foodList.keySet().toArray()[0]);
+        String refUrl = (String) firstFood.get("storageReference");
+        StorageReference imageRef = storage.getReferenceFromUrl(refUrl);
+        File tmpFile = File.createTempFile(mealName + "_thumb", "jpg");
+        imageRef.getFile(tmpFile).addOnSuccessListener(taskSnapshot -> {
+            Bitmap bitmap = BitmapFactory.decodeFile(tmpFile.getPath());
+            update.setImageBitmap(bitmap);
+        }).addOnFailureListener(Throwable::printStackTrace);
+    }
+
+
 }
 
