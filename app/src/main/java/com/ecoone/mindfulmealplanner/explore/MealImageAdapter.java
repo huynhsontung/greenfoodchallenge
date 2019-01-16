@@ -14,6 +14,8 @@ import android.widget.GridView;
 import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -26,11 +28,11 @@ import java.util.HashMap;
 
 public class MealImageAdapter extends BaseAdapter {
 
-    Context context;
-    HashMap<String, Object> mealList;
-    ArrayList<String> mealNameList;
-    String resumePoint;
-    FirebaseStorage storage = FirebaseStorage.getInstance();
+    private Context context;
+    private HashMap<String, Object> mealList;
+    private ArrayList<String> mealNameList;
+    private String resumePoint;
+    private FirebaseStorage storage = FirebaseStorage.getInstance();
 
     MealImageAdapter(Context context, HashMap<String, Object> mealList){
         this.context = context;
@@ -57,6 +59,10 @@ public class MealImageAdapter extends BaseAdapter {
         ExploreFragment fragment = new ExploreFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    HashMap<String, Object> getMealList() {
+        return mealList;
     }
 
     @Override

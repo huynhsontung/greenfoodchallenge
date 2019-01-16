@@ -204,9 +204,9 @@ public class AddGeneralFragment extends Fragment {
                         Bitmap bitmap = bitmapArrayList.get(i);
                         baos = optimizeImage(bitmap);
                         ByteArrayInputStream bais = new ByteArrayInputStream(baos.toByteArray());
-                        String uniqueID = UUID.randomUUID().toString();
+                        String uniqueID = UUID.randomUUID().toString().replace("-","");
                         String optimizedName = foodName.get(i).toLowerCase().replaceAll("[^a-zA-Z0-9\\s]","").replace(" ","_");
-                        optimizedName = uniqueID.substring(23) + "_" + optimizedName;
+                        optimizedName = uniqueID.substring(24) + "_" + optimizedName;
                         UploadTask uploadTask = storagePath.child(optimizedName).putStream(bais);
                         int finalI = i;
                         uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

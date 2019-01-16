@@ -22,6 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
+        <TextView
+            android:id="@+id/like_counter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:textColor="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="@+id/action_favorite"
+            app:layout_constraintEnd_toStartOf="@+id/action_favorite"
+            app:layout_constraintTop_toTopOf="@+id/action_favorite" />
+
         <CheckBox
             android:id="@+id/action_favorite"
             android:layout_width="wrap_content"
@@ -97,7 +107,7 @@
             tools:src="@tools:sample/avatars" />
 
         <TextView
-            android:id="@+id/user_name"
+            android:id="@+id/author_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

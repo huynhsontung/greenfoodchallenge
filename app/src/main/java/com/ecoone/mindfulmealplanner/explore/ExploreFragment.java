@@ -9,7 +9,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -23,10 +22,8 @@ import android.widget.Toast;
 import com.ecoone.mindfulmealplanner.addmeal.AddGreenMealActivity;
 import com.ecoone.mindfulmealplanner.R;
 import com.ecoone.mindfulmealplanner.database.Meal;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.functions.FirebaseFunctions;
 
@@ -37,7 +34,7 @@ import java.util.Map;
 
 public class ExploreFragment extends Fragment implements FilterListAdapter.FilterListCallback {
 
-    private RecyclerView tabView;
+    private RecyclerView filterList;
     private FilterListAdapter filterListAdapter;
 
     private SearchView mSearchView;
@@ -52,7 +49,7 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
     private HashMap<String, Object> mealList;
     private FirebaseFunctions mFunctions = FirebaseFunctions.getInstance();
     private Meal mealDataForPassing = new Meal();
-
+    private MealImageAdapter mealImageAdapter;
     private static final String TAG = "testActivity";
     private static final String CLASSTAG = "(ExploreFragment)";
     private final int defaultRange = 10;
@@ -75,35 +72,57 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
                              @Nullable Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_explore, container, false);
-        addMealAction = view.findViewById(R.id.add_meal_floating_action);
-        tabView = view.findViewById(R.id.tab_recycler_view);
-        filterListAdapter = new FilterListAdapter(this);
-        tabView.setAdapter(filterListAdapter);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
-        tabView.setLayoutManager(layoutManager);
-        mealGrid = view.findViewById(R.id.explore_content);
+        setupFilterList(view);
+        setupAddMealButton(view);
+        setupMealGrid(view);
+        setHasOptionsMenu(true);
+        return view;
+    }
 
-//        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity(),);
-//        mealGrid.setAdapter(mealImageAdapter);
+    private void setupMealGrid(View view) {
+        mealGrid = view.findViewById(R.id.explore_content);
         mealGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                prepareData(position);
+                onMealSelect(view);
                 Intent intent = new Intent(getActivity(),ExploreDetailActivity.class);
                 startActivity(intent);
             }
         });
-
-        addMealAction.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AddGreenMealActivity.class);
-                startActivity(intent);
-            }
-        });
         queryMeals("popular", defaultRange, null).addOnSuccessListener(updateMealGrid);
-        setHasOptionsMenu(true);
-        return view;
+    }
+
+    private void onMealSelect(View view) {
+        String mealName = (String) view.getTag();
+        HashMap<String, Object> mealList = mealImageAdapter.getMealList();
+        HashMap<String, Object> mealObj = (HashMap<String, Object>) mealList.get(mealName);
+        if (mealObj == null){
+            return;
+        }
+        Intent intent = new Intent(getActivity(), ExploreDetailActivity.class);
+        intent.putExtra("mealObj", mealObj);
+        startActivity(intent);
+    }
+
+    private void setupAddMealButton(View view) {
+        addMealAction = view.findViewById(R.id.add_meal_floating_action);
+        addMealAction.setOnClickListener(v -> {
+            Intent intent = new Intent(getActivity(), AddGreenMealActivity.class);
+            startActivity(intent);
+        });
+    }
+
+    private void setupFilterList(View view) {
+        filterList = view.findViewById(R.id.tab_recycler_view);
+        filterListAdapter = new FilterListAdapter(this);
+        filterList.setAdapter(filterListAdapter);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL, false);
+        filterList.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onFilterSelect(int position, String filter) {
+        queryMeals(filter, defaultRange, null).addOnSuccessListener(updateMealGrid);
     }
 
     OnSuccessListener<HashMap<String, Object>> updateMealGrid = result -> {
@@ -111,7 +130,7 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
             Toast.makeText(getContext(), "There's currently no meal to display. Try again later.", Toast.LENGTH_SHORT).show();
             return;
         }
-        MealImageAdapter mealImageAdapter = new MealImageAdapter(getActivity(), result);
+        mealImageAdapter = new MealImageAdapter(getActivity(), result);
         mealGrid.setAdapter(mealImageAdapter);
     };
 
@@ -125,9 +144,6 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
                 .continueWith(task -> (HashMap<String, Object>) task.getResult().getData());
     }
 
-    private void prepareData(int position) {
-
-    }
 
     public static List<FilterOptions> getData() {
         List<FilterOptions>data=new ArrayList<>();
@@ -150,8 +166,5 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
         super.onPrepareOptionsMenu(menu);
     }
 
-    @Override
-    public void onFilterSelect(int position, String filter) {
-        queryMeals(filter, defaultRange, null).addOnSuccessListener(updateMealGrid);
-    }
+
 }

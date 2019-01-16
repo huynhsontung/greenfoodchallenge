@@ -1,7 +1,6 @@
 package com.ecoone.mindfulmealplanner.profile;
 
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -61,12 +60,6 @@ public class ProfileFragment extends Fragment {
         return fragment;
     }
 
-    public interface OnDataPassingListener {
-        void passDataFromProfileToMain(int input);
-    }
-
-    public OnDataPassingListener mOnDatPassingListener;
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -112,7 +105,7 @@ public class ProfileFragment extends Fragment {
                     userDispalyName = user.displayName;
                     userEmail = user.email;
                     userGender = user.gender;
-                    userIconId = getDrawableIdbyName(user.iconName);
+                    userIconId = getDrawableIdByName(user.iconName);
                     userDisplayNameTextView.setText(userDispalyName);
                     userEmailTextView.setText(userEmail);
                     usericonImageView.setImageResource(userIconId);
@@ -138,7 +131,7 @@ public class ProfileFragment extends Fragment {
         super.onPrepareOptionsMenu(menu);
     }
 
-    private int getDrawableIdbyName(String name) {
+    private int getDrawableIdByName(String name) {
         Log.i(TAG, CLASSTAG + "Icon name " + name);
         return getResources()
                 .getIdentifier(name, "drawable", Objects.requireNonNull(getActivity()).getPackageName());
@@ -147,40 +140,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            mOnDatPassingListener = (OnDataPassingListener) getContext();
-        }catch (ClassCastException e) {
-            Log.e(TAG, "onAttach: ClassCastException: " +e.getMessage() + CLASSTAG);
-        }
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, CLASSTAG + " onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, CLASSTAG + " onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, CLASSTAG + " onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, CLASSTAG + " onStop");
     }
 
     @Override
