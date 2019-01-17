@@ -27,8 +27,7 @@ import com.elconfidencial.bubbleshowcase.BubbleShowCaseBuilder;
 import com.elconfidencial.bubbleshowcase.BubbleShowCaseSequence;
 
 
-public class MainActivity extends AppCompatActivity implements
-        ProfileFragment.OnDataPassingListener, BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     private NonSwipeableViewPager mViewPager;
     private BottomNavigationView mBottomNavigationView;
@@ -162,11 +161,6 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    @Override
-    public void passDataFromProfileToMain(int input) {
-
-    }
-
     // Switches to the fragment that is clicked on
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -222,36 +216,5 @@ public class MainActivity extends AppCompatActivity implements
         }
         return super.onOptionsItemSelected(item);
     }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        Log.d(TAG, CLASSTAG + " onStart");
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        Log.d(TAG, CLASSTAG + " onResume");
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        Log.d(TAG, CLASSTAG + " onPause");
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Log.d(TAG, CLASSTAG + " onStop");
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.d(TAG, CLASSTAG + " onDestroy");
-    }
-
 
 }

@@ -85,8 +85,6 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onMealSelect(view);
-                Intent intent = new Intent(getActivity(),ExploreDetailActivity.class);
-                startActivity(intent);
             }
         });
         queryMeals("popular", defaultRange, null).addOnSuccessListener(updateMealGrid);

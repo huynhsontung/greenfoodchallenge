@@ -25,6 +25,7 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -113,18 +114,25 @@ public class ExploreDetailActivity extends AppCompatActivity {
         authorIcon.setImageResource(iconId);
 
         foodImagesPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
+
+            ArrayList<ImagesPagerFragment> fragmentKeeper = new ArrayList<>(mViewModel.photoRefs.size());
             @Override
             public Fragment getItem(int i) {
-                ImagesPagerFragment fragment = ImagesPagerFragment.newInstance();
-                try {
-                    fetchImage(mViewModel.photoRefs.get(i), mViewModel.foodNames.get(i), fragment);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (fragmentKeeper.size() > i){
+                    return fragmentKeeper.get(i);
+                } else {
+                    ImagesPagerFragment fragment = ImagesPagerFragment.newInstance();
+                    try {
+                        fetchImage(mViewModel.photoRefs.get(i), mViewModel.foodNames.get(i), fragment);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    fragmentKeeper.add(fragment);
+                    return fragment;
                 }
-                return fragment;
             }
 
-            private void fetchImage(String refUrl, String foodName, ImagesPagerFragment fragment) throws IOException {
+            private void fetchImage(@NonNull String refUrl, String foodName, @NonNull ImagesPagerFragment fragment) throws IOException {
                 FirebaseStorage storage = FirebaseStorage.getInstance();
                 StorageReference imageRef = storage.getReferenceFromUrl(refUrl);
                 File tmpFile = File.createTempFile(foodName, "jpg");
@@ -157,9 +165,11 @@ public class ExploreDetailActivity extends AppCompatActivity {
             return fragment;
         }
 
+        private Bitmap bitmap;
         private ImageView imageView;
 
         public void updateImageView(Bitmap image) {
+            bitmap = image;
             imageView.post(() -> imageView.setImageBitmap(image));
         }
 
@@ -169,6 +179,9 @@ public class ExploreDetailActivity extends AppCompatActivity {
             View view = inflater.inflate(R.layout.component_framelayout_imageview, container, false);
             imageView = view.findViewById(R.id.imageview_in_framelayout);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
+            if (bitmap != null){
+                imageView.setImageBitmap(bitmap);
+            }
             return view;
         }
     }
