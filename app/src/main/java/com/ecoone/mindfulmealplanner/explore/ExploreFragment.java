@@ -99,6 +99,7 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
         }
         Intent intent = new Intent(getActivity(), ExploreDetailActivity.class);
         intent.putExtra("mealObj", mealObj);
+        intent.putExtra("identifier", mealName);
         startActivity(intent);
     }
 
@@ -120,6 +121,14 @@ public class ExploreFragment extends Fragment implements FilterListAdapter.Filte
 
     @Override
     public void onFilterSelect(int position, String filter) {
+        switch (filter){
+            case "Most Recent":
+                filter = "recent";
+                break;
+            case "My Meals":
+                filter = "self";
+                break;
+        }
         queryMeals(filter, defaultRange, null).addOnSuccessListener(updateMealGrid);
     }
 

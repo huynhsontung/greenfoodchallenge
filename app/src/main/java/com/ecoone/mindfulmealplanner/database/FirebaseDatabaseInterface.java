@@ -36,6 +36,10 @@ public class FirebaseDatabaseInterface {
         return database.getReference();
     }
 
+    public static String getUid(){
+        return FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
     public static void deleteUserData() {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.i(TAG, CLASSTAG + "check UID: " + userUid);
@@ -131,6 +135,11 @@ public class FirebaseDatabaseInterface {
     public static void writeMeal(Meal meal, String identifier) {
         String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabase.child(ALLUSERSUID_NODE).child(userUid).child("mealInfo").child(identifier).setValue(meal);
+    }
+
+    public static void deleteMeal(String identifier) {
+        String userUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        mDatabase.child(ALLUSERSUID_NODE).child(userUid).child("mealInfo").child(identifier).removeValue();
     }
 
 }

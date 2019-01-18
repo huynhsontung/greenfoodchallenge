@@ -1,6 +1,7 @@
 package com.ecoone.mindfulmealplanner.explore;
 
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,7 +12,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
@@ -30,6 +33,9 @@ import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface.deleteMeal;
+import static com.ecoone.mindfulmealplanner.database.FirebaseDatabaseInterface.getUid;
+
 public class ExploreDetailActivity extends AppCompatActivity {
 
     private TextView mealTitle;
@@ -43,12 +49,16 @@ public class ExploreDetailActivity extends AppCompatActivity {
     private CheckBox favoriteCheckbox;
     private ViewPager foodImagesPager;
     private ExploreDetailViewModel mViewModel;
+    private Toolbar optionMenu;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore_detail);
+        optionMenu = findViewById(R.id.option_menu);
+        setSupportActionBar(optionMenu);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         likeCounter = findViewById(R.id.like_counter);
         foodImagesPager = findViewById(R.id.detail_images_pager);
         mealTitle = findViewById(R.id.meal_title);
@@ -61,20 +71,15 @@ public class ExploreDetailActivity extends AppCompatActivity {
         favoriteCheckbox.setOnClickListener(view -> {
             CheckBox like = (CheckBox) view;
             if(like.isChecked()){
-                mViewModel.likes++;
+                mViewModel.likes.setValue(mViewModel.likes.getValue()+1);
                 // call server function
             } else {
-                mViewModel.likes--;
+                mViewModel.likes.setValue(mViewModel.likes.getValue()-1);
                 // call server function
             }
         });
         closeButton = findViewById(R.id.detail_close);
-        closeButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+        closeButton.setOnClickListener(v -> onBackPressed());
 
         mViewModel = ViewModelProviders.of(this).get(ExploreDetailViewModel.class);
         initializeData();
@@ -85,16 +90,18 @@ public class ExploreDetailActivity extends AppCompatActivity {
         if (mViewModel.foodNames.size() >= 1){
             return;
         }
+        mViewModel.mealIdentifier = getIntent().getStringExtra("identifier");
         HashMap<String, Object> mealObj = (HashMap<String, Object>) getIntent().getSerializableExtra("mealObj");
         HashMap<String, Object> author = (HashMap<String, Object>) mealObj.get("author");
         HashMap<String, Object> foodList = (HashMap<String, Object>) mealObj.get("foodList");
         HashMap<String, Integer> metrics = (HashMap<String, Integer>) mealObj.get("metrics");
-        mViewModel.likes = metrics.get("likes");
+        mViewModel.likes.setValue(metrics.get("likes"));
         mViewModel.mealName = (String) mealObj.get("mealName");
         mViewModel.mealDescription = (String) mealObj.get("mealDescription");
         mViewModel.restaurantName = (String) mealObj.get("restaurantName");
         mViewModel.authorName = (String) author.get("displayName");
         mViewModel.authorIcon = (String) author.get("iconName");
+        mViewModel.authorUid = (String) author.get("userUid");
         for (int i = 0; i< foodList.size(); i++){
             String foodName = (String) foodList.keySet().toArray()[i];
             HashMap<String, Object> food = (HashMap<String, Object>) foodList.get(foodName);
@@ -109,9 +116,14 @@ public class ExploreDetailActivity extends AppCompatActivity {
         description.setText(mViewModel.mealDescription);
         restaurantName.setText(mViewModel.restaurantName);
         likeCounter.setText(String.valueOf(mViewModel.likes));
+        mViewModel.likes.observe(this, integer -> {
+            if (integer != null)
+                likeCounter.setText(String.valueOf(integer));
+        });
         int iconId = getResources()
                 .getIdentifier(mViewModel.authorIcon, "drawable", getPackageName());
         authorIcon.setImageResource(iconId);
+        location.setText("Vancouver");
 
         foodImagesPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager()) {
 
@@ -142,7 +154,10 @@ public class ExploreDetailActivity extends AppCompatActivity {
                 imageRef.getFile(tmpFile).addOnSuccessListener(taskSnapshot -> {
                     Bitmap bitmap = BitmapFactory.decodeFile(tmpFile.getPath());
                     fragment.updateImageView(bitmap);
-                }).addOnFailureListener(Throwable::printStackTrace);
+                }).addOnFailureListener(e -> {
+                    e.printStackTrace();
+                    finish();
+                });
             }
 
             @Override
@@ -152,9 +167,18 @@ public class ExploreDetailActivity extends AppCompatActivity {
         });
     }
 
-    private int getDrawableIdByName(String name) {
-        return getResources()
-                .getIdentifier(name, "drawable", getPackageName());
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (getUid().equals(mViewModel.authorUid)) {
+            menu.add("Delete meal").setOnMenuItemClickListener(item -> {
+                deleteMeal(mViewModel.mealIdentifier);
+                finish();
+                return true;
+            });
+            return true;
+        } else {
+            return super.onCreateOptionsMenu(menu);
+        }
     }
 
     public static class ImagesPagerFragment extends Fragment{
