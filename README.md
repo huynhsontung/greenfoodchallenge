@@ -8,7 +8,7 @@
 
 
 ## Initialization
-For the initialization, the user is allowed to log in with Gmail, or a regular email. If the already exists, then only the password will be required. 
+To initialize, the user is allowed to log in with their valid email, only then their password will be required. 
 ![alt text](ReadmePic/Sprint3/welcomesignin.PNG) | ![alt text](ReadmePic/Sprint3/welcomeemail.PNG)
 
 
