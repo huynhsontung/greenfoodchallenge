@@ -62,7 +62,7 @@ Users may view their profile. Upon clicking on their information, they can enter
 ![alt text](ReadmePic/Sprint3/profile.PNG) ![alt text](ReadmePic/Sprint3/profileaccountinfo.PNG)
 
 ## Settings 
-This activity is accessed through the profile fragment. It contains access to the about page activity and an option to log out. Upon logging out, the application will close. The back button in the top left corner takes the user back to the dashboard.
+In settings, users have the option to log out (which takes users back to the dashboard) and view the about page.
 
 ![alt text](ReadmePic/Sprint3/settingsview.PNG) ![alt text](ReadmePic/Sprint3/settingsabout.PNG)
 
