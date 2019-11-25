@@ -12,7 +12,7 @@ For the initialization, the user is allowed to log in with Gmail, or a regular e
 ![alt text](ReadmePic/Sprint3/welcomesignin.PNG) | ![alt text](ReadmePic/Sprint3/welcomeemail.PNG)
 
 
-Otherwise, the user will be asked to create a password, select their gender, and enter their initial meal plan. The user will be aided with some preset meal plans. From there, the user may adjust their meal plan more precisely.
+The user is later then asked to select their gender and initial preset meal plan which the user may adjust more precisely later on.
 
 
 ![alt text](ReadmePic/Sprint3/welcomegreetings.PNG) | ![alt text](ReadmePic/Sprint3/welcomepresetplan.PNG) | ![alt text](ReadmePic/Sprint3/welcomeadjust.PNG)
