@@ -18,7 +18,7 @@ Otherwise, the user will be asked to create a password, select their gender, and
 ![alt text](ReadmePic/Sprint3/welcomegreetings.PNG) | ![alt text](ReadmePic/Sprint3/welcomepresetplan.PNG) | ![alt text](ReadmePic/Sprint3/welcomeadjust.PNG)
 
 ## Tutorial
-Upon the first use, tutorial pop ups will occur in different fragments to help the user understand the purpose and different usages of the application. If the user wishes to revisit tutorials, they may click on the question mark icon found in several fragments.
+Tutorial pop-up will welcome first time users to get them started on how to use the application. Users may revisit the tutorial by clicking on the question mark icon found in each fragment.
 
 ![alt text](ReadmePic/Sprint3/tutorialdashboard.PNG) ![alt text](ReadmePic/Sprint3/tutorialimprove.PNG)
 
