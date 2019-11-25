@@ -54,10 +54,10 @@ The meal tracker fragment allows users to explore different green meals posted b
 
 ![alt text](ReadmePic/Sprint3/mealtrackerfeed.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddmeal.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddphoto.PNG)
 
-The database keeps record of green restaurants and their menus across Metro Vancouver. Upon selecting these items, tags will be set, so that the meals may be searched by other users.
+The database has a record of green restaurants with their menus across Metro Vancouver. Upon specifying items, tags will be set so that meals may be searched by other users.
 
 ## Profile
-Users may view their profile. Upon clicking on their information, they can enter a profile account information activity, where the profile picture may be edited.
+Users may edit their profile by clicking on their information as shown by the images below. In the account information menu, users may change their profile picture.
 
 ![alt text](ReadmePic/Sprint3/profile.PNG) ![alt text](ReadmePic/Sprint3/profileaccountinfo.PNG)
 
