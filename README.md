@@ -45,7 +45,7 @@ If the user wishes to edit the plan, the user may use the sliders and update the
 
 
 ## Pledge 
-The pledge activity has two fragments. The 'My Pledge' fragment allows the user to make a pledge of how many kilograms of CO2 they will commit to saving in a week. The 'Discover' fragment allows the user to see other users and their pledges, as well as various statistics on the pledges. The user may also filter pledges by municipality.
+The pledge feature has two fragments. The 'My Pledge' fragment allows users to make a pledge to save a certain amount of CO2e (in kilograms) in a week. The 'Discover' fragment allows users to see other users pledges along with their statistics on the specified pledge. The user may also filter pledges by the municipality.
 
 ![alt text](ReadmePic/Sprint3/pledgemypledge.PNG) ![alt text](ReadmePic/Sprint3/pledgediscover.PNG)
 
