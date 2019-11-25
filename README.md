@@ -40,8 +40,8 @@ A toast will be generated to inform the user how much CO2e could be reduced if a
 
 ![alt text](ReadmePic/Sprint3/improve.PNG)
 
-If the user is satisfied with this new plan. The user can press either 'save' or 'save as', where the latter button allows the ability to change the plan name.
-If the user wishes to edit the plan, the user may use the sliders and update the amount of CO2e saved in real time. If the plan produces a greater amount of CO2e than the previous plan, the pie graph will turn red as a warning indication.
+The user can save the new plan if they are satisfied by pressing "save" or "save as".
+Users may use the sliders to update the amount of CO2e saved in real-time. The pie graph will turn red as a warning indication when the plan being edited has a greater amount of CO2e than the previous plan
 
 
 ## Pledge 
