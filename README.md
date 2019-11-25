@@ -50,7 +50,7 @@ The pledge feature has two fragments. The 'My Pledge' fragment allows users to m
 ![alt text](ReadmePic/Sprint3/pledgemypledge.PNG) ![alt text](ReadmePic/Sprint3/pledgediscover.PNG)
 
 ## Meal Tracker
-This fragment allows users to explore different green meals posted by other Vancouverites. The user may also upload their own green meal. In doing so, the user is required to enter meal details, and upload a photo.
+The meal tracker fragment allows users to explore different green meals posted by other Vancouverites. Users may post their green meal, in which it requires them to enter meal details, and upload a photo.
 
 ![alt text](ReadmePic/Sprint3/mealtrackerfeed.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddmeal.PNG) ![alt text](ReadmePic/Sprint3/mealtrackeraddphoto.PNG)
 
